@@ -152,8 +152,4 @@ GPS velocity collapse detection is implemented in `useLocation.js` as an honest 
 5. Use the demo-location picker to switch to London/Tokyo/Berlin — show country detection and emergency numbers updating.
 6. Tap SOS Broadcast — show the pre-filled WhatsApp message with coords + landmark.
 
-## Team
 
-- Prajnadeep Sarma (lead)
-- (Rookie 1)
-- (Rookie 2)
