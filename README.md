@@ -465,16 +465,6 @@ The hackathon scores submissions on five criteria. Here is how RoadSOS addresses
 
 ---
 
-## 👥 Team
-
-| Role | Name |
-|---|---|
-| Tech Lead | **Prajnadeep Sarma** |
-| Frontend | *(Team Member 2)* |
-| Data & Documentation | *(Team Member 3)* |
-
----
-
 ## 📄 License
 
 This project is licensed under the MIT License — see [LICENSE](LICENSE) for details.
