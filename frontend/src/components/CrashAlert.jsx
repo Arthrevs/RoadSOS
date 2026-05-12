@@ -64,11 +64,9 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
   function triggerAutomatic() {
     stopAlarm();             // stop bystander alarm — we're now calling
     setPhase(PHASE.AUTOMATING);
-    startCountdown(AUTO_SECONDS, fireCall);
-  }
 
-  async function fireCall() {
-    clearInterval(intervalRef.current);
+    // Start speaking the dispatch message immediately so it plays
+    // through the countdown and is audible the moment the call connects.
     const text = buildDispatchText({
       landmark,
       lat     : location?.lat,
@@ -76,9 +74,14 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
       injured : true,
       blocking: true,
     });
-
     setSpeaking(true);
     speakText(text).finally(() => setSpeaking(false));
+
+    startCountdown(AUTO_SECONDS, fireCall);
+  }
+
+  function fireCall() {
+    clearInterval(intervalRef.current);
 
     // Demo mode: shows a toast instead of placing a real emergency call.
     // Production (?demo=0): dials the actual number.
