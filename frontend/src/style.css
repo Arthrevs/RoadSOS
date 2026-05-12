@@ -574,6 +574,46 @@ code {
   width: 100%;
 }
 
+/* Bystander-facing banner — large text, readable from distance */
+.crash-alert__bystander-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--accent-bright);
+  color: #fff;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+
+.crash-alert__bystander-icon { font-size: 36px; flex-shrink: 0; }
+
+.crash-alert__bystander-headline {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  line-height: 1.1;
+}
+
+.crash-alert__bystander-sub {
+  font-size: 15px;
+  opacity: 0.95;
+  margin-top: 3px;
+}
+
+/* Siren indicator */
+.crash-alert__siren-indicator {
+  background: rgba(231, 76, 60, 0.15);
+  border: 1px solid rgba(231, 76, 60, 0.4);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #ff8b7d;
+  text-align: center;
+  animation: blink 1s ease-in-out infinite;
+  margin-bottom: 4px;
+}
+
 .crash-alert__header {
   display: flex;
   align-items: center;

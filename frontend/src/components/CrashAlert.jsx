@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { speakText, buildDispatchText, cancelSpeech } from '../utils/speechUtils';
+import { startAlarm, stopAlarm } from '../utils/alarmUtils';
 
-const CHOOSE_SECONDS  = 10;  // user has this long to pick a mode
-const AUTO_SECONDS    = 4;   // countdown before auto-dial fires
-const CORRECT_PIN     = '0000';
+const CHOOSE_SECONDS = 10;
+const AUTO_SECONDS   = 4;
+const CORRECT_PIN    = '0000';
 
 const PHASE = {
-  CHOOSING   : 'choosing',    // show both buttons + countdown
-  AUTOMATING : 'automating',  // counting down before call + speech
-  MANUAL     : 'manual',      // user is in control
+  CHOOSING   : 'choosing',
+  AUTOMATING : 'automating',
+  MANUAL     : 'manual',
 };
 
 export default function CrashAlert({ open, onConfirm, onCancel, numbers, location, landmark }) {
@@ -19,10 +20,13 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
   const [speaking, setSpeaking] = useState(false);
   const intervalRef             = useRef(null);
 
-  // Reset everything when modal opens/closes
+  const callNumber = numbers?.ambulance || numbers?.general || '112';
+
+  // ─── Open / close lifecycle ────────────────────────────────────────────
   useEffect(() => {
     if (!open) {
       clearInterval(intervalRef.current);
+      stopAlarm();
       cancelSpeech();
       setPhase(PHASE.CHOOSING);
       setSeconds(CHOOSE_SECONDS);
@@ -31,11 +35,15 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
       setSpeaking(false);
       return;
     }
+
+    // Start bystander alarm immediately — siren + looping voice announcement
+    startAlarm(callNumber);
+
     // Start choosing-phase countdown
     startCountdown(CHOOSE_SECONDS, () => triggerAutomatic());
-  }, [open]);
+  }, [open]);                                    // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ─── Helpers ──────────────────────────────────────────────────────────
+  // ─── Countdown helper ─────────────────────────────────────────────────
   function startCountdown(from, onZero) {
     clearInterval(intervalRef.current);
     setSeconds(from);
@@ -51,48 +59,45 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
     }, 1000);
   }
 
+  // ─── Mode: AUTOMATING ─────────────────────────────────────────────────
   function triggerAutomatic() {
+    stopAlarm();             // stop bystander alarm — we're now calling
     setPhase(PHASE.AUTOMATING);
     startCountdown(AUTO_SECONDS, fireCall);
   }
 
   async function fireCall() {
     clearInterval(intervalRef.current);
-    const callNum = numbers?.ambulance || numbers?.general || '112';
     const text = buildDispatchText({
       landmark,
-      lat : location?.lat,
-      lon : location?.lon,
-      injured  : true,  // worst-case assumption at auto-trigger
-      blocking : true,
+      lat     : location?.lat,
+      lon     : location?.lon,
+      injured : true,
+      blocking: true,
     });
 
-    // Start speaking immediately
     setSpeaking(true);
     speakText(text).finally(() => setSpeaking(false));
 
-    // Open tel: link ~1 s later so speech begins before call setup
     setTimeout(() => {
-      window.location.href = `tel:${callNum}`;
+      window.location.href = `tel:${callNumber}`;
     }, 1200);
 
     onConfirm?.();
   }
 
+  // ─── Mode: MANUAL ─────────────────────────────────────────────────────
   function handleChooseManual() {
     clearInterval(intervalRef.current);
-    cancelSpeech();
+    stopAlarm();
     setPhase(PHASE.MANUAL);
   }
 
-  function handleChooseAutomatic() {
-    clearInterval(intervalRef.current);
-    triggerAutomatic();
-  }
-
+  // ─── Cancel (false alarm) ─────────────────────────────────────────────
   function handleCancelFalseAlarm() {
     if (pin === CORRECT_PIN) {
       clearInterval(intervalRef.current);
+      stopAlarm();
       cancelSpeech();
       onCancel?.();
     } else {
@@ -115,26 +120,38 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
     return (
       <div className="modal-backdrop modal-backdrop--alert" role="alertdialog" aria-modal="true">
         <div className="modal modal--alert crash-alert">
-          <div className="crash-alert__header">
-            <span className="crash-alert__icon">⚠️</span>
-            <h2>Possible Crash Detected</h2>
+
+          {/* Bystander banner — large, readable from a distance */}
+          <div className="crash-alert__bystander-banner">
+            <span className="crash-alert__bystander-icon">🚨</span>
+            <div>
+              <div className="crash-alert__bystander-headline">ACCIDENT DETECTED</div>
+              <div className="crash-alert__bystander-sub">
+                Call <strong>{callNumber}</strong> for ambulance
+              </div>
+            </div>
           </div>
-          <p className="modal__subtitle">
+
+          <div className="crash-alert__siren-indicator">
+            🔊 Alarm sounding — bystanders are being alerted
+          </div>
+
+          <p className="modal__subtitle" style={{ marginTop: 12 }}>
             Sudden deceleration detected. How do you want to respond?
           </p>
 
           <div className="crash-alert__countdown">
-            Auto-mode in <strong>{seconds}s</strong> if no action
+            Auto-mode in <strong>{seconds}s</strong> if no action taken
           </div>
 
           <div className="crash-alert__modes">
             <button
               className="crash-mode crash-mode--auto"
-              onClick={handleChooseAutomatic}
+              onClick={triggerAutomatic}
             >
               <span className="crash-mode__icon">🤖</span>
               <span className="crash-mode__title">Automatic</span>
-              <span className="crash-mode__desc">App calls + plays voice message to dispatcher</span>
+              <span className="crash-mode__desc">App calls + plays voice to dispatcher</span>
             </button>
 
             <button
@@ -143,12 +160,12 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
             >
               <span className="crash-mode__icon">📞</span>
               <span className="crash-mode__title">Manual</span>
-              <span className="crash-mode__desc">I'll speak to the dispatcher myself</span>
+              <span className="crash-mode__desc">I'll speak to dispatcher myself</span>
             </button>
           </div>
 
           <div className="crash-alert__cancel-zone">
-            <p className="crash-alert__cancel-label">False alarm? Enter PIN to cancel:</p>
+            <p className="crash-alert__cancel-label">False alarm? Enter PIN to stop alarm:</p>
             <input
               className={`pin-input ${pinError ? 'pin-input--error' : ''}`}
               type="tel"
@@ -163,7 +180,7 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
               onClick={handleCancelFalseAlarm}
               disabled={pin.length !== 4}
             >
-              Cancel — false alarm
+              Stop alarm — false alarm
             </button>
             {pinError && <div className="pin-error-msg">Incorrect PIN (demo: 0000)</div>}
           </div>
@@ -174,13 +191,12 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
 
   // ─── AUTOMATING phase ──────────────────────────────────────────────────
   if (phase === PHASE.AUTOMATING) {
-    const callNum = numbers?.ambulance || numbers?.general || '112';
     return (
       <div className="modal-backdrop modal-backdrop--alert" role="alertdialog" aria-modal="true">
         <div className="modal modal--alert crash-alert">
           <div className="crash-alert__header">
             <span className="crash-alert__icon">🚨</span>
-            <h2>Calling {callNum}</h2>
+            <h2>Calling {callNumber}</h2>
           </div>
 
           <div className="crash-alert__auto-countdown">
@@ -191,9 +207,15 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
           </div>
 
           <p className="crash-alert__auto-info">
-            Voice message will play automatically:<br />
+            Voice message will play to dispatcher:<br />
             <em style={{ fontSize: '13px', opacity: 0.8 }}>
-              "{buildDispatchText({ landmark, lat: location?.lat, lon: location?.lon, injured: true, blocking: true })}"
+              "{buildDispatchText({
+                landmark,
+                lat     : location?.lat,
+                lon     : location?.lon,
+                injured : true,
+                blocking: true,
+              })}"
             </em>
           </p>
 
@@ -220,15 +242,12 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
           <h2>You're in Control</h2>
         </div>
         <p className="modal__subtitle">
-          Call a dispatcher and explain the situation. Tell them your location:
+          Call a dispatcher and explain the situation. Your location:
         </p>
 
         {landmark && (
-          <div className="crash-alert__landmark">
-            📍 {landmark}
-          </div>
+          <div className="crash-alert__landmark">📍 {landmark}</div>
         )}
-
         {location?.lat && (
           <div className="crash-alert__coords">
             GPS: {location.lat.toFixed(5)}, {location.lon.toFixed(5)}
@@ -253,7 +272,10 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
           )}
         </div>
 
-        <button className="modal__secondary crash-alert__cancel-btn" onClick={() => { cancelSpeech(); onCancel?.(); }}>
+        <button
+          className="modal__secondary crash-alert__cancel-btn"
+          onClick={() => { cancelSpeech(); onCancel?.(); }}
+        >
           Close
         </button>
       </div>
