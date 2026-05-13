@@ -15,18 +15,25 @@
  * works identically in demo and production mode.
  */
 
-const DEMO_DEFAULT = true;
+function readDemoMode() {
+  if (typeof window === 'undefined') return false;
 
-function readDemoParam() {
-  if (typeof window === 'undefined') return DEMO_DEFAULT;
+  // /demo path → always demo mode (safe for sharing with judges/teammates)
+  // main URL   → production mode (real calls enabled)
+  const path = window.location.pathname;
+  if (path === '/demo' || path.startsWith('/demo/')) return true;
+
+  // Legacy ?demo=0 / ?demo=1 query param still works for backward compat
   const params = new URLSearchParams(window.location.search);
   const v = params.get('demo');
   if (v === '0' || v === 'false') return false;
   if (v === '1' || v === 'true')  return true;
-  return DEMO_DEFAULT;
+
+  // Main URL with no params → production mode
+  return false;
 }
 
-export const DEMO_MODE = readDemoParam();
+export const DEMO_MODE = readDemoMode();
 
 // ─── One-tap confirmation for tel: links ─────────────────────────────────
 // First tap shows a toast. Second tap within 4s fires the real call.

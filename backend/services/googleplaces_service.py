@@ -98,28 +98,48 @@ async def enrich_phone_for_contact(
 ) -> Optional[str]:
     """Find a phone number for an existing contact by name + location.
 
-    Uses Google's Find Place from Text API (cheap, single result), then
-    Place Details for the phone. Returns None if anything fails or no
-    phone is available.
+    Strategy:
+    1. Find Place from Text (fast, name-based) — works when OSM name matches Google
+    2. Nearby Search in 100 m radius (coordinate-based) — fallback for OSM typos
+       e.g. "gs sustom" won't match "GS Custom" by text, but they share coordinates
     """
+    # ── Step 1: name-based lookup ────────────────────────────────────────
     try:
         resp = await client.get(FINDPLACE_URL, params={
             "input": name,
             "inputtype": "textquery",
-            "locationbias": f"circle:2000@{lat},{lon}",
+            "locationbias": f"circle:500@{lat},{lon}",
             "fields": "place_id",
             "key": api_key,
         }, timeout=8.0)
         candidates = resp.json().get("candidates", [])
-        if not candidates:
-            return None
-        place_id = candidates[0].get("place_id")
-        if not place_id:
-            return None
-        details = await _get_place_details(client, place_id, api_key, region)
-        return details.get("phone")
+        if candidates:
+            place_id = candidates[0].get("place_id")
+            if place_id:
+                details = await _get_place_details(client, place_id, api_key, region)
+                if details.get("phone"):
+                    return details["phone"]
     except Exception:
-        return None
+        pass
+
+    # ── Step 2: coordinate-based fallback (handles OSM name typos) ──────
+    try:
+        resp = await client.get(NEARBY_URL, params={
+            "location": f"{lat},{lon}",
+            "radius": 100,          # 100 m — very tight, same building
+            "key": api_key,
+        }, timeout=8.0)
+        places = resp.json().get("results", [])
+        if places:
+            place_id = places[0].get("place_id")
+            if place_id:
+                details = await _get_place_details(client, place_id, api_key, region)
+                if details.get("phone"):
+                    return details["phone"]
+    except Exception:
+        pass
+
+    return None
 
 
 async def enrich_missing_phones(
