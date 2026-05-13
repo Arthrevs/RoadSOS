@@ -256,6 +256,10 @@ async def build_and_fetch_query(lat: float, lon: float, radius: int = 5000) -> l
     deduped = _dedupe_smart(raw_results)
     sorted_results = sorted(deduped, key=lambda x: x["distance"])
 
-    await overpass_cache.set(cache_key, sorted_results)
-    logger.info(f"Overpass fetched · {cache_key} · {len(sorted_results)} contacts")
+    # Don't cache if zero contacts have phones — a phoneless cache would
+    # serve stale results and block Google enrichment on subsequent requests.
+    phones_found = sum(1 for c in sorted_results if c.get("phone"))
+    if phones_found > 0 or len(sorted_results) == 0:
+        await overpass_cache.set(cache_key, sorted_results)
+    logger.info(f"Overpass fetched · {cache_key} · {len(sorted_results)} contacts · {phones_found} with phone")
     return sorted_results
