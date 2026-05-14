@@ -1699,3 +1699,23 @@ body {
   transition: background 0.15s;
 }
 .dismiss-btn:hover { background: #E2E8F0; }
+
+/* ── Offline Banner ── */
+.offline-banner {
+  background: #F59E0B;
+  color: #000;
+  padding: 10px 16px;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.offline-banner__icon {
+  font-size: 16px;
+}
+.offline-banner__text {
+  line-height: 1.4;
+}

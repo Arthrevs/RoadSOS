@@ -13,6 +13,7 @@ import SOSButton from './components/SOSButton';
 import TriageModal from './components/TriageModal';
 import CrashAlert from './components/CrashAlert';
 import LocationCard from './components/LocationCard';
+import OfflineBanner from './components/OfflineBanner';
 import { requestMotionPermission } from './hooks/useLocation';
 import { DEMO_MODE } from './utils/demoMode';
 import { startBackendWarmup } from './utils/backendWarmup';
@@ -269,6 +270,9 @@ export default function App() {
           </div>
         </div>
       </header>
+
+      {/* ── Offline banner (self-contained, uses useNetwork internally) ── */}
+      <OfflineBanner />
 
       {/* ── Main SOS Button ── */}
       <SOSButton
