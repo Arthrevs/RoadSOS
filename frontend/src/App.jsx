@@ -129,7 +129,8 @@ export default function App() {
   // ── Triage state ───────────────────────────────────────────────────────
   const [triageOpen, setTriageOpen] = useState(false);
   const [triageLoading, setTriageLoading] = useState(false);
-  const [triaged, setTriaged] = useState(false);
+  const [triaged, setTriaged] = useState(false);      // contacts were reordered
+  const [triageOffline, setTriageOffline] = useState(false); // used offline fallback
 
   // Use precise coordinates — the 50 m distance gate in useLocation already
   // prevents jitter-induced re-renders. Sending precise lat/lon gives the
@@ -146,6 +147,7 @@ export default function App() {
     setSearchError(null);
     setCachedAt(null);
     setTriaged(false);
+    setTriageOffline(false);
 
     // Hard 30-second timeout so a cold Render backend never leaves the
     // spinner stuck forever. (Backend itself retries Overpass up to ~21 s.)
@@ -193,11 +195,14 @@ export default function App() {
     if (!searchData?.contacts?.length) return;
     setTriageLoading(true);
     try {
+      // triageContacts never throws — it falls back to client-side rules offline
       const result = await triageContacts(injured, blocking, searchData.contacts);
       setSearchData(prev => ({ ...prev, contacts: result.contacts, reason: result.reason }));
       setTriaged(true);
+      // _offline flag is set by ruleBasedTriage() when network wasn't available
+      setTriageOffline(result._offline === true);
     } catch {
-      // Backend triage failed — leave contacts in current order, still close modal
+      // Should never reach here, but defensive just in case
     } finally {
       setTriageLoading(false);
       setTriageOpen(false);
@@ -297,7 +302,7 @@ export default function App() {
         {searchData?.source && (
           <div className="source-note">
             Data: {searchData.source} · {searchData.count ?? searchData.contacts?.length ?? 0} services
-            {triaged && ' · ✨ Prioritised by AI'}
+            {triaged && (triageOffline ? ' · ⚡ Prioritised offline' : ' · ✨ Prioritised by AI')}
           </div>
         )}
       </main>
