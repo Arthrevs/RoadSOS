@@ -122,7 +122,9 @@ export function useLocation({ onCrashDetected } = {}) {
     };
 
     const setup = async () => {
-      // iOS 13+: needs explicit requestPermission from a user gesture.
+      // 1. iOS 13+: needs explicit requestPermission from a user gesture.
+      // This may fail silently inside an effect on first load; the listener 
+      // will be successfully added later once the SOS button is tapped.
       if (typeof DeviceMotionEvent.requestPermission === 'function') {
         try {
           const perm = await DeviceMotionEvent.requestPermission();
@@ -133,9 +135,9 @@ export function useLocation({ onCrashDetected } = {}) {
         return;
       }
 
-      // Firefox / modern browsers: check Permissions API before adding listener
+      // 2. Firefox / modern browsers: check Permissions API before adding listener
       // to avoid the "motion sensor deprecated" console warning.
-      if (navigator.permissions) {
+      if (navigator.permissions && navigator.permissions.query) {
         try {
           const result = await navigator.permissions.query({ name: 'accelerometer' });
           if (result.state !== 'denied') {
@@ -147,7 +149,7 @@ export function useLocation({ onCrashDetected } = {}) {
         }
       }
 
-      // Android / desktop Chrome — add listener directly (no permission needed)
+      // 3. Standard fallback for other browsers
       window.addEventListener('devicemotion', handleMotion);
     };
 
@@ -211,7 +213,7 @@ export function useLocation({ onCrashDetected } = {}) {
         setLocation({ lat: latitude, lon: longitude, speedKmh, source: 'gps' });
         setLoading(false);
         setError(null);
-        if (onCrashDetected && speed != null) {
+        if (onCrashDetected && speed !== null) {
           checkVelocityCollapse(speedKmh, pos.timestamp);
         }
       },
