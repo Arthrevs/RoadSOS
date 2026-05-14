@@ -1,93 +1,88 @@
 import React from 'react';
+import { Hospital, Shield, Ambulance, Truck, Wrench, Cog, Car, PhoneCall, Zap } from 'lucide-react';
 import { guardedTelDial } from '../utils/demoMode';
 
-const CATEGORY_LABELS = {
-  hospital:  '🏥 Hospital',
-  police:    '👮 Police',
-  ambulance: '🚑 Ambulance',
-  towing:    '🚛 Towing',
-  repair:    '🔧 Repair',
-  tyre:      '🛞 Tyre',
-  showroom:  '🚗 Showroom',
+const CATEGORY_CONFIG = {
+  hospital:  { Icon: Hospital,  dot: '#2563EB' },
+  police:    { Icon: Shield,    dot: '#4338CA' },
+  ambulance: { Icon: Ambulance, dot: '#0EA5E9' },
+  towing:    { Icon: Truck,     dot: '#475569' },
+  repair:    { Icon: Wrench,    dot: '#0F766E' },
+  tyre:      { Icon: Cog,       dot: '#6366F1' },
+  showroom:  { Icon: Car,       dot: '#10B981' },
 };
 
-const CATEGORY_ICONS = {
-  hospital:  '🏥',
-  police:    '👮',
-  ambulance: '🚑',
-  towing:    '🚛',
-  repair:    '🔧',
-  tyre:      '🛞',
-  showroom:  '🚗',
-};
+export default function ContactCard({ contact, isLast }) {
+  const { name, category, distance, phone, isOpen, aiReason } = contact;
 
-export default function ContactCard({ contact, isTop }) {
-  const { name, category, distance, phone, source, isOpen, aiReason } = contact;
-
-  // Normalise phone: strip spaces for the href, keep formatted for display
   const phoneClean = phone ? phone.replace(/\s+/g, '') : null;
   const callHref   = phoneClean ? `tel:${phoneClean}` : null;
 
   const cat = (category || 'repair').toLowerCase();
+  const config = CATEGORY_CONFIG[cat] || CATEGORY_CONFIG.repair;
+  const { Icon, dot } = config;
+
+  const distText = typeof distance === 'number' ? `${distance.toFixed(1)} km` : '';
 
   return (
-    <div className={`contact-card ${isTop ? 'contact-card--top' : ''}`}>
-      {/* AI Priority banner — only on top card */}
+    <div className="svc-card">
       {aiReason && (
-        <div className="contact-card__ai-reason">
-          <span className="ai-icon">⚡</span>
-          <span>
-            <strong>AI Priority:</strong> {aiReason}
-          </span>
+        <div className="svc-ai">
+          <Zap size={13} fill="currentColor" />
+          <span>{aiReason}</span>
         </div>
       )}
-
-      {/* Header row: badge + open/closed status */}
-      <div className="contact-card__header">
-        <span className={`category-badge category-badge--${cat}`}>
-          {CATEGORY_LABELS[cat] || category}
-        </span>
-        <span className="contact-card__status">
-          {isOpen === true  && <span className="status status--open">● Open</span>}
-          {isOpen === false && <span className="status status--closed">● Closed</span>}
-        </span>
+      
+      {/* Name row */}
+      <div className="svc-main">
+        <div className="svc-icon" style={{ background: dot + '18' }}>
+          <Icon size={17} color={dot} strokeWidth={2} />
+        </div>
+        <div className="svc-info">
+          <div className="svc-name">{name}</div>
+          <div className="svc-status-row">
+            {isOpen === true && (
+              <>
+                <div className="open-dot" />
+                <span className="open-label">Open</span>
+              </>
+            )}
+            {isOpen === false && (
+              <>
+                <div className="closed-dot" />
+                <span className="closed-label">Closed</span>
+              </>
+            )}
+            {isOpen === null && (
+              <span className="svc-dist" style={{ fontSize: 11 }}>Status unknown</span>
+            )}
+          </div>
+        </div>
+        {distText && <span className="svc-dist">{distText}</span>}
       </div>
 
-      {/* Name */}
-      <h3 className="contact-card__name">{name}</h3>
-
-      {/* Distance + source */}
-      <div className="contact-card__meta">
-        <span className="contact-card__distance">
-          📍 {typeof distance === 'number' ? `${distance.toFixed(1)} km away` : 'Distance unknown'}
-        </span>
-        {phone && (
-          <span className="contact-card__phone">{phone}</span>
+      {/* Call button row — big, unmissable */}
+      <div className="call-row">
+        {callHref ? (
+          <a
+            href={callHref}
+            className="call-btn"
+            id={`call-btn-${phoneClean}`}
+            aria-label={`Call ${name} at ${phone}`}
+            onClick={(e) => guardedTelDial(e, phoneClean, name)}
+          >
+            <PhoneCall size={15} color="#2563EB" strokeWidth={2.2} className="call-btn-icon" />
+            <span className="call-btn-num">{phone}</span>
+          </a>
+        ) : (
+          <div className="call-btn" style={{ opacity: 0.5, cursor: 'not-allowed' }}>
+            <PhoneCall size={15} color="#2563EB" strokeWidth={2.2} className="call-btn-icon" />
+            <span className="call-btn-num">No phone</span>
+          </div>
         )}
       </div>
 
-      {/* Big call button */}
-      {callHref ? (
-        <a
-          href={callHref}
-          className="call-button"
-          id={`call-btn-${phoneClean}`}
-          role="button"
-          aria-label={`Call ${name} at ${phone}`}
-          onClick={(e) => guardedTelDial(e, phoneClean, name)}
-        >
-          <span aria-hidden="true">📞</span> Call {phone}
-        </a>
-      ) : (
-        <div className="call-button call-button--disabled">
-          No phone number listed
-        </div>
-      )}
-
-      {/* Data provenance */}
-      <div className="contact-card__source">
-        via {source || 'Unknown source'}
-      </div>
+      {!isLast && <div className="svc-divider" />}
     </div>
   );
 }

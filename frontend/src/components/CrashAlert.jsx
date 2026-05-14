@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { AlertTriangle, Volume2, Bot, PhoneCall, ShieldOff, Check, Ambulance, Shield, Phone, MapPin, Copy, X, Navigation2 } from "lucide-react";
 import { speakText, buildDispatchText, cancelSpeech } from '../utils/speechUtils';
 import { startAlarm, stopAlarm } from '../utils/alarmUtils';
 import { safeAutoDial, guardedTelDial, DEMO_MODE } from '../utils/demoMode';
@@ -20,7 +21,16 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
   const [pin, setPin]           = useState('');
   const [pinError, setPinError] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [copied, setCopied]     = useState(false);
   const intervalRef             = useRef(null);
+
+  const doCopy = () => {
+    if (location?.lat) {
+      navigator.clipboard.writeText(`${location.lat.toFixed(5)}, ${location.lon.toFixed(5)}`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    }
+  };
 
   const callNumber = numbers?.ambulance || numbers?.general || '112';
 
@@ -127,72 +137,110 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
 
   // ─── CHOOSING phase ────────────────────────────────────────────────────
   if (phase === PHASE.CHOOSING) {
+    const pct = Math.max(0, (seconds / CHOOSE_SECONDS) * 100);
+    const isPinRight = pin === CORRECT_PIN;
+
     return (
       <div className="modal-backdrop modal-backdrop--alert" role="alertdialog" aria-modal="true">
-        <div className="modal modal--alert crash-alert">
+        <div style={{ width: '100%', maxWidth: 430, margin: '0 auto', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', height: '100%', paddingBottom: 32 }}>
+          <div className="do-not-panic">DO NOT PANIC</div>
+          <div className="sheet">
+            <div className="handle-bar"><div className="handle" /></div>
 
-          {/* Bystander banner — large, readable from a distance */}
-          <div className="crash-alert__bystander-banner">
-            <span className="crash-alert__bystander-icon">🚨</span>
-            <div>
-              <div className="crash-alert__bystander-headline">ACCIDENT DETECTED</div>
-              <div className="crash-alert__bystander-sub">
-                Call <strong>{callNumber}</strong> for ambulance
+            {/* Alert banner */}
+            <div className="alert-banner">
+              <div className="alert-icon-box">
+                <AlertTriangle size={22} color="#fff" strokeWidth={2.2} />
+              </div>
+              <div className="alert-body">
+                <div className="alert-title">Accident Detected</div>
+                <div className="alert-sub">Sudden deceleration detected — Call {callNumber}</div>
               </div>
             </div>
-          </div>
 
-          <div className="crash-alert__siren-indicator">
-            🔊 Alarm sounding — bystanders are being alerted
-          </div>
+            {/* Alarm strip */}
+            <div className="alarm-strip">
+              <div className="vol-dot" />
+              <Volume2 size={14} strokeWidth={2} />
+              Alarm sounding — bystanders are being alerted
+            </div>
 
-          <p className="modal__subtitle" style={{ marginTop: 12 }}>
-            Sudden deceleration detected. How do you want to respond?
-          </p>
+            {/* Body */}
+            <div className="body-text">
+              How would you like to respond to this alert?
+            </div>
 
-          <div className="crash-alert__countdown">
-            Auto-mode in <strong>{seconds}s</strong> if no action taken
-          </div>
+            {/* Countdown */}
+            <div className="countdown-wrap">
+              <div className="countdown-label">
+                <span className="countdown-text">Auto-mode activates if no action taken</span>
+                <span className="countdown-num">{seconds}s</span>
+              </div>
+              <div className="countdown-track">
+                <div className="countdown-fill" style={{ width: `${pct}%` }} />
+              </div>
+            </div>
 
-          <div className="crash-alert__modes">
-            <button
-              className="crash-mode crash-mode--auto"
-              onClick={triggerAutomatic}
-            >
-              <span className="crash-mode__icon">🤖</span>
-              <span className="crash-mode__title">Automatic</span>
-              <span className="crash-mode__desc">App calls + plays voice to dispatcher</span>
-            </button>
+            {/* Response options */}
+            <div className="sec-label">Choose response</div>
+            <div className="response-grid">
+              <button
+                className="response-card idle"
+                onClick={triggerAutomatic}
+              >
+                <div className="rc-icon rc-icon-auto">
+                  <Bot size={18} color="#1D4ED8" strokeWidth={2} />
+                </div>
+                <div className="rc-title">Automatic</div>
+                <div className="rc-sub">App calls and relays your location to dispatcher</div>
+              </button>
+              <button
+                className="response-card idle"
+                onClick={handleChooseManual}
+              >
+                <div className="rc-icon rc-icon-manual">
+                  <PhoneCall size={18} color="#16A34A" strokeWidth={2} />
+                </div>
+                <div className="rc-title">Manual</div>
+                <div className="rc-sub">I will speak to the dispatcher myself</div>
+              </button>
+            </div>
 
-            <button
-              className="crash-mode crash-mode--manual"
-              onClick={handleChooseManual}
-            >
-              <span className="crash-mode__icon">📞</span>
-              <span className="crash-mode__title">Manual</span>
-              <span className="crash-mode__desc">I'll speak to dispatcher myself</span>
-            </button>
-          </div>
+            <div className="divider" />
 
-          <div className="crash-alert__cancel-zone">
-            <p className="crash-alert__cancel-label">False alarm? Enter PIN to stop alarm:</p>
-            <input
-              className={`pin-input ${pinError ? 'pin-input--error' : ''}`}
-              type="tel"
-              inputMode="numeric"
-              maxLength={4}
-              value={pin}
-              onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
-              placeholder="0000"
-            />
-            <button
-              className="modal__secondary"
-              onClick={handleCancelFalseAlarm}
-              disabled={pin.length !== 4}
-            >
-              Stop alarm — false alarm
-            </button>
-            {pinError && <div className="pin-error-msg">Incorrect PIN (demo: 0000)</div>}
+            {/* False alarm PIN */}
+            <div className="false-alarm">
+              <div className="fa-label">
+                <ShieldOff size={13} strokeWidth={2} />
+                IF THIS IS A FALSE ALARM ENTER PIN 0000 TO STOP ALARM
+              </div>
+              <div className="pin-row">
+                <input
+                  className={`pin-input ${pinError ? "wrong" : isPinRight ? "right" : ""}`}
+                  type="tel"
+                  inputMode="numeric"
+                  maxLength={4}
+                  placeholder="0000"
+                  value={pin}
+                  onChange={e => {
+                    setPin(e.target.value.replace(/\D/g, ""));
+                    if (pinError) setPinError(false);
+                  }}
+                  onKeyDown={e => e.key === "Enter" && pin.length === 4 && handleCancelFalseAlarm()}
+                />
+                <button
+                  className={`stop-btn ${isPinRight ? 'success-glow' : ''}`}
+                  onClick={handleCancelFalseAlarm}
+                  disabled={pin.length !== 4}
+                >
+                  {isPinRight
+                    ? <><Check size={14} strokeWidth={2.5} color="#16A34A" /> Stopped</>
+                    : "Stop alarm"
+                  }
+                </button>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -210,30 +258,76 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
     });
     return (
       <div className="modal-backdrop modal-backdrop--alert" role="alertdialog" aria-modal="true">
-        <div className="modal modal--alert crash-alert">
-          <div className="crash-alert__header">
-            <span className="crash-alert__icon">🚨</span>
-            <h2>Calling {callNumber}</h2>
-          </div>
+        <div style={{ width: '100%', maxWidth: 430, margin: '0 auto', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', height: '100%', paddingBottom: 32 }}>
+          <div className="sheet">
+            <div className="handle-bar"><div className="handle" /></div>
 
-          <div className="crash-alert__auto-countdown">
-            {seconds > 0
-              ? <><strong>{seconds}</strong><br /><span>seconds</span></>
-              : <span>Connecting...</span>
-            }
-          </div>
-
-          {/* Script the user reads to dispatcher — voice reads it aloud first */}
-          <div className="crash-alert__script-box">
-            <div className="crash-alert__script-label">
-              {speaking ? '🔊 Listen — then say this to dispatcher:' : '📋 Say this to dispatcher:'}
+            {/* Header */}
+            <div style={{ padding: '24px 20px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                   <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+                      <path d="M24 4L6 10V22C6 31.3 13.7 40 24 44C34.3 40 42 31.3 42 22V10L24 4Z" fill="#3b82f6" stroke="#3b82f6" strokeWidth="2" strokeLinejoin="round"/>
+                      <path d="M10 26 H 18 L 22 14 L 26 36 L 30 26 H 38" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+                   </svg>
+                   <div style={{ fontSize: '16px', fontWeight: 900, letterSpacing: '-0.05em', color: '#0f172a' }}>
+                     Road<span style={{ color: '#3b82f6' }}>SOS</span>
+                   </div>
+                </div>
+                <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a' }}>
+                  Calling {callNumber}
+                </div>
+              </div>
             </div>
-            <p className="crash-alert__script-text">"{dispatchText}"</p>
-          </div>
 
-          <button className="modal__secondary crash-alert__cancel-btn" onClick={handleCancelAuto}>
-            Cancel
-          </button>
+            {/* Circular Timer */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px 0 24px' }}>
+              <div style={{ 
+                width: 130, height: 130, borderRadius: '50%', 
+                background: '#FEF2F2', border: '5px solid #DC2626',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 0 20px rgba(220, 38, 38, 0.15)'
+              }}>
+                {seconds > 0 ? (
+                  <>
+                    <span style={{ fontSize: '48px', fontWeight: 900, color: '#DC2626', lineHeight: 1 }}>{seconds}</span>
+                    <span style={{ fontSize: '14px', fontWeight: 700, color: '#DC2626', marginTop: 4, textTransform: 'uppercase', letterSpacing: 1 }}>seconds</span>
+                  </>
+                ) : (
+                  <span style={{ fontSize: '16px', fontWeight: 800, color: '#DC2626' }}>Connecting</span>
+                )}
+              </div>
+            </div>
+
+            {/* Script Box */}
+            <div style={{ padding: '0 20px 24px' }}>
+              <div style={{ background: '#F8FAFC', border: '1.5px solid #E2E8F0', borderRadius: 14, padding: 16 }}>
+                <div style={{ fontSize: 13, fontWeight: 800, color: '#475569', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                  {speaking ? '🔊 Listen — then say this:' : '📋 Say this to dispatcher:'}
+                </div>
+                <p style={{ fontSize: 15, fontWeight: 500, color: '#0f172a', lineHeight: 1.5 }}>"{dispatchText}"</p>
+              </div>
+            </div>
+
+            {/* Big Cancel Button */}
+            <div style={{ padding: '0 20px 24px' }}>
+              <button 
+                onClick={handleCancelAuto}
+                style={{
+                  width: '100%', height: 52, borderRadius: 12,
+                  background: '#F1F5F9', border: '1.5px solid #E2E8F0', color: '#334155',
+                  fontSize: 16, fontWeight: 700, cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'background 0.2s'
+                }}
+                onMouseOver={(e) => e.target.style.background = '#E2E8F0'}
+                onMouseOut={(e) => e.target.style.background = '#F1F5F9'}
+              >
+                Cancel Auto-Dial
+              </button>
+            </div>
+
+          </div>
         </div>
       </div>
     );
@@ -250,90 +344,139 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
     });
     return (
       <div className="modal-backdrop modal-backdrop--alert" role="alertdialog" aria-modal="true">
-        <div className="modal modal--alert crash-alert">
-          <div className="crash-alert__header">
-            <span className="crash-alert__icon">📞</span>
-            <h2>Say this to the dispatcher</h2>
+        <div style={{ width: '100%', maxWidth: 430, margin: '0 auto', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', height: '100%', paddingBottom: 32 }}>
+          <div className="sheet">
+            <div className="handle-bar"><div className="handle" /></div>
+
+            {/* Header */}
+            <div style={{ padding: '24px 20px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+                   <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+                      <path d="M24 4L6 10V22C6 31.3 13.7 40 24 44C34.3 40 42 31.3 42 22V10L24 4Z" fill="#3b82f6" stroke="#3b82f6" strokeWidth="2" strokeLinejoin="round"/>
+                      <path d="M10 26 H 18 L 22 14 L 26 36 L 30 26 H 38" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+                   </svg>
+                   <div style={{ fontSize: '16px', fontWeight: 900, letterSpacing: '-0.05em', color: '#0f172a' }}>
+                     Road<span style={{ color: '#3b82f6' }}>SOS</span>
+                   </div>
+                </div>
+                <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a' }}>
+                  Calling {callNumber}...
+                </div>
+              </div>
+            </div>
+
+            {/* Script Box */}
+            <div style={{ padding: '0 20px 24px' }}>
+              <div style={{ background: '#EFF6FF', border: '1.5px solid #93C5FD', borderRadius: 14, padding: 20 }}>
+                <div style={{ fontSize: 13, fontWeight: 800, color: '#1D4ED8', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                  <PhoneCall size={16} strokeWidth={2.5} /> Say this to the dispatcher:
+                </div>
+                <p style={{ fontSize: 17, fontWeight: 600, color: '#1E3A8A', lineHeight: 1.5 }}>"{dispatchText}"</p>
+                <div style={{ fontSize: 13, fontWeight: 600, color: '#3B82F6', marginTop: 12 }}>
+                  Read this out loud. The dispatcher will guide you next.
+                </div>
+              </div>
+            </div>
+
+            {/* Big Close Button */}
+            <div style={{ padding: '0 20px 24px' }}>
+              <button 
+                onClick={() => { cancelSpeech(); onCancel?.(); }}
+                style={{
+                  width: '100%', height: 52, borderRadius: 12,
+                  background: '#F1F5F9', border: '1.5px solid #E2E8F0', color: '#334155',
+                  fontSize: 16, fontWeight: 700, cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'background 0.2s'
+                }}
+                onMouseOver={(e) => e.target.style.background = '#E2E8F0'}
+                onMouseOut={(e) => e.target.style.background = '#F1F5F9'}
+              >
+                Close
+              </button>
+            </div>
+
           </div>
-
-          <div className="crash-alert__script-box crash-alert__script-box--live">
-            <p className="crash-alert__script-text crash-alert__script-text--large">
-              "{dispatchText}"
-            </p>
-          </div>
-
-          <p className="crash-alert__auto-info" style={{ marginTop: 8 }}>
-            Read this out loud. The dispatcher will guide you next.
-          </p>
-
-          <button
-            className="modal__secondary crash-alert__cancel-btn"
-            onClick={() => { cancelSpeech(); onCancel?.(); }}
-          >
-            Close
-          </button>
         </div>
       </div>
     );
   }
 
   // ─── MANUAL phase ──────────────────────────────────────────────────────
+  const MANUAL_CALLS = [];
+  if (numbers?.ambulance) MANUAL_CALLS.push({ label: "Ambulance", num: numbers.ambulance, Icon: Ambulance, cls: "btn-ambulance", name: "Ambulance" });
+  if (numbers?.police)    MANUAL_CALLS.push({ label: "Police",    num: numbers.police,    Icon: Shield,    cls: "btn-police", name: "Police" });
+  if (numbers?.general && numbers.general !== numbers.ambulance) MANUAL_CALLS.push({ label: "General",   num: numbers.general,   Icon: Phone,     cls: "btn-general", name: "Emergency" });
+
   return (
     <div className="modal-backdrop modal-backdrop--alert" role="alertdialog" aria-modal="true">
-      <div className="modal modal--alert crash-alert">
-        <div className="crash-alert__header">
-          <span className="crash-alert__icon">📞</span>
-          <h2>You're in Control</h2>
-        </div>
-        <p className="modal__subtitle">
-          Call a dispatcher and explain the situation. Your location:
-        </p>
+      <div style={{ width: '100%', maxWidth: 430, margin: '0 auto', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', height: '100%', paddingBottom: 32 }}>
+        <div className="sheet">
+          <div className="handle-bar"><div className="handle" /></div>
 
-        {landmark && (
-          <div className="crash-alert__landmark">📍 {landmark}</div>
-        )}
-        {location?.lat && (
-          <div className="crash-alert__coords">
-            GPS: {location.lat.toFixed(5)}, {location.lon.toFixed(5)}
+          {/* Header */}
+          <div className="sheet-head">
+            <div className="head-left">
+              <div className="head-eyebrow">
+                <PhoneCall size={11} strokeWidth={2.5} />
+                Call a dispatcher
+              </div>
+              <div className="head-title">You're in Control</div>
+              <div className="head-sub">Explain the situation and share your location.</div>
+            </div>
+            <button className="close-btn" onClick={() => { cancelSpeech(); onCancel?.(); }}>
+              <X size={15} strokeWidth={2.5} />
+            </button>
           </div>
-        )}
 
-        <div className="crash-alert__manual-calls">
-          {numbers?.ambulance && (
-            <a
-              className="crash-call-btn crash-call-btn--ambulance"
-              href={`tel:${numbers.ambulance}`}
-              onClick={(e) => guardedTelDial(e, numbers.ambulance, 'Ambulance')}
-            >
-              🚑 Ambulance · {numbers.ambulance}
-            </a>
-          )}
-          {numbers?.police && (
-            <a
-              className="crash-call-btn crash-call-btn--police"
-              href={`tel:${numbers.police}`}
-              onClick={(e) => guardedTelDial(e, numbers.police, 'Police')}
-            >
-              👮 Police · {numbers.police}
-            </a>
-          )}
-          {numbers?.general && numbers.general !== numbers.ambulance && (
-            <a
-              className="crash-call-btn crash-call-btn--general"
-              href={`tel:${numbers.general}`}
-              onClick={(e) => guardedTelDial(e, numbers.general, 'Emergency')}
-            >
-              📟 General · {numbers.general}
-            </a>
-          )}
+          {/* Location */}
+          <div className="loc-block">
+            <div className="loc-icon-box">
+              <Navigation2 size={15} color="#1D4ED8" strokeWidth={2} />
+            </div>
+            <div className="loc-body">
+              <div className="loc-label">Your location</div>
+              <div className="loc-address">{landmark || "Location approximate"}</div>
+              <div className="loc-gps">
+                {location?.lat ? `${location.lat.toFixed(5)}, ${location.lon.toFixed(5)}` : "Acquiring GPS..."}
+              </div>
+            </div>
+            <button className="copy-gps" onClick={doCopy} title="Copy GPS">
+              {copied
+                ? <Check size={15} strokeWidth={2.5} color="#22C55E" />
+                : <Copy size={15} strokeWidth={1.8} />
+              }
+            </button>
+          </div>
+
+          {/* Call buttons */}
+          <div className="sec-label" style={{ color: '#64748B' }}>Select a service to call</div>
+          <div className="call-list">
+            {MANUAL_CALLS.map(({ label, num, Icon, cls, name }) => (
+              <a
+                key={label}
+                href={`tel:${num}`}
+                onClick={(e) => guardedTelDial(e, num, name)}
+                className={`call-btn ${cls}`}
+              >
+                <div className="call-icon">
+                  <Icon size={18} color="#fff" strokeWidth={2} />
+                </div>
+                <span className="call-label">{label}</span>
+                <span className="call-num">{num}</span>
+                <PhoneCall size={15} className="call-chev" strokeWidth={2} />
+              </a>
+            ))}
+          </div>
+
+          {/* Dismiss */}
+          <div className="actions">
+            <button className="dismiss-btn" onClick={() => { cancelSpeech(); onCancel?.(); }}>
+              Close — go back to contacts
+            </button>
+          </div>
         </div>
-
-        <button
-          className="modal__secondary crash-alert__cancel-btn"
-          onClick={() => { cancelSpeech(); onCancel?.(); }}
-        >
-          Close
-        </button>
       </div>
     </div>
   );

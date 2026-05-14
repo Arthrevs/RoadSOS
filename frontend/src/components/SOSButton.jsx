@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
+import { Signal, Check, Copy } from 'lucide-react';
 
 /**
  * SOSButton — sticky bottom bar with:
- *   1. Big red SOS button → WhatsApp deep link (SMS fallback)
- *   2. Copy-coordinates button
- *
- * Props:
- *   location   { lat, lon, source }
- *   landmark   string | null
- *   topContact { name, phone } | null
- *   onFirstTap function — called once on first tap (iOS motion permission)
+ *   1. Blue SOS button with sonar pulse rings → WhatsApp deep link (SMS fallback)
+ *   2. copy-coordinates button
  */
 
-function buildSOSMessage({ lat, lon, landmark, topContact }) {
+export function buildSOSMessage({ lat, lon, landmark, topContact }) {
   const latStr = typeof lat === 'number' ? lat.toFixed(5) : '?';
   const lonStr = typeof lon === 'number' ? lon.toFixed(5) : '?';
 
@@ -39,7 +34,6 @@ export default function SOSButton({ location, landmark, topContact, onFirstTap }
 
   // ── SOS tap ───────────────────────────────────────────────────────────────
   const handleSOS = () => {
-    // Request iOS motion permission exactly once
     if (!tappedRef.current) {
       tappedRef.current = true;
       onFirstTap?.();
@@ -57,7 +51,6 @@ export default function SOSButton({ location, landmark, topContact, onFirstTap }
     const waUrl    = `https://wa.me/?text=${encoded}`;
     const smsUrl   = `sms:?body=${encoded}`;
 
-    // Open WhatsApp; if blocked/unavailable fall back to SMS after 800ms
     const win = window.open(waUrl, '_blank');
     setSent(true);
     setTimeout(() => {
@@ -77,30 +70,43 @@ export default function SOSButton({ location, landmark, topContact, onFirstTap }
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
-      // Clipboard API unavailable — silent fail
+      // Clipboard API unavailable
     }
   };
 
   return (
-    <div className="sos-bar">
+    <div className="glass-sos-container">
       <button
         id="sos-main-btn"
-        className={`sos-button ${sent ? 'sos-button--sent' : ''}`}
+        className={`glass-sos-btn ${sent ? 'sent' : ''}`}
         onClick={handleSOS}
         disabled={!hasLocation}
         aria-label="Send SOS with your location via WhatsApp"
       >
-        {sent ? '📤 Sending...' : '🆘 SOS — Send Location'}
+        {!sent && (
+          <>
+            <div className="glass-sonar" />
+            <div className="glass-sonar" />
+          </>
+        )}
+        {sent
+          ? <><Check size={18} strokeWidth={2.5} /> Location Sent</>
+          : <><Signal size={16} strokeWidth={2.2} /> SOS — Send Location</>
+        }
       </button>
 
       <button
         id="copy-coords-btn"
-        className="coords-button"
+        className="glass-copy-btn"
         onClick={handleCopyCoords}
         disabled={!hasLocation}
         aria-label="Copy GPS coordinates to clipboard"
+        title="Copy GPS coordinates"
       >
-        {copied ? '✓ Copied!' : '📍 Copy GPS'}
+        {copied
+          ? <Check size={18} strokeWidth={2.5} color="#22C55E" />
+          : <Copy size={18} strokeWidth={1.8} />
+        }
       </button>
     </div>
   );

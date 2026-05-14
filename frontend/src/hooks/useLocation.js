@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 // ─── GPS velocity crash detection ───────────────────────────────────────────
-const GPS_TIMEOUT_MS = 10_000;
+const GPS_TIMEOUT_MS = 20_000;
 const VELOCITY_WINDOW_MS = 2_000;
 const CRASH_SPEED_FROM_KMH = 25;   // was travelling at ≥ this speed
 const CRASH_SPEED_TO_KMH   = 5;    // came to ≤ this speed
