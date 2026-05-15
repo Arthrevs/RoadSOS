@@ -89,6 +89,55 @@ describe('geocodePlace', () => {
   });
 });
 
+describe('searchPlaces (autocomplete)', () => {
+  it('returns the list of candidates when Nominatim has multiple hits', async () => {
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => [
+        { lat: '26.18', lon: '91.74', display_name: 'Junai, Assam, India' },
+        { lat: '13.65', lon: '-88.78', display_name: 'Junai, San Vicente, El Salvador' },
+        { lat: '-15.5', lon: '-67.0',  display_name: 'Junai, Payeska, Bolivia' },
+      ],
+    });
+    const { searchPlaces } = await import('../geocode');
+    const out = await searchPlaces('Junai');
+    expect(out).toHaveLength(3);
+    // shortName is the first comma-separated segment
+    expect(out[0].shortName).toBe('Junai');
+    // Context is the remainder of display_name
+    expect(out[0].context).toBe('Assam, India');
+    expect(out[1].context).toBe('San Vicente, El Salvador');
+    expect(out.every((r) => isFinite(r.lat) && isFinite(r.lon))).toBe(true);
+  });
+
+  it('returns [] for an empty / too-short query', async () => {
+    const { searchPlaces } = await import('../geocode');
+    expect(await searchPlaces('')).toEqual([]);
+    expect(await searchPlaces('a')).toEqual([]);
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
+
+  it('caches suggestion lists per-query', async () => {
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => [
+        { lat: '13.08', lon: '80.27', display_name: 'Chennai, India' },
+      ],
+    });
+    const { searchPlaces } = await import('../geocode');
+    const a = await searchPlaces('Chennai');
+    const b = await searchPlaces('Chennai');
+    expect(a).toEqual(b);
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('returns [] on network failure', async () => {
+    global.fetch.mockRejectedValueOnce(new Error('offline'));
+    const { searchPlaces } = await import('../geocode');
+    expect(await searchPlaces('Pune')).toEqual([]);
+  });
+});
+
 describe('QUICK_PICK_CITIES', () => {
   it('has at least 6 entries with valid coords', async () => {
     const { QUICK_PICK_CITIES } = await import('../geocode');
