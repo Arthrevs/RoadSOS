@@ -17,6 +17,7 @@ import {
  *   startInEdit {boolean}  — open straight into edit mode (first run)
  */
 export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
+  const isFirstRun = startInEdit && !hasMedicalId();
   const [editing, setEditing] = useState(startInEdit || !hasMedicalId());
   const [data, setData]       = useState(getMedicalId());
 
@@ -49,15 +50,22 @@ export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
       role="dialog"
       aria-modal="true"
       aria-label="Emergency Medical ID"
-      onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}
+      // Don't close on backdrop-click during first-run onboarding
+      onClick={(e) => { if (e.target === e.currentTarget && !isFirstRun) onClose?.(); }}
     >
       <div className="modal medical-id">
         <div className="modal__header-row">
           <span className="modal__header-icon">🆔</span>
           <div>
-            <h2>Emergency Medical ID</h2>
+            {isFirstRun
+              ? <h2>Welcome to RoadSOS — Set Up Your Medical ID</h2>
+              : <h2>Emergency Medical ID</h2>
+            }
             <p className="modal__subtitle">
-              Visible to first responders. Stored only on this device — never sent to any server.
+              {isFirstRun
+                ? 'Paramedics can see this if you\'re unconscious. Takes 30 seconds. Stored only on this device.'
+                : 'Visible to first responders. Stored only on this device — never sent to any server.'
+              }
             </p>
           </div>
         </div>
@@ -87,7 +95,7 @@ export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
                 💾 Save
               </button>
               <button className="modal__secondary" onClick={hasMedicalId() ? () => setEditing(false) : onClose}>
-                Cancel
+                {isFirstRun ? 'Skip for now' : 'Cancel'}
               </button>
               {hasMedicalId() && (
                 <button className="medical-id__clear" onClick={handleClear}>
