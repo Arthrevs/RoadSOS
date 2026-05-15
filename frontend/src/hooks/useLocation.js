@@ -210,7 +210,17 @@ export function useLocation({ onCrashDetected } = {}) {
         }
 
         lastReportedRef.current = { lat: latitude, lon: longitude };
-        setLocation({ lat: latitude, lon: longitude, speedKmh, source: 'gps' });
+        // Preserve country_code from IP fallback if we don't have a backend
+        // result yet — prevents channel-selection from reverting to 'IN' default
+        // when GPS kicks in after the IP fallback already set a country.
+        setLocation(prev => ({
+          country_code: prev?.country_code,  // keep IP-fallback country until backend overrides
+          lat: latitude,
+          lon: longitude,
+          speedKmh,
+          source: 'gps',
+          accuracy,
+        }));
         setLoading(false);
         setError(null);
         if (onCrashDetected && speed !== null) {

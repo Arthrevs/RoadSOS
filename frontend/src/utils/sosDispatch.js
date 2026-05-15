@@ -61,7 +61,13 @@ export function buildSosLinks(location, landmark) {
   if (contacts.length === 0) return null;
 
   const plusCode = encodePlusCode(location.lat, location.lon);
-  const body = buildSosSmsBody({ lat: location.lat, lon: location.lon, plusCode, landmark });
+  const body = buildSosSmsBody({
+    lat: location.lat,
+    lon: location.lon,
+    plusCode,
+    landmark,
+    locationSource: location.source,  // 'gps' | 'ip' | 'demo'
+  });
 
   const perContact = contacts.map(c => {
     const num = cleanPhone(c.phone).replace(/^\+/, '');

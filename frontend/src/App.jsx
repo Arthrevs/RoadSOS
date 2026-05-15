@@ -343,6 +343,12 @@ export default function App() {
             {gpsError} — using national numbers above.
           </div>
         )}
+        {/* IP-fallback warning — shown until real GPS fix arrives */}
+        {activeLocation?.source === 'ip' && demoIdx === 0 && (
+          <div className="status-strip status-strip--warn">
+            📶 Approximate location (GPS searching…) — contacts shown may be nearby but not precise
+          </div>
+        )}
 
         {/* Landmark */}
         {searchData?.landmark && (

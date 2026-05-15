@@ -94,7 +94,7 @@ export function hasMedicalId() {
  * @param {string} [args.landmark]
  * @returns {string}
  */
-export function buildSosSmsBody({ lat, lon, plusCode, landmark }) {
+export function buildSosSmsBody({ lat, lon, plusCode, landmark, locationSource }) {
   const m = getMedicalId();
   const lines = [];
   lines.push('🚨 EMERGENCY — I need help.');
@@ -105,7 +105,9 @@ export function buildSosSmsBody({ lat, lon, plusCode, landmark }) {
   lines.push('');
   if (plusCode)  lines.push(`Plus Code: ${plusCode}`);
   if (landmark)  lines.push(`Near: ${landmark}`);
-  lines.push(`Coords: ${lat.toFixed(5)}, ${lon.toFixed(5)}`);
+  // Flag when location is from IP geolocation (city-level, not precise)
+  const isApprox = locationSource === 'ip';
+  lines.push(`${isApprox ? '⚠️ Approximate ' : ''}Coords: ${lat.toFixed(5)}, ${lon.toFixed(5)}${isApprox ? ' (GPS not locked yet)' : ''}`);
   lines.push(`Map: https://maps.google.com/?q=${lat.toFixed(6)},${lon.toFixed(6)}`);
   lines.push('');
   lines.push('Sent automatically by RoadSOS.');
