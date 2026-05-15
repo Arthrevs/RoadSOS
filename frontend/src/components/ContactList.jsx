@@ -9,7 +9,8 @@ export default function ContactList({ contacts, loading, error, cachedAt, cat, s
     if (cat === "All") return contacts;
     return contacts.filter(c => {
       const cCat = (c.category || 'repair').toLowerCase();
-      return cCat === cat.toLowerCase();
+      const filterCat = cat === "Puncture" ? "tyre" : cat.toLowerCase();
+      return cCat === filterCat;
     });
   }, [contacts, cat]);
 

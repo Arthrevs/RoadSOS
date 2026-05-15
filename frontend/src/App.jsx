@@ -117,7 +117,7 @@ const MOCK_DATA = {
   count: MOCK_CONTACTS.length,
 };
 
-export const CATS = ["All", "Hospital", "Police", "Repair", "Towing", "Fire", "Showroom", "Tyre"];
+export const CATS = ["All", "Hospital", "Police", "Repair", "Towing", "Fire", "Showroom", "Puncture"];
 
 // ─── First-launch detection ───────────────────────────────────────────────────
 const ONBOARDED_KEY = 'roadsos_onboarded_v1';
