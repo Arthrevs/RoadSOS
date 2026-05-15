@@ -1498,3 +1498,28 @@ code {
 .triage-trigger-btn:hover  { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(41,128,185,0.4); }
 .triage-trigger-btn:active { transform: translateY(0); opacity: 0.92; }
 .triage-trigger-btn--redo  { background: linear-gradient(135deg, #4a5568, #2d3748); }
+
+/* Mobile Optimizations */
+html {
+  height: -webkit-fill-available;
+}
+body { 
+  overscroll-behavior-y: none; 
+  -webkit-tap-highlight-color: transparent; 
+  padding-bottom: env(safe-area-inset-bottom); 
+  padding-top: env(safe-area-inset-top);
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  min-height: 100dvh; /* Modern cross-browser standard */
+}
+button { 
+  -webkit-user-select: none; 
+  -moz-user-select: none; 
+  -ms-user-select: none; 
+  user-select: none; 
+  touch-action: manipulation; 
+}
+a { 
+  -webkit-tap-highlight-color: transparent; 
+}
+
