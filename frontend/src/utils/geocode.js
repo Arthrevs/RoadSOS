@@ -17,11 +17,12 @@
 
 const ENDPOINT = 'https://nominatim.openstreetmap.org/search';
 const CACHE_KEY_PREFIX = 'roadsos_geocode_v1__';
+const SUGGEST_KEY_PREFIX = 'roadsos_geosug_v1__';
 const TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
-function cacheGet(q) {
+function cacheGet(prefix, q) {
   try {
-    const raw = localStorage.getItem(CACHE_KEY_PREFIX + q.toLowerCase());
+    const raw = localStorage.getItem(prefix + q.toLowerCase());
     if (!raw) return null;
     const entry = JSON.parse(raw);
     if (Date.now() - entry.t > TTL_MS) return null;
@@ -29,29 +30,37 @@ function cacheGet(q) {
   } catch { return null; }
 }
 
-function cacheSet(q, v) {
+function cacheSet(prefix, q, v) {
   try {
     localStorage.setItem(
-      CACHE_KEY_PREFIX + q.toLowerCase(),
+      prefix + q.toLowerCase(),
       JSON.stringify({ v, t: Date.now() })
     );
   } catch { /* localStorage may be full */ }
 }
 
 /**
- * Forward-geocode a free-text place name to { lat, lon, displayName }.
+ * Forward-geocode a free-text place name to a list of candidate hits.
  *
- * @param {string} query  — e.g. "Chennai", "Guwahati", "Times Square NYC"
- * @returns {Promise<{lat: number, lon: number, displayName: string} | null>}
+ * Used by the autocomplete dropdown in the trip planner — same town
+ * name often exists in multiple countries (e.g. "Junai" in Assam vs in
+ * San Vicente). Returning N candidates lets the user disambiguate
+ * visually instead of trusting Nominatim's "best match".
+ *
+ * Cached per-query for 7 days. Hits the network at most once per term.
+ *
+ * @param {string} query  — e.g. "Junai", "Chennai", "Times Square"
+ * @param {number} [limit=5]
+ * @returns {Promise<Array<{lat: number, lon: number, displayName: string, shortName: string}>>}
  */
-export async function geocodePlace(query) {
+export async function searchPlaces(query, limit = 5) {
   const q = (query || '').trim();
-  if (q.length < 2) return null;
+  if (q.length < 2) return [];
 
-  const cached = cacheGet(q);
-  if (cached) return cached;
+  const cached = cacheGet(SUGGEST_KEY_PREFIX, q);
+  if (cached) return cached.slice(0, limit);
 
-  const url = `${ENDPOINT}?q=${encodeURIComponent(q)}&format=json&limit=1&addressdetails=0`;
+  const url = `${ENDPOINT}?q=${encodeURIComponent(q)}&format=json&limit=${limit}&addressdetails=1`;
   try {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 8_000);
@@ -60,22 +69,54 @@ export async function geocodePlace(query) {
       headers: { 'Accept': 'application/json' },
     });
     clearTimeout(timer);
-    if (!res.ok) return null;
+    if (!res.ok) return [];
     const data = await res.json();
-    if (!Array.isArray(data) || data.length === 0) return null;
+    if (!Array.isArray(data)) return [];
 
-    const hit = data[0];
-    const out = {
-      lat: parseFloat(hit.lat),
-      lon: parseFloat(hit.lon),
-      displayName: hit.display_name || q,
-    };
-    if (!isFinite(out.lat) || !isFinite(out.lon)) return null;
-    cacheSet(q, out);
+    const out = data
+      .map((hit) => {
+        const lat = parseFloat(hit.lat);
+        const lon = parseFloat(hit.lon);
+        if (!isFinite(lat) || !isFinite(lon)) return null;
+        const display = hit.display_name || q;
+        // First comma-separated segment becomes the bold "primary" line.
+        const [shortName, ...rest] = display.split(',');
+        return {
+          lat,
+          lon,
+          displayName: display,
+          shortName: (shortName || q).trim(),
+          context: rest.join(',').trim(),
+        };
+      })
+      .filter(Boolean);
+
+    cacheSet(SUGGEST_KEY_PREFIX, q, out);
     return out;
   } catch {
-    return null;
+    return [];
   }
+}
+
+/**
+ * Convenience wrapper that returns just the first hit. Kept for callers
+ * that don't need the full candidate list.
+ */
+export async function geocodePlace(query) {
+  const q = (query || '').trim();
+  if (q.length < 2) return null;
+  // Use the legacy single-hit cache so we don't double-store.
+  const cached = cacheGet(CACHE_KEY_PREFIX, q);
+  if (cached) return cached;
+  const list = await searchPlaces(q, 1);
+  if (list.length === 0) return null;
+  const out = {
+    lat: list[0].lat,
+    lon: list[0].lon,
+    displayName: list[0].displayName,
+  };
+  cacheSet(CACHE_KEY_PREFIX, q, out);
+  return out;
 }
 
 /**

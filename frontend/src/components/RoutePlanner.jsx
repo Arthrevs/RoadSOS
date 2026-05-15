@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { prefetchRoute } from '../utils/routeCache';
-import { geocodePlace, QUICK_PICK_CITIES } from '../utils/geocode';
+import { searchPlaces, QUICK_PICK_CITIES } from '../utils/geocode';
 
 /**
  * RoutePlanner — pre-cache emergency contacts along a road trip so the
@@ -15,19 +15,83 @@ import { geocodePlace, QUICK_PICK_CITIES } from '../utils/geocode';
  *   onClose   {function}
  */
 
-// Helper input field with geocode status indicator.
+/**
+ * PlaceInput — Google-Maps-style autocomplete for any place on Earth.
+ *
+ * Debounces typing 350 ms, then hits Nominatim for up to 5 candidates.
+ * Suggestions appear as a dropdown beneath the input. Click a row to
+ * select. Same-named places in different countries are disambiguated by
+ * the secondary "context" line ("Assam, India" vs "Payeska, Bolivia").
+ */
 function PlaceInput({ label, value, onChange, onGeocoded, geo, disabled, id }) {
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy]               = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [showList, setShowList]       = useState(false);
+  const [activeIdx, setActiveIdx]     = useState(-1);
 
-  const lookup = useCallback(async () => {
+  const debounceRef = useRef(null);
+  const wrapRef     = useRef(null);
+
+  // Fetch suggestions whenever the typed value changes (debounced 350ms).
+  // A keystroke after a successful selection clears the resolved geo so
+  // the user can amend without leftover "✓" state.
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     const q = (value || '').trim();
-    if (q.length < 2) { onGeocoded(null); return; }
-    if (geo && geo.query === q) return; // already resolved
-    setBusy(true);
-    const result = await geocodePlace(q);
-    setBusy(false);
-    onGeocoded(result ? { ...result, query: q } : { query: q, error: true });
-  }, [value, geo, onGeocoded]);
+    if (q.length < 2 || (geo && geo.query === q)) {
+      setSuggestions([]);
+      return;
+    }
+    debounceRef.current = setTimeout(async () => {
+      setBusy(true);
+      const list = await searchPlaces(q, 5);
+      setBusy(false);
+      setSuggestions(list);
+      setShowList(list.length > 0);
+      setActiveIdx(-1);
+    }, 350);
+    return () => clearTimeout(debounceRef.current);
+  }, [value, geo]);
+
+  // Click-outside to close the dropdown.
+  useEffect(() => {
+    if (!showList) return;
+    const handler = (e) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target)) {
+        setShowList(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [showList]);
+
+  const select = (s) => {
+    onChange(s.shortName);
+    onGeocoded({
+      lat: s.lat, lon: s.lon,
+      displayName: s.displayName,
+      query: s.shortName,
+    });
+    setShowList(false);
+    setSuggestions([]);
+  };
+
+  const handleKey = (e) => {
+    if (!showList || suggestions.length === 0) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIdx((i) => Math.min(i + 1, suggestions.length - 1));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIdx((i) => Math.max(i - 1, 0));
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const pick = activeIdx >= 0 ? suggestions[activeIdx] : suggestions[0];
+      if (pick) select(pick);
+    } else if (e.key === 'Escape') {
+      setShowList(false);
+    }
+  };
 
   const statusIcon = busy
     ? '⏳'
@@ -38,7 +102,7 @@ function PlaceInput({ label, value, onChange, onGeocoded, geo, disabled, id }) {
         : '';
 
   return (
-    <label className="route-planner__field">
+    <label className="route-planner__field" ref={wrapRef}>
       <span className="route-planner__field-label">{label}</span>
       <div className="route-planner__input-wrap">
         <input
@@ -46,23 +110,50 @@ function PlaceInput({ label, value, onChange, onGeocoded, geo, disabled, id }) {
           type="text"
           value={value}
           onChange={(e) => { onChange(e.target.value); onGeocoded(null); }}
-          onBlur={lookup}
-          onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); lookup(); } }}
-          placeholder="City, town, or landmark"
+          onFocus={() => { if (suggestions.length > 0) setShowList(true); }}
+          onKeyDown={handleKey}
+          placeholder="Start typing a city, town, or landmark"
           disabled={disabled}
           autoComplete="off"
           spellCheck="false"
+          aria-autocomplete="list"
+          aria-expanded={showList}
         />
         <span className={`route-planner__input-status ${geo?.error ? 'route-planner__input-status--err' : ''}`}>
           {statusIcon}
         </span>
+
+        {/* Dropdown of candidates */}
+        {showList && suggestions.length > 0 && (
+          <ul className="route-planner__suggest" role="listbox">
+            {suggestions.map((s, i) => (
+              <li
+                key={`${s.lat},${s.lon}`}
+                role="option"
+                aria-selected={i === activeIdx}
+                className={`route-planner__suggest-item ${i === activeIdx ? 'is-active' : ''}`}
+                // onMouseDown (not onClick) so click fires before the
+                // input loses focus and the dropdown closes.
+                onMouseDown={(e) => { e.preventDefault(); select(s); }}
+              >
+                <span className="route-planner__suggest-pin" aria-hidden="true">📍</span>
+                <span className="route-planner__suggest-text">
+                  <span className="route-planner__suggest-primary">{s.shortName}</span>
+                  {s.context && (
+                    <span className="route-planner__suggest-context">{s.context}</span>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       {geo?.error && (
         <span className="route-planner__field-hint route-planner__field-hint--err">
-          Couldn't find that place. Check spelling or try a nearby town.
+          Couldn't find that place. Check spelling or pick from suggestions.
         </span>
       )}
-      {geo && !geo.error && (
+      {geo && !geo.error && !showList && (
         <span className="route-planner__field-hint">
           {geo.displayName.length > 60 ? geo.displayName.slice(0, 57) + '…' : geo.displayName}
         </span>
