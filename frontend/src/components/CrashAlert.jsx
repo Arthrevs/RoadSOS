@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { AlertTriangle, Volume2, Bot, PhoneCall, ShieldOff, Check, Ambulance, Shield, Phone, MapPin, Copy, X, Navigation2 } from "lucide-react";
 import { speakText, buildDispatchText, cancelSpeech } from '../utils/speechUtils';
 import { startAlarm, stopAlarm } from '../utils/alarmUtils';
 import { safeAutoDial, guardedTelDial, DEMO_MODE } from '../utils/demoMode';
+import { encodePlusCode } from '../utils/plusCodes';
+import { isWaCountry, buildSosLinks } from '../utils/sosDispatch';
 
 const CHOOSE_SECONDS = 10;
 const AUTO_SECONDS   = 4;
@@ -11,18 +13,36 @@ const CORRECT_PIN    = '0000';
 const PHASE = {
   CHOOSING   : 'choosing',
   AUTOMATING : 'automating',
-  CALLING    : 'calling',   // after dial — shows script to read to dispatcher
+  CALLING    : 'calling',
   MANUAL     : 'manual',
 };
 
-export default function CrashAlert({ open, onConfirm, onCancel, numbers, location, landmark }) {
+export default function CrashAlert({ open, onConfirm, onCancel, numbers, location, landmark, countryCode }) {
   const [phase, setPhase]       = useState(PHASE.CHOOSING);
   const [seconds, setSeconds]   = useState(CHOOSE_SECONDS);
   const [pin, setPin]           = useState('');
   const [pinError, setPinError] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const [copied, setCopied]     = useState(false);
+  const [sosSent, setSosSent]   = useState(null);
   const intervalRef             = useRef(null);
+
+  const callNumber = numbers?.ambulance || numbers?.general || '112';
+  const preferWA   = isWaCountry(countryCode);
+
+  const plusCode = useMemo(() => {
+    if (!location?.lat || !location?.lon) return '';
+    return encodePlusCode(location.lat, location.lon);
+  }, [location?.lat, location?.lon]);
+
+  const dispatchText = useMemo(() => buildDispatchText({
+    landmark,
+    lat     : location?.lat,
+    lon     : location?.lon,
+    plusCode,
+    injured : true,
+    blocking: true,
+  }), [landmark, location?.lat, location?.lon, plusCode]);
 
   const doCopy = () => {
     if (location?.lat) {
@@ -31,8 +51,6 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
       setTimeout(() => setCopied(false), 1800);
     }
   };
-
-  const callNumber = numbers?.ambulance || numbers?.general || '112';
 
   // ─── Open / close lifecycle ────────────────────────────────────────────
   useEffect(() => {
@@ -45,15 +63,25 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
       setPin('');
       setPinError(false);
       setSpeaking(false);
+      setSosSent(null);
       return;
     }
 
-    // Start bystander alarm immediately — siren + looping voice announcement
     startAlarm(callNumber);
-
-    // Start choosing-phase countdown
     startCountdown(CHOOSE_SECONDS, () => triggerAutomatic());
   }, [open]);                                    // eslint-disable-line react-hooks/exhaustive-deps
+
+  function dispatchSos() {
+    const links = buildSosLinks(location, landmark);
+    if (!links) return;
+    if (preferWA) {
+      window.open(links.perContact[0].waHref, '_blank');
+      setSosSent({ channel: 'wa', links });
+    } else {
+      window.location.href = links.groupSmsHref;
+      setSosSent({ channel: 'sms', links });
+    }
+  }
 
   // ─── Countdown helper ─────────────────────────────────────────────────
   function startCountdown(from, onZero) {
@@ -75,34 +103,16 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
   function triggerAutomatic() {
     stopAlarm();
     setPhase(PHASE.AUTOMATING);
-
-    // Read the dispatch message aloud NOW — user hears exactly what to say
-    // before the call connects, so they can repeat it to the dispatcher.
-    const text = buildDispatchText({
-      landmark,
-      lat     : location?.lat,
-      lon     : location?.lon,
-      injured : true,
-      blocking: true,
-    });
     setSpeaking(true);
-    speakText(text).finally(() => setSpeaking(false));
-
-    startCountdown(AUTO_SECONDS, () => fireCall(text));
+    speakText(dispatchText).finally(() => setSpeaking(false));
+    startCountdown(AUTO_SECONDS, () => fireCall());
   }
 
-  function fireCall(dispatchText) {
+  function fireCall() {
     clearInterval(intervalRef.current);
-
-    // Show the dispatcher script on screen while the call is active.
     setPhase(PHASE.CALLING);
-
-    // Demo mode: shows a toast instead of placing a real emergency call.
-    // Production (?demo=0): dials the actual number.
-    setTimeout(() => {
-      safeAutoDial(callNumber, 'Ambulance');
-    }, 600);
-
+    dispatchSos();
+    setTimeout(() => safeAutoDial(callNumber, 'Ambulance'), 600);
     onConfirm?.();
   }
 
@@ -110,6 +120,7 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
   function handleChooseManual() {
     clearInterval(intervalRef.current);
     stopAlarm();
+    dispatchSos();
     setPhase(PHASE.MANUAL);
   }
 
@@ -134,6 +145,48 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
   }
 
   if (!open) return null;
+
+  // ─── SOS follow-up block ──────────────────────────────────────────────
+  const SosFollowUp = sosSent ? (() => {
+    const { channel, links } = sosSent;
+    const contact0 = links.perContact[0];
+    return (
+      <div className="crash-sos-sent">
+        <div className="crash-sos-sent__header">
+          {channel === 'wa'
+            ? `💬 WhatsApp SOS sent to ${contact0?.name}`
+            : `📱 SMS SOS sent to all ${links.contacts?.length} contacts`
+          }
+        </div>
+        <div className="crash-sos-sent__links">
+          {links.perContact.map((c, i) => {
+            const showWa  = channel === 'sms' || i > 0;
+            const showSms = channel === 'wa';
+            return (
+              <div key={i} className="crash-sos-sent__row">
+                <span className="crash-sos-sent__name">{c.name}</span>
+                <span className="crash-sos-sent__btns">
+                  {showWa && (
+                    <a href={c.waHref} target="_blank" rel="noopener noreferrer"
+                       className="crash-sos-sent__btn crash-sos-sent__btn--wa">💬 WA</a>
+                  )}
+                  {showSms && (
+                    <a href={c.smsHref}
+                       className="crash-sos-sent__btn crash-sos-sent__btn--sms">📱 SMS</a>
+                  )}
+                </span>
+              </div>
+            );
+          })}
+          {channel === 'wa' && links.contacts?.length > 0 && (
+            <a href={links.groupSmsHref} className="crash-sos-sent__group-sms">
+              📱 SMS all {links.contacts.length} contacts at once
+            </a>
+          )}
+        </div>
+      </div>
+    );
+  })() : null;
 
   // ─── CHOOSING phase ────────────────────────────────────────────────────
   if (phase === PHASE.CHOOSING) {
@@ -249,13 +302,6 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
 
   // ─── AUTOMATING phase ──────────────────────────────────────────────────
   if (phase === PHASE.AUTOMATING) {
-    const dispatchText = buildDispatchText({
-      landmark,
-      lat     : location?.lat,
-      lon     : location?.lon,
-      injured : true,
-      blocking: true,
-    });
     return (
       <div className="modal-backdrop modal-backdrop--alert" role="alertdialog" aria-modal="true">
         <div style={{ width: '100%', maxWidth: 430, margin: '0 auto', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', height: '100%', paddingBottom: 32 }}>
@@ -335,13 +381,6 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
 
   // ─── CALLING phase ────────────────────────────────────────────────────
   if (phase === PHASE.CALLING) {
-    const dispatchText = buildDispatchText({
-      landmark,
-      lat     : location?.lat,
-      lon     : location?.lon,
-      injured : true,
-      blocking: true,
-    });
     return (
       <div className="modal-backdrop modal-backdrop--alert" role="alertdialog" aria-modal="true">
         <div style={{ width: '100%', maxWidth: 430, margin: '0 auto', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', height: '100%', paddingBottom: 32 }}>
@@ -379,9 +418,22 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
               </div>
             </div>
 
-            {/* Big Close Button */}
+            {/* Plus Code */}
+            {plusCode && (
+              <div style={{ padding: '0 20px 16px' }}>
+                <div style={{ fontSize: 13, color: '#475569', display: 'flex', gap: 8, alignItems: 'center' }}>
+                  <span style={{ fontWeight: 700 }}>📍 Plus Code:</span>
+                  <span style={{ fontFamily: 'monospace', fontWeight: 600, color: '#1D4ED8' }}>{plusCode}</span>
+                </div>
+              </div>
+            )}
+
+            {/* SOS follow-up */}
+            {SosFollowUp}
+
+            {/* Close Button */}
             <div style={{ padding: '0 20px 24px' }}>
-              <button 
+              <button
                 onClick={() => { cancelSpeech(); onCancel?.(); }}
                 style={{
                   width: '100%', height: 52, borderRadius: 12,
@@ -469,6 +521,17 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
               </a>
             ))}
           </div>
+
+          {/* Plus Code */}
+          {plusCode && (
+            <div style={{ padding: '0 20px 8px', fontSize: 13, color: '#475569', display: 'flex', gap: 8 }}>
+              <span style={{ fontWeight: 700 }}>📍 Plus Code:</span>
+              <span style={{ fontFamily: 'monospace', fontWeight: 600, color: '#1D4ED8' }}>{plusCode}</span>
+            </div>
+          )}
+
+          {/* SOS follow-up */}
+          {SosFollowUp}
 
           {/* Dismiss */}
           <div className="actions">

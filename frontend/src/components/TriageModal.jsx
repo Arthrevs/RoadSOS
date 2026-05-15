@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Activity, AlertTriangle, CheckCircle, XCircle, ArrowRight, Stethoscope, Car, Signal } from "lucide-react";
-import { buildSOSMessage } from './SOSButton';
+import { buildSosSmsBody } from '../utils/medicalId';
+import { encodePlusCode } from '../utils/plusCodes';
 
 const QUESTIONS = [
   {
@@ -58,11 +59,10 @@ export default function TriageModal({ open, loading, onSubmit, onSkip, location,
       alert("GPS location not available yet.");
       return;
     }
-    const message = buildSOSMessage({ lat: location.lat, lon: location.lon, landmark, topContact });
-    const encoded = encodeURIComponent(message);
+    const plusCode = encodePlusCode(location.lat, location.lon);
+    const message  = buildSosSmsBody({ lat: location.lat, lon: location.lon, plusCode, landmark });
+    const encoded  = encodeURIComponent(message);
     const win = window.open(`https://wa.me/?text=${encoded}`, '_blank');
-    
-    // Fallback to SMS if WhatsApp fails
     setTimeout(() => {
       if (!win || win.closed || win.closed === undefined) {
         window.location.href = `sms:?body=${encoded}`;

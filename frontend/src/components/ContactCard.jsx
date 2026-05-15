@@ -13,10 +13,14 @@ const CATEGORY_CONFIG = {
 };
 
 export default function ContactCard({ contact, isLast }) {
-  const { name, category, distance, phone, isOpen, aiReason } = contact;
+  const { name, category, distance, phone, isOpen, aiReason, lat, lon } = contact;
 
   const phoneClean = phone ? phone.replace(/\s+/g, '') : null;
   const callHref   = phoneClean ? `tel:${phoneClean}` : null;
+
+  const mapsHref = (typeof lat === 'number' && typeof lon === 'number')
+    ? `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&destination_place_id=${encodeURIComponent(name || '')}`
+    : null;
 
   const cat = (category || 'repair').toLowerCase();
   const config = CATEGORY_CONFIG[cat] || CATEGORY_CONFIG.repair;
@@ -81,6 +85,19 @@ export default function ContactCard({ contact, isLast }) {
           </div>
         )}
       </div>
+
+      {/* Google Maps directions link */}
+      {mapsHref && (
+        <a
+          href={mapsHref}
+          className="maps-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open directions to ${name} in Google Maps`}
+        >
+          🧭 Open in Google Maps
+        </a>
+      )}
 
       {!isLast && <div className="svc-divider" />}
     </div>

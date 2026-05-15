@@ -130,8 +130,8 @@ async def enrich_phone_for_contact(
             "key": api_key,
         }, timeout=8.0)
         places = resp.json().get("results", [])
-        if places:
-            place_id = places[0].get("place_id")
+        for place in places:
+            place_id = place.get("place_id")
             if place_id:
                 details = await _get_place_details(client, place_id, api_key, region)
                 if details.get("phone"):

@@ -6,6 +6,9 @@ import { searchNearby } from './utils/overpass';
 import { triageContacts } from './utils/googlePlaces';
 import { saveSearchResult, loadSearchResult } from './utils/offlineDB';
 import { getEmergencyNumbers } from './utils/emergencyNumbers';
+import { hasMedicalId } from './utils/medicalId';
+import { autoFireSos } from './utils/sosDispatch';
+import { buildBundledSearchResult, BUNDLED_FACILITY_COUNT } from './utils/bundledFacilities';
 
 import CountryEmergency from './components/CountryEmergency';
 import ContactList from './components/ContactList';
@@ -14,6 +17,8 @@ import TriageModal from './components/TriageModal';
 import CrashAlert from './components/CrashAlert';
 import LocationCard from './components/LocationCard';
 import OfflineBanner from './components/OfflineBanner';
+import RoutePlanner from './components/RoutePlanner';
+import MedicalIdModal from './components/MedicalIdModal';
 import { requestMotionPermission } from './hooks/useLocation';
 import { DEMO_MODE } from './utils/demoMode';
 import { startBackendWarmup } from './utils/backendWarmup';
@@ -92,11 +97,23 @@ const MOCK_DATA = {
 
 export const CATS = ["All", "Hospital", "Police", "Repair", "Towing", "Fire"];
 
+// ─── First-launch detection ───────────────────────────────────────────────────
+const ONBOARDED_KEY = 'roadsos_onboarded_v1';
+function isFirstLaunch() {
+  try { return !localStorage.getItem(ONBOARDED_KEY); } catch { return false; }
+}
+function markOnboarded() {
+  try { localStorage.setItem(ONBOARDED_KEY, '1'); } catch {}
+}
+
 // ─── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
   const [demoIdx, setDemoIdx] = useState(0);
   const [crashOpen, setCrashOpen] = useState(false);
   const [cat, setCat] = useState("All");
+  const [routePlannerOpen, setRoutePlannerOpen] = useState(false);
+  const [medicalOpen, setMedicalOpen] = useState(() => isFirstLaunch());
+  const [medicalIdConfigured, setMedicalIdConfigured] = useState(() => hasMedicalId());
 
   const {
     location: gpsLocation,
@@ -127,6 +144,7 @@ export default function App() {
   const [triageOpen, setTriageOpen] = useState(false);
   const [triageLoading, setTriageLoading] = useState(false);
   const [triaged, setTriaged] = useState(false);
+  const [triageOffline, setTriageOffline] = useState(false);
 
   const searchLat = activeLocation?.lat ?? null;
   const searchLon = activeLocation?.lon ?? null;
@@ -139,6 +157,7 @@ export default function App() {
     setSearchError(null);
     setCachedAt(null);
     setTriaged(false);
+    setTriageOffline(false);
 
     const controller = new AbortController();
     const hardTimeout = setTimeout(() => controller.abort(), 30_000);
@@ -159,14 +178,26 @@ export default function App() {
           setCachedAt(cached.cachedAt);
           setTriageOpen(true);
         } else {
-          console.warn('[RoadSOS] Backend unreachable — using mock data:', err.message);
-          setSearchData(MOCK_DATA);
-          setTriageOpen(true);
-          setSearchError(
-            isOnline
-              ? 'Could not reach server — showing demo data.'
-              : 'You are offline — showing demo data.'
-          );
+          const bundled = buildBundledSearchResult(searchLat, searchLon, { maxKm: 80, limit: 8 });
+          if (bundled) {
+            console.info('[RoadSOS] Live + cache miss — serving bundled directory');
+            setSearchData(bundled);
+            setTriageOpen(true);
+            setSearchError(
+              isOnline
+                ? 'Network issue — showing pre-loaded directory.'
+                : 'You are offline — showing pre-loaded directory.'
+            );
+          } else {
+            console.warn('[RoadSOS] Backend + cache + bundle all empty — using mock data:', err.message);
+            setSearchData(MOCK_DATA);
+            setTriageOpen(true);
+            setSearchError(
+              isOnline
+                ? 'Could not reach server — showing demo data.'
+                : 'You are offline and far from any pre-loaded facility — showing demo data.'
+            );
+          }
         }
       } finally {
         clearTimeout(hardTimeout);
@@ -184,15 +215,19 @@ export default function App() {
       const result = await triageContacts(injured, blocking, searchData.contacts);
       setSearchData(prev => ({ ...prev, contacts: result.contacts, reason: result.reason }));
       setTriaged(true);
+      setTriageOffline(result._offline === true);
+      if (injured || blocking) {
+        autoFireSos(activeLocation, searchData?.landmark, countryCode);
+      }
     } catch {
       // Backend triage failed — leave contacts in current order, still close modal
     } finally {
       setTriageLoading(false);
       setTriageOpen(false);
     }
-  }, [searchData]);
+  }, [searchData, activeLocation, countryCode]);
 
-  const countryCode = activeLocation?.country_code || searchData?.country_code || 'IN';
+  const countryCode = searchData?.country_code || activeLocation?.country_code || 'IN';
   const numbers = getEmergencyNumbers(countryCode);
   const topContact = searchData?.contacts?.[0];
 
@@ -226,6 +261,16 @@ export default function App() {
               
               <div className="telemetry-status">
                 <div className="header-actions" style={{ marginRight: 6 }}>
+                  <button className="plan-trip-btn" onClick={() => setRoutePlannerOpen(true)} title={`Pre-cache emergency contacts along your route (${BUNDLED_FACILITY_COUNT} facilities bundled offline)`}>
+                    🗺 Plan Trip
+                  </button>
+                  <button
+                    className={`medical-id-btn ${medicalIdConfigured ? 'medical-id-btn--set' : ''}`}
+                    onClick={() => setMedicalOpen(true)}
+                    title={medicalIdConfigured ? 'View / edit your Medical ID' : 'Set up your Medical ID'}
+                  >
+                    🆔 ID{!medicalIdConfigured ? ' ●' : ''}
+                  </button>
                   <button className="test-crash-btn" onClick={() => setCrashOpen(true)} title="Test crash alert">
                     <AlertTriangle size={12} strokeWidth={2.5} style={{ marginRight: 4 }} />
                     TEST CRASH
@@ -279,6 +324,7 @@ export default function App() {
         location={activeLocation}
         landmark={searchData?.landmark}
         topContact={topContact}
+        countryCode={countryCode}
         onFirstTap={handleMotionPermissionOnce}
       />
 
@@ -342,6 +388,22 @@ export default function App() {
         numbers={numbers}
         location={activeLocation}
         landmark={searchData?.landmark}
+        countryCode={countryCode}
+      />
+
+      <RoutePlanner
+        open={routePlannerOpen}
+        onClose={() => setRoutePlannerOpen(false)}
+      />
+
+      <MedicalIdModal
+        open={medicalOpen}
+        startInEdit={!hasMedicalId()}
+        onClose={() => {
+          markOnboarded();
+          setMedicalOpen(false);
+          setMedicalIdConfigured(hasMedicalId());
+        }}
       />
     </div>
   );
