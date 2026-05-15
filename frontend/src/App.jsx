@@ -92,9 +92,20 @@ const MOCK_DATA = {
   count: MOCK_CONTACTS.length,
 };
 
+// ─── First-launch detection ───────────────────────────────────────────────────
+const ONBOARDED_KEY = 'roadsos_onboarded_v1';
+function isFirstLaunch() {
+  try { return !localStorage.getItem(ONBOARDED_KEY); } catch { return false; }
+}
+function markOnboarded() {
+  try { localStorage.setItem(ONBOARDED_KEY, '1'); } catch {}
+}
+
 // ─── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
-  // Demo location picker index
+  // Demo location picker index — only meaningful when DEMO_MODE is true.
+  // In production DEMO_MODE === false and demoIdx stays 0 forever, so
+  // activeLocation always falls through to real GPS. The select is hidden.
   const [demoIdx, setDemoIdx] = useState(0);
 
   // Crash alert
@@ -103,8 +114,8 @@ export default function App() {
   // Trip planner modal
   const [routePlannerOpen, setRoutePlannerOpen] = useState(false);
 
-  // Medical ID modal
-  const [medicalOpen, setMedicalOpen] = useState(false);
+  // Medical ID modal — auto-open on very first app launch
+  const [medicalOpen, setMedicalOpen] = useState(() => isFirstLaunch());
   const [medicalIdConfigured, setMedicalIdConfigured] = useState(() => hasMedicalId());
 
   // GPS hook
@@ -280,26 +291,28 @@ export default function App() {
             🆔 Medical ID{!medicalIdConfigured ? ' ●' : ''}
           </button>
           {DEMO_MODE && (
-            <button
-              type="button"
-              className="test-crash-btn"
-              onClick={() => setCrashOpen(true)}
-              title="Manually trigger the crash alert for demonstration"
-            >
-              🧪 Test Crash
-            </button>
+            <>
+              <button
+                type="button"
+                className="test-crash-btn"
+                onClick={() => setCrashOpen(true)}
+                title="Manually trigger the crash alert for demonstration"
+              >
+                🧪 Test Crash
+              </button>
+              <select
+                className="demo-picker"
+                value={demoIdx}
+                onChange={(e) => setDemoIdx(Number(e.target.value))}
+                aria-label="Demo location"
+                id="demo-location-picker"
+              >
+                {DEMO_LOCATIONS.map((d, i) => (
+                  <option key={i} value={i}>{d.label}</option>
+                ))}
+              </select>
+            </>
           )}
-          <select
-            className="demo-picker"
-            value={demoIdx}
-            onChange={(e) => setDemoIdx(Number(e.target.value))}
-            aria-label="Demo location"
-            id="demo-location-picker"
-          >
-            {DEMO_LOCATIONS.map((d, i) => (
-              <option key={i} value={i}>{d.label}</option>
-            ))}
-          </select>
         </div>
       </header>
 
@@ -402,7 +415,9 @@ export default function App() {
       {/* ── Emergency Medical ID — paramedic-visible health profile ── */}
       <MedicalIdModal
         open={medicalOpen}
+        startInEdit={!hasMedicalId()}
         onClose={() => {
+          markOnboarded();
           setMedicalOpen(false);
           setMedicalIdConfigured(hasMedicalId());
         }}
