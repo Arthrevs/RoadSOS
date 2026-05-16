@@ -2193,3 +2193,285 @@
   border-right: 5px solid transparent;
   border-top: 6px solid #fff;
 }
+
+/* ═════════════════════════════════════════════════════════════════════
+   BUTTON REFINEMENT LAYER (overrides above)
+   ─────────────────────────────────────────────────────────────────────
+   Cleaner geometry + tactile feedback + less colored-shadow noise.
+   Each override targets a single button class with `!important` to win
+   over the heavier templated styles defined earlier in the file.
+   ═════════════════════════════════════════════════════════════════════ */
+
+/* ── Call (primary action inside each service card) ─────────────────── */
+.call-btn {
+  height: 40px !important;
+  border-radius: 8px !important;
+  background: #0F2C73 !important;
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 50%),
+    linear-gradient(180deg, #1D4ED8 0%, #1640B2 100%) !important;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.18) inset,
+    0 1px 2px rgba(11, 20, 36, 0.30),
+    0 0 0 1px rgba(0,0,0,0.06) !important;
+  letter-spacing: 0 !important;
+  font-weight: 700 !important;
+  transition: transform 110ms ease, box-shadow 110ms ease, background-color 110ms ease !important;
+}
+.call-btn:hover {
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%),
+    linear-gradient(180deg, #2655E8 0%, #1B49C7 100%) !important;
+}
+.call-btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.12) inset,
+    0 0 0 1px rgba(0,0,0,0.10) !important;
+}
+
+/* ── Directions (secondary, paired with Call) ───────────────────────── */
+.maps-link {
+  height: 40px !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  color: #1D4ED8 !important;
+  border: 1.5px solid #C6D1E6 !important;
+  box-shadow: none !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  transition: background-color 110ms ease, border-color 110ms ease, transform 110ms ease !important;
+}
+.maps-link:hover {
+  background: #F4F7FE !important;
+  border-color: #1D4ED8 !important;
+}
+.maps-link:active { transform: translateY(1px); }
+
+/* ── Category filter chips ──────────────────────────────────────────── */
+.chip {
+  height: 30px !important;
+  padding: 0 14px !important;
+  border-radius: 8px !important;
+  font-family: var(--rs-font-display) !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  transition: background-color 110ms ease, color 110ms ease, border-color 110ms ease !important;
+}
+.chip-on {
+  background: linear-gradient(180deg, #1D4ED8 0%, #1640B2 100%) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  color: #fff !important;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.15) inset,
+    0 1px 1px rgba(11, 20, 36, 0.25) !important;
+}
+.chip-off {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+  color: var(--rs-slate-300) !important;
+}
+.chip-off:hover {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  color: #fff !important;
+}
+
+/* ── Triage trigger ("Prioritise for my situation") ─────────────────── */
+.triage-trigger-btn {
+  margin: 4px 16px 14px !important;
+  padding: 13px 16px !important;
+  background: linear-gradient(180deg, rgba(29, 78, 216, 0.14) 0%, rgba(29, 78, 216, 0.08) 100%) !important;
+  border: 1px solid rgba(96, 165, 250, 0.28) !important;
+  border-radius: 10px !important;
+  color: #BFDBFE !important;
+  font-family: var(--rs-font-display) !important;
+  font-weight: 600 !important;
+  font-size: 13.5px !important;
+  letter-spacing: -0.15px !important;
+  text-align: center !important;
+  width: calc(100% - 32px) !important;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 130ms ease, border-color 130ms ease, transform 130ms ease !important;
+}
+.triage-trigger-btn:hover {
+  background: linear-gradient(180deg, rgba(29, 78, 216, 0.22) 0%, rgba(29, 78, 216, 0.14) 100%) !important;
+  border-color: rgba(96, 165, 250, 0.45) !important;
+  color: #DBEAFE !important;
+}
+.triage-trigger-btn:active { transform: translateY(1px); }
+.triage-trigger-btn--redo {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: var(--rs-slate-400) !important;
+}
+.triage-trigger-btn--redo:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: var(--rs-slate-200) !important;
+}
+
+/* ── SOS — softer, less casino-y glow ───────────────────────────────── */
+.glass-sos-btn {
+  border-radius: 16px !important;
+  background: linear-gradient(180deg, #2563EB 0%, #1D4ED8 60%, #1640B2 100%) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.22) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.18),
+    0 8px 22px rgba(15, 44, 115, 0.40) !important;
+  border: none !important;
+  letter-spacing: 0.02em !important;
+  transition: transform 140ms ease, box-shadow 140ms ease !important;
+}
+.glass-sos-btn:hover {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.26) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.22),
+    0 10px 26px rgba(15, 44, 115, 0.50) !important;
+}
+.glass-sos-btn:active { transform: translateY(1px) scale(0.997); }
+.glass-sos-btn.sent {
+  background: linear-gradient(180deg, #22C55E 0%, #16A34A 60%, #15803D 100%) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.22) inset,
+    0 0 0 1px rgba(0, 0, 0, 0.18),
+    0 8px 22px rgba(22, 101, 52, 0.40) !important;
+}
+
+.glass-copy-btn {
+  border-radius: 10px !important;
+  background: rgba(11, 20, 36, 0.62) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25) !important;
+  backdrop-filter: blur(10px);
+  transition: background-color 110ms ease, border-color 110ms ease, transform 110ms ease !important;
+}
+.glass-copy-btn:hover {
+  background: rgba(11, 20, 36, 0.78) !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+}
+.glass-copy-btn:active { transform: translateY(1px); }
+
+/* ── Header action icons (Plan trip / Medical ID / Test crash) ──────── */
+.mh-action-btn {
+  background: rgba(11, 20, 36, 0.55) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  border-radius: 9px !important;
+  backdrop-filter: blur(12px) saturate(140%);
+  transition: background-color 110ms ease, border-color 110ms ease, transform 110ms ease !important;
+}
+.mh-action-btn:hover {
+  background: rgba(11, 20, 36, 0.78) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+}
+.mh-action-btn:active { transform: scale(0.95); }
+.mh-action-btn--unset {
+  border-color: rgba(252, 211, 77, 0.40) !important;
+  background: rgba(120, 65, 8, 0.30) !important;
+}
+
+/* ── Triage modal Yes/No choice buttons ─────────────────────────────── */
+.choice-btn {
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.1px !important;
+  transition: background-color 130ms ease, border-color 130ms ease, transform 130ms ease, color 130ms ease !important;
+}
+.choice-btn:active { transform: translateY(1px); }
+.choice-btn.yes-active {
+  background: linear-gradient(180deg, #DC2626 0%, #B91C1C 100%) !important;
+  border-color: rgba(0, 0, 0, 0.10) !important;
+  color: #fff !important;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.15) inset,
+    0 2px 6px rgba(185, 28, 28, 0.35) !important;
+}
+.choice-btn.no-active {
+  background: linear-gradient(180deg, #16A34A 0%, #15803D 100%) !important;
+  border-color: rgba(0, 0, 0, 0.10) !important;
+  color: #fff !important;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.15) inset,
+    0 2px 6px rgba(21, 128, 61, 0.35) !important;
+}
+
+/* ── Get-help / Skip buttons in triage flow ─────────────────────────── */
+.get-help-btn {
+  border-radius: 12px !important;
+  background: linear-gradient(180deg, #1D4ED8 0%, #1640B2 100%) !important;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.18) inset,
+    0 4px 10px rgba(15, 44, 115, 0.32) !important;
+  letter-spacing: 0 !important;
+  transition: transform 120ms ease, box-shadow 120ms ease !important;
+}
+.get-help-btn:active { transform: translateY(1px); }
+.get-help-btn:disabled {
+  background: rgba(255, 255, 255, 0.06) !important;
+  box-shadow: none !important;
+}
+
+/* ── Language picker tile / Continue ────────────────────────────────── */
+.lang-picker-tile {
+  border-radius: 10px !important;
+  transition: background-color 110ms ease, border-color 110ms ease, transform 110ms ease !important;
+}
+.lang-picker-tile:active { transform: scale(0.97); }
+.lang-picker-tile.is-selected {
+  box-shadow:
+    0 0 0 2px var(--rs-blue-700),
+    0 4px 10px rgba(29, 78, 216, 0.30) !important;
+}
+
+.lang-picker-continue {
+  border-radius: 12px !important;
+  background: linear-gradient(180deg, #1D4ED8 0%, #1640B2 100%) !important;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.18) inset,
+    0 4px 12px rgba(15, 44, 115, 0.38) !important;
+  letter-spacing: 0 !important;
+  font-weight: 700 !important;
+  transition: transform 120ms ease, box-shadow 120ms ease !important;
+}
+.lang-picker-continue:hover {
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.22) inset,
+    0 6px 14px rgba(15, 44, 115, 0.48) !important;
+}
+.lang-picker-continue:active { transform: translateY(1px); }
+
+/* ── National emergency cards (108/100/101/112) ─────────────────────── */
+.nat-card {
+  border-radius: 14px !important;
+  transition: transform 130ms ease, box-shadow 130ms ease !important;
+}
+.nat-card:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 6px 16px rgba(11, 20, 36, 0.10),
+    0 2px 4px rgba(11, 20, 36, 0.06) !important;
+}
+.nat-card:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(11, 20, 36, 0.10) !important;
+}
+
+/* ── Universal: button focus rings (accessibility, but tasteful) ────── */
+.call-btn:focus-visible,
+.maps-link:focus-visible,
+.chip:focus-visible,
+.triage-trigger-btn:focus-visible,
+.glass-sos-btn:focus-visible,
+.glass-copy-btn:focus-visible,
+.mh-action-btn:focus-visible,
+.choice-btn:focus-visible,
+.get-help-btn:focus-visible,
+.lang-picker-continue:focus-visible,
+.lang-picker-tile:focus-visible,
+.nat-card:focus-visible {
+  outline: 2px solid #60A5FA !important;
+  outline-offset: 2px;
+}

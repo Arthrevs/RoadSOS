@@ -21,7 +21,6 @@ These tests intentionally avoid hitting the real network. The point is
 to verify the orchestrator's behaviour, not the upstream services.
 """
 
-import json
 from contextlib import contextmanager
 from unittest.mock import AsyncMock, patch
 
@@ -30,7 +29,6 @@ from fastapi.testclient import TestClient
 
 import main as app_module
 from services import cache as cache_module
-
 
 # ─── Fixtures ─────────────────────────────────────────────────────────────
 
@@ -70,13 +68,9 @@ def patched_upstreams(
     underlying functions they call, so the wrappers' try/except is also
     exercised. That's the whole point of this integration test.
     """
-    from services import (
-        ai_triage,  # noqa: F401 — make sure the module is loaded
-        geocoder,
-        googleplaces_service,
-        overpass_service,
-        search_service,
-    )
+    # search_service is what we monkey-patch; importing it here keeps the
+    # patch.object calls below honest if the orchestrator is ever moved.
+    from services import search_service
 
     overpass_mock = AsyncMock(
         side_effect=RuntimeError("overpass down") if overpass_raises else None,
@@ -93,10 +87,12 @@ def patched_upstreams(
     # enrich_missing_phones never adds entries, just decorates; treat as no-op.
     enrich_mock = AsyncMock(side_effect=lambda contacts, **_: contacts)
 
-    with patch.object(search_service, "build_and_fetch_query", overpass_mock), \
-         patch.object(search_service, "search_nearby_places", google_mock), \
-         patch.object(search_service, "reverse_geocode", geo_mock), \
-         patch.object(search_service, "enrich_missing_phones", enrich_mock):
+    with (
+        patch.object(search_service, "build_and_fetch_query", overpass_mock),
+        patch.object(search_service, "search_nearby_places", google_mock),
+        patch.object(search_service, "reverse_geocode", geo_mock),
+        patch.object(search_service, "enrich_missing_phones", enrich_mock),
+    ):
         yield {
             "overpass": overpass_mock,
             "google": google_mock,
@@ -148,7 +144,9 @@ class TestReliabilityNever5xx:
         with patched_upstreams(
             overpass_raises=True,
             google_contacts=[
-                _contact("Apollo Hospital", "hospital", phone="+91-80-26793000", source="Google Places"),
+                _contact(
+                    "Apollo Hospital", "hospital", phone="+91-80-26793000", source="Google Places"
+                ),
             ],
         ):
             r = client.get("/search?lat=12.97&lon=77.59")
@@ -208,7 +206,9 @@ class TestContactVolume:
             ],
             google_contacts=[
                 # Same phone, different transliteration of the name
-                _contact("apollo hospitals", "hospital", phone="+918026793000", source="Google Places"),
+                _contact(
+                    "apollo hospitals", "hospital", phone="+918026793000", source="Google Places"
+                ),
                 _contact("Singh Garage", "repair", phone="+919900887766", source="Google Places"),
             ],
         ):
