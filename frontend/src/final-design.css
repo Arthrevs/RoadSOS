@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&family=Inter+Tight:wght@400;500;600;700;800;900&display=swap');
+
 /* ═══════════════════════════════════════════════════════════════════════
    RoadSOS Improved · Final Design Overlay
    Implements the 7 final-pick screens:
@@ -31,8 +33,6 @@
   --rs-slate-500: #64748B;
   --rs-slate-900: #0F172A;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&family=Inter+Tight:wght@400;500;600;700;800;900&display=swap');
 
 .app {
   font-family: var(--rs-font-body) !important;
