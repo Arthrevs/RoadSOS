@@ -134,7 +134,7 @@ RoadSOS is a Progressive Web Application that locates emergency-services contact
 |                                                               |
 |   uvicorn + asyncio + httpx                                   |
 |   |- /search    (4-phase orchestrator)                        |
-|   |- /triage    (Claude Haiku 4.5 + rule-based fallback)      |
+|   |- /triage    (Gemini 2.0 Flash + rule-based fallback)      |
 |   |- /dispatch  (telemetry sink for SOS events)               |
 |   |- /health    (liveness + version)                          |
 |   `- /offline-pack  (static facility bundle for warm cache)   |
@@ -162,7 +162,7 @@ i18n & i18next 26.2.0 + react-i18next 17.0.8; 43 locales \\
 Icons & lucide-react 1.16.0 \\
 Backend runtime & FastAPI 0.115.0 + uvicorn 0.30.6, Python 3.11.9 \\
 Async HTTP & httpx 0.27.2 \\
-AI & anthropic 0.34.2 (Claude Haiku 4.5) \\
+AI & Google Gemini 2.0 Flash via REST (no SDK; uses httpx) \\
 Phone normalization & phonenumbers 8.13.46 \\
 Storage & SQLite via aiosqlite 0.20.0 (offline-pack only) \\
 Validation & pydantic 2.9.2 \\
@@ -396,7 +396,7 @@ Buckets are stored in a plain Python dictionary protected by \code{asyncio.Lock}
 \section{Backend: AI Triage}
 % ──────────────────────────────────────────────────────────────────────
 
-\file{backend/services/ai\_triage.py} reorders a contact list to match the user's situation. The model is \texttt{claude-haiku-4-5-20251001}. Two boolean situational flags are accepted: \code{injured} and \code{blocking\_traffic}.
+\file{backend/services/ai\_triage.py} reorders a contact list to match the user's situation. The model is \texttt{gemini-2.0-flash}, called via direct REST against \url{https://generativelanguage.googleapis.com/v1beta/models/} (no SDK dependency --- uses the same \code{httpx} client as the rest of the backend). The free tier allows 60 requests per minute and 1500 requests per day with no billing requirement. Two boolean situational flags are accepted: \code{injured} and \code{blocking\_traffic}. JSON mode is opt-in via \code{generationConfig.responseMimeType = "application/json"}.
 
 \subsection{Prompt Contract}
 
@@ -437,7 +437,7 @@ The fallback is the same logic the model is prompted to follow, so the user-visi
 
 \subsection{Independence from Search}
 
-Triage is a separate endpoint (\code{POST /triage}) called only after the user answers the situational questions. The map and contact list render with no AI dependency; if Anthropic is entirely unreachable, the list is still useful.
+Triage is a separate endpoint (\code{POST /triage}) called only after the user answers the situational questions. The map and contact list render with no AI dependency; if Gemini is entirely unreachable, the list is still useful.
 
 % ──────────────────────────────────────────────────────────────────────
 \section{Backend: Reliability Guarantees}
@@ -820,7 +820,7 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
-      - key: ANTHROPIC_API_KEY    # required
+      - key: GEMINI_API_KEY        # required, free at aistudio.google.com
         sync: false
       - key: Mapsplatformkey       # optional, comma-separated for multi-key
         sync: false
@@ -917,7 +917,7 @@ Roadproj/
 |  |- main.py                    # FastAPI app entry, middleware wiring
 |  |- middleware.py              # RequestID, RequestLog, ErrorHandling
 |  |- logging_config.py          # log format + library noise suppression
-|  |- requirements.txt           # runtime deps (FastAPI, httpx, anthropic, ...)
+|  |- requirements.txt           # runtime deps (FastAPI, httpx, phonenumbers, ...)
 |  |- requirements-dev.txt       # adds pytest, pytest-asyncio, ruff
 |  |- pytest.ini                 # asyncio_mode = auto, testpaths
 |  |- ruff.toml                  # lint rule set + project ignores
@@ -926,7 +926,7 @@ Roadproj/
 |  |  |- overpass_service.py     # OSM Overpass client + parser
 |  |  |- googleplaces_service.py # Google Places + multi-key rotation
 |  |  |- geocoder.py             # Nominatim reverse geocode
-|  |  |- ai_triage.py            # Claude Haiku 4.5 + rule fallback
+|  |  |- ai_triage.py            # Gemini 2.0 Flash + rule fallback
 |  |  |- triage_service.py       # /triage router
 |  |  |- cache.py                # async TTL/LRU cache
 |  |  |- rate_limiter.py         # per-IP token bucket
@@ -1021,7 +1021,7 @@ Crash detection --- velocity collapse threshold & $\ge$25 km/h $\rightarrow$ $\l
 Crash detection --- accelerometer threshold & $\ge$3.5 G \\
 Crash detection --- signal alignment window & 4 s \\
 Crash detection --- post-alert cooldown & 12 s \\
-AI model & \code{claude-haiku-4-5-20251001} \\
+AI model & \code{gemini-2.0-flash} (free tier: 60 RPM / 1500 RPD) \\
 Frontend bundle (gzip) & 181 KiB JS + 18 KiB CSS \\
 Service worker precache entries & 6 ($\sim$210 KiB) \\
 \bottomrule

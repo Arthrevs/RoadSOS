@@ -50,7 +50,7 @@ jobs:
         working-directory: backend
 
     env:
-      ANTHROPIC_API_KEY: "dummy-for-import-check"
+      GEMINI_API_KEY: "dummy-for-import-check"
       Mapsplatformkey: "dummy-for-import-check"
 
     steps:

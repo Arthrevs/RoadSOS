@@ -17,7 +17,7 @@
 [![Vite](https://img.shields.io/badge/Vite-8.0-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Anthropic](https://img.shields.io/badge/Anthropic-Claude%20Haiku%204.5-d97757)](https://www.anthropic.com/)
+[![Gemini](https://img.shields.io/badge/Google-Gemini%202.0%20Flash-4285F4?logo=google&logoColor=white)](https://ai.google.dev/gemini-api)
 [![OSM](https://img.shields.io/badge/Data-OpenStreetMap-7EBC6F?logo=openstreetmap&logoColor=white)](https://www.openstreetmap.org/)
 
 [![Backend Tests](https://github.com/Arthrevs/Roadproj/actions/workflows/backend-tests.yml/badge.svg)](https://github.com/Arthrevs/Roadproj/actions/workflows/backend-tests.yml)
@@ -164,11 +164,11 @@ Detects a collapse from highway speed (>25 km/h) to standstill (<5 km/h) within 
 │   └─ Phone enrichment   ──── top-6 phoneless via Place Details │
 │                                                               │
 │  POST /triage                                                 │
-│   ├─ Anthropic Claude Haiku 4.5  ─── situation-aware sort    │
+│   ├─ Google Gemini 2.0 Flash    ─── situation-aware sort    │
 │   └─ Rule-based fallback         ─── if API down             │
 │                                                               │
 │  POST /dispatch-summary                                       │
-│   ├─ Claude Haiku  ─── human-readable accident description    │
+│   ├─ Gemini Flash  ─── human-readable accident description    │
 │   └─ Template fallback ── if API unavailable                  │
 │                                                               │
 │  GET /health                                                  │
@@ -197,7 +197,7 @@ Detects a collapse from highway speed (>25 km/h) to standstill (<5 km/h) within 
 
 4. TriageModal asks: injured? blocking?
    └─► POST /triage with answers + contacts
-       └─► Claude reorders, returns one-line reason
+       └─► Gemini reorders, returns one-line reason
        └─► If API fails: rule-based fallback produces same shape
 
 5. ContactList renders with AI reason banner on top card
@@ -240,7 +240,7 @@ GET /search ─────► Service Worker         Tier 1: Backend /search
 | **Map** | Leaflet 1.9 + react-leaflet 4.2 + CartoDB Dark tiles | Real OSM map, no API key, dark theme matches UI |
 | **i18n** | i18next 26 + react-i18next 17 | 43 languages, RTL support, browser-detect fallback |
 | **Backend** | FastAPI 0.115 + httpx 0.27 (async) | Async I/O for parallel upstream calls, type-safe |
-| **AI Triage** | Anthropic Claude Haiku 4.5 | Lowest-latency model on the Claude API; deterministic rule-based fallback |
+| **AI Triage** | Google Gemini 2.0 Flash (REST, no SDK) | Free tier — 60 RPM / 1500 RPD, no billing required; deterministic rule-based fallback |
 | **Location Data** | OpenStreetMap Overpass + Google Places | OSM is free + global; Places fills sparse regions and enriches phones |
 | **Geocoding** | Nominatim (OSM) | Free, no API key, returns ISO-3166 country code |
 | **Offline Cache** | Workbox 7 SW + localStorage + bundled JSON | 4-tier: network → cache → bundled facilities → mock |
@@ -260,17 +260,17 @@ Roadproj/
 │   ├── main.py                       # App entry, middleware stack, CORS
 │   ├── middleware.py                 # RequestID, RequestLog, ErrorHandling
 │   ├── logging_config.py             # log format + library noise suppression
-│   ├── requirements.txt              # FastAPI, httpx, anthropic, phonenumbers, ...
+│   ├── requirements.txt              # FastAPI, httpx, phonenumbers, ...
 │   ├── requirements-dev.txt          # pytest, pytest-asyncio, ruff
 │   ├── pytest.ini
 │   ├── ruff.toml                     # Lint rule set: E, W, F, I, UP, B, C4, SIM
-│   ├── .env.example                  # ANTHROPIC_API_KEY, Mapsplatformkey
+│   ├── .env.example                  # GEMINI_API_KEY, Mapsplatformkey
 │   └── services/
 │       ├── search_service.py         # GET /search 4-phase orchestrator
 │       ├── overpass_service.py       # OSM Overpass QL + 3-mirror retry + haversine
 │       ├── googleplaces_service.py   # Nearby Search + Place Details + multi-key rotation
 │       ├── geocoder.py               # Nominatim reverse-geocode → landmark + ISO code
-│       ├── ai_triage.py              # Claude Haiku 4.5 + 4-rule deterministic fallback
+│       ├── ai_triage.py              # Gemini 2.0 Flash + 4-rule deterministic fallback
 │       ├── cache.py                  # Async TTL/LRU cache (3 module singletons)
 │       ├── rate_limiter.py           # Per-IP token bucket, X-Forwarded-For aware
 │       ├── phone_utils.py            # phonenumbers wrapper (normalise, match)
@@ -350,7 +350,7 @@ venv\Scripts\activate                 # Windows
 # source venv/bin/activate             # macOS / Linux
 pip install -r requirements.txt
 
-cp .env.example .env                  # set ANTHROPIC_API_KEY (required)
+cp .env.example .env                  # set GEMINI_API_KEY (required, free at aistudio.google.com/apikey)
 uvicorn main:app --reload
 ```
 
@@ -449,7 +449,7 @@ Generates a ready-to-read dispatch text describing the accident — useful for h
 }
 ```
 
-`source` is `"ai"` when Claude generated the text, `"template"` when the rule-based fallback was used.
+`source` is `"ai"` when Gemini generated the text, `"template"` when the rule-based fallback was used.
 
 ---
 
@@ -463,7 +463,7 @@ System health check — useful for uptime monitors and the Render health-check p
   "status": "ok",
   "uptime_seconds": 3821,
   "configured": {
-    "anthropic": true,
+    "gemini": true,
     "google_places": false
   },
   "cache": {
@@ -565,7 +565,7 @@ Every item here was considered, prototyped on paper, and rejected for a specific
 1. **New → Blueprint**
 2. Connect this repository
 3. Set environment variables:
-   - `ANTHROPIC_API_KEY` (required)
+   - `GEMINI_API_KEY` (required — free at https://aistudio.google.com/apikey)
    - `GOOGLE_PLACES_API_KEY` (optional)
 4. Deploy
 
@@ -587,7 +587,7 @@ Every item here was considered, prototyped on paper, and rejected for a specific
 | **Dual-source contact discovery** | OSM Overpass and Google Places fired in **parallel** via `asyncio.gather`. Each result carries a `source` provenance tag (`OpenStreetMap`, `Google Places`, `OSM + Google`, `Bundled directory`). `tel:` links use phone numbers normalised by the `phonenumbers` library. |
 | **Contact volume per query** | 9 OSM categories + 4 Google categories queried in parallel. Auto-expand from 5 km → 10 km radius when sparse. Top-6 phoneless results get Google Place Details lookups capped at 6 calls/search. Typical urban result: 10–15 contacts. |
 | **Offline operation** | 4-tier fallback chain in `App.jsx`: (1) backend `/search` with 8-second Workbox `NetworkFirst`, (2) `localStorage` cache keyed by ~1.1 km grid with 24-hour TTL, (3) `bundled_facilities.json` — 249 verified trauma centres and major hospitals across all 196 countries with 80 km → 600 km radius expansion, (4) hardcoded mock as final placeholder. Country emergency-number banner renders entirely from bundled data with zero network dependency. |
-| **AI integration** | Claude Haiku 4.5 triage with explicit reasoning visible on the top card. Three-layer fallback: model response → JSON validation → rule-based 4-quadrant priority table → original ordering. |
+| **AI integration** | Gemini 2.0 Flash triage with explicit reasoning visible on the top card. Three-layer fallback: model response → JSON validation → rule-based 4-quadrant priority table → original ordering. Free-tier API (60 RPM, 1500 RPD), no SDK — direct REST via httpx. |
 | **Crash detection** | Two-signal fusion: GPS velocity collapse (≥25 km/h → ≤5 km/h within 2 s) AND accelerometer spike (≥3.5 G) within a 4-second alignment window. PIN-cancel safety layer. 12-second post-alert cooldown. |
 | **International coverage** | 196 countries pre-loaded with national emergency numbers. ISO-3166 country code derived from Nominatim reverse-geocoding. Demo-location picker switches across cities (BLR / LON / TYO / BER) to verify cross-border behaviour. |
 | **Languages** | 43 locales — all 22 Indian Schedule-VIII languages + 21 global. RTL layout for Arabic, Persian, Hebrew, Urdu, Kashmiri, Sindhi. |

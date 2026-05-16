@@ -26,7 +26,7 @@ RoadSOS is a **PWA-first emergency-services discovery app**. A user opens it, th
 │                FASTAPI BACKEND (Render free tier)                   │
 │                                                                     │
 │  /search ─ orchestrates 3 upstream sources in parallel              │
-│  /triage ─ Claude Haiku 4.5 contact re-prioritization               │
+│  /triage ─ Gemini 2.0 Flash contact re-prioritization               │
 │  /health ─ liveness                                                 │
 └────────┬────────────────┬──────────────────┬────────────────────────┘
          │                │                  │
@@ -55,7 +55,7 @@ RoadSOS is a **PWA-first emergency-services discovery app**. A user opens it, th
 | `overpass_service.py` | 280+ | OSM Overpass query builder (8 categories), 3-mirror retry, smart proximity dedup, opening_hours parsing |
 | `googleplaces_service.py` | 220 | Nearby Search + Place Details. Multi-key rotation (`Mapsplatformkey` comma-separated). Find-Place-from-Text for phone enrichment |
 | `geocoder.py` | ~80 | Nominatim reverse-geocode. ISO-3166 alpha-2 country code validation. 24h cache |
-| `ai_triage.py` | 175 | Claude Haiku 4.5 contact reordering. Deterministic rule-based fallback (4 priority rules based on injured + blocking flags) |
+| `ai_triage.py` | 175 | Gemini 2.0 Flash contact reordering. Deterministic rule-based fallback (4 priority rules based on injured + blocking flags) |
 | `triage_service.py` | ~65 | `POST /triage` router. Double-layered fallback |
 | `cache.py` | ~70 | Async-safe TTL cache with LRU eviction. 3 module singletons: overpass (1h/200), google (1h/200), geocode (24h/500) |
 | `rate_limiter.py` | ~75 | Per-IP token bucket. `X-Forwarded-For` aware for Render reverse proxy. 30 req/min for `/search`, 20 for `/triage` |
@@ -150,7 +150,7 @@ Token bucket per client IP. `get_client_ip()` respects `X-Forwarded-For` (Render
 
 ### 2.6 AI Triage
 
-Claude Haiku 4.5. Receives a prompt with the contact list and situational flags (`injured`, `blocking_traffic`). Returns reordered contacts plus a 1-sentence reason.
+Gemini 2.0 Flash. Receives a prompt with the contact list and situational flags (`injured`, `blocking_traffic`). Returns reordered contacts plus a 1-sentence reason.
 
 **3-layer fallback** for reliability:
 1. Model call success + valid JSON + same contact count → use AI ordering
@@ -341,11 +341,13 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 
 **Status:** Accepted
 
-**Context:** Claude API can fail (network, quota, malformed JSON). Triage cannot be allowed to block a working contact list.
+**Context:** Gemini API can fail (network, quota, malformed JSON). Triage cannot be allowed to block a working contact list.
 
-**Decision:** Claude Haiku 4.5 attempts reorder; if anything fails, 4 explicit priority rules take over.
+**Decision:** Gemini 2.0 Flash attempts reorder; if anything fails, 4 explicit priority rules take over.
 
-**Trade-off:** Slightly less context-aware ordering on fallback, but the rules cover the dominant cases (injured/blocking quadrants). Cheap model (Haiku) keeps cost trivial.
+**Why Gemini Flash:** free tier (60 RPM / 1500 RPD on `gemini-2.0-flash`), low latency, JSON mode supported, no billing required. Called via direct REST (httpx) — no extra SDK dependency.
+
+**Trade-off:** Slightly less context-aware ordering on fallback, but the rules cover the dominant cases (injured/blocking quadrants). Free-tier model keeps cost at zero for hackathon usage.
 
 ---
 
@@ -380,7 +382,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 | 9 | Bundle size 610KB JS (181 KB gzipped) — Leaflet is heavy | Low | Dynamic import RealMap; render the dock immediately, lazy-load the map |
 | 10 | `MOCK_DATA` in `App.jsx` (7 entries, Bengaluru) ships in production bundle | Low | Tree-shake under `if (DEMO_MODE)` |
 | 11 | No P99 latency or SLO metrics | Medium | Add `Server-Timing` headers per phase; emit to a stats endpoint |
-| 12 | Three Anthropic-Claude bypasses in tests but no test for actual prompt format | Low | Snapshot test on system prompt + golden output for fixed input |
+| 12 | Three Gemini bypasses in tests but no test for actual prompt format | Low | Snapshot test on system prompt + golden output for fixed input |
 | 13 | Branch protection rules not yet applied (require owner access) | High | Set via Settings → Branches as owner |
 | 14 | `--legacy-peer-deps` flag everywhere (i18next peer warnings) | Low | Upgrade `vite-plugin-pwa` to a version compatible with current Vite 8 |
 | 15 | No CSRF / origin check on backend POST endpoints | Medium | Add origin allowlist middleware for `/triage`, `/dispatch` |
@@ -394,7 +396,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 | Render free tier cold start (~30s) | High | High UX | Yes — `startBackendWarmup()` on app mount |
 | All 3 Overpass mirrors down | Low | Medium | Yes — falls through to Google + bundled |
 | Google API key exhausted | Medium | Low | Yes — multi-key rotation + free Overpass primary |
-| Anthropic API outage | Medium | Low | Yes — rule-based triage fallback |
+| Gemini API outage / quota exhaustion | Low | Low | Yes — rule-based triage fallback |
 | User in zero-network region | High | High | Yes — bundled facilities cover 196 countries |
 | GPS unavailable (indoors) | Medium | Medium | Partial — IP geolocation fallback in `useLocation.js` |
 | Browser blocks motion permission | High | Low (crash detection only) | Yes — manual SOS button always works |

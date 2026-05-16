@@ -35,7 +35,7 @@ async def _check_rate_limit(request: Request) -> None:
     "/triage",
     summary="Prioritise contacts by situation",
     description=(
-        "Reorders the contact list using Anthropic Claude Haiku 4.5 based on "
+        "Reorders the contact list using Google Gemini 2.0 Flash based on "
         "whether anyone is injured and whether the vehicle is blocking traffic. "
         "If the AI call fails or returns malformed output, the system falls "
         "back to a deterministic rule-based prioritisation matrix — the "

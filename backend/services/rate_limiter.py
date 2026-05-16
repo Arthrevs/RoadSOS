@@ -1,8 +1,8 @@
 """Per-IP in-memory token-bucket rate limiter.
 
-Protects /search and /triage from abuse. A judge running automated load
-testing or a single malicious user cannot exhaust the Overpass quota or
-the Anthropic budget.
+Protects /search and /triage from abuse. Automated load testing or a
+single malicious user cannot exhaust the Overpass quota or the Gemini
+free-tier rate limits.
 
 Why in-memory: a hackathon backend on Render's free tier has one process.
 No need for Redis. If we ever scale horizontally, swap to slowapi+Redis.

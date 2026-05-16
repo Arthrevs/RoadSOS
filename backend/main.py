@@ -43,9 +43,9 @@ async def lifespan(app: FastAPI):
     """Startup + shutdown lifecycle (replaces deprecated @on_event)."""
     cors_label = cors_origins if cors_origins != ["*"] else "*"
     logger.info(
-        "RoadSOS API v%s starting · anthropic=%s · google_places=%s · cors=%s",
+        "RoadSOS API v%s starting · gemini=%s · google_places=%s · cors=%s",
         VERSION,
-        bool(os.getenv("ANTHROPIC_API_KEY")),
+        bool(os.getenv("GEMINI_API_KEY")),
         bool(os.getenv("GOOGLE_PLACES_API_KEY")),
         cors_label,
     )

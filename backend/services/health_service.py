@@ -52,7 +52,7 @@ async def health():
             "rate_limiting": "active",
         },
         "configured": {
-            "anthropic": bool(os.getenv("ANTHROPIC_API_KEY")),
+            "gemini": bool(os.getenv("GEMINI_API_KEY")),
             "google_places": bool(os.getenv("GOOGLE_PLACES_API_KEY")),
         },
         "counters": {
