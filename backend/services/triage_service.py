@@ -5,6 +5,7 @@ Reliability hardening:
 - All exceptions absorbed by rule-based fallback inside prioritize_contacts
 - Rate-limited per IP
 """
+
 from __future__ import annotations
 
 import logging

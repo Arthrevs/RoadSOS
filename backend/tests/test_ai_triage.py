@@ -5,8 +5,8 @@ network. The fallback is the safety net that the brief specifically rewards
 ("reliability"). If the fallback is correct, the API call merely improves the
 ordering — it doesn't change correctness.
 """
-from services.ai_triage import rule_based_triage, _validate_ai_result
 
+from services.ai_triage import _validate_ai_result, rule_based_triage
 
 CONTACTS = [
     {"id": "1", "name": "Apollo Hospital", "category": "hospital", "distance": 2.3},

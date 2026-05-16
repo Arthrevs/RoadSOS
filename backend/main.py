@@ -9,9 +9,11 @@ Middleware stack (order matters):
 4. GZipMiddleware          — compresses responses
 5. CORSMiddleware          — innermost (closest to handlers)
 """
+
 import logging
 import os
 from contextlib import asynccontextmanager
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -50,10 +52,13 @@ async def lifespan(app: FastAPI):
     yield
     logger.info("RoadSOS API v%s shutting down", VERSION)
 
+
 # ─── CORS ────────────────────────────────────────────────────────────────
 # Default to permissive for the hackathon demo; tighten via env in prod.
 cors_origins_env = os.getenv("CORS_ALLOW_ORIGINS", "*")
-cors_origins = [o.strip() for o in cors_origins_env.split(",")] if cors_origins_env != "*" else ["*"]
+cors_origins = (
+    [o.strip() for o in cors_origins_env.split(",")] if cors_origins_env != "*" else ["*"]
+)
 
 
 app = FastAPI(

@@ -8,13 +8,13 @@ the frontend never sees a difference.
 Why fallback matters: emergency software cannot have its core feature dependent
 on a 3rd-party API. The brief explicitly scores "reliability".
 """
+
 from __future__ import annotations
 
 import json
 import logging
 import os
 import re
-from typing import Optional
 
 from anthropic import AsyncAnthropic
 
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 MODEL = "claude-haiku-4-5-20251001"
 MAX_TOKENS = 2048
 
-_client: Optional[AsyncAnthropic] = None
+_client: AsyncAnthropic | None = None
 
 SYSTEM_PROMPT = """You are RoadSOS Triage — an emergency dispatcher AI for road accidents.
 
@@ -84,7 +84,7 @@ def rule_based_triage(injured: bool, blocking: bool, contacts: list[dict]) -> di
     }
 
 
-def _validate_ai_result(result: object, original_count: int) -> Optional[dict]:
+def _validate_ai_result(result: object, original_count: int) -> dict | None:
     """Return the result if it matches the contract, else None."""
     if not isinstance(result, dict):
         return None
@@ -119,8 +119,11 @@ async def prioritize_contacts(injured: bool, blocking: bool, contacts: list[dict
         situation_text = "; ".join(situation)
 
         summary = [
-            {"name": c.get("name", "?"), "category": c.get("category", "?"),
-             "distance_km": c.get("distance", "?")}
+            {
+                "name": c.get("name", "?"),
+                "category": c.get("category", "?"),
+                "distance_km": c.get("distance", "?"),
+            }
             for c in contacts
         ]
 

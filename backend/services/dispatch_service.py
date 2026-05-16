@@ -5,12 +5,12 @@ description, they read this short, factual, dispatcher-friendly summary.
 
 AI-generated when API is configured, deterministic template otherwise.
 """
+
 from __future__ import annotations
 
 import json
 import logging
 import os
-from typing import Optional
 
 from anthropic import AsyncAnthropic
 from fastapi import APIRouter
@@ -42,7 +42,7 @@ sentences with clear pauses. Avoid abbreviations except "GPS"."""
 class DispatchRequest(BaseModel):
     lat: float = Field(..., ge=-90, le=90)
     lon: float = Field(..., ge=-180, le=180)
-    landmark: Optional[str] = None
+    landmark: str | None = None
     injured: bool = False
     blocking: bool = False
 
