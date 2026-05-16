@@ -70,5 +70,6 @@
   "card.open": "Offen",
   "card.closed": "Geschlossen",
   "card.unknown_status": "Status unbekannt",
-  "footer.offline_fallback": "Server nicht erreichbar — Demodaten werden angezeigt. Notrufnummern funktionieren immer offline."
+  "footer.offline_fallback": "Server nicht erreichbar — Demodaten werden angezeigt. Notrufnummern funktionieren immer offline.",
+  "status.connecting": "Verbindung…"
 }

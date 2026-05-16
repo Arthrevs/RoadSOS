@@ -70,5 +70,6 @@
   "card.open": "Açık",
   "card.closed": "Kapalı",
   "card.unknown_status": "Durum bilinmiyor",
-  "footer.offline_fallback": "Sunucuya ulaşılamadı — demo verisi gösteriliyor. Acil durum numaraları her zaman çevrimdışı çalışır."
+  "footer.offline_fallback": "Sunucuya ulaşılamadı — demo verisi gösteriliyor. Acil durum numaraları her zaman çevrimdışı çalışır.",
+  "status.connecting": "Bağlanıyor…"
 }

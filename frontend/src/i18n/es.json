@@ -70,5 +70,6 @@
   "card.open": "Abierto",
   "card.closed": "Cerrado",
   "card.unknown_status": "Estado desconocido",
-  "footer.offline_fallback": "No se pudo contactar el servidor — mostrando datos de demostración. Los números de emergencia siempre funcionan sin conexión."
+  "footer.offline_fallback": "No se pudo contactar el servidor — mostrando datos de demostración. Los números de emergencia siempre funcionan sin conexión.",
+  "status.connecting": "Conectando…"
 }

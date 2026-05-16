@@ -70,5 +70,6 @@
   "card.open": "영업 중",
   "card.closed": "영업 종료",
   "card.unknown_status": "상태 알 수 없음",
-  "footer.offline_fallback": "서버에 연결할 수 없습니다 — 데모 데이터 표시. 비상 번호는 항상 오프라인에서 작동합니다."
+  "footer.offline_fallback": "서버에 연결할 수 없습니다 — 데모 데이터 표시. 비상 번호는 항상 오프라인에서 작동합니다.",
+  "status.connecting": "연결 중…"
 }

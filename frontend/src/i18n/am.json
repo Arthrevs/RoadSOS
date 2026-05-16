@@ -70,5 +70,6 @@
   "card.open": "ክፍት",
   "card.closed": "ዝግ",
   "card.unknown_status": "ሁኔታ አይታወቅም",
-  "footer.offline_fallback": "አገልጋዩን መድረስ አልተቻለም — የማሳያ ውሂብ። የአደጋ ቁጥሮች ሁልጊዜ ከመስመር ውጭ ይሰራሉ።"
+  "footer.offline_fallback": "አገልጋዩን መድረስ አልተቻለም — የማሳያ ውሂብ። የአደጋ ቁጥሮች ሁልጊዜ ከመስመር ውጭ ይሰራሉ።",
+  "status.connecting": "ግንኙነት…"
 }

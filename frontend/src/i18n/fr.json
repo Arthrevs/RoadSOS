@@ -70,5 +70,6 @@
   "card.open": "Ouvert",
   "card.closed": "Fermé",
   "card.unknown_status": "Statut inconnu",
-  "footer.offline_fallback": "Impossible de joindre le serveur — données de démonstration affichées. Les numéros d'urgence fonctionnent toujours hors ligne."
+  "footer.offline_fallback": "Impossible de joindre le serveur — données de démonstration affichées. Les numéros d'urgence fonctionnent toujours hors ligne.",
+  "status.connecting": "Connexion…"
 }

@@ -70,5 +70,6 @@
   "card.open": "Imefunguliwa",
   "card.closed": "Imefungwa",
   "card.unknown_status": "Hali haijulikani",
-  "footer.offline_fallback": "Seva haifikiwi — inaonyesha data ya mfano. Nambari za dharura zinafanya kazi bila mtandao."
+  "footer.offline_fallback": "Seva haifikiwi — inaonyesha data ya mfano. Nambari za dharura zinafanya kazi bila mtandao.",
+  "status.connecting": "Inaunganisha…"
 }

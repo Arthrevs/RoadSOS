@@ -70,5 +70,6 @@
   "card.open": "Deschis",
   "card.closed": "Închis",
   "card.unknown_status": "Stare necunoscută",
-  "footer.offline_fallback": "Serverul nu poate fi contactat — date demo. Numerele de urgență funcționează întotdeauna offline."
+  "footer.offline_fallback": "Serverul nu poate fi contactat — date demo. Numerele de urgență funcționează întotdeauna offline.",
+  "status.connecting": "Se conectează…"
 }

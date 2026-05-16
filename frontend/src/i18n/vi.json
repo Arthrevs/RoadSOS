@@ -70,5 +70,6 @@
   "card.open": "Mở cửa",
   "card.closed": "Đóng cửa",
   "card.unknown_status": "Trạng thái không xác định",
-  "footer.offline_fallback": "Không thể kết nối với máy chủ — hiển thị dữ liệu demo. Số khẩn cấp luôn hoạt động ngoại tuyến."
+  "footer.offline_fallback": "Không thể kết nối với máy chủ — hiển thị dữ liệu demo. Số khẩn cấp luôn hoạt động ngoại tuyến.",
+  "status.connecting": "Đang kết nối…"
 }

@@ -70,5 +70,6 @@
   "card.open": "उगडें",
   "card.closed": "बंद",
   "card.unknown_status": "स्थिती अज्ञात",
-  "footer.offline_fallback": "सर्व्हर मेळना — डेमो डेटा दाखयता। आपातकालीन क्रमांक सदांच ऑफलायन काम करतात।"
+  "footer.offline_fallback": "सर्व्हर मेळना — डेमो डेटा दाखयता। आपातकालीन क्रमांक सदांच ऑफलायन काम करतात।",
+  "status.connecting": "जोडता…"
 }

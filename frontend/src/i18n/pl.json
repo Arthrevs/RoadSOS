@@ -70,5 +70,6 @@
   "card.open": "Otwarte",
   "card.closed": "Zamknięte",
   "card.unknown_status": "Status nieznany",
-  "footer.offline_fallback": "Serwer nieosiągalny — dane demonstracyjne. Numery alarmowe zawsze działają offline."
+  "footer.offline_fallback": "Serwer nieosiągalny — dane demonstracyjne. Numery alarmowe zawsze działają offline.",
+  "status.connecting": "Łączenie…"
 }

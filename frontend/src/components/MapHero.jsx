@@ -1,8 +1,9 @@
-import React from 'react';
-import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import RealMap from './RealMap';
 import SOSButton from './SOSButton';
+import { subscribeBackendStatus } from '../utils/backendWarmup';
 
 const CAT_ICONS = {
   hospital: Hospital,
@@ -97,6 +98,12 @@ export default function MapHero({
   const markerContacts = (contacts || []).slice(0, 6);
   const dockContacts = (contacts || []).slice(0, 3);
 
+  // Backend readiness — drives the warming-up state of the status pill.
+  // 'warming' / 'cold' downgrade the green online indicator to amber so
+  // the user understands the search backend is still spinning up.
+  const [backendStatus, setBackendStatus] = useState('unknown');
+  useEffect(() => subscribeBackendStatus(setBackendStatus), []);
+
   const formatCoords = (loc) => {
     if (!loc?.lat || !loc?.lon) return t('location.waiting');
     const ns = loc.lat >= 0 ? 'N' : 'S';
@@ -169,19 +176,41 @@ export default function MapHero({
               <AlertTriangle size={13} strokeWidth={2.5} />
             </button>
           )}
-          <div className={`mh-status-pill ${isOnline && !gpsLost ? 'mh-status-online' : 'mh-status-offline'}`}>
-            {isOnline && !gpsLost ? (
-              <>
+          {(() => {
+            // Three states, in priority order:
+            //   1. Browser offline             → red 'OFFLINE'
+            //   2. Backend cold/warming        → amber 'CONNECTING…'
+            //   3. Otherwise (online + ready)  → green 'ONLINE'
+            const isOffline = !isOnline || gpsLost;
+            const isWarming = !isOffline
+              && (backendStatus === 'warming' || backendStatus === 'cold' || backendStatus === 'unknown');
+
+            if (isOffline) {
+              return (
+                <div className="mh-status-pill mh-status-offline">
+                  <WifiOff size={11} strokeWidth={2.4} />
+                  {t('status.offline')}
+                </div>
+              );
+            }
+            if (isWarming) {
+              return (
+                <div
+                  className="mh-status-pill mh-status-warming"
+                  title="Backend is starting up (Render free tier cold start, ~30 s)"
+                >
+                  <Loader2 size={11} strokeWidth={2.6} className="mh-status-spin" />
+                  {t('status.connecting', 'Connecting…')}
+                </div>
+              );
+            }
+            return (
+              <div className="mh-status-pill mh-status-online">
                 <span className="mh-status-dot" />
                 {t('status.online')}
-              </>
-            ) : (
-              <>
-                <WifiOff size={11} strokeWidth={2.4} />
-                {t('status.offline')}
-              </>
-            )}
-          </div>
+              </div>
+            );
+          })()}
         </div>
       </div>
 

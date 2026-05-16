@@ -1093,9 +1093,25 @@
 }
 
 .mh-status-offline {
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.34);
+  color: #FCA5A5;
+}
+
+.mh-status-warming {
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(245, 158, 11, 0.34);
   color: #FCD34D;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 10px;
+  font-weight: 700;
+}
+.mh-status-spin {
+  animation: rs-spin 1.1s linear infinite;
+}
+@keyframes rs-spin {
+  to { transform: rotate(360deg); }
 }
 
 .mh-status-dot {

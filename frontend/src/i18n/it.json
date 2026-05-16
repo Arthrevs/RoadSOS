@@ -70,5 +70,6 @@
   "card.open": "Aperto",
   "card.closed": "Chiuso",
   "card.unknown_status": "Stato sconosciuto",
-  "footer.offline_fallback": "Server irraggiungibile — dati dimostrativi. I numeri di emergenza funzionano sempre offline."
+  "footer.offline_fallback": "Server irraggiungibile — dati dimostrativi. I numeri di emergenza funzionano sempre offline.",
+  "status.connecting": "Connessione…"
 }

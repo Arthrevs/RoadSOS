@@ -70,5 +70,6 @@
   "card.open": "Bukas",
   "card.closed": "Sarado",
   "card.unknown_status": "Hindi alam ang estado",
-  "footer.offline_fallback": "Hindi maabot ang server — nagpapakita ng demo data. Ang mga numero ng emergency ay palaging gumagana offline."
+  "footer.offline_fallback": "Hindi maabot ang server — nagpapakita ng demo data. Ang mga numero ng emergency ay palaging gumagana offline.",
+  "status.connecting": "Kumokonekta…"
 }

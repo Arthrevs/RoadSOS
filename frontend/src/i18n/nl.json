@@ -70,5 +70,6 @@
   "card.open": "Open",
   "card.closed": "Gesloten",
   "card.unknown_status": "Status onbekend",
-  "footer.offline_fallback": "Server onbereikbaar — demogegevens. Noodnummers werken altijd offline."
+  "footer.offline_fallback": "Server onbereikbaar — demogegevens. Noodnummers werken altijd offline.",
+  "status.connecting": "Verbinden…"
 }

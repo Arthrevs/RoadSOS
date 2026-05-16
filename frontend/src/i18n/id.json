@@ -70,5 +70,6 @@
   "card.open": "Buka",
   "card.closed": "Tutup",
   "card.unknown_status": "Status tidak diketahui",
-  "footer.offline_fallback": "Server tidak dapat dijangkau — menampilkan data demo. Nomor darurat selalu berfungsi offline."
+  "footer.offline_fallback": "Server tidak dapat dijangkau — menampilkan data demo. Nomor darurat selalu berfungsi offline.",
+  "status.connecting": "Menghubungkan…"
 }

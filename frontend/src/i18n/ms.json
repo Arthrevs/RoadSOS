@@ -70,5 +70,6 @@
   "card.open": "Buka",
   "card.closed": "Tutup",
   "card.unknown_status": "Status tidak diketahui",
-  "footer.offline_fallback": "Pelayan tidak dapat dihubungi — memaparkan data demo. Nombor kecemasan sentiasa berfungsi luar talian."
+  "footer.offline_fallback": "Pelayan tidak dapat dihubungi — memaparkan data demo. Nombor kecemasan sentiasa berfungsi luar talian.",
+  "status.connecting": "Menyambung…"
 }

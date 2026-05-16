@@ -70,5 +70,6 @@
   "card.open": "营业中",
   "card.closed": "已关闭",
   "card.unknown_status": "状态未知",
-  "footer.offline_fallback": "无法连接服务器 — 显示演示数据。紧急号码始终离线工作。"
+  "footer.offline_fallback": "无法连接服务器 — 显示演示数据。紧急号码始终离线工作。",
+  "status.connecting": "正在连接…"
 }

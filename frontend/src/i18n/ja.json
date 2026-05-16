@@ -70,5 +70,6 @@
   "card.open": "営業中",
   "card.closed": "閉店",
   "card.unknown_status": "状態不明",
-  "footer.offline_fallback": "サーバーに接続できません — デモデータを表示。緊急番号は常にオフラインで動作します。"
+  "footer.offline_fallback": "サーバーに接続できません — デモデータを表示。緊急番号は常にオフラインで動作します。",
+  "status.connecting": "接続中…"
 }

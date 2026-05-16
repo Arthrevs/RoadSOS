@@ -70,5 +70,6 @@
   "card.open": "פתוח",
   "card.closed": "סגור",
   "card.unknown_status": "מצב לא ידוע",
-  "footer.offline_fallback": "השרת לא נגיש — מציג נתוני דמו. מספרי חירום עובדים תמיד ללא חיבור."
+  "footer.offline_fallback": "השרת לא נגיש — מציג נתוני דמו. מספרי חירום עובדים תמיד ללא חיבור.",
+  "status.connecting": "מתחבר…"
 }
