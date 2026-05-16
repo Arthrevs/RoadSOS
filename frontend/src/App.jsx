@@ -21,6 +21,8 @@ import RoutePlanner from './components/RoutePlanner';
 import MedicalIdModal from './components/MedicalIdModal';
 import MapHero from './components/MapHero';
 import DispatchScreen from './components/DispatchScreen';
+import LanguagePicker from './components/LanguagePicker';
+import { hasUserChosenLanguage } from './i18n';
 import { requestMotionPermission } from './hooks/useLocation';
 import { DEMO_MODE } from './utils/demoMode';
 import { startBackendWarmup } from './utils/backendWarmup';
@@ -130,11 +132,15 @@ function markOnboarded() {
 
 // ─── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
+  const [langPickerOpen, setLangPickerOpen] = useState(() => !hasUserChosenLanguage());
   const [demoIdx, setDemoIdx] = useState(0);
   const [crashOpen, setCrashOpen] = useState(false);
   const [cat, setCat] = useState("All");
   const [routePlannerOpen, setRoutePlannerOpen] = useState(false);
-  const [medicalOpen, setMedicalOpen] = useState(() => isFirstLaunch());
+  // Show Medical ID only AFTER the user picks a language on first launch.
+  const [medicalOpen, setMedicalOpen] = useState(
+    () => !hasUserChosenLanguage() ? false : isFirstLaunch(),
+  );
   const [medicalIdConfigured, setMedicalIdConfigured] = useState(() => hasMedicalId());
   const [dispatchOpen, setDispatchOpen] = useState(false);
   const [dispatchedAt, setDispatchedAt] = useState(null);
@@ -287,6 +293,17 @@ export default function App() {
 
   return (
     <div className="app has-map-hero">
+
+      {/* ── First-launch language picker (gates Medical ID) ── */}
+      {langPickerOpen && (
+        <LanguagePicker
+          onConfirm={() => {
+            setLangPickerOpen(false);
+            // After language chosen, open Medical ID on first launch
+            if (isFirstLaunch()) setMedicalOpen(true);
+          }}
+        />
+      )}
 
       {/* ── Map-anchored Hero (replaces old telemetry header + SOS section) ── */}
       <MapHero

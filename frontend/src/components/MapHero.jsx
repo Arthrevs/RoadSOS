@@ -1,5 +1,6 @@
 import React from 'react';
 import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { MapBackground, UserDot, ServiceMarker } from './MapBackground';
 import SOSButton from './SOSButton';
 
@@ -32,6 +33,7 @@ const CAT_BG = {
 };
 
 function MiniContact({ contact, last }) {
+  const { t } = useTranslation();
   const cat = (contact.category || 'repair').toLowerCase();
   const Icon = CAT_ICONS[cat] || Hospital;
   const tone = CAT_TONES[cat] || 'teal';
@@ -55,7 +57,7 @@ function MiniContact({ contact, last }) {
       <span className="mh-mini-body">
         <span className="mh-mini-name">{contact.name}</span>
         <span className="mh-mini-meta">
-          {cat.charAt(0).toUpperCase() + cat.slice(1)}{' '}
+          {t(`category.${cat}`, cat.charAt(0).toUpperCase() + cat.slice(1))}{' '}
           <span style={{ color: '#CBD5E1' }}>·</span>{' '}
           <span style={{ fontFamily: 'var(--rs-font-mono)' }}>
             {typeof contact.distance === 'number' ? contact.distance.toFixed(1) : '?'} km
@@ -90,6 +92,7 @@ export default function MapHero({
   onTestCrash,
   demoMode,
 }) {
+  const { t } = useTranslation();
   // Pick up to 4 nearest contacts for markers on map
   const markerContacts = (contacts || []).slice(0, 4);
   const dockContacts = (contacts || []).slice(0, 3);
@@ -103,7 +106,7 @@ export default function MapHero({
   ];
 
   const formatCoords = (loc) => {
-    if (!loc?.lat || !loc?.lon) return 'Waiting for signal...';
+    if (!loc?.lat || !loc?.lon) return t('location.waiting');
     const ns = loc.lat >= 0 ? 'N' : 'S';
     const ew = loc.lon >= 0 ? 'E' : 'W';
     return `${Math.abs(loc.lat).toFixed(4)}°${ns} · ${Math.abs(loc.lon).toFixed(4)}°${ew}`;
@@ -125,10 +128,10 @@ export default function MapHero({
           </svg>
         </div>
         <div className="mh-location">
-          <div className="mh-location-name">{landmark || 'Finding location...'}</div>
+          <div className="mh-location-name">{landmark || t('location.finding')}</div>
           <div className="mh-location-coords">
             {formatCoords(location)}
-            {gpsLost && ' · cached'}
+            {gpsLost && ' · ' + t('location.cached')}
           </div>
         </div>
 
@@ -138,8 +141,8 @@ export default function MapHero({
             <button
               className="mh-action-btn"
               onClick={onPlanTrip}
-              title="Pre-cache route for offline use"
-              aria-label="Plan trip"
+              title={t('actions.plan_trip')}
+              aria-label={t('actions.plan_trip')}
             >
               <Map size={14} strokeWidth={2} />
             </button>
@@ -148,8 +151,8 @@ export default function MapHero({
             <button
               className={`mh-action-btn mh-action-btn--id ${!medicalIdConfigured ? 'mh-action-btn--unset' : ''}`}
               onClick={onMedicalId}
-              title={medicalIdConfigured ? 'View / edit Medical ID' : 'Set up Medical ID — required for direct SOS'}
-              aria-label="Medical ID"
+              title={medicalIdConfigured ? t('actions.medical_id') : t('actions.medical_id_unset')}
+              aria-label={t('actions.medical_id')}
             >
               🆔{!medicalIdConfigured && <span className="mh-action-dot" />}
             </button>
@@ -168,12 +171,12 @@ export default function MapHero({
             {isOnline && !gpsLost ? (
               <>
                 <span className="mh-status-dot" />
-                ONLINE
+                {t('status.online')}
               </>
             ) : (
               <>
                 <WifiOff size={11} strokeWidth={2.4} />
-                OFFLINE
+                {t('status.offline')}
               </>
             )}
           </div>
@@ -219,8 +222,8 @@ export default function MapHero({
         {dockContacts.length > 0 && (
           <div className="mh-dock-card">
             <div className="mh-dock-header">
-              <span className="mh-dock-kicker">Nearest {dockContacts.length} · Tap to call</span>
-              <a href="#nearby-services" className="mh-dock-seeall">See all →</a>
+              <span className="mh-dock-kicker">{t('dock.nearest', { count: dockContacts.length })}</span>
+              <a href="#nearby-services" className="mh-dock-seeall">{t('dock.see_all')} →</a>
             </div>
             {dockContacts.map((c, i) => (
               <MiniContact key={c.id || i} contact={c} last={i === dockContacts.length - 1} />
