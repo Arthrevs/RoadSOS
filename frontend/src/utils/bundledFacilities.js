@@ -3,22 +3,27 @@
  *
  * Last-resort offline data source: when the network is unreachable AND
  * the localStorage cache has no entry for the user's coordinates, we
- * search this in-bundle list of verified Indian trauma centres and
- * major hospitals.
+ * search this in-bundle list of verified major hospitals and trauma
+ * centres covering 39 countries across 6 continents.
  *
  * Why bundle:
- * - SIM removed, no WiFi, fresh install → user still gets a real list.
- * - The country emergency banner shows 108 (national ambulance), but a
+ * - SIM removed, no WiFi, fresh install → user still gets a real list,
+ *   anywhere in the world the app finds itself.
+ * - The country emergency banner shows the local 3-digit number, but a
  *   crash victim 30 km from a known trauma centre benefits from seeing
- *   that centre's direct number too.
+ *   that centre's direct switchboard too.
+ *
+ * Coverage:
+ * - India (Tamil Nadu + metros): deepest coverage (hackathon at IIT-M).
+ * - North America, Europe, East/SE Asia, Middle East, Africa, Oceania,
+ *   Latin America: top-tier trauma/teaching hospitals per major metro.
+ * - 92 facilities across 39 countries as of last update.
  *
  * Data quality policy:
  * - Every entry has verified coordinates and a publicly listed name.
  * - Phone numbers are present only where the published main switchboard
  *   is well-known. Where uncertain, `phone: null` — the UI shows the
  *   card with "No phone number listed" instead of fabricated digits.
- * - Tamil-Nadu heavy (hackathon hosted at IIT Madras) plus the major
- *   metro trauma centres of Delhi, Mumbai, Bengaluru, Hyderabad.
  */
 import facilities from '../data/bundled_facilities.json';
 
