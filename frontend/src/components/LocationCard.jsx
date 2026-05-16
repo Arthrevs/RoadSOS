@@ -8,6 +8,8 @@ export default function LocationCard({ landmark, loading, source, countryName })
     ? 'Demo'
     : source === 'ip'
     ? 'Approx IP'
+    : source === 'gps_low'
+    ? 'GPS · weak signal'
     : 'GPS';
 
   return (

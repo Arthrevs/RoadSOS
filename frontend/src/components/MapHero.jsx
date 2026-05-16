@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2 } from 'lucide-react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2, RotateCw } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import RealMap from './RealMap';
 import SOSButton from './SOSButton';
@@ -102,7 +102,24 @@ export default function MapHero({
   // 'warming' / 'cold' downgrade the green online indicator to amber so
   // the user understands the search backend is still spinning up.
   const [backendStatus, setBackendStatus] = useState('unknown');
+  const [refreshing, setRefreshing] = useState(false);
   useEffect(() => subscribeBackendStatus(setBackendStatus), []);
+
+  // ── Manual location refresh (fixes stale browser geolocation cache on laptops) ──
+  // On Windows Edge / Chrome, browser geolocation can cache old results across
+  // sessions. This button forces a fresh geolocation lookup.
+  const handleRefreshLocation = useCallback(() => {
+    setRefreshing(true);
+    if (!navigator.geolocation) {
+      setRefreshing(false);
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      () => setRefreshing(false),
+      () => setRefreshing(false),
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  }, []);
 
   const formatCoords = (loc) => {
     if (!loc?.lat || !loc?.lon) return t('location.waiting');
@@ -144,8 +161,17 @@ export default function MapHero({
           </div>
         </div>
 
-        {/* Action strip — Medical ID, Plan Trip, status pill */}
+        {/* Action strip — Medical ID, Plan Trip, Refresh Location, status pill */}
         <div className="mh-actions">
+          <button
+            className="mh-action-btn"
+            onClick={handleRefreshLocation}
+            disabled={refreshing}
+            title="Refresh location (fixes stale cache on laptops)"
+            aria-label="Refresh location"
+          >
+            <RotateCw size={14} strokeWidth={2} className={refreshing ? 'mh-action-spin' : ''} />
+          </button>
           {onPlanTrip && (
             <button
               className="mh-action-btn"

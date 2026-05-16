@@ -60,15 +60,14 @@ const CAT_EMOJI = {
   tyre: '🛞',
 };
 
-// Saffron stroke (top band of the Indian flag) for the official boundary.
-// Tasteful low fill so it doesn't dominate the map, just makes the claim
-// visible at all relevant zoom levels.
+// Subtle dark border to enforce Survey of India compliant boundaries 
+// masking the map base tiles dashed lines without being a bright yellow outline.
 const INDIA_BOUNDARY_STYLE = {
-  color: '#FF9933',
-  weight: 2.2,
-  opacity: 0.9,
-  fillColor: '#FF9933',
-  fillOpacity: 0.04,
+  color: '#333333',
+  weight: 2,
+  opacity: 0.8,
+  fillColor: 'transparent',
+  fillOpacity: 0,
   dashArray: '0',
   interactive: false,
 };
@@ -122,6 +121,32 @@ function MapRecenter({ lat, lon, zoom }) {
       map.setView([lat, lon], zoom, { animate: true, duration: 0.6 });
     }
   }, [lat, lon, zoom, map]);
+  return null;
+}
+
+/** Observes the map container size and fixes the "grey/blank gap" issue
+ *  by invalidating size when layout changes (e.g. vh/svh shifts, load) */
+function MapResizer() {
+  const map = useMap();
+  useEffect(() => {
+    // Invalidate size on mount to catch any immediate layout shifts
+    setTimeout(() => map.invalidateSize(), 50);
+    setTimeout(() => map.invalidateSize(), 300);
+    
+    // Watch the container for subsequent resizes
+    const mapContainer = map.getContainer();
+    if (!mapContainer || !window.ResizeObserver) return;
+    
+    const observer = new ResizeObserver(() => {
+      // Use requestAnimationFrame to avoid ResizeObserver loop limit errors
+      requestAnimationFrame(() => {
+        map.invalidateSize();
+      });
+    });
+    observer.observe(mapContainer);
+    
+    return () => observer.disconnect();
+  }, [map]);
   return null;
 }
 
@@ -218,6 +243,7 @@ export default function RealMap({
           />
         )}
 
+        <MapResizer />
         <MapRecenter lat={lat} lon={lon} zoom={hasGps ? zoom : 4} />
 
         {hasGps && (

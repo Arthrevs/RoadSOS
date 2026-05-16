@@ -48,6 +48,30 @@ registerRoute(
   })
 );
 
+// ─── Map tile caching ────────────────────────────────────────────────────────
+// CartoDB Dark Matter tiles — CacheFirst so the basemap works fully offline
+// after the user's first visit.  30-day TTL, 250-tile LRU cap keeps storage
+// under ~5 MB (typical tile ~20 KB × 250 = ~5 MB).
+//
+// CartoDB tiles are cross-origin but served with CORS headers, so Workbox can
+// cache the real response (not an opaque one) and the ExpirationPlugin can
+// inspect Content-Length for the size budget.
+registerRoute(
+  ({ url }) =>
+    url.hostname.endsWith('basemaps.cartocdn.com') &&
+    url.pathname.includes('dark_all'),
+  new CacheFirst({
+    cacheName: 'roadsos-map-tiles',
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries   : 250,
+        maxAgeSeconds: 30 * 24 * 60 * 60,   // 30 days
+        purgeOnQuotaError: true,
+      }),
+    ],
+  })
+);
+
 // Static assets: StaleWhileRevalidate
 registerRoute(
   ({ request }) => request.destination === 'image' || request.destination === 'font',

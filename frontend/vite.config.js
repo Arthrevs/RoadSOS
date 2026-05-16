@@ -35,6 +35,7 @@ export default defineConfig({
       '/dispatch-summary': 'http://localhost:8000',
       '/health'          : 'http://localhost:8000',
       '/offline-pack'    : 'http://localhost:8000',
+      '/track'           : 'http://localhost:8000',
     },
   },
 });

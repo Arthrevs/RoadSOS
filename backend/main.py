@@ -32,6 +32,7 @@ from services.dispatch_service import dispatch_router
 from services.health_service import VERSION, health_router
 from services.offline_service import offline_router
 from services.search_service import search_router
+from services.tracking_service import tracking_router
 from services.triage_service import triage_router
 
 setup_logging()
@@ -99,11 +100,12 @@ app.add_middleware(RequestLogMiddleware)
 app.add_middleware(ErrorHandlingMiddleware)
 
 # ─── Routers ─────────────────────────────────────────────────────────────
-app.include_router(health_router, tags=["Observability"])
-app.include_router(search_router, tags=["Search"])
-app.include_router(triage_router, tags=["AI Triage"])
+app.include_router(health_router,   tags=["Observability"])
+app.include_router(search_router,   tags=["Search"])
+app.include_router(triage_router,   tags=["AI Triage"])
 app.include_router(dispatch_router, tags=["Dispatch"])
-app.include_router(offline_router, tags=["Offline"])
+app.include_router(offline_router,  tags=["Offline"])
+app.include_router(tracking_router, tags=["Tracking"])
 
 
 @app.get("/", summary="Service index", tags=["Observability"])
@@ -119,5 +121,6 @@ def root():
             "/triage",
             "/dispatch-summary",
             "/offline-pack",
+            "/track",
         ],
     }

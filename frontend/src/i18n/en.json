@@ -71,5 +71,10 @@
   "card.open": "Open",
   "card.closed": "Closed",
   "card.unknown_status": "Status unknown",
-  "footer.offline_fallback": "Could not reach server — showing demo data. Emergency numbers always work offline."
+  "footer.offline_fallback": "Could not reach server — showing demo data. Emergency numbers always work offline.",
+  "track.share_prompt": "Share live location with rescuers:",
+  "track.copy_link": "Copy link",
+  "track.copied": "Copied!",
+  "track.creating": "Creating live link…",
+  "track.failed": "Live link unavailable offline"
 }
