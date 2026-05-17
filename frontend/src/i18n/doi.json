@@ -70,5 +70,21 @@
   "card.open": "खुल्ला",
   "card.closed": "बंद",
   "card.unknown_status": "हालत पता नेईं",
-  "footer.offline_fallback": "सर्वर तगर नेईं पुज सके — डेमो डाटा दस्सेआ जाह्आ। आपात नम्बर हमेशा ऑफलाइन कम्म करदे न।"
+  "footer.offline_fallback": "सर्वर तगर नेईं पुज सके — डेमो डाटा दस्सेआ जाह्आ। आपात नम्बर हमेशा ऑफलाइन कम्म करदे न।",
+  "status.connecting": "जुड़ी रहियै…",
+  "track.share_prompt": "Share live location with rescuers:",
+  "track.copy_link": "Copy link",
+  "track.copied": "Copied!",
+  "track.creating": "Creating live link...",
+  "track.failed": "Live link unavailable offline",
+  "actions.set_location": "Set location manually",
+  "status.manual": "MANUAL",
+  "manual_location.title": "Set Location",
+  "manual_location.choose_method": "How would you like to set your location?",
+  "manual_location.tap_map": "Tap on map",
+  "manual_location.search_address": "Search address",
+  "manual_location.search_placeholder": "City, address, or coordinates",
+  "manual_location.searching": "Searching…",
+  "manual_location.no_results": "No results found",
+  "manual_location.tap_hint": "Tap anywhere on the map to set your location"
 }

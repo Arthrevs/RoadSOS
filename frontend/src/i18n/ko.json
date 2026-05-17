@@ -70,5 +70,21 @@
   "card.open": "영업 중",
   "card.closed": "영업 종료",
   "card.unknown_status": "상태 알 수 없음",
-  "footer.offline_fallback": "서버에 연결할 수 없습니다 — 데모 데이터 표시. 비상 번호는 항상 오프라인에서 작동합니다."
+  "footer.offline_fallback": "서버에 연결할 수 없습니다 — 데모 데이터 표시. 비상 번호는 항상 오프라인에서 작동합니다.",
+  "status.connecting": "연결 중…",
+  "track.share_prompt": "구조대와 실시간 위치 공유:",
+  "track.copy_link": "링크 복사",
+  "track.copied": "복사됨!",
+  "track.creating": "실시간 링크 생성 중...",
+  "track.failed": "오프라인에서 실시간 링크 사용 불가",
+  "actions.set_location": "Set location manually",
+  "status.manual": "MANUAL",
+  "manual_location.title": "Set Location",
+  "manual_location.choose_method": "How would you like to set your location?",
+  "manual_location.tap_map": "Tap on map",
+  "manual_location.search_address": "Search address",
+  "manual_location.search_placeholder": "City, address, or coordinates",
+  "manual_location.searching": "Searching…",
+  "manual_location.no_results": "No results found",
+  "manual_location.tap_hint": "Tap anywhere on the map to set your location"
 }

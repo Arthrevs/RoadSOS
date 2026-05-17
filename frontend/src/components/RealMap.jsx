@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { MapContainer, TileLayer, Marker, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -8,16 +8,15 @@ import 'leaflet/dist/leaflet.css';
  *
  * Tile provider: CartoDB Dark Matter (free, no API key, matches our dark
  * theme). The tiles cover the entire globe — every country, every ocean.
+ * OpenStreetMap tile data shows boundaries appropriate to the user's location.
  * Attribution is legally required for OSM — rendered in bottom-right at
  * small size.
  *
  * Props:
  *   - location: { lat, lon } user position (centers the map)
  *   - contacts: array of { id, name, category, lat, lon, distance, phone }
- *   - countryCode: ISO-3166 alpha-2 from reverse geocode (currently unused
- *     by the map renderer — reserved for future country-specific overlays)
  *   - gpsLost: dim user dot if GPS is stale
- *   - draggable: pan/pinch enabled (default true — user can explore)
+ *   - draggable: pan/pinch enabled (default true)
  *   - zoom: initial zoom level (default 15 = neighbourhood)
  */
 
@@ -102,15 +101,63 @@ function MapRecenter({ lat, lon, zoom }) {
   return null;
 }
 
-export default function RealMap({
-  location,
-  contacts = [],
-  countryCode = null,
-  gpsLost = false,
-  draggable = true,
-  zoom = 15,
-}) {
-  const mapRef = useRef(null);
+/** Observes the map container size and fixes the "grey/blank gap" issue
+ *  by invalidating size when layout changes (e.g. vh/svh shifts, load) */
+function MapResizer() {
+  const map = useMap();
+  useEffect(() => {
+    // Invalidate size on mount to catch any immediate layout shifts
+    setTimeout(() => map.invalidateSize(), 50);
+    setTimeout(() => map.invalidateSize(), 300);
+    
+    // Watch the container for subsequent resizes
+    const mapContainer = map.getContainer();
+    if (!mapContainer || !window.ResizeObserver) return;
+    
+    const observer = new ResizeObserver(() => {
+      // Use requestAnimationFrame to avoid ResizeObserver loop limit errors
+      requestAnimationFrame(() => {
+        map.invalidateSize();
+      });
+    });
+    observer.observe(mapContainer);
+    
+    return () => observer.disconnect();
+  }, [map]);
+  return null;
+}
+
+/** Tile-load listener — flips off the loading shimmer when the first
+ *  batch of CartoDB tiles has actually rendered. */
+function TileLoadSignal({ onLoad }) {
+  const map = useMap();
+  useEffect(() => {
+    // Wait for the next tile-layer's `load` event (fires after all visible
+    // tiles in the current view have downloaded).
+    const handler = (e) => {
+      if (e.layer && typeof e.layer.on === 'function') {
+        e.layer.once('load', () => onLoad?.());
+      }
+    };
+    map.on('layeradd', handler);
+    return () => map.off('layeradd', handler);
+  }, [map, onLoad]);
+  return null;
+}
+
+const RealMap = React.forwardRef(function RealMap(
+  {
+    location,
+    contacts = [],
+    countryCode = null,
+    gpsLost = false,
+    draggable = true,
+    zoom = 15,
+  },
+  externalRef
+) {
+  const internalMapRef = useRef(null);
+  const [tilesLoaded, setTilesLoaded] = useState(false);
 
   // Default fallback (India centroid) until GPS arrives — better than a blank screen.
   const lat = location?.lat ?? 20.5937;
@@ -127,12 +174,26 @@ export default function RealMap({
   );
 
   return (
-    <div className="rs-real-map">
+    <div className={`rs-real-map ${tilesLoaded ? 'is-loaded' : 'is-loading'}`}>
+      {/* Loading shimmer — fades out once tiles render */}
+      {!tilesLoaded && (
+        <div className="rs-map-skeleton" aria-hidden="true">
+          <div className="rs-map-skeleton-shimmer" />
+          <div className="rs-map-skeleton-label">Loading map…</div>
+        </div>
+      )}
+
       <MapContainer
-        ref={mapRef}
+        ref={(map) => {
+          internalMapRef.current = map;
+          if (externalRef) {
+            if (typeof externalRef === 'function') externalRef(map);
+            else externalRef.current = map;
+          }
+        }}
         center={[lat, lon]}
         zoom={hasGps ? zoom : 4}
-        zoomControl={draggable}
+        zoomControl={false}
         scrollWheelZoom={draggable}
         dragging={draggable}
         doubleClickZoom={draggable}
@@ -147,8 +208,16 @@ export default function RealMap({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
           subdomains="abcd"
           maxZoom={20}
+          eventHandlers={{ load: () => setTilesLoaded(true) }}
         />
 
+        <TileLoadSignal onLoad={() => setTilesLoaded(true)} />
+
+        {/* Zoom control on the right edge — far from the brand cross
+            (top-left) and the SOS dock (bottom). */}
+        {draggable && <ZoomControl position="topright" />}
+
+        <MapResizer />
         <MapRecenter lat={lat} lon={lon} zoom={hasGps ? zoom : 4} />
 
         {hasGps && (
@@ -166,4 +235,6 @@ export default function RealMap({
       </MapContainer>
     </div>
   );
-}
+});
+
+export default RealMap;

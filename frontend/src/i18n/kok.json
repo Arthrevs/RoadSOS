@@ -70,5 +70,21 @@
   "card.open": "उगडें",
   "card.closed": "बंद",
   "card.unknown_status": "स्थिती अज्ञात",
-  "footer.offline_fallback": "सर्व्हर मेळना — डेमो डेटा दाखयता। आपातकालीन क्रमांक सदांच ऑफलायन काम करतात।"
+  "footer.offline_fallback": "सर्व्हर मेळना — डेमो डेटा दाखयता। आपातकालीन क्रमांक सदांच ऑफलायन काम करतात।",
+  "status.connecting": "जोडता…",
+  "track.share_prompt": "Share live location with rescuers:",
+  "track.copy_link": "Copy link",
+  "track.copied": "Copied!",
+  "track.creating": "Creating live link...",
+  "track.failed": "Live link unavailable offline",
+  "actions.set_location": "Set location manually",
+  "status.manual": "MANUAL",
+  "manual_location.title": "Set Location",
+  "manual_location.choose_method": "How would you like to set your location?",
+  "manual_location.tap_map": "Tap on map",
+  "manual_location.search_address": "Search address",
+  "manual_location.search_placeholder": "City, address, or coordinates",
+  "manual_location.searching": "Searching…",
+  "manual_location.no_results": "No results found",
+  "manual_location.tap_hint": "Tap anywhere on the map to set your location"
 }

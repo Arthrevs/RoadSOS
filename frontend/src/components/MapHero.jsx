@@ -1,8 +1,11 @@
-import React from 'react';
-import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog } from 'lucide-react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2, RotateCw, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import RealMap from './RealMap';
 import SOSButton from './SOSButton';
+import ManualLocationModal from './ManualLocationModal';
+import { subscribeBackendStatus } from '../utils/backendWarmup';
+import { setManualLocation, clearManualLocation } from '../hooks/useLocation';
 
 const CAT_ICONS = {
   hospital: Hospital,
@@ -91,11 +94,49 @@ export default function MapHero({
   medicalIdConfigured,
   onTestCrash,
   demoMode,
+  // Truthful status signals: even if /health returned 200, we shouldn't
+  // claim ONLINE while the user is staring at bundled fallback data.
+  searchLoading,
+  usingFallbackData,
 }) {
   const { t } = useTranslation();
   // Pick up to 6 nearest contacts for markers on real map
   const markerContacts = (contacts || []).slice(0, 6);
   const dockContacts = (contacts || []).slice(0, 3);
+
+  // Backend readiness — drives the warming-up state of the status pill.
+  // 'warming' / 'cold' downgrade the green online indicator to amber so
+  // the user understands the search backend is still spinning up.
+  const [backendStatus, setBackendStatus] = useState('unknown');
+  const [refreshing, setRefreshing] = useState(false);
+  const [manualLocationOpen, setManualLocationOpen] = useState(false);
+  const mapRef = useRef(null);
+  useEffect(() => subscribeBackendStatus(setBackendStatus), []);
+
+  // ── Manual location refresh (fixes stale browser geolocation cache on laptops) ──
+  // On Windows Edge / Chrome, browser geolocation can cache old results across
+  // sessions. This button forces a fresh geolocation lookup.
+  const handleRefreshLocation = useCallback(() => {
+    setRefreshing(true);
+    if (!navigator.geolocation) {
+      setRefreshing(false);
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      () => setRefreshing(false),
+      () => setRefreshing(false),
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  }, []);
+
+  // ── Handle manual location set ──
+  // setManualLocation() dispatches roadsos:manual-location which the running
+  // useLocation() hook catches, updating App.jsx's activeLocation and
+  // triggering a fresh /search call for the new coords.
+  const handleSetManualLocation = useCallback((locData) => {
+    setManualLocation(locData.lat, locData.lon, locData.landmark);
+    setManualLocationOpen(false);
+  }, []);
 
   const formatCoords = (loc) => {
     if (!loc?.lat || !loc?.lon) return t('location.waiting');
@@ -111,6 +152,7 @@ export default function MapHero({
           - countryCode drives the Survey-of-India boundary overlay
             when the user is in India (full J&K + Aksai Chin shown) */}
       <RealMap
+        ref={mapRef}
         location={location}
         contacts={markerContacts}
         countryCode={countryCode}
@@ -130,15 +172,32 @@ export default function MapHero({
           </svg>
         </div>
         <div className="mh-location">
-          <div className="mh-location-name">{landmark || t('location.finding')}</div>
+          <div className="mh-location-name">{landmark || location?.landmark || t('location.finding')}</div>
           <div className="mh-location-coords">
             {formatCoords(location)}
             {gpsLost && ' · ' + t('location.cached')}
           </div>
         </div>
 
-        {/* Action strip — Medical ID, Plan Trip, status pill */}
+        {/* Action strip — Medical ID, Plan Trip, Refresh Location, Set Location, status pill */}
         <div className="mh-actions">
+          <button
+            className="mh-action-btn"
+            onClick={handleRefreshLocation}
+            disabled={refreshing}
+            title="Refresh location (fixes stale cache on laptops)"
+            aria-label="Refresh location"
+          >
+            <RotateCw size={14} strokeWidth={2} className={refreshing ? 'mh-action-spin' : ''} />
+          </button>
+          <button
+            className="mh-action-btn"
+            onClick={() => setManualLocationOpen(true)}
+            title={t('actions.set_location', 'Set location manually')}
+            aria-label={t('actions.set_location', 'Set location manually')}
+          >
+            <MapPin size={14} strokeWidth={2} />
+          </button>
           {onPlanTrip && (
             <button
               className="mh-action-btn"
@@ -169,19 +228,73 @@ export default function MapHero({
               <AlertTriangle size={13} strokeWidth={2.5} />
             </button>
           )}
-          <div className={`mh-status-pill ${isOnline && !gpsLost ? 'mh-status-online' : 'mh-status-offline'}`}>
-            {isOnline && !gpsLost ? (
-              <>
+          {(() => {
+            // Status pill reflects the WHOLE pipeline, not just /health:
+            //   1. MANUAL    — user pinned location manually
+            //   2. OFFLINE   — browser offline or GPS lost
+            //   3. WAKING…   — search in flight, OR backend warmup pending
+            //                  (covers Render free-tier cold start)
+            //   4. FALLBACK  — backend never returned real data, showing
+            //                  bundled directory (amber, NOT green)
+            //   5. ONLINE    — backend healthy AND we have real search data
+            if (location?.source === 'manual') {
+              return (
+                <div
+                  className="mh-status-pill mh-status-manual"
+                  title="Using manually set location"
+                >
+                  <MapPin size={11} strokeWidth={2.4} />
+                  {t('status.manual', 'MANUAL')}
+                </div>
+              );
+            }
+            const isOffline = !isOnline || gpsLost;
+            if (isOffline) {
+              return (
+                <div className="mh-status-pill mh-status-offline">
+                  <WifiOff size={11} strokeWidth={2.4} />
+                  {t('status.offline')}
+                </div>
+              );
+            }
+            const backendNotReady =
+              backendStatus === 'warming' ||
+              backendStatus === 'cold' ||
+              backendStatus === 'unknown';
+            // While the search is in flight (cold start can take ~55s on
+            // Render free tier), show a spinner instead of green ONLINE.
+            if (searchLoading || backendNotReady) {
+              return (
+                <div
+                  className="mh-status-pill mh-status-warming"
+                  title="Waking the backend up — Render free tier needs 30–55 s after idle"
+                >
+                  <Loader2 size={11} strokeWidth={2.6} className="mh-status-spin" />
+                  {t('status.connecting', 'Connecting…')}
+                </div>
+              );
+            }
+            // Search completed but we fell back to bundled/mock data:
+            // don't lie about being ONLINE.  The warmup retry will swap
+            // this for real data once it confirms backend is ready.
+            if (usingFallbackData) {
+              return (
+                <div
+                  className="mh-status-pill mh-status-warming"
+                  title="Backend didn't return live data — showing pre-loaded directory while we retry"
+                >
+                  <Loader2 size={11} strokeWidth={2.6} className="mh-status-spin" />
+                  {t('status.connecting', 'Connecting…')}
+                </div>
+              );
+            }
+            return (
+              <div className="mh-status-pill mh-status-online">
                 <span className="mh-status-dot" />
                 {t('status.online')}
-              </>
-            ) : (
-              <>
-                <WifiOff size={11} strokeWidth={2.4} />
-                {t('status.offline')}
-              </>
-            )}
-          </div>
+              </div>
+            );
+          })()}
         </div>
       </div>
 
@@ -207,6 +320,13 @@ export default function MapHero({
           </div>
         )}
       </div>
+
+      <ManualLocationModal
+        open={manualLocationOpen}
+        onClose={() => setManualLocationOpen(false)}
+        onSetLocation={handleSetManualLocation}
+        mapRef={mapRef}
+      />
     </div>
   );
 }

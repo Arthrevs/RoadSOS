@@ -1,9 +1,11 @@
-import React, { useState, useMemo } from 'react';
-import { Signal, Check, Copy } from 'lucide-react';
+import React, { useState, useMemo, useRef } from 'react';
+import { Signal, Check, Copy, Link, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getEmergencyContacts, buildSosSmsBody } from '../utils/medicalId';
 import { encodePlusCode } from '../utils/plusCodes';
 import { isWaCountry } from '../utils/sosDispatch';
+import { triggerSOSAlert } from '../utils/sosAlert';
+import { createTrackingSession } from '../utils/trackingSession';
 
 function cleanPhone(raw) {
   return (raw || '').replace(/[^\d+]/g, '');
@@ -22,10 +24,13 @@ function smsUrl(phones, body) {
 
 export default function SOSButton({ location, landmark, countryCode, onFirstTap }) {
   const { t } = useTranslation();
-  const [copied,     setCopied]     = useState(false);
-  const [sent,       setSent]       = useState(false);
-  const [dispatched, setDispatched] = useState(false);
-  const tappedRef = React.useRef(false);
+  const [copied,       setCopied]       = useState(false);
+  const [sent,         setSent]         = useState(false);
+  const [dispatched,   setDispatched]   = useState(false);
+  const [trackingUrl,  setTrackingUrl]  = useState(null);
+  const [trackLoading, setTrackLoading] = useState(false);
+  const [trackCopied,  setTrackCopied]  = useState(false);
+  const tappedRef = useRef(false);
 
   const hasLocation = !!(location?.lat && location?.lon);
   const preferWA    = isWaCountry(countryCode);
@@ -67,6 +72,10 @@ export default function SOSButton({ location, landmark, countryCode, onFirstTap 
     if (!tappedRef.current) { tappedRef.current = true; onFirstTap?.(); }
     if (!hasLocation) return;
 
+    // ① Audio + torch alert — fire immediately inside the gesture handler
+    triggerSOSAlert();
+
+    // ② Open the primary SOS channel (WA / SMS)
     if (preferWA && hasContacts) {
       window.open(primaryWaUrl, '_blank');
     } else if (!preferWA && contacts.length > 1) {
@@ -91,12 +100,32 @@ export default function SOSButton({ location, landmark, countryCode, onFirstTap 
     setDispatched(true);
     setTimeout(() => setSent(false), 2500);
 
+    // ③ Create a live-tracking session in the background — non-blocking
+    setTrackingUrl(null);
+    setTrackLoading(true);
+    createTrackingSession(location, landmark).then(url => {
+      setTrackingUrl(url);
+      setTrackLoading(false);
+    });
+
     // Notify the app that SOS was sent (opens DispatchScreen)
     try {
       window.dispatchEvent(new CustomEvent('roadsos:sos-sent', {
         detail: { location, landmark, countryCode, contacts },
       }));
     } catch {}
+  };
+
+  // ── Copy tracking URL ─────────────────────────────────────────────────────
+  const handleCopyTrackingUrl = async () => {
+    if (!trackingUrl) return;
+    try {
+      await navigator.clipboard.writeText(trackingUrl);
+      setTrackCopied(true);
+      setTimeout(() => setTrackCopied(false), 2500);
+    } catch {
+      // Clipboard unavailable
+    }
   };
 
   // ── Copy coords ───────────────────────────────────────────────────────────
@@ -215,6 +244,34 @@ export default function SOSButton({ location, landmark, countryCode, onFirstTap 
               <a href={allSmsUrl} className="sos-dispatch__group-link">
                 📱 SMS all {contacts.length} contacts at once
               </a>
+            )}
+          </div>
+
+          {/* Live tracking link */}
+          <div className="sos-track-block">
+            <span className="sos-track-label">
+              <Link size={11} strokeWidth={2.3} />
+              {t('track.share_prompt')}
+            </span>
+            {trackLoading && (
+              <span className="sos-track-creating">
+                <Loader2 size={11} strokeWidth={2.4} className="sos-track-spin" />
+                {t('track.creating')}
+              </span>
+            )}
+            {!trackLoading && trackingUrl && (
+              <div className="sos-track-url-row">
+                <span className="sos-track-url">{trackingUrl}</span>
+                <button className="sos-track-copy" onClick={handleCopyTrackingUrl}>
+                  {trackCopied
+                    ? <><Check size={11} strokeWidth={2.5} /> {t('track.copied')}</>
+                    : <><Copy size={11} strokeWidth={2}   /> {t('track.copy_link')}</>
+                  }
+                </button>
+              </div>
+            )}
+            {!trackLoading && !trackingUrl && (
+              <span className="sos-track-unavailable">{t('track.failed')}</span>
             )}
           </div>
 

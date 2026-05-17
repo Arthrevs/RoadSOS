@@ -70,5 +70,21 @@
   "card.open": "ଖୋଲା",
   "card.closed": "ବନ୍ଦ",
   "card.unknown_status": "ସ୍ଥିତି ଅଜଣା",
-  "footer.offline_fallback": "ସର୍ଭର ପର୍ଯ୍ୟନ୍ତ ପହଞ୍ଚି ପାରିଲା ନାହିଁ — ଡେମୋ ଡାଟା ଦେଖାଉଛି। ଜରୁରୀ ନମ୍ବର ସର୍ବଦା ଅଫଲାଇନ୍ କାମ କରେ।"
+  "footer.offline_fallback": "ସର୍ଭର ପର୍ଯ୍ୟନ୍ତ ପହଞ୍ଚି ପାରିଲା ନାହିଁ — ଡେମୋ ଡାଟା ଦେଖାଉଛି। ଜରୁରୀ ନମ୍ବର ସର୍ବଦା ଅଫଲାଇନ୍ କାମ କରେ।",
+  "status.connecting": "ସଂଯୋଗ ହେଉଛି…",
+  "track.share_prompt": "Share live location with rescuers:",
+  "track.copy_link": "Copy link",
+  "track.copied": "Copied!",
+  "track.creating": "Creating live link...",
+  "track.failed": "Live link unavailable offline",
+  "actions.set_location": "Set location manually",
+  "status.manual": "MANUAL",
+  "manual_location.title": "Set Location",
+  "manual_location.choose_method": "How would you like to set your location?",
+  "manual_location.tap_map": "Tap on map",
+  "manual_location.search_address": "Search address",
+  "manual_location.search_placeholder": "City, address, or coordinates",
+  "manual_location.searching": "Searching…",
+  "manual_location.no_results": "No results found",
+  "manual_location.tap_hint": "Tap anywhere on the map to set your location"
 }

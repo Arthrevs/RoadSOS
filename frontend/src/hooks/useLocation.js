@@ -1,7 +1,17 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
+// ─── GPS acquisition tuning ─────────────────────────────────────────────────
+// These values are calibrated for users in remote areas (rural Assam,
+// Himalayan villages, etc.) where GPS cold-start can take 30-60 s and signal
+// drops are frequent.  The original 10 s timeout meant every rural user
+// silently fell back to IP geolocation, which returns the mobile carrier's
+// gateway location — often hundreds of km from the actual user.
+const FIRST_FIX_WALL_CLOCK_MS = 45_000;   // give GPS up to 45 s to get a first fix
+const PER_ATTEMPT_TIMEOUT_MS  = 30_000;   // browser internal per-attempt timeout
+const POOR_ACCURACY_M         = 1500;     // tolerate up to 1.5 km accuracy (rural cell-tower)
+const ACCURACY_WARN_M         = 500;      // flag fixes worse than 500 m as 'gps_low'
+
 // ─── GPS velocity crash detection ───────────────────────────────────────────
-const GPS_TIMEOUT_MS = 10_000;
 const VELOCITY_WINDOW_MS = 2_000;
 const CRASH_SPEED_FROM_KMH = 25;   // was travelling at ≥ this speed
 const CRASH_SPEED_TO_KMH   = 5;    // came to ≤ this speed
@@ -27,6 +37,40 @@ async function ipFallback() {
   return null;
 }
 
+// Custom event name used to sync manual-location state across running hooks.
+const MANUAL_LOC_EVENT = 'roadsos:manual-location';
+
+/**
+ * Set location manually (e.g., user taps on map or searches address).
+ * Stores in localStorage AND notifies any live useLocation() instances so
+ * activeLocation updates immediately without a full reload.
+ */
+export function setManualLocation(lat, lon, landmark) {
+  const manualLoc = { lat, lon, landmark };
+  try {
+    localStorage.setItem('roadsos:manual-location', JSON.stringify(manualLoc));
+  } catch { /* storage full or disabled */ }
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(
+      new CustomEvent(MANUAL_LOC_EVENT, { detail: { lat, lon, landmark } })
+    );
+  }
+  return manualLoc;
+}
+
+/**
+ * Clear manual location override and resume GPS detection.
+ * The GPS watchPosition that's already running will supply the next fix.
+ */
+export function clearManualLocation() {
+  try {
+    localStorage.removeItem('roadsos:manual-location');
+  } catch { /* silent */ }
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent(MANUAL_LOC_EVENT, { detail: null }));
+  }
+}
+
 /**
  * Request DeviceMotion permission on iOS 13+.
  * Must be called from a user-gesture handler (button tap).
@@ -47,9 +91,43 @@ export async function requestMotionPermission() {
 }
 
 export function useLocation({ onCrashDetected } = {}) {
-  const [location, setLocation]   = useState(null);
+  // Try to restore manual override from localStorage
+  const getInitialLocation = () => {
+    try {
+      const stored = localStorage.getItem('roadsos:manual-location');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        return { ...parsed, source: 'manual' };
+      }
+    } catch { /* silent */ }
+    return null;
+  };
+
+  const [location, setLocation]   = useState(getInitialLocation());
   const [error, setError]         = useState(null);
-  const [loading, setLoading]     = useState(true);
+  const [loading, setLoading]     = useState(!location); // false if manual location loaded
+
+  // ─── Live sync for manual-location changes ──────────────────────────────
+  // When setManualLocation() / clearManualLocation() are called from anywhere
+  // (e.g. ManualLocationModal), update React state so App.jsx's activeLocation
+  // and the downstream /search call update immediately without a page reload.
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.detail) {
+        const { lat, lon, landmark } = e.detail;
+        setLocation({ lat, lon, landmark, source: 'manual' });
+        setLoading(false);
+        setError(null);
+      } else {
+        // Manual location cleared — let the running GPS watch take over.
+        // Don't force loading=true; the GPS watch will call setLocation on
+        // the next fix.  Just wipe the manual state so the map recentres.
+        setLocation(null);
+      }
+    };
+    window.addEventListener(MANUAL_LOC_EVENT, handler);
+    return () => window.removeEventListener(MANUAL_LOC_EVENT, handler);
+  }, []);
 
   const speedHistoryRef      = useRef([]);
   const watchIdRef           = useRef(null);
@@ -158,26 +236,45 @@ export function useLocation({ onCrashDetected } = {}) {
   }, [fireCrash]);
 
   // ─── GPS watch ──────────────────────────────────────────────────────────
-  const lastReportedRef = useRef(null); // track last position we actually set
+  const lastReportedRef = useRef(null);  // track last position we actually set
+  const gotFirstFixRef  = useRef(false); // true once we've received any real GPS coords
 
   useEffect(() => {
     let cancelled = false;
 
-    const gpsTimeout = setTimeout(async () => {
-      if (!cancelled && !locationRef.current) {
-        const fallback = await ipFallback();
-        if (!cancelled && fallback) {
-          setLocation({ lat: fallback.lat, lon: fallback.lon, country_code: fallback.country_code, source: 'ip' });
-          setLoading(false);
-        }
+    // ── Wall-clock fallback ──────────────────────────────────────────────
+    // If we haven't received ANY GPS fix after 45 s, drop down to IP-based
+    // geolocation so the user sees *something* on the map.  This timer is
+    // cleared the moment the first GPS fix arrives, and is NEVER restarted —
+    // so a brief signal drop later won't bounce a rural user to the carrier
+    // gateway location.
+    const firstFixTimer = setTimeout(async () => {
+      if (cancelled || gotFirstFixRef.current) return;
+      const fb = await ipFallback();
+      if (cancelled || gotFirstFixRef.current) return;   // GPS may have raced in
+      if (fb) {
+        setLocation({
+          lat: fb.lat, lon: fb.lon,
+          country_code: fb.country_code,
+          accuracy: null,
+          source: 'ip',
+        });
+      } else {
+        setError('Searching for GPS signal — please move to an open area.');
       }
-    }, GPS_TIMEOUT_MS);
+      setLoading(false);
+    }, FIRST_FIX_WALL_CLOCK_MS);
 
     if (!navigator.geolocation) {
-      clearTimeout(gpsTimeout);
+      clearTimeout(firstFixTimer);
       ipFallback().then(fb => {
-        if (!cancelled && fb) {
-          setLocation({ lat: fb.lat, lon: fb.lon, country_code: fb.country_code, source: 'ip' });
+        if (cancelled) return;
+        if (fb) {
+          setLocation({
+            lat: fb.lat, lon: fb.lon,
+            country_code: fb.country_code,
+            source: 'ip',
+          });
         }
         setLoading(false);
       });
@@ -186,31 +283,40 @@ export function useLocation({ onCrashDetected } = {}) {
 
     watchIdRef.current = navigator.geolocation.watchPosition(
       (pos) => {
-        clearTimeout(gpsTimeout);
         if (cancelled) return;
         const { latitude, longitude, speed, accuracy } = pos.coords;
         const speedKmh = speed != null ? mpsToKmh(speed) : 0;
 
-        // Ignore very inaccurate first fixes (network/wifi positioning artefacts).
-        // accuracy is in metres — skip if worse than 200 m and we already have a fix.
-        if (accuracy > 200 && locationRef.current?.source === 'gps') return;
+        // 1. Reject only catastrophically bad fixes (>1500 m) — but ALWAYS
+        //    accept the first fix.  A 1000-m-accurate fix in Jonai is still
+        //    50× better than the carrier IP location in Guwahati.
+        if (gotFirstFixRef.current && accuracy > POOR_ACCURACY_M) return;
 
-        // Distance gate: skip tiny GPS jitter updates (< 50 m moved).
-        // Prevents constant re-searches from floating-point drift.
+        // 2. Distance gate: skip GPS jitter (< 50 m) — but still feed it to
+        //    crash detection so a slow walking pace doesn't get rejected.
         const prev = lastReportedRef.current;
         if (prev) {
           const dLat = (latitude - prev.lat) * 111_000;
           const dLon = (longitude - prev.lon) * 111_000 * Math.cos(latitude * Math.PI / 180);
           const distM = Math.sqrt(dLat * dLat + dLon * dLon);
           if (distM < 50) {
-            // Still feed velocity data for crash detection without re-rendering
             if (onCrashDetected && speed != null) checkVelocityCollapse(speedKmh, pos.timestamp);
             return;
           }
         }
 
+        // 3. Real GPS fix — commit it.
+        gotFirstFixRef.current  = true;
+        clearTimeout(firstFixTimer);
         lastReportedRef.current = { lat: latitude, lon: longitude };
-        setLocation({ lat: latitude, lon: longitude, speedKmh, source: 'gps' });
+        setLocation({
+          lat: latitude,
+          lon: longitude,
+          speedKmh,
+          accuracy,
+          // Flag low-accuracy fixes so the UI can warn the user.
+          source: accuracy > ACCURACY_WARN_M ? 'gps_low' : 'gps',
+        });
         setLoading(false);
         setError(null);
         if (onCrashDetected && speed !== null) {
@@ -218,27 +324,50 @@ export function useLocation({ onCrashDetected } = {}) {
         }
       },
       async (err) => {
-        clearTimeout(gpsTimeout);
         if (cancelled) return;
-        const fallback = await ipFallback();
-        if (!cancelled) {
-          if (fallback) {
-            setLocation({ lat: fallback.lat, lon: fallback.lon, country_code: fallback.country_code, source: 'ip' });
+
+        // ── CRITICAL: once we have a real GPS fix, NEVER overwrite it on
+        //    transient errors.  Rural areas drop signal constantly; jumping
+        //    the user's dot to the carrier IP location every time the watch
+        //    errors is the exact bug that broke rural testers.
+        if (gotFirstFixRef.current) return;
+
+        // ── First fix not yet acquired.  Distinguish error kinds:
+        //   1 PERMISSION_DENIED   → permanent: fall back to IP immediately
+        //   2 POSITION_UNAVAILABLE → transient: keep watching, wall-clock timer handles it
+        //   3 TIMEOUT             → transient: same
+        if (err.code === 1) {
+          clearTimeout(firstFixTimer);
+          const fb = await ipFallback();
+          if (cancelled) return;
+          if (fb) {
+            setLocation({
+              lat: fb.lat, lon: fb.lon,
+              country_code: fb.country_code,
+              source: 'ip',
+            });
           } else {
-            setError('Unable to determine location. Please allow location access.');
+            setError('Please allow location access to use SOS features.');
           }
           setLoading(false);
         }
+        // For code 2 / 3: do nothing — the browser will retry, and the
+        // FIRST_FIX_WALL_CLOCK_MS timer will trigger IP fallback if
+        // GPS truly never locks.
       },
-      // maximumAge: 0 — never use stale cached GPS positions.
-      // A 5-second-old fix could be from a totally different location
-      // (e.g. last place the phone had GPS locked), causing the "bounce".
-      { enableHighAccuracy: true, timeout: GPS_TIMEOUT_MS, maximumAge: 0 }
+      {
+        enableHighAccuracy: true,
+        timeout      : PER_ATTEMPT_TIMEOUT_MS,
+        // maximumAge: 0 — never reuse cross-session cached fixes.
+        // iOS Safari has been observed returning the last place the phone
+        // had GPS lock (potentially weeks old) as the "current" fix.
+        maximumAge   : 0,
+      }
     );
 
     return () => {
       cancelled = true;
-      clearTimeout(gpsTimeout);
+      clearTimeout(firstFixTimer);
       if (watchIdRef.current != null) {
         navigator.geolocation.clearWatch(watchIdRef.current);
       }

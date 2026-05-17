@@ -70,5 +70,21 @@
   "card.open": "उघडे",
   "card.closed": "बंद",
   "card.unknown_status": "स्थिती अज्ञात",
-  "footer.offline_fallback": "सर्व्हरशी संपर्क होऊ शकला नाही — डेमो डेटा दर्शवित आहे. आपत्कालीन क्रमांक नेहमी ऑफलाइन कार्य करतात."
+  "footer.offline_fallback": "सर्व्हरशी संपर्क होऊ शकला नाही — डेमो डेटा दर्शवित आहे. आपत्कालीन क्रमांक नेहमी ऑफलाइन कार्य करतात.",
+  "status.connecting": "जोडत आहे…",
+  "track.share_prompt": "बचाव कर्मींसोबत थेट स्थान शेअर करा:",
+  "track.copy_link": "लिंक कॉपी करा",
+  "track.copied": "कॉपी झाले!",
+  "track.creating": "थेट लिंक तयार करत आहे...",
+  "track.failed": "ऑफलाइनमध्ये थेट लिंक उपलब्ध नाही",
+  "actions.set_location": "Set location manually",
+  "status.manual": "MANUAL",
+  "manual_location.title": "Set Location",
+  "manual_location.choose_method": "How would you like to set your location?",
+  "manual_location.tap_map": "Tap on map",
+  "manual_location.search_address": "Search address",
+  "manual_location.search_placeholder": "City, address, or coordinates",
+  "manual_location.searching": "Searching…",
+  "manual_location.no_results": "No results found",
+  "manual_location.tap_hint": "Tap anywhere on the map to set your location"
 }

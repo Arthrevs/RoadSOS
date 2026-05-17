@@ -26,11 +26,12 @@ import LanguagePicker from './components/LanguagePicker';
 import { hasUserChosenLanguage } from './i18n';
 import { requestMotionPermission } from './hooks/useLocation';
 import { DEMO_MODE } from './utils/demoMode';
-import { startBackendWarmup } from './utils/backendWarmup';
+import { startBackendWarmup, subscribeBackendStatus } from './utils/backendWarmup';
 
 // ─── Demo location picker ─────────────────────────────────────────────────────
 const DEMO_LOCATIONS = [
   { label: 'GPS', lat: null, lon: null, country: null },
+  { label: 'JONAI', lat: 27.8322, lon: 95.1668, country: 'IN' },
   { label: 'BLR', lat: 12.9716, lon: 77.5946, country: 'IN' },
   { label: 'MUM', lat: 19.0760, lon: 72.8777, country: 'IN' },
   { label: 'LON', lat: 51.5074, lon: -0.1278, country: 'GB' },
@@ -120,7 +121,10 @@ const MOCK_DATA = {
   count: MOCK_CONTACTS.length,
 };
 
-export const CATS = ["All", "Hospital", "Police", "Repair", "Towing", "Fire", "Showroom", "Puncture"];
+// CATS moved to ./constants.js to break the App ↔ ContactList circular
+// import that caused a production TDZ crash. Re-export here so any
+// external importer expecting it from App.jsx keeps working.
+export { CATS } from './constants';
 
 // ─── First-launch detection ───────────────────────────────────────────────────
 const ONBOARDED_KEY = 'roadsos_onboarded_v1';
@@ -161,6 +165,11 @@ export default function App() {
     startBackendWarmup();
   }, []);
 
+  // NOTE: the backend-status auto-retry effect lives further down, AFTER
+  // searchHasRealData and searchLat are declared.  Placing it here caused
+  // a Temporal Dead Zone crash because those consts hadn't been
+  // initialised yet when this effect's dependency array was evaluated.
+
   // Listen for SOS dispatch events to open the dispatch screen
   useEffect(() => {
     const onDispatch = (e) => {
@@ -187,6 +196,10 @@ export default function App() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchError, setSearchError] = useState(null);
   const [cachedAt, setCachedAt] = useState(null);
+  // searchRetry increments when the backend warms up after a failed attempt,
+  // triggering a fresh search automatically without the user having to reload.
+  const [searchRetry, setSearchRetry] = useState(0);
+  const searchHasRealData = !!(searchData && !searchData._bundled && !searchData._mock);
 
   const [triageOpen, setTriageOpen] = useState(false);
   const [triageLoading, setTriageLoading] = useState(false);
@@ -195,6 +208,21 @@ export default function App() {
 
   const searchLat = activeLocation?.lat ?? null;
   const searchLon = activeLocation?.lon ?? null;
+
+  // Auto-retry search when backend finishes cold-starting.
+  // Render free tier takes 35–55 s to cold-start.  If the first /search
+  // attempt times out before the dyno is ready, the warmup utility will
+  // eventually get a /health 200 and flip status → 'ready'.  At that
+  // point, if we still have no real data, bump searchRetry so the search
+  // effect re-runs against the now-warm backend.
+  useEffect(() => {
+    const unsub = subscribeBackendStatus((status) => {
+      if (status === 'ready' && !searchHasRealData && searchLat != null) {
+        setSearchRetry((n) => n + 1);
+      }
+    });
+    return unsub;
+  }, [searchHasRealData, searchLat]);
 
   useEffect(() => {
     if (searchLat == null || searchLon == null) return;
@@ -207,7 +235,10 @@ export default function App() {
     setTriageOffline(false);
 
     const controller = new AbortController();
-    const hardTimeout = setTimeout(() => controller.abort(), 30_000);
+    // 15 s — fail fast so the user sees the bundled fallback quickly
+    // instead of staring at a blank list for a minute.  The retry-on-warmup
+    // effect upgrades to real data the moment /health succeeds.
+    const hardTimeout = setTimeout(() => controller.abort(), 15_000);
 
     (async () => {
       try {
@@ -226,7 +257,7 @@ export default function App() {
           const bundled = buildBundledSearchResult(searchLat, searchLon, { maxKm: 80, limit: 8 });
           if (bundled) {
             console.info('[RoadSOS] Live + cache miss — serving bundled directory');
-            setSearchData(bundled);
+            setSearchData({ ...bundled, _bundled: true });
             setSearchError(
               isOnline
                 ? 'Network issue — showing pre-loaded directory.'
@@ -239,6 +270,7 @@ export default function App() {
               ...MOCK_DATA,
               landmark: null,
               country_code: activeLocation?.country_code || MOCK_DATA.country_code,
+              _mock: true,
             });
             setSearchError(
               isOnline
@@ -254,7 +286,9 @@ export default function App() {
     })();
 
     return () => { cancelled = true; controller.abort(); clearTimeout(hardTimeout); };
-  }, [searchLat, searchLon]);
+  // searchRetry increments when the warmup confirms the backend is ready
+  // after a previous attempt failed — triggers a clean retry automatically.
+  }, [searchLat, searchLon, searchRetry]);
 
   const countryCode = searchData?.country_code || activeLocation?.country_code || 'IN';
 
@@ -322,6 +356,8 @@ export default function App() {
         medicalIdConfigured={medicalIdConfigured}
         onTestCrash={() => setCrashOpen(true)}
         demoMode={DEMO_MODE}
+        searchLoading={searchLoading}
+        usingFallbackData={!!searchData && !searchHasRealData}
       />
 
       {/* ── (Legacy) Sticky Telemetry Header — kept hidden by CSS .has-map-hero override ── */}
