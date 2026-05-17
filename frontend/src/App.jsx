@@ -31,6 +31,7 @@ import { startBackendWarmup } from './utils/backendWarmup';
 // ─── Demo location picker ─────────────────────────────────────────────────────
 const DEMO_LOCATIONS = [
   { label: 'GPS', lat: null, lon: null, country: null },
+  { label: 'JONAI', lat: 27.8322, lon: 95.1668, country: 'IN' },
   { label: 'BLR', lat: 12.9716, lon: 77.5946, country: 'IN' },
   { label: 'MUM', lat: 19.0760, lon: 72.8777, country: 'IN' },
   { label: 'LON', lat: 51.5074, lon: -0.1278, country: 'GB' },
