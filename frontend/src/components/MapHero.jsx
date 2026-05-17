@@ -126,10 +126,12 @@ export default function MapHero({
   }, []);
 
   // ── Handle manual location set ──
+  // setManualLocation() dispatches roadsos:manual-location which the running
+  // useLocation() hook catches, updating App.jsx's activeLocation and
+  // triggering a fresh /search call for the new coords.
   const handleSetManualLocation = useCallback((locData) => {
     setManualLocation(locData.lat, locData.lon, locData.landmark);
-    // Force UI update by triggering a dummy state change
-    // The location prop will be refreshed on next render from useLocation hook
+    setManualLocationOpen(false);
   }, []);
 
   const formatCoords = (loc) => {
@@ -166,7 +168,7 @@ export default function MapHero({
           </svg>
         </div>
         <div className="mh-location">
-          <div className="mh-location-name">{landmark || t('location.finding')}</div>
+          <div className="mh-location-name">{landmark || location?.landmark || t('location.finding')}</div>
           <div className="mh-location-coords">
             {formatCoords(location)}
             {gpsLost && ' · ' + t('location.cached')}

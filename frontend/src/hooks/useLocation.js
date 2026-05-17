@@ -37,25 +37,38 @@ async function ipFallback() {
   return null;
 }
 
+// Custom event name used to sync manual-location state across running hooks.
+const MANUAL_LOC_EVENT = 'roadsos:manual-location';
+
 /**
  * Set location manually (e.g., user taps on map or searches address).
- * Stores in localStorage so it persists across reloads.
+ * Stores in localStorage AND notifies any live useLocation() instances so
+ * activeLocation updates immediately without a full reload.
  */
 export function setManualLocation(lat, lon, landmark) {
   const manualLoc = { lat, lon, landmark };
   try {
     localStorage.setItem('roadsos:manual-location', JSON.stringify(manualLoc));
   } catch { /* storage full or disabled */ }
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(
+      new CustomEvent(MANUAL_LOC_EVENT, { detail: { lat, lon, landmark } })
+    );
+  }
   return manualLoc;
 }
 
 /**
  * Clear manual location override and resume GPS detection.
+ * The GPS watchPosition that's already running will supply the next fix.
  */
 export function clearManualLocation() {
   try {
     localStorage.removeItem('roadsos:manual-location');
   } catch { /* silent */ }
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent(MANUAL_LOC_EVENT, { detail: null }));
+  }
 }
 
 /**
@@ -93,6 +106,28 @@ export function useLocation({ onCrashDetected } = {}) {
   const [location, setLocation]   = useState(getInitialLocation());
   const [error, setError]         = useState(null);
   const [loading, setLoading]     = useState(!location); // false if manual location loaded
+
+  // ─── Live sync for manual-location changes ──────────────────────────────
+  // When setManualLocation() / clearManualLocation() are called from anywhere
+  // (e.g. ManualLocationModal), update React state so App.jsx's activeLocation
+  // and the downstream /search call update immediately without a page reload.
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.detail) {
+        const { lat, lon, landmark } = e.detail;
+        setLocation({ lat, lon, landmark, source: 'manual' });
+        setLoading(false);
+        setError(null);
+      } else {
+        // Manual location cleared — let the running GPS watch take over.
+        // Don't force loading=true; the GPS watch will call setLocation on
+        // the next fix.  Just wipe the manual state so the map recentres.
+        setLocation(null);
+      }
+    };
+    window.addEventListener(MANUAL_LOC_EVENT, handler);
+    return () => window.removeEventListener(MANUAL_LOC_EVENT, handler);
+  }, []);
 
   const speedHistoryRef      = useRef([]);
   const watchIdRef           = useRef(null);
