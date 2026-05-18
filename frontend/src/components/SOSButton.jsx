@@ -180,12 +180,6 @@ export default function SOSButton({ location, landmark, countryCode, onFirstTap 
             ? `Sends via ${channelLabel} to ${contactSummary}`
             : 'Set emergency contacts in Medical ID for direct messaging'}
         >
-          {!sent && (
-            <>
-              <div className="glass-sonar" />
-              <div className="glass-sonar" />
-            </>
-          )}
           {btnLabel}
         </button>
 

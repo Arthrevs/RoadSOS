@@ -468,10 +468,12 @@
   font-weight: 700 !important;
   color: var(--rs-slate-900) !important;
   letter-spacing: -0.2px !important;
-  line-height: 1.2 !important;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.3 !important;
+  /* Allow long names to wrap — no truncation on mobile */
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  word-break: break-word !important;
 }
 
 .svc-status-row {
@@ -506,18 +508,23 @@
   display: none !important;
 }
 
-/* Call row + directions — show side by side */
+/* Call row + directions — show side by side, wrap if too narrow */
 .call-row {
   grid-column: 2 / 3 !important;
   display: flex !important;
+  flex-wrap: wrap !important;
   gap: 6px !important;
   margin-top: 10px !important;
   margin-left: 0 !important;
 }
 
 .call-btn {
-  flex: 1 !important;
-  height: 36px !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  /* Auto height so long phone numbers never wrap inside the button */
+  height: auto !important;
+  min-height: 36px !important;
+  padding: 8px 12px !important;
   border-radius: 10px !important;
   background: var(--rs-blue-700) !important;
   color: #fff !important;
@@ -533,7 +540,7 @@
   letter-spacing: -0.3px !important;
   box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3) !important;
   text-decoration: none !important;
-  padding: 0 12px !important;
+  white-space: nowrap !important;
 }
 
 .call-btn-icon {
@@ -545,12 +552,15 @@
   font-family: var(--rs-font-mono) !important;
 }
 
-/* Directions button (replaces maps-link inline) */
+/* Directions button — fixed width so it is ALWAYS fully visible */
 .maps-link {
-  grid-column: 2 / 3 !important;
+  flex: 0 0 auto !important;
+  min-width: 104px !important;
   margin-left: 0 !important;
-  margin-top: 6px !important;
-  height: 36px !important;
+  margin-top: 0 !important;
+  height: auto !important;
+  min-height: 36px !important;
+  padding: 8px 10px !important;
   border-radius: 10px !important;
   background: var(--rs-slate-100) !important;
   color: var(--rs-slate-900) !important;
@@ -561,8 +571,9 @@
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 6px !important;
+  gap: 5px !important;
   text-decoration: none !important;
+  white-space: nowrap !important;
 }
 
 .svc-divider {
@@ -581,9 +592,12 @@
 
 .sheet {
   background: #fff !important;
-  border-radius: 28px 28px 0 0 !important;
+  border-radius: 28px !important; /* Fully rounded to match top */
   box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.5) !important;
   font-family: var(--rs-font-body);
+  /* Ensure it fits on small screens (like iPhone SE) and allows scrolling */
+  max-height: 90vh !important;
+  overflow-y: auto !important;
 }
 
 .sheet-title {
@@ -684,6 +698,7 @@
   font-size: 13px !important;
   font-weight: 600 !important;
   margin-top: 8px !important;
+  margin-bottom: 16px !important;
   cursor: pointer;
 }
 
@@ -2448,8 +2463,13 @@
 }
 
 /* ── SOS — softer, less casino-y glow ───────────────────────────────── */
+@keyframes rs-warning-blink {
+  0%, 49.9% { filter: brightness(1); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.22) inset, 0 0 0 1px rgba(0, 0, 0, 0.18), 0 8px 22px rgba(15, 44, 115, 0.40); }
+  50%, 100% { filter: brightness(1.4); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 0 0 2px rgba(96, 165, 250, 0.6), 0 0 45px rgba(59, 130, 246, 0.9); }
+}
+
 .glass-sos-btn {
-  border-radius: 16px !important;
+  border-radius: 999px !important;
   background: linear-gradient(180deg, #2563EB 0%, #1D4ED8 60%, #1640B2 100%) !important;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.22) inset,
@@ -2458,6 +2478,7 @@
   border: none !important;
   letter-spacing: 0.02em !important;
   transition: transform 140ms ease, box-shadow 140ms ease !important;
+  animation: rs-warning-blink 0.9s infinite !important;
 }
 .glass-sos-btn:hover {
   box-shadow:
