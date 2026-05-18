@@ -21,6 +21,7 @@ const STORAGE_KEY = 'roadsos_medical_id_v1';
 const EMPTY = {
   name: '',
   age: '',
+  months: '',
   bloodType: '',          // O+, A-, etc.
   allergies: '',          // free text
   conditions: '',         // free text — diabetes, asthma, etc.

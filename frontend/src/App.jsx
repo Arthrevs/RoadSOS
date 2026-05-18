@@ -370,6 +370,7 @@ export default function App() {
         onMedicalId={() => setMedicalOpen(true)}
         medicalIdConfigured={medicalIdConfigured}
         onTestCrash={() => setCrashOpen(true)}
+        onLanguagePicker={() => setLangPickerOpen(true)}
         demoMode={DEMO_MODE}
         searchLoading={searchLoading}
         usingFallbackData={!!searchData && !searchHasRealData}

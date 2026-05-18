@@ -14,19 +14,14 @@ import { LOCALES, changeLanguage } from '../i18n';
 export default function LanguagePicker({ onConfirm }) {
   const { t, i18n } = useTranslation();
 
-  // Initial selection: current i18n language or 'en'
-  const [selected, setSelected] = useState(() => i18n.language || 'en');
+  // No language pre-selected — user must actively choose.
+  const [selected, setSelected] = useState(null);
 
   const handlePick = (code) => {
     setSelected(code);
-    // Live preview — change language immediately so the Continue button
-    // updates in the chosen language before the user taps it.
+    // Single-tap: change language and confirm immediately.
     changeLanguage(code);
-  };
-
-  const handleConfirm = () => {
-    changeLanguage(selected);
-    onConfirm?.(selected);
+    onConfirm?.(code);
   };
 
   const indiaLocales = LOCALES.filter((l) => l.region === 'India');
@@ -61,13 +56,7 @@ export default function LanguagePicker({ onConfirm }) {
           ))}
         </div>
 
-        <button
-          type="button"
-          className="lang-picker-continue"
-          onClick={handleConfirm}
-        >
-          {t('lang.continue')} →
-        </button>
+
       </div>
     </div>
   );

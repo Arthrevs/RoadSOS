@@ -68,7 +68,7 @@ export default function ContactCard({ contact, isLast }) {
               <span className="svc-dist" style={{ fontSize: 10 }}>{t('card.unknown_status')}</span>
             )}
             <span style={{ color: '#CBD5E1' }}>·</span>
-            <span style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, fontSize: 10 }}>{t(`category.${cat}`, cat)}</span>
+            <span style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, fontSize: 10 }}>{t(`category.${cat === 'tyre' ? 'puncture' : cat}`, cat)}</span>
           </div>
         </div>
       </div>
