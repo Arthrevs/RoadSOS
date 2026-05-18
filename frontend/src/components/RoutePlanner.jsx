@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { MapPin, Navigation, ArrowRight, Download, X, Map, ChevronRight, Check } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { prefetchRoute } from '../utils/routeCache';
 import { searchPlaces, QUICK_PICK_CITIES } from '../utils/geocode';
 
@@ -351,7 +352,7 @@ const css = `
 .offline-trip-fullscreen .cancel-btn:hover { background: #F8FAFC; color: #64748B; }
 `;
 
-function PlaceInput({ label, value, onChange, onGeocoded, geo, disabled, id, activeColor, onUseLocation }) {
+function PlaceInput({ label, value, onChange, onGeocoded, geo, disabled, id, activeColor, onUseLocation, t }) {
   const [busy, setBusy] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [showList, setShowList] = useState(false);
@@ -437,7 +438,7 @@ function PlaceInput({ label, value, onChange, onGeocoded, geo, disabled, id, act
           onChange={(e) => { onChange(e.target.value); onGeocoded(null); }}
           onFocus={() => { if (suggestions.length > 0) setShowList(true); }}
           onKeyDown={handleKey}
-          placeholder="City, town or landmark"
+          placeholder={t('plan_trip.placeholder', 'City, town or landmark')}
           disabled={disabled}
           autoComplete="off"
           spellCheck="false"
@@ -465,7 +466,7 @@ function PlaceInput({ label, value, onChange, onGeocoded, geo, disabled, id, act
       </div>
 
       {geo && geo.error && (
-        <div style={{ fontSize: 10, color: '#DC2626', marginTop: 4 }}>Couldn't find that place.</div>
+        <div style={{ fontSize: 10, color: '#DC2626', marginTop: 4 }}>{t('plan_trip.error_not_found', "Couldn't find that place.")}</div>
       )}
       {geo && !geo.error && !showList && (
         <div style={{ fontSize: 10, color: '#64748B', marginTop: 4 }}>
@@ -476,7 +477,7 @@ function PlaceInput({ label, value, onChange, onGeocoded, geo, disabled, id, act
       {onUseLocation && (
         <button className="use-location-btn" onClick={onUseLocation}>
           <Navigation size={13} strokeWidth={2.2} />
-          Use current location
+          {t('plan_trip.use_current', 'Use current location')}
         </button>
       )}
     </div>
@@ -484,6 +485,7 @@ function PlaceInput({ label, value, onChange, onGeocoded, geo, disabled, id, act
 }
 
 export default function RoutePlanner({ open, onClose }) {
+  const { t } = useTranslation();
   // Text + resolved geo state for each input
   const [originText, setOriginText] = useState('');
   const [originGeo, setOriginGeo] = useState(null);
@@ -582,11 +584,11 @@ export default function RoutePlanner({ open, onClose }) {
               <div className="head-left">
                 <div className="head-badge">
                   <Map size={10} strokeWidth={2.5} />
-                  Offline Mode
+                  {t('plan_trip.offline_mode', 'Offline Mode')}
                 </div>
-                <div className="head-title">Plan an Offline Trip</div>
+                <div className="head-title">{t('plan_trip.title', 'Plan an Offline Trip')}</div>
                 <div className="head-sub">
-                  Cache hospitals and police along your route while online — works in cellular dead zones.
+                  {t('plan_trip.subtitle', 'Cache hospitals and police along your route while online — works in cellular dead zones.')}
                 </div>
               </div>
               <button className="close-btn" onClick={handleClose}>
@@ -604,8 +606,9 @@ export default function RoutePlanner({ open, onClose }) {
                   <div className="spine-line" />
                 </div>
                 <PlaceInput
+                  t={t}
                   id="route-origin"
-                  label="From"
+                  label={t('plan_trip.from', 'From')}
                   value={originText}
                   onChange={setOriginText}
                   onGeocoded={setOriginGeo}
@@ -621,8 +624,9 @@ export default function RoutePlanner({ open, onClose }) {
                   <div className="spine-dot filled" />
                 </div>
                 <PlaceInput
+                  t={t}
                   id="route-destination"
-                  label="To"
+                  label={t('plan_trip.to', 'To')}
                   value={destText}
                   onChange={setDestText}
                   onGeocoded={setDestGeo}
@@ -638,17 +642,20 @@ export default function RoutePlanner({ open, onClose }) {
 
             {/* Quick fill */}
             <div className="quick-section">
-              <div className="quick-label">Quick destinations</div>
+              <div className="quick-label">{t('plan_trip.quick_fill', 'Quick destinations')}</div>
               <div className="quick-chips">
-                {QUICK_PICK_CITIES.map(city => (
-                  <button
-                    key={city.name}
-                    className={"quick-chip" + (destGeo && destGeo.query === city.name ? " selected" : "")}
-                    onClick={() => fillFromChip('destination', city)}
-                  >
-                    {city.name}
-                  </button>
-                ))}
+                {QUICK_PICK_CITIES.map(city => {
+                  const cityKey = `city.${city.name.toLowerCase()}`;
+                  return (
+                    <button
+                      key={city.name}
+                      className={"quick-chip" + (destGeo && destGeo.query === city.name ? " selected" : "")}
+                      onClick={() => fillFromChip('destination', city)}
+                    >
+                      {t(cityKey, city.name)}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -656,19 +663,19 @@ export default function RoutePlanner({ open, onClose }) {
             {ready && status === 'idle' && (
               <div className="info-strip">
                 <div className="info-dot" />
-                <span>Hospitals, police stations and repair services along this route will be saved for offline use.</span>
+                <span>{t('plan_trip.info_idle', 'Hospitals, police stations and repair services along this route will be saved for offline use.')}</span>
               </div>
             )}
             {status === 'done' && (
               <div className="info-strip" style={{ background: '#F0FDF4', borderColor: '#BBF7D0', color: '#15803D' }}>
                 <div className="info-dot" style={{ animation: 'none' }} />
-                <span>Route cached. Emergency contacts are now available without internet.</span>
+                <span>{t('plan_trip.info_done', 'Route cached. Emergency contacts are now available without internet.')}</span>
               </div>
             )}
             {status === 'error' && (
               <div className="info-strip" style={{ background: '#FEF2F2', borderColor: '#FECACA', color: '#B91C1C' }}>
                 <span style={{ fontSize: 14 }}>{'\u26A0\uFE0F'}</span>
-                <span>Could not cache any waypoints. Check connection and try again.</span>
+                <span>{t('plan_trip.info_error', 'Could not cache any waypoints. Check connection and try again.')}</span>
               </div>
             )}
 
@@ -679,12 +686,12 @@ export default function RoutePlanner({ open, onClose }) {
                 disabled={!ready || status === 'running'}
                 onClick={handleStart}
               >
-                {status === 'running' && ('\u23F3 Caching... ' + percent + '%')}
-                {status === 'done' && <><Check size={17} strokeWidth={2.5} /> Route Cached</>}
-                {status !== 'running' && status !== 'done' && <><Download size={16} strokeWidth={2.2} /> Plan Offline Trip</>}
+                {status === 'running' && ('\u23F3 ' + t('plan_trip.caching', 'Caching...') + ' ' + percent + '%')}
+                {status === 'done' && <><Check size={17} strokeWidth={2.5} /> {t('plan_trip.cached', 'Route Cached')}</>}
+                {status !== 'running' && status !== 'done' && <><Download size={16} strokeWidth={2.2} /> {t('plan_trip.plan_offline', 'Plan Offline Trip')}</>}
               </button>
               <button className="cancel-btn" onClick={handleClose} disabled={status === 'running'}>
-                Cancel — go back
+                {t('plan_trip.cancel', 'Cancel — go back')}
               </button>
             </div>
 

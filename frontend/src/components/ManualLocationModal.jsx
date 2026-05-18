@@ -12,6 +12,28 @@ export default function ManualLocationModal({ open, onClose, onSetLocation, mapR
   const [searching, setSearching] = useState(false);
   const searchTimeoutRef = useRef(null);
 
+  // ── Attach map click listener when in map mode ──
+  useEffect(() => {
+    if (mode !== 'map' || !mapRef?.current) return;
+
+    const map = mapRef.current;
+    
+    // We must define this inside or ensure it doesn't change on every render
+    const handleMapClick = (e) => {
+      const { latlng } = e;
+      onSetLocation({
+        lat: latlng.lat,
+        lon: latlng.lng,
+        source: 'manual',
+        landmark: `${latlng.lat.toFixed(4)}°, ${latlng.lng.toFixed(4)}°`,
+      });
+      onClose();
+    };
+
+    map.on('click', handleMapClick);
+    return () => map.off('click', handleMapClick);
+  }, [mode, mapRef, onSetLocation, onClose]);
+
   if (!open) return null;
 
   // ── Fetch address suggestions ──
@@ -55,27 +77,6 @@ export default function ManualLocationModal({ open, onClose, onSetLocation, mapR
     });
     onClose();
   };
-
-  // ── Map click handler ──
-  const handleMapClick = (e) => {
-    const { latlng } = e;
-    onSetLocation({
-      lat: latlng.lat,
-      lon: latlng.lng,
-      source: 'manual',
-      landmark: `${latlng.lat.toFixed(4)}°, ${latlng.lng.toFixed(4)}°`,
-    });
-    onClose();
-  };
-
-  // ── Attach map click listener when in map mode ──
-  useEffect(() => {
-    if (mode !== 'map' || !mapRef?.current) return;
-
-    const map = mapRef.current;
-    map.on('click', handleMapClick);
-    return () => map.off('click', handleMapClick);
-  }, [mode, mapRef]);
 
   return (
     <>

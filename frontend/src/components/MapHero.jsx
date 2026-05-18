@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2, RotateCw, MapPin } from 'lucide-react';
+import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2, RotateCw, MapPin, Globe, Activity } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import RealMap from './RealMap';
 import SOSButton from './SOSButton';
@@ -98,6 +98,7 @@ export default function MapHero({
   // claim ONLINE while the user is staring at bundled fallback data.
   searchLoading,
   usingFallbackData,
+  onLanguagePicker,
 }) {
   const { t } = useTranslation();
   // Pick up to 6 nearest contacts for markers on real map
@@ -166,21 +167,14 @@ export default function MapHero({
 
       {/* Compact header */}
       <div className="map-hero-header">
-        <div className="mh-brand-cross">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2v20M2 12h20" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" />
-          </svg>
-        </div>
-        <div className="mh-location">
-          <div className="mh-location-name">{landmark || location?.landmark || t('location.finding')}</div>
-          <div className="mh-location-coords">
-            {formatCoords(location)}
-            {gpsLost && ' · ' + t('location.cached')}
+        <div className="mh-top-row">
+          <div className="mh-brand-shield">
+            <Shield size={36} color="#3B82F6" fill="#3B82F6" style={{ position: 'absolute', top: 0, left: 0 }} />
+            <Activity size={18} color="#ffffff" strokeWidth={2.5} style={{ position: 'relative', zIndex: 1, marginTop: '-2px' }} />
           </div>
-        </div>
 
-        {/* Action strip — Medical ID, Plan Trip, Refresh Location, Set Location, status pill */}
-        <div className="mh-actions">
+          {/* Action strip — Medical ID, Plan Trip, Refresh Location, Set Location, status pill */}
+          <div className="mh-actions">
           <button
             className="mh-action-btn"
             onClick={handleRefreshLocation}
@@ -190,6 +184,16 @@ export default function MapHero({
           >
             <RotateCw size={14} strokeWidth={2} className={refreshing ? 'mh-action-spin' : ''} />
           </button>
+          {onLanguagePicker && (
+            <button
+              className="mh-action-btn"
+              onClick={onLanguagePicker}
+              title={t('actions.change_language', 'Change Language')}
+              aria-label={t('actions.change_language', 'Change Language')}
+            >
+              <Globe size={14} strokeWidth={2} />
+            </button>
+          )}
           <button
             className="mh-action-btn"
             onClick={() => setManualLocationOpen(true)}
@@ -295,6 +299,15 @@ export default function MapHero({
               </div>
             );
           })()}
+        </div>
+        </div>
+
+        <div className="mh-location" style={{ marginTop: '4px' }}>
+          <div className="mh-location-name">{landmark || location?.landmark || t('location.finding')}</div>
+          <div className="mh-location-coords">
+            {formatCoords(location)}
+            {gpsLost && ' · ' + t('location.cached')}
+          </div>
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { User, Droplets, Phone, Check, ArrowRight, Shield, ChevronDown } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { getMedicalId, saveMedicalId, hasMedicalId } from '../utils/medicalId';
 
 const FONT = `-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif`;
@@ -380,12 +381,13 @@ function calcProgress(data) {
 }
 
 const CONTACTS = [
-  { prefix: "primary", label: "Contact 1", required: true  },
-  { prefix: "secondary", label: "Contact 2", required: false },
-  { prefix: "tertiary", label: "Contact 3", required: false },
+  { prefix: "primary", labelKey: "medical_id.contact1_label", labelDef: "Contact 1", required: true  },
+  { prefix: "secondary", labelKey: "medical_id.contact2_label", labelDef: "Contact 2", required: false },
+  { prefix: "tertiary", labelKey: "medical_id.contact3_label", labelDef: "Contact 3", required: false },
 ];
 
 export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
+  const { t } = useTranslation();
   const [data, setData] = useState(getMedicalId());
   const [saved, setSaved] = useState(false);
 
@@ -419,11 +421,11 @@ export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
 
           {/* Hero */}
           <div className="hero">
-            <div className="hero-badge"><Shield size={10} strokeWidth={2.5} /> Medical ID</div>
-            <div className="hero-title">Set Up Your<br /><em>Medical Profile</em></div>
+            <div className="hero-badge"><Shield size={10} strokeWidth={2.5} /> {t('medical_id.badge', 'Medical ID')}</div>
+            <div className="hero-title">{t('medical_id.welcome_title', 'Set Up Your')}<br /><em>{t('medical_id.title', 'Medical Profile')}</em></div>
             <div className="hero-desc">
-              <span><div className="desc-dot"/>Paramedics can access this if you are unconscious</span>
-              <span><div className="desc-dot"/>Takes about 30 seconds · Stored only on this device</span>
+              <span><div className="desc-dot"/>{t('medical_id.welcome_subtitle', 'Paramedics can access this if you are unconscious')}</span>
+              <span><div className="desc-dot"/>{t('medical_id.subtitle', 'Takes about 30 seconds · Stored only on this device')}</span>
             </div>
           </div>
 
@@ -433,17 +435,16 @@ export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
               <Shield size={15} color="#FFFFFF" strokeWidth={2} />
             </div>
             <div className="privacy-body">
-              <div className="privacy-title">Your data never leaves this device</div>
+              <div className="privacy-title">{t('medical_id.privacy_title', 'Your data never leaves this device')}</div>
               <div className="privacy-text">
-                Stored <strong>locally only</strong>. Never uploaded to any server.
-                Only shared with emergency services when <strong>SOS is activated</strong>.
+                {t('medical_id.privacy_text', 'Stored locally only. Never uploaded to any server. Only shared with emergency services when SOS is activated.')}
               </div>
             </div>
           </div>
 
           {/* Progress */}
           <div className="progress-label">
-            <span>Profile completion</span>
+            <span>{t('medical_id.profile_completion', 'Profile completion')}</span>
             <span style={{ color: "#22C55E", fontWeight: 700 }}>{pct}%</span>
           </div>
           <div className="progress-bar">
@@ -456,17 +457,17 @@ export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
               <div className="sec-icon" style={{ background: "rgba(29,78,216,0.15)" }}>
                 <User size={13} color="#3B82F6" strokeWidth={2} />
               </div>
-              <span className="sec-title">Personal</span>
+              <span className="sec-title">{t('medical_id.personal', 'Personal')}</span>
             </div>
             <div className="card">
               <div className="field">
-                <div className="field-label">Full name</div>
-                <input className="field-input" type="text" placeholder="e.g. Arjun Sharma"
+                <div className="field-label">{t('medical_id.name', 'Full name')}</div>
+                <input className="field-input" type="text" placeholder={t('medical_id.name_placeholder', 'e.g. Arjun Sharma')}
                   value={data.name || ""} onChange={e => set("name", e.target.value)} />
               </div>
               <div className="field-row">
                 <div className="field">
-                  <div className="field-label">Age (years)</div>
+                  <div className="field-label">{t('medical_id.age', 'Age (years)')}</div>
                   <input className="field-input" type="number" placeholder="e.g. 24"
                     min="0" max="180"
                     value={data.age || ""} onChange={e => {
@@ -475,7 +476,7 @@ export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
                     }} />
                 </div>
                 <div className="field">
-                  <div className="field-label">Months <span style={{ fontWeight:400, textTransform:"none", letterSpacing:0, fontSize:9 }}>(if &lt;1 yr)</span></div>
+                  <div className="field-label">{t('medical_id.months', 'Months')} <span style={{ fontWeight:400, textTransform:"none", letterSpacing:0, fontSize:9 }}>{t('medical_id.months_hint', '(if <1 yr)')}</span></div>
                   <input className="field-input" type="number" placeholder="0–11"
                     min="0" max="11"
                     value={data.months || ""} onChange={e => {
@@ -484,7 +485,7 @@ export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
                     }} />
                 </div>
               </div>
-              <div className="field-note">Months field — necessary for children less than 1 year</div>
+              <div className="field-note">{t('medical_id.months_note', 'Months field — necessary for children less than 1 year')}</div>
             </div>
           </div>
 
@@ -494,30 +495,30 @@ export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
               <div className="sec-icon" style={{ background: "rgba(220,38,38,0.12)" }}>
                 <Droplets size={13} color="#F87171" strokeWidth={2} />
               </div>
-              <span className="sec-title">Medical Details</span>
+              <span className="sec-title">{t('medical_id.medical_details', 'Medical Details')}</span>
             </div>
             <div className="card">
               <div className="field">
-                <div className="field-label">Blood type</div>
+                <div className="field-label">{t('medical_id.blood_type', 'Blood type')}</div>
                 <select className={`field-select${!data.bloodType ? " ph" : ""}`}
                   value={data.bloodType || ""} onChange={e => set("bloodType", e.target.value)}>
-                  <option value="" disabled>Select blood type</option>
+                  <option value="" disabled>{t('medical_id.select_blood_type', 'Select blood type')}</option>
                   {BLOOD_TYPES.map(b => <option key={b}>{b}</option>)}
                 </select>
               </div>
               <div className="field">
-                <div className="field-label">Allergies</div>
-                <input className="field-input" type="text" placeholder="e.g. penicillin, peanuts, latex"
+                <div className="field-label">{t('medical_id.allergies', 'Allergies')}</div>
+                <input className="field-input" type="text" placeholder={t('medical_id.allergies_placeholder', 'e.g. penicillin, peanuts, latex')}
                   value={data.allergies || ""} onChange={e => set("allergies", e.target.value)} />
               </div>
               <div className="field">
-                <div className="field-label">Medical conditions</div>
-                <input className="field-input" type="text" placeholder="e.g. asthma, diabetes type 2"
+                <div className="field-label">{t('medical_id.conditions', 'Medical conditions')}</div>
+                <input className="field-input" type="text" placeholder={t('medical_id.conditions_placeholder', 'e.g. asthma, diabetes type 2')}
                   value={data.conditions || ""} onChange={e => set("conditions", e.target.value)} />
               </div>
               <div className="field">
-                <div className="field-label">Current medications</div>
-                <input className="field-input" type="text" placeholder="e.g. metformin, salbutamol"
+                <div className="field-label">{t('medical_id.medications', 'Current medications')}</div>
+                <input className="field-input" type="text" placeholder={t('medical_id.medications_placeholder', 'e.g. metformin, salbutamol')}
                   value={data.medications || ""} onChange={e => set("medications", e.target.value)} />
               </div>
             </div>
@@ -529,28 +530,28 @@ export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
               <div className="sec-icon" style={{ background: "rgba(15,118,110,0.15)" }}>
                 <Phone size={13} color="#14B8A6" strokeWidth={2} />
               </div>
-              <span className="sec-title">Emergency Contacts</span>
+              <span className="sec-title">{t('medical_id.contacts_label', 'Emergency Contacts')}</span>
             </div>
             <div style={{ padding:"0 18px 8px", fontSize:11, color:"#1A3A60", lineHeight:1.5 }}>
-              SOS messages will be sent to all contacts simultaneously.
+              {t('medical_id.contacts_hint', 'SOS messages will be sent to all contacts simultaneously.')}
             </div>
-            {CONTACTS.map(({ prefix, label, required }) => (
+            {CONTACTS.map(({ prefix, labelKey, labelDef, required }) => (
               <div className="contact-card" key={prefix}>
                 <div className="contact-head">
-                  <span className="contact-num">{label}</span>
-                  {!required && <span className="contact-optional">Optional</span>}
+                  <span className="contact-num">{t(labelKey, labelDef)}</span>
+                  {!required && <span className="contact-optional">{t('medical_id.optional', 'Optional')}</span>}
                 </div>
                 <div className="contact-field">
-                  <div className="contact-label">Name</div>
+                  <div className="contact-label">{t('medical_id.name_label', 'Name')}</div>
                   <input className="contact-input" type="text"
-                    placeholder={required ? "e.g. Mum, Dad, Rahul" : "Leave blank to skip"}
+                    placeholder={required ? t('medical_id.example_mum', 'e.g. Mum, Dad, Rahul') : t('medical_id.leave_blank', 'Leave blank to skip')}
                     value={data[`${prefix}ContactName`] || ""}
                     onChange={e => set(`${prefix}ContactName`, e.target.value)} />
                 </div>
                 <div className="contact-field">
-                  <div className="contact-label">Phone number</div>
+                  <div className="contact-label">{t('medical_id.phone_label', 'Phone number')}</div>
                   <input className="contact-input phone-input"
-                    type="tel" inputMode="numeric" placeholder="e.g. 9198765432"
+                    type="tel" inputMode="numeric" placeholder={t('medical_id.phone_placeholder', 'e.g. 9198765432')}
                     value={data[`${prefix}ContactPhone`] || ""}
                     onChange={e => set(`${prefix}ContactPhone`, numOnly(e.target.value))}
                     maxLength={13} />
@@ -565,15 +566,15 @@ export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
               <div className="sec-icon" style={{ background: "rgba(220,38,38,0.1)" }}>
                 <HandHeart size={13} />
               </div>
-              <span className="sec-title">Organ Donation</span>
+              <span className="sec-title">{t('medical_id.organ_donor_section', 'Organ Donation')}</span>
             </div>
             <div className="donor-card" onClick={() => set("organDonor", !data.organDonor)}>
               <div className="donor-icon">
                 <HandHeart size={24} />
               </div>
               <div className="donor-body">
-                <div className="donor-title">I am an organ donor</div>
-                <div className="donor-sub">Visible to emergency responders</div>
+                <div className="donor-title">{t('medical_id.organ_donor', 'I am an organ donor')}</div>
+                <div className="donor-sub">{t('medical_id.organ_donor_sub', 'Visible to emergency responders')}</div>
               </div>
               <button className={`ios-switch${data.organDonor ? " on" : ""}`}
                 onClick={e => { e.stopPropagation(); set("organDonor", !data.organDonor); }} />
@@ -584,11 +585,11 @@ export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
           <div className="bottom-bar">
             <button className={`save-btn${saved ? " saved" : ""}`} onClick={handleSave}>
               {saved
-                ? <><Check size={17} strokeWidth={2.5}/> Medical ID Saved</>
-                : <><ArrowRight size={16} strokeWidth={2.2}/> Save Medical ID</>}
+                ? <><Check size={17} strokeWidth={2.5}/> {t('medical_id.saved', 'Medical ID Saved')}</>
+                : <><ArrowRight size={16} strokeWidth={2.2}/> {t('medical_id.save', 'Save Medical ID')}</>}
             </button>
             <button className="skip-btn" onClick={() => onClose?.()}>
-              {hasMedicalId() ? "Close" : "Skip for now — set up later"}
+              {hasMedicalId() ? t('medical_id.close', 'Close') : t('medical_id.skip', 'Skip for now — set up later')}
             </button>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Activity, AlertTriangle, CheckCircle, XCircle, ArrowRight, Stethoscope, Car, Signal } from "lucide-react";
 import { buildSosSmsBody } from '../utils/medicalId';
 import { encodePlusCode } from '../utils/plusCodes';
@@ -6,30 +7,36 @@ import { encodePlusCode } from '../utils/plusCodes';
 const QUESTIONS = [
   {
     id: "injured",
-    text: "Is anyone injured?",
+    textKey: "triage.injured_q",
+    defaultText: "Is anyone injured?",
     Icon: Stethoscope,
     iconColor: "#DC2626",
-    yesLabel: "Yes, injured",
-    noLabel: "No injuries",
+    yesKey: "triage.yes_injured",
+    defaultYes: "Yes, injured",
+    noKey: "triage.no_injured",
+    defaultNo: "No injuries",
   },
   {
     id: "blocking",
-    text: "Is the vehicle blocking the road?",
+    textKey: "triage.blocking_q",
+    defaultText: "Is the vehicle blocking the road?",
     Icon: Car,
     iconColor: "#1D4ED8",
-    yesLabel: "Yes, blocking",
-    noLabel: "Road is clear",
+    yesKey: "triage.yes_blocking",
+    defaultYes: "Yes, blocking",
+    noKey: "triage.no_blocking",
+    defaultNo: "Road is clear",
   },
 ];
 
-function getSummary(ans) {
+function getSummary(ans, t) {
   const { injured, blocking } = ans;
-  if (injured === undefined || blocking === undefined) return { msg: "Answer both questions to get a priority recommendation.", type: "idle" };
+  if (injured === undefined || blocking === undefined) return { msg: t("triage.summary_idle", "Answer both questions to get a priority recommendation."), type: "idle" };
   if (injured === true)
-    return { msg: "Injury reported — Ambulance (108) will be prioritised first.", type: "urgent" };
+    return { msg: t("triage.summary_injured", "Injury reported — Ambulance (108) will be prioritised first."), type: "urgent" };
   if (blocking === true)
-    return { msg: "Road blocked — Police (100) and Towing recommended.", type: "clear" };
-  return { msg: "No injury, road clear — Repair or Towing services suggested.", type: "clear" };
+    return { msg: t("triage.summary_blocked", "Road blocked — Police (100) and Towing recommended."), type: "clear" };
+  return { msg: t("triage.summary_clear", "No injury, road clear — Repair or Towing services suggested."), type: "clear" };
 }
 
 /**
@@ -37,6 +44,7 @@ function getSummary(ans) {
  * calls onSubmit({ injured, blocking }) and shows loading state.
  */
 export default function TriageModal({ open, loading, onSubmit, onSkip, location, landmark, topContact }) {
+  const { t } = useTranslation();
   const [ans, setAns] = useState({});
 
   if (!open) return null;
@@ -47,7 +55,7 @@ export default function TriageModal({ open, loading, onSubmit, onSkip, location,
   };
 
   const allAnswered = ans.injured !== undefined && ans.blocking !== undefined;
-  const { msg, type } = getSummary(ans);
+  const { msg, type } = getSummary(ans, t);
 
   const handleSubmit = () => {
     if (!allAnswered || loading) return;
@@ -82,11 +90,11 @@ export default function TriageModal({ open, loading, onSubmit, onSkip, location,
           <div>
             <div className="sheet-label">
               <Activity size={13} strokeWidth={2.5} />
-              Quick Triage
+              {t("triage.label", "Quick Triage")}
             </div>
-            <div className="sheet-title">What happened?</div>
+            <div className="sheet-title">{t("triage.title", "What happened?")}</div>
             <div className="sheet-sub">
-              Two questions — we will prioritise the right help for your situation.
+              {t("triage.subtitle", "Two questions — we will prioritise the right help for your situation.")}
             </div>
           </div>
           
@@ -95,19 +103,19 @@ export default function TriageModal({ open, loading, onSubmit, onSkip, location,
             className="triage-sos-btn"
             title="Send immediate SOS"
           >
-            SOS
+            {t("triage.sos_btn", "SOS")}
           </button>
         </div>
 
         {/* Questions */}
         <div className="questions">
-          {QUESTIONS.map(({ id, text, Icon, iconColor, yesLabel, noLabel }) => (
+          {QUESTIONS.map(({ id, textKey, defaultText, Icon, iconColor, yesKey, defaultYes, noKey, defaultNo }) => (
             <div className="question-block" key={id}>
               <div className="question-text">
                 <div className="q-icon">
                   <Icon size={14} color={iconColor} strokeWidth={2.2} />
                 </div>
-                {text}
+                {t(textKey, defaultText)}
               </div>
               <div className="choice-row">
                 <button
@@ -120,7 +128,7 @@ export default function TriageModal({ open, loading, onSubmit, onSkip, location,
                     ? <XCircle size={16} strokeWidth={2.2} />
                     : <span style={{ width: 16, height: 16, border: "2px solid #CBD5E1", borderRadius: "50%", display: "inline-block" }} />
                   }
-                  {yesLabel}
+                  {t(yesKey, defaultYes)}
                 </button>
                 <button
                   className={`choice-btn ${ans[id] === false ? "no-active" : "idle"}`}
@@ -132,7 +140,7 @@ export default function TriageModal({ open, loading, onSubmit, onSkip, location,
                     ? <CheckCircle size={16} strokeWidth={2.2} />
                     : <span style={{ width: 16, height: 16, border: "2px solid #CBD5E1", borderRadius: "50%", display: "inline-block" }} />
                   }
-                  {noLabel}
+                  {t(noKey, defaultNo)}
                 </button>
               </div>
             </div>
@@ -155,11 +163,11 @@ export default function TriageModal({ open, loading, onSubmit, onSkip, location,
             onClick={handleSubmit}
           >
             {loading ? (
-              '⏳ Prioritising...'
+              t("triage.prioritising", "⏳ Prioritising...")
             ) : (
               <>
                 <ArrowRight size={18} strokeWidth={2.5} />
-                {allAnswered ? "Get Prioritised Help" : "Answer both questions"}
+                {allAnswered ? t("triage.get_help", "Get Prioritised Help") : t("triage.answer_both", "Answer both questions")}
               </>
             )}
           </button>
@@ -168,7 +176,7 @@ export default function TriageModal({ open, loading, onSubmit, onSkip, location,
             onClick={onSkip}
             disabled={loading}
           >
-            Skip — show all contacts
+            {t("triage.skip", "Skip — show all contacts")}
           </button>
         </div>
 
