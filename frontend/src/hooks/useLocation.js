@@ -26,17 +26,102 @@ const CRASH_COOLDOWN_MS  = 12_000;
 
 function mpsToKmh(mps) { return mps * 3.6; }
 
-async function ipFallback() {
+// ─── iCloud Private Relay guard ─────────────────────────────────────────────
+// Apple routes Private Relay exit traffic through third-party CDN nodes
+// (Akamai, Cloudflare, ZSCALER, etc.) so the ASN/org label is NOT always
+// "apple inc" or "icloud private relay". We use three layers:
+//
+//   1. ASN/org string check  — catches explicitly labelled Apple exits
+//   2. Plausibility check    — if we have a recent GPS fix, the IP location
+//      must be within MAX_IP_DRIFT_KM km of it; a 500+ km mismatch means
+//      the IP is routing through a proxy/relay, not the user's real ISP
+//   3. Apple datacenter bbox — a bounding box of known Apple relay PoPs
+//      (Cupertino HQ area and primary US relay cluster).  Coordinates
+//      matching these boxes while the user is obviously NOT in the US
+//      (detected via GPS country_code or browser locale) are rejected.
+
+const MAX_IP_DRIFT_KM = 500; // beyond this the IP is clearly not the user's ISP
+
+// Known Apple relay clusters (approximate bounding boxes)
+const APPLE_RELAY_BBOXES = [
+  { minLat: 37.0, maxLat: 38.0, minLon: -122.5, maxLon: -121.5 }, // Cupertino/SJC area
+  { minLat: 47.3, maxLat: 47.8, minLon: -122.5, maxLon: -122.0 }, // Seattle relay
+  { minLat: 33.4, maxLat: 34.2, minLon: -118.5, maxLon: -117.5 }, // Los Angeles relay
+];
+
+// Haversine distance in km
+function haversineKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function isAppleRelayOrg(org) {
+  const o = (org || '').toLowerCase();
+  return (
+    o.includes('icloud private relay') ||
+    o.includes('apple inc') ||
+    o.includes('apple-relay') ||
+    // Apple uses Akamai and Cloudflare for relay exits; we can't block all
+    // Akamai/CF traffic but the ASN owner field sometimes reads "Apple Inc"
+    (o.includes('akamai') && o.includes('apple')) ||
+    (o.includes('zscaler') && o.includes('apple'))
+  );
+}
+
+function isInAppleDatacenterBbox(lat, lon) {
+  return APPLE_RELAY_BBOXES.some(
+    b => lat >= b.minLat && lat <= b.maxLat && lon >= b.minLon && lon <= b.maxLon
+  );
+}
+
+/**
+ * IP-based geolocation fallback.
+ * Returns { lat, lon, country_code } on success,
+ *         { error: string }           if the IP looks like a relay/proxy,
+ *         null                        if the fetch failed.
+ *
+ * @param {{ lat: number, lon: number } | null} lastGps — most recent GPS fix,
+ *   used for drift validation. Pass null if no GPS fix has been received yet.
+ */
+async function ipFallback(lastGps = null) {
   try {
     const res = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(5000) });
     const data = await res.json();
-    if (data.latitude && data.longitude) {
-      const org = (data.org || '').toLowerCase();
-      if (org.includes('icloud private relay') || org.includes('apple inc')) {
-        return { error: 'Location hidden by iCloud Private Relay. Please allow GPS or set manually.' };
-      }
-      return { lat: data.latitude, lon: data.longitude, country_code: data.country_code };
+    if (!data.latitude || !data.longitude) return null;
+
+    const ipLat = data.latitude;
+    const ipLon = data.longitude;
+    const org   = data.org || '';
+
+    // Layer 1: org name
+    if (isAppleRelayOrg(org)) {
+      return { error: 'Location hidden by iCloud Private Relay. Please allow GPS or set location manually.' };
     }
+
+    // Layer 2: drift vs last GPS fix
+    if (lastGps?.lat && lastGps?.lon) {
+      const driftKm = haversineKm(lastGps.lat, lastGps.lon, ipLat, ipLon);
+      if (driftKm > MAX_IP_DRIFT_KM) {
+        return { error: 'Location hidden by iCloud Private Relay. Please allow GPS or set location manually.' };
+      }
+    }
+
+    // Layer 3: Apple datacenter bbox (only meaningful if user is clearly NOT in the US)
+    // We use country_code from the IP response itself; if it says US but the
+    // browser locale is clearly non-US, flag it.
+    const browserLocale = (navigator.language || 'en').toLowerCase();
+    const userIsLikelyUS = data.country_code === 'US' && browserLocale.endsWith('-us');
+    if (!userIsLikelyUS && isInAppleDatacenterBbox(ipLat, ipLon)) {
+      return { error: 'Location hidden by iCloud Private Relay. Please allow GPS or set location manually.' };
+    }
+
+    return { lat: ipLat, lon: ipLon, country_code: data.country_code };
   } catch { /* silent */ }
   return null;
 }
@@ -323,7 +408,8 @@ export function useLocation({ onCrashDetected } = {}) {
     // gateway location.
     const firstFixTimer = setTimeout(async () => {
       if (cancelled || gotFirstFixRef.current) return;
-      const fb = await ipFallback();
+      // Pass last GPS fix (if any) so ipFallback can validate drift
+      const fb = await ipFallback(locationRef.current);
       if (cancelled || gotFirstFixRef.current) return;   // GPS may have raced in
       if (fb && !fb.error) {
         setLocation({
@@ -342,7 +428,7 @@ export function useLocation({ onCrashDetected } = {}) {
 
     if (!navigator.geolocation) {
       clearTimeout(firstFixTimer);
-      ipFallback().then(fb => {
+      ipFallback(null).then(fb => {
         if (cancelled) return;
         if (fb && !fb.error) {
           setLocation({
