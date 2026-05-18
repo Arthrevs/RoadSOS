@@ -252,9 +252,10 @@ class TestContactVolume:
         # All 6 distinct phones → all 6 contacts survive dedup
         assert r.json()["count"] == 6
 
-    def test_google_skipped_when_osm_has_enough_phones(self, client):
-        """Cost control: Google must NOT be called when Overpass already
-        returned ≥ 3 phoned results."""
+    def test_google_always_fires_in_parallel(self, client):
+        """Speed: Google now fires in parallel with OSM regardless of OSM result
+        count. Duplicate contacts (same phone/name) are deduped from the merged
+        result so the final count only reflects unique contacts."""
         with patched_upstreams(
             overpass_contacts=[
                 _contact("A", "hospital", phone="1"),
@@ -265,8 +266,9 @@ class TestContactVolume:
         ) as mocks:
             r = client.get("/search?lat=12.97&lon=77.59")
 
-        assert mocks["google"].await_count == 0, "Google called despite ≥3 phoned OSM"
-        assert r.json()["count"] == 3
+        assert mocks["google"].await_count == 1, "Google should always fire in parallel"
+        # Google's unique contact is added; OSM contacts are preserved
+        assert r.json()["count"] == 4
 
 
 # ─── 3. Source provenance — transparent about which upstream contributed ──
