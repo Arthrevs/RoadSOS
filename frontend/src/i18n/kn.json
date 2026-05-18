@@ -191,5 +191,22 @@
   "tooltip.copy_gps": "GPS ನಕಲಿಸಿ",
   "tooltip.send_immediate_sos": "ತಕ್ಷಣ SOS ಕಳುಹಿಸಿ",
   "common.close": "ಮುಚ್ಚಿ",
-  "common.back": "ಹಿಂದೆ"
+  "common.back": "ಹಿಂದೆ",
+  "sos.sms_emergency": "🚨 ತುರ್ತು — ನನಗೆ ಸಹಾಯ ಬೇಕು.",
+  "sos.sms_name": "ಹೆಸರು",
+  "sos.sms_blood": "ರಕ್ತದ ಗುಂಪು",
+  "sos.sms_allergies": "ಅಲರ್ಜಿಗಳು",
+  "sos.sms_conditions": "ವೈದ್ಯಕೀಯ ಪರಿಸ್ಥಿತಿಗಳು",
+  "sos.sms_plus_code": "ಪ್ಲಸ್ ಕೋಡ್",
+  "sos.sms_near": "ಹತ್ತಿರ",
+  "sos.sms_coords": "ನಿರ್ದೇಶಾಂಕಗಳು",
+  "sos.sms_footer": "RoadSOS ಮೂಲಕ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಳುಹಿಸಲಾಗಿದೆ.",
+  "dispatch.accident": "Road accident at {{place}}.",
+  "dispatch.injured_blocking": "Injured persons on scene. Vehicle is blocking traffic.",
+  "dispatch.injured_clear": "Injured persons on scene. Vehicle is not blocking traffic.",
+  "dispatch.no_injury_blocking": "No injuries reported. Vehicle is blocking traffic.",
+  "dispatch.minor": "Minor incident. No injuries reported.",
+  "dispatch.send_services": "Please send emergency services immediately.",
+  "dispatch.plus_code": "Location plus code",
+  "dispatch.gps_coords": "GPS coordinates"
 }

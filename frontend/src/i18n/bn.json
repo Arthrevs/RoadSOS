@@ -191,5 +191,22 @@
   "tooltip.copy_gps": "GPS কপি করুন",
   "tooltip.send_immediate_sos": "এখনই SOS পাঠান",
   "common.close": "বন্ধ",
-  "common.back": "ফিরে যান"
+  "common.back": "ফিরে যান",
+  "sos.sms_emergency": "🚨 জরুরি অবস্থা — আমার সাহায্য দরকার।",
+  "sos.sms_name": "নাম",
+  "sos.sms_blood": "রক্তের ধরন",
+  "sos.sms_allergies": "অ্যালার্জি",
+  "sos.sms_conditions": "চিকিৎসা অবস্থা",
+  "sos.sms_plus_code": "প্লাস কোড",
+  "sos.sms_near": "কাছাকাছি",
+  "sos.sms_coords": "স্থানাঙ্ক",
+  "sos.sms_footer": "RoadSOS দ্বারা স্বয়ংক্রিয়ভাবে পাঠানো হয়েছে।",
+  "dispatch.accident": "{{place}}-এ সড়ক দুর্ঘটনা।",
+  "dispatch.injured_blocking": "ঘটনাস্থলে আহত ব্যক্তি আছেন। গাড়িটি ট্র্যাফিক আটকে দিচ্ছে।",
+  "dispatch.injured_clear": "ঘটনাস্থলে আহত ব্যক্তি আছেন। গাড়িটি ট্র্যাফিক আটকাচ্ছে না।",
+  "dispatch.no_injury_blocking": "কোনো আঘাত নেই। গাড়িটি ট্র্যাফিক আটকে দিচ্ছে।",
+  "dispatch.minor": "ছোটখাটো ঘটনা। কোনো আঘাত নেই।",
+  "dispatch.send_services": "অনুগ্রহ করে অবিলম্বে জরুরি সেবা পাঠান।",
+  "dispatch.plus_code": "অবস্থানের প্লাস কোড",
+  "dispatch.gps_coords": "জিপিএস স্থানাঙ্ক"
 }

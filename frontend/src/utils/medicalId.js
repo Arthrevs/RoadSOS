@@ -95,22 +95,64 @@ export function hasMedicalId() {
  * @param {string} [args.landmark]
  * @returns {string}
  */
-export function buildSosSmsBody({ lat, lon, plusCode, landmark }) {
-  const m = getMedicalId();
+/**
+ * Build one SMS block (native or English) from medical data + location.
+ * @param {object} m        — Medical ID object
+ * @param {function} tFn    — i18n translate function (t) for this language
+ * @param {number} lat
+ * @param {number} lon
+ * @param {string} [plusCode]
+ * @param {string} [landmark]
+ */
+function buildSmsBlock(m, tFn, lat, lon, plusCode, landmark) {
   const lines = [];
-  lines.push('🚨 EMERGENCY — I need help.');
-  if (m.name) lines.push(`Name: ${m.name}${m.age ? `, age ${m.age}` : ''}`);
-  if (m.bloodType) lines.push(`Blood: ${m.bloodType}`);
-  if (m.allergies) lines.push(`Allergies: ${m.allergies}`);
-  if (m.conditions) lines.push(`Conditions: ${m.conditions}`);
+  lines.push(tFn('sos.sms_emergency', '🚨 EMERGENCY — I need help.'));
+  if (m.name)       lines.push(`${tFn('sos.sms_name', 'Name')}: ${m.name}${m.age ? `, age ${m.age}` : ''}`);
+  if (m.bloodType)  lines.push(`${tFn('sos.sms_blood', 'Blood')}: ${m.bloodType}`);
+  if (m.allergies)  lines.push(`${tFn('sos.sms_allergies', 'Allergies')}: ${m.allergies}`);
+  if (m.conditions) lines.push(`${tFn('sos.sms_conditions', 'Conditions')}: ${m.conditions}`);
   lines.push('');
-  if (plusCode)  lines.push(`Plus Code: ${plusCode}`);
-  if (landmark)  lines.push(`Near: ${landmark}`);
-  lines.push(`Coords: ${lat.toFixed(5)}, ${lon.toFixed(5)}`);
+  if (plusCode) lines.push(`${tFn('sos.sms_plus_code', 'Plus Code')}: ${plusCode}`);
+  if (landmark) lines.push(`${tFn('sos.sms_near', 'Near')}: ${landmark}`);
+  lines.push(`${tFn('sos.sms_coords', 'Coords')}: ${lat.toFixed(5)}, ${lon.toFixed(5)}`);
   lines.push(`Map: https://maps.google.com/?q=${lat.toFixed(6)},${lon.toFixed(6)}`);
   lines.push('');
-  lines.push('Sent automatically by RoadSOS.');
+  lines.push(tFn('sos.sms_footer', 'Sent automatically by RoadSOS.'));
   return lines.join('\n');
+}
+
+/**
+ * Build the SOS SMS body.
+ *
+ * When the user's chosen language is not English, the message contains
+ * TWO blocks separated by a divider:
+ *   1. Native language — readable by a local bystander or family member
+ *   2. English         — readable by emergency dispatchers + paramedics
+ *
+ * When already in English, a single block is emitted to keep it concise.
+ *
+ * @param {{ lat, lon, plusCode, landmark }} opts
+ * @param {function} [tNative] — i18n translate function for the user's language
+ * @param {string}   [lang]    — BCP-47 language code (e.g. 'hi', 'ta', 'en')
+ */
+export function buildSosSmsBody({ lat, lon, plusCode, landmark }, tNative, lang) {
+  const m = getMedicalId();
+
+  // English-only fallback t() — returns the second argument as plain string
+  const tEn = (key, fallback) => fallback;
+
+  const currentLang = (lang || 'en').toLowerCase().split('-')[0];
+
+  // If already English, or no native t() provided, emit single block
+  if (currentLang === 'en' || !tNative) {
+    return buildSmsBlock(m, tEn, lat, lon, plusCode, landmark);
+  }
+
+  const nativeBlock = buildSmsBlock(m, tNative, lat, lon, plusCode, landmark);
+  const enBlock     = buildSmsBlock(m, tEn, lat, lon, plusCode, landmark);
+
+  // Combine: native first (bystander/family), then English (paramedics/dispatch)
+  return `${nativeBlock}\n\n——————————\n\n${enBlock}`;
 }
 
 /**

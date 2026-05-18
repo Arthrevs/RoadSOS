@@ -191,5 +191,22 @@
   "tooltip.copy_gps": "GPS நகலெடு",
   "tooltip.send_immediate_sos": "உடனடி SOS அனுப்பு",
   "common.close": "மூடு",
-  "common.back": "திரும்பு"
+  "common.back": "திரும்பு",
+  "sos.sms_emergency": "🚨 அவசரநிலை — எனக்கு உதவி தேவை.",
+  "sos.sms_name": "பெயர்",
+  "sos.sms_blood": "இரத்த வகை",
+  "sos.sms_allergies": "ஒவ்வாமைகள்",
+  "sos.sms_conditions": "மருத்துவ நிலைகள்",
+  "sos.sms_plus_code": "பிளஸ் கோட்",
+  "sos.sms_near": "அருகில்",
+  "sos.sms_coords": "ஆயங்கள்",
+  "sos.sms_footer": "RoadSOS ஆல் தானாக அனுப்பப்பட்டது.",
+  "dispatch.accident": "{{place}} இல் சாலை விபத்து.",
+  "dispatch.injured_blocking": "காயமடைந்தவர்கள் நிகழ்விடத்தில் உள்ளனர். வாகனம் போக்குவரத்தை தடுக்கிறது.",
+  "dispatch.injured_clear": "காயமடைந்தவர்கள் நிகழ்விடத்தில் உள்ளனர். வாகனம் போக்குவரத்தை தடுக்கவில்லை.",
+  "dispatch.no_injury_blocking": "காயங்கள் எதுவும் இல்லை. வாகனம் போக்குவரத்தை தடுக்கிறது.",
+  "dispatch.minor": "சிறிய சம்பவம். காயங்கள் இல்லை.",
+  "dispatch.send_services": "உடனடியாக அவசர சேவைகளை அனுப்புங்கள்.",
+  "dispatch.plus_code": "இட பிளஸ் குறியீடு",
+  "dispatch.gps_coords": "ஜிபிஎஸ் ஆயங்கள்"
 }

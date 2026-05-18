@@ -191,5 +191,22 @@
   "tooltip.copy_gps": "Copy GPS",
   "tooltip.send_immediate_sos": "Send immediate SOS",
   "common.close": "Close",
-  "common.back": "Back"
+  "common.back": "Back",
+  "sos.sms_emergency": "🚨 EMERGENCY — I need help.",
+  "sos.sms_name": "Name",
+  "sos.sms_blood": "Blood",
+  "sos.sms_allergies": "Allergies",
+  "sos.sms_conditions": "Conditions",
+  "sos.sms_plus_code": "Plus Code",
+  "sos.sms_near": "Near",
+  "sos.sms_coords": "Coords",
+  "sos.sms_footer": "Sent automatically by RoadSOS.",
+  "dispatch.accident": "Road accident at {{place}}.",
+  "dispatch.injured_blocking": "Injured persons on scene. Vehicle is blocking traffic.",
+  "dispatch.injured_clear": "Injured persons on scene. Vehicle is not blocking traffic.",
+  "dispatch.no_injury_blocking": "No injuries reported. Vehicle is blocking traffic.",
+  "dispatch.minor": "Minor incident. No injuries reported.",
+  "dispatch.send_services": "Please send emergency services immediately.",
+  "dispatch.plus_code": "Location plus code",
+  "dispatch.gps_coords": "GPS coordinates"
 }

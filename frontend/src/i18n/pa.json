@@ -191,5 +191,22 @@
   "tooltip.copy_gps": "GPS ਕਾਪੀ ਕਰੋ",
   "tooltip.send_immediate_sos": "ਤੁਰੰਤ SOS ਭੇਜੋ",
   "common.close": "ਬੰਦ ਕਰੋ",
-  "common.back": "ਵਾਪਸ"
+  "common.back": "ਵਾਪਸ",
+  "sos.sms_emergency": "🚨 ਐਮਰਜੈਂਸੀ — ਮੈਨੂੰ ਮਦਦ ਚਾਹੀਦੀ ਹੈ।",
+  "sos.sms_name": "ਨਾਮ",
+  "sos.sms_blood": "ਖੂਨ ਦੀ ਕਿਸਮ",
+  "sos.sms_allergies": "ਐਲਰਜੀ",
+  "sos.sms_conditions": "ਡਾਕਟਰੀ ਸਥਿਤੀਆਂ",
+  "sos.sms_plus_code": "ਪਲੱਸ ਕੋਡ",
+  "sos.sms_near": "ਨੇੜੇ",
+  "sos.sms_coords": "ਕੋਆਰਡੀਨੇਟ",
+  "sos.sms_footer": "RoadSOS ਦੁਆਰਾ ਆਪਣੇ ਆਪ ਭੇਜਿਆ।",
+  "dispatch.accident": "Road accident at {{place}}.",
+  "dispatch.injured_blocking": "Injured persons on scene. Vehicle is blocking traffic.",
+  "dispatch.injured_clear": "Injured persons on scene. Vehicle is not blocking traffic.",
+  "dispatch.no_injury_blocking": "No injuries reported. Vehicle is blocking traffic.",
+  "dispatch.minor": "Minor incident. No injuries reported.",
+  "dispatch.send_services": "Please send emergency services immediately.",
+  "dispatch.plus_code": "Location plus code",
+  "dispatch.gps_coords": "GPS coordinates"
 }

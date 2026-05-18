@@ -191,5 +191,22 @@
   "tooltip.copy_gps": "GPS کاپی کریں",
   "tooltip.send_immediate_sos": "فوری SOS بھیجیں",
   "common.close": "بند کریں",
-  "common.back": "واپس"
+  "common.back": "واپس",
+  "sos.sms_emergency": "🚨 ایمرجنسی — مجھے مدد چاہیے۔",
+  "sos.sms_name": "نام",
+  "sos.sms_blood": "خون کی قسم",
+  "sos.sms_allergies": "الرجی",
+  "sos.sms_conditions": "طبی حالات",
+  "sos.sms_plus_code": "پلس کوڈ",
+  "sos.sms_near": "قریب",
+  "sos.sms_coords": "کوآرڈینیٹ",
+  "sos.sms_footer": "RoadSOS کے ذریعے خودکار طریقے سے بھیجا گیا۔",
+  "dispatch.accident": "Road accident at {{place}}.",
+  "dispatch.injured_blocking": "Injured persons on scene. Vehicle is blocking traffic.",
+  "dispatch.injured_clear": "Injured persons on scene. Vehicle is not blocking traffic.",
+  "dispatch.no_injury_blocking": "No injuries reported. Vehicle is blocking traffic.",
+  "dispatch.minor": "Minor incident. No injuries reported.",
+  "dispatch.send_services": "Please send emergency services immediately.",
+  "dispatch.plus_code": "Location plus code",
+  "dispatch.gps_coords": "GPS coordinates"
 }

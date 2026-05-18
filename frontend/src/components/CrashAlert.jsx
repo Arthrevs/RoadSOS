@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Bot, PhoneCall, Check, Ambulance, Shield, Phone, Copy, X, Navigation2 } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 import { speakText, buildDispatchText, cancelSpeech } from '../utils/speechUtils';
 import { startAlarm, stopAlarm } from '../utils/alarmUtils';
 import { safeAutoDial, guardedTelDial } from '../utils/demoMode';
@@ -24,6 +25,7 @@ const PHASE = {
 };
 
 export default function CrashAlert({ open, onConfirm, onCancel, numbers, location, landmark, countryCode }) {
+  const { t, i18n } = useTranslation();
   const [phase, setPhase]       = useState(PHASE.CHOOSING);
   const [seconds, setSeconds]   = useState(CHOOSE_SECONDS);
   const [pin, setPin]           = useState('');
@@ -48,7 +50,7 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
     plusCode,
     injured : true,
     blocking: true,
-  }), [landmark, location?.lat, location?.lon, plusCode]);
+  }, t), [landmark, location?.lat, location?.lon, plusCode, t]);
 
   const doCopy = () => {
     if (location?.lat) {
@@ -126,7 +128,7 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
     stopAlarm();
     setPhase(PHASE.AUTOMATING);
     setSpeaking(true);
-    speakText(dispatchText).finally(() => setSpeaking(false));
+    speakText(dispatchText, { lang: i18n.language || 'en' }).finally(() => setSpeaking(false));
     startCountdown(AUTO_SECONDS, () => fireCall());
   }
 

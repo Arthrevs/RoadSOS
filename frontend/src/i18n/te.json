@@ -191,5 +191,22 @@
   "tooltip.copy_gps": "GPS కాపీ చేయి",
   "tooltip.send_immediate_sos": "తక్షణ SOS పంపండి",
   "common.close": "మూసివేయి",
-  "common.back": "వెనుకకు"
+  "common.back": "వెనుకకు",
+  "sos.sms_emergency": "🚨 అత్యవసర పరిస్థితి — నాకు సహాయం అవసరం.",
+  "sos.sms_name": "పేరు",
+  "sos.sms_blood": "రక్త రకం",
+  "sos.sms_allergies": "అలెర్జీలు",
+  "sos.sms_conditions": "వైద్య పరిస్థితులు",
+  "sos.sms_plus_code": "ప్లస్ కోడ్",
+  "sos.sms_near": "దగ్గర",
+  "sos.sms_coords": "అక్షాంశాలు",
+  "sos.sms_footer": "RoadSOS ద్వారా స్వయంచాలకంగా పంపబడింది.",
+  "dispatch.accident": "{{place}} వద్ద రోడ్డు ప్రమాదం.",
+  "dispatch.injured_blocking": "గాయపడిన వ్యక్తులు సంఘటనా స్థలంలో ఉన్నారు. వాహనం ట్రాఫిక్‌ను అడ్డుకుంటోంది.",
+  "dispatch.injured_clear": "గాయపడిన వ్యక్తులు సంఘటనా స్థలంలో ఉన్నారు. వాహనం ట్రాఫిక్‌ను అడ్డుకోవడం లేదు.",
+  "dispatch.no_injury_blocking": "గాయాలు లేవు. వాహనం ట్రాఫిక్‌ను అడ్డుకుంటోంది.",
+  "dispatch.minor": "చిన్న సంఘటన. గాయాలు లేవు.",
+  "dispatch.send_services": "దయచేసి వెంటనే అత్యవసర సేవలు పంపండి.",
+  "dispatch.plus_code": "స్థాన ప్లస్ కోడ్",
+  "dispatch.gps_coords": "జిపిఎస్ నిర్దేశాంకాలు"
 }

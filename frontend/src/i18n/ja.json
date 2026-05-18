@@ -191,5 +191,22 @@
   "tooltip.copy_gps": "GPS をコピー",
   "tooltip.send_immediate_sos": "即時 SOS を送信",
   "common.close": "閉じる",
-  "common.back": "戻る"
+  "common.back": "戻る",
+  "sos.sms_emergency": "🚨 緊急 — 助けが必要です。",
+  "sos.sms_name": "名前",
+  "sos.sms_blood": "血液型",
+  "sos.sms_allergies": "アレルギー",
+  "sos.sms_conditions": "病状",
+  "sos.sms_plus_code": "プラスコード",
+  "sos.sms_near": "近く",
+  "sos.sms_coords": "座標",
+  "sos.sms_footer": "RoadSOSにより自動送信されました。",
+  "dispatch.accident": "Road accident at {{place}}.",
+  "dispatch.injured_blocking": "Injured persons on scene. Vehicle is blocking traffic.",
+  "dispatch.injured_clear": "Injured persons on scene. Vehicle is not blocking traffic.",
+  "dispatch.no_injury_blocking": "No injuries reported. Vehicle is blocking traffic.",
+  "dispatch.minor": "Minor incident. No injuries reported.",
+  "dispatch.send_services": "Please send emergency services immediately.",
+  "dispatch.plus_code": "Location plus code",
+  "dispatch.gps_coords": "GPS coordinates"
 }

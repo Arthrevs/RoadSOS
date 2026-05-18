@@ -191,5 +191,22 @@
   "tooltip.copy_gps": "نسخ GPS",
   "tooltip.send_immediate_sos": "إرسال SOS فوري",
   "common.close": "إغلاق",
-  "common.back": "رجوع"
+  "common.back": "رجوع",
+  "sos.sms_emergency": "🚨 طوارئ — أحتاج إلى مساعدة.",
+  "sos.sms_name": "الاسم",
+  "sos.sms_blood": "فصيلة الدم",
+  "sos.sms_allergies": "الحساسية",
+  "sos.sms_conditions": "الحالات الطبية",
+  "sos.sms_plus_code": "الرمز الإضافي",
+  "sos.sms_near": "بالقرب من",
+  "sos.sms_coords": "الإحداثيات",
+  "sos.sms_footer": "أُرسل تلقائيًا بواسطة RoadSOS.",
+  "dispatch.accident": "Road accident at {{place}}.",
+  "dispatch.injured_blocking": "Injured persons on scene. Vehicle is blocking traffic.",
+  "dispatch.injured_clear": "Injured persons on scene. Vehicle is not blocking traffic.",
+  "dispatch.no_injury_blocking": "No injuries reported. Vehicle is blocking traffic.",
+  "dispatch.minor": "Minor incident. No injuries reported.",
+  "dispatch.send_services": "Please send emergency services immediately.",
+  "dispatch.plus_code": "Location plus code",
+  "dispatch.gps_coords": "GPS coordinates"
 }

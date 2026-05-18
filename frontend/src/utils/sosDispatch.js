@@ -15,6 +15,7 @@
 
 import { getEmergencyContacts, buildSosSmsBody } from './medicalId';
 import { encodePlusCode } from './plusCodes';
+import i18n from '../i18n/index.js';
 
 // ─── Country preference map ───────────────────────────────────────────────────
 const WA_COUNTRIES = new Set([
@@ -61,7 +62,9 @@ export function buildSosLinks(location, landmark) {
   if (contacts.length === 0) return null;
 
   const plusCode = encodePlusCode(location.lat, location.lon);
-  const body = buildSosSmsBody({ lat: location.lat, lon: location.lon, plusCode, landmark });
+  const tNative = i18n.t.bind(i18n);
+  const lang = i18n.language || 'en';
+  const body = buildSosSmsBody({ lat: location.lat, lon: location.lon, plusCode, landmark }, tNative, lang);
 
   const perContact = contacts.map(c => {
     const num = cleanPhone(c.phone).replace(/^\+/, '');

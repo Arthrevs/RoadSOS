@@ -191,5 +191,22 @@
   "tooltip.copy_gps": "GPS કૉપિ કરો",
   "tooltip.send_immediate_sos": "તાત્કાલિક SOS મોકલો",
   "common.close": "બંધ કરો",
-  "common.back": "પાછા"
+  "common.back": "પાછા",
+  "sos.sms_emergency": "🚨 કટોકટી — મને મદદ જોઈએ.",
+  "sos.sms_name": "નામ",
+  "sos.sms_blood": "લોહીનો પ્રકાર",
+  "sos.sms_allergies": "એલર્જી",
+  "sos.sms_conditions": "તબીબી સ્થિતિ",
+  "sos.sms_plus_code": "પ્લસ કોડ",
+  "sos.sms_near": "નજીક",
+  "sos.sms_coords": "કોઓર્ડિનેટ્સ",
+  "sos.sms_footer": "RoadSOS દ્વારા આપોઆપ મોકલ્યો.",
+  "dispatch.accident": "Road accident at {{place}}.",
+  "dispatch.injured_blocking": "Injured persons on scene. Vehicle is blocking traffic.",
+  "dispatch.injured_clear": "Injured persons on scene. Vehicle is not blocking traffic.",
+  "dispatch.no_injury_blocking": "No injuries reported. Vehicle is blocking traffic.",
+  "dispatch.minor": "Minor incident. No injuries reported.",
+  "dispatch.send_services": "Please send emergency services immediately.",
+  "dispatch.plus_code": "Location plus code",
+  "dispatch.gps_coords": "GPS coordinates"
 }

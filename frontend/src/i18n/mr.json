@@ -191,5 +191,22 @@
   "tooltip.copy_gps": "GPS कॉपी करा",
   "tooltip.send_immediate_sos": "त्वरित SOS पाठवा",
   "common.close": "बंद करा",
-  "common.back": "मागे"
+  "common.back": "मागे",
+  "sos.sms_emergency": "🚨 आणीबाणी — मला मदत हवी.",
+  "sos.sms_name": "नाव",
+  "sos.sms_blood": "रक्तगट",
+  "sos.sms_allergies": "ऍलर्जी",
+  "sos.sms_conditions": "वैद्यकीय स्थिती",
+  "sos.sms_plus_code": "प्लस कोड",
+  "sos.sms_near": "जवळ",
+  "sos.sms_coords": "निर्देशांक",
+  "sos.sms_footer": "RoadSOS द्वारे आपोआप पाठवले.",
+  "dispatch.accident": "{{place}} येथे रस्ते अपघात.",
+  "dispatch.injured_blocking": "जखमी व्यक्ती घटनास्थळी आहेत. वाहन रहदारी अडवत आहे.",
+  "dispatch.injured_clear": "जखमी व्यक्ती घटनास्थळी आहेत. वाहन रहदारी अडवत नाही.",
+  "dispatch.no_injury_blocking": "कोणतीही जखम नाही. वाहन रहदारी अडवत आहे.",
+  "dispatch.minor": "किरकोळ घटना. कोणतीही जखम नाही.",
+  "dispatch.send_services": "कृपया ताबडतोब आपत्कालीन सेवा पाठवा.",
+  "dispatch.plus_code": "स्थान प्लस कोड",
+  "dispatch.gps_coords": "जीपीएस निर्देशांक"
 }

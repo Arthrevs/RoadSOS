@@ -191,5 +191,22 @@
   "tooltip.copy_gps": "GPS പകർത്തുക",
   "tooltip.send_immediate_sos": "ഉടനടി SOS അയയ്‌ക്കുക",
   "common.close": "അടയ്ക്കുക",
-  "common.back": "തിരികെ"
+  "common.back": "തിരികെ",
+  "sos.sms_emergency": "🚨 അടിയന്തരാവസ്ഥ — എനിക്ക് സഹായം വേണം.",
+  "sos.sms_name": "പേര്",
+  "sos.sms_blood": "രക്തഗ്രൂപ്പ്",
+  "sos.sms_allergies": "അലർജികൾ",
+  "sos.sms_conditions": "വൈദ്യ അവസ്ഥകൾ",
+  "sos.sms_plus_code": "പ്ലസ് കോഡ്",
+  "sos.sms_near": "അടുത്ത്",
+  "sos.sms_coords": "കോർഡിനേറ്റുകൾ",
+  "sos.sms_footer": "RoadSOS വഴി യാന്ത്രികമായി അയച്ചു.",
+  "dispatch.accident": "Road accident at {{place}}.",
+  "dispatch.injured_blocking": "Injured persons on scene. Vehicle is blocking traffic.",
+  "dispatch.injured_clear": "Injured persons on scene. Vehicle is not blocking traffic.",
+  "dispatch.no_injury_blocking": "No injuries reported. Vehicle is blocking traffic.",
+  "dispatch.minor": "Minor incident. No injuries reported.",
+  "dispatch.send_services": "Please send emergency services immediately.",
+  "dispatch.plus_code": "Location plus code",
+  "dispatch.gps_coords": "GPS coordinates"
 }

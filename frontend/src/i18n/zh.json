@@ -191,5 +191,22 @@
   "tooltip.copy_gps": "复制 GPS",
   "tooltip.send_immediate_sos": "立即发送 SOS",
   "common.close": "关闭",
-  "common.back": "返回"
+  "common.back": "返回",
+  "sos.sms_emergency": "🚨 紧急情况 — 我需要帮助。",
+  "sos.sms_name": "姓名",
+  "sos.sms_blood": "血型",
+  "sos.sms_allergies": "过敏史",
+  "sos.sms_conditions": "医疗状况",
+  "sos.sms_plus_code": "Plus码",
+  "sos.sms_near": "附近",
+  "sos.sms_coords": "坐标",
+  "sos.sms_footer": "由RoadSOS自动发送。",
+  "dispatch.accident": "Road accident at {{place}}.",
+  "dispatch.injured_blocking": "Injured persons on scene. Vehicle is blocking traffic.",
+  "dispatch.injured_clear": "Injured persons on scene. Vehicle is not blocking traffic.",
+  "dispatch.no_injury_blocking": "No injuries reported. Vehicle is blocking traffic.",
+  "dispatch.minor": "Minor incident. No injuries reported.",
+  "dispatch.send_services": "Please send emergency services immediately.",
+  "dispatch.plus_code": "Location plus code",
+  "dispatch.gps_coords": "GPS coordinates"
 }

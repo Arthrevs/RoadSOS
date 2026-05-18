@@ -191,5 +191,22 @@
   "tooltip.copy_gps": "Копировать GPS",
   "tooltip.send_immediate_sos": "Отправить SOS немедленно",
   "common.close": "Закрыть",
-  "common.back": "Назад"
+  "common.back": "Назад",
+  "sos.sms_emergency": "🚨 ЭКСТРЕННАЯ ПОМОЩЬ — Мне нужна помощь.",
+  "sos.sms_name": "Имя",
+  "sos.sms_blood": "Группа крови",
+  "sos.sms_allergies": "Аллергии",
+  "sos.sms_conditions": "Состояния здоровья",
+  "sos.sms_plus_code": "Плюс-код",
+  "sos.sms_near": "Рядом",
+  "sos.sms_coords": "Координаты",
+  "sos.sms_footer": "Отправлено автоматически через RoadSOS.",
+  "dispatch.accident": "Road accident at {{place}}.",
+  "dispatch.injured_blocking": "Injured persons on scene. Vehicle is blocking traffic.",
+  "dispatch.injured_clear": "Injured persons on scene. Vehicle is not blocking traffic.",
+  "dispatch.no_injury_blocking": "No injuries reported. Vehicle is blocking traffic.",
+  "dispatch.minor": "Minor incident. No injuries reported.",
+  "dispatch.send_services": "Please send emergency services immediately.",
+  "dispatch.plus_code": "Location plus code",
+  "dispatch.gps_coords": "GPS coordinates"
 }
