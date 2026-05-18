@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "ಆಫ್‌ಲೈನ್ ಬಳಕೆಗಾಗಿ ಮಾರ್ಗ ಕ್ಯಾಶ್ ಮಾಡಿ",
   "plan_trip.close": "ಮುಚ್ಚಿ",
   "plan_trip.done": "ಮುಗಿಯಿತು",
-  "actions.refresh_location": "ಸ್ಥಳ ರಿಫ್ರೆಶ್"
+  "actions.refresh_location": "ಸ್ಥಳ ರಿಫ್ರೆಶ್",
+  "tooltip.test_crash": "ಪರೀಕ್ಷಾ ಅಪಘಾತ ಎಚ್ಚರಿಕೆ",
+  "tooltip.manual_location": "ಕೈಯಿಂದ ಹೊಂದಿಸಿದ ಸ್ಥಳ ಬಳಕೆಯಲ್ಲಿದೆ",
+  "tooltip.backend_warming": "ಸರ್ವರ್ ಎಚ್ಚರಗೊಳ್ಳುತ್ತಿದೆ — ನಿಷ್ಕ್ರಿಯತೆಯ ನಂತರ ಮೊದಲ ವಿನಂತಿ 30–55 ಸೆಕೆಂಡುಗಳನ್ನು ತೆಗೆದುಕೊಳ್ಳಬಹುದು",
+  "tooltip.backend_fallback": "ಸರ್ವರ್ ಲೈವ್ ಡೇಟಾವನ್ನು ಹಿಂತಿರುಗಿಸಲಿಲ್ಲ — ಮರುಪ್ರಯತ್ನಿಸುವಾಗ ಸಂಗ್ರಹಿಸಿದ ಡೈರೆಕ್ಟರಿಯನ್ನು ತೋರಿಸುತ್ತಿದ್ದೇವೆ",
+  "tooltip.copy_gps": "GPS ನಕಲಿಸಿ",
+  "tooltip.send_immediate_sos": "ತಕ್ಷಣ SOS ಕಳುಹಿಸಿ",
+  "common.close": "ಮುಚ್ಚಿ",
+  "common.back": "ಹಿಂದೆ"
 }

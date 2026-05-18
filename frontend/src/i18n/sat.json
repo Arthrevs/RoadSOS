@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "ᱳᱯᱷᱞᱟᱭᱱ ᱨᱟᱦᱟ ᱠᱮᱪ",
   "plan_trip.close": "ᱦᱳᱸᱪᱳ",
   "plan_trip.done": "ᱢᱟᱲᱟᱝ",
-  "actions.refresh_location": "ᱴᱷᱟᱶᱠᱟ ᱫᱚᱨ ᱢᱮ"
+  "actions.refresh_location": "ᱴᱷᱟᱶᱠᱟ ᱫᱚᱨ ᱢᱮ",
+  "tooltip.test_crash": "Test crash alert",
+  "tooltip.manual_location": "Using manually set location",
+  "tooltip.backend_warming": "Waking the backend up — first request after idle can take 30–55s",
+  "tooltip.backend_fallback": "Backend did not return live data — showing pre-loaded directory while we retry",
+  "tooltip.copy_gps": "Copy GPS",
+  "tooltip.send_immediate_sos": "Send immediate SOS",
+  "common.close": "Close",
+  "common.back": "Back"
 }

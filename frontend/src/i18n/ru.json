@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "Кэшировать маршрут для оффлайн",
   "plan_trip.close": "Закрыть",
   "plan_trip.done": "Готово",
-  "actions.refresh_location": "Обновить местоположение"
+  "actions.refresh_location": "Обновить местоположение",
+  "tooltip.test_crash": "Тестовое оповещение об аварии",
+  "tooltip.manual_location": "Используется местоположение, заданное вручную",
+  "tooltip.backend_warming": "Сервер запускается — первый запрос после простоя может занять 30–55 с",
+  "tooltip.backend_fallback": "Сервер не вернул актуальные данные — показываем сохранённый каталог во время повтора",
+  "tooltip.copy_gps": "Копировать GPS",
+  "tooltip.send_immediate_sos": "Отправить SOS немедленно",
+  "common.close": "Закрыть",
+  "common.back": "Назад"
 }

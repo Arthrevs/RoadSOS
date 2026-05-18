@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "오프라인 사용을 위해 경로 캐시",
   "plan_trip.close": "닫기",
   "plan_trip.done": "완료",
-  "actions.refresh_location": "위치 새로고침"
+  "actions.refresh_location": "위치 새로고침",
+  "tooltip.test_crash": "Test crash alert",
+  "tooltip.manual_location": "Using manually set location",
+  "tooltip.backend_warming": "Waking the backend up — first request after idle can take 30–55s",
+  "tooltip.backend_fallback": "Backend did not return live data — showing pre-loaded directory while we retry",
+  "tooltip.copy_gps": "Copy GPS",
+  "tooltip.send_immediate_sos": "Send immediate SOS",
+  "common.close": "Close",
+  "common.back": "Back"
 }

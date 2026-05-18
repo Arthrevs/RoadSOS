@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "অফলাইন ব্যবহারের জন্য রুট সংরক্ষণ করুন",
   "plan_trip.close": "বন্ধ",
   "plan_trip.done": "সম্পন্ন",
-  "actions.refresh_location": "অবস্থান রিফ্রেশ"
+  "actions.refresh_location": "অবস্থান রিফ্রেশ",
+  "tooltip.test_crash": "পরীক্ষা ক্র্যাশ সতর্কতা",
+  "tooltip.manual_location": "ম্যানুয়ালি সেট করা অবস্থান ব্যবহৃত হচ্ছে",
+  "tooltip.backend_warming": "সার্ভার জাগছে — নিষ্ক্রিয়তার পরে প্রথম অনুরোধে ৩০–৫৫ সেকেন্ড লাগতে পারে",
+  "tooltip.backend_fallback": "সার্ভার লাইভ ডেটা ফেরত দেয়নি — পুনঃচেষ্টা করার সময় সংরক্ষিত ডিরেক্টরি দেখাচ্ছি",
+  "tooltip.copy_gps": "GPS কপি করুন",
+  "tooltip.send_immediate_sos": "এখনই SOS পাঠান",
+  "common.close": "বন্ধ",
+  "common.back": "ফিরে যান"
 }

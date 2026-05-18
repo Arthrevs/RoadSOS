@@ -183,5 +183,13 @@
   "triage.get_help": "प्राथमिकता वाली सहायता प्राप्त करें",
   "triage.answer_both": "दोनों प्रश्नों के उत्तर दीजिये",
   "triage.skip": "छोड़ें - सभी संपर्क दिखाएँ",
-  "actions.refresh_location": "स्थान रीफ्रेश करें"
+  "actions.refresh_location": "स्थान रीफ्रेश करें",
+  "tooltip.test_crash": "टेस्ट क्रैश अलर्ट",
+  "tooltip.manual_location": "मैन्युअल रूप से सेट किया गया स्थान उपयोग में",
+  "tooltip.backend_warming": "सर्वर जग रहा है — निष्क्रियता के बाद पहले अनुरोध में 30–55 सेकंड लग सकते हैं",
+  "tooltip.backend_fallback": "सर्वर ने लाइव डेटा नहीं लौटाया — पुनः प्रयास करते हुए संग्रहीत निर्देशिका दिखा रहे हैं",
+  "tooltip.copy_gps": "GPS कॉपी करें",
+  "tooltip.send_immediate_sos": "तुरंत SOS भेजें",
+  "common.close": "बंद करें",
+  "common.back": "वापस"
 }

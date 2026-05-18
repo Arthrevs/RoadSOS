@@ -87,7 +87,7 @@ export default function ManualLocationModal({ open, onClose, onSetLocation, mapR
       <div className="manual-location-modal">
         <div className="mlm-header">
           <div className="mlm-title">{t('manual_location.title', 'Set Location')}</div>
-          <button className="mlm-close" onClick={onClose} aria-label="Close">
+          <button className="mlm-close" onClick={onClose} aria-label={t('common.close', 'Close')}>
             <X size={18} strokeWidth={2.5} />
           </button>
         </div>
@@ -115,7 +115,7 @@ export default function ManualLocationModal({ open, onClose, onSetLocation, mapR
         {mode === 'search' && (
           <div className="mlm-body">
             <div className="mlm-back" onClick={() => setMode(null)}>
-              ← Back
+              ← {t('common.back', 'Back')}
             </div>
             <input
               type="text"
@@ -155,7 +155,7 @@ export default function ManualLocationModal({ open, onClose, onSetLocation, mapR
         {mode === 'map' && (
           <div className="mlm-body">
             <div className="mlm-back" onClick={() => setMode(null)}>
-              ← Back
+              ← {t('common.back', 'Back')}
             </div>
             <div className="mlm-map-hint">
               {t('manual_location.tap_hint', 'Tap anywhere on the map to set your location')}

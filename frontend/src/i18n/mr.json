@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "ऑफलाइनसाठी मार्ग कॅशे करा",
   "plan_trip.close": "बंद",
   "plan_trip.done": "पूर्ण",
-  "actions.refresh_location": "स्थान रीफ्रेश"
+  "actions.refresh_location": "स्थान रीफ्रेश",
+  "tooltip.test_crash": "चाचणी क्रॅश सूचना",
+  "tooltip.manual_location": "मॅन्युअली सेट केलेले स्थान वापरात आहे",
+  "tooltip.backend_warming": "सर्व्हर जागत आहे — निष्क्रियतेनंतर पहिल्या विनंतीला 30–55 सेकंद लागू शकतात",
+  "tooltip.backend_fallback": "सर्व्हरने थेट डेटा परत केला नाही — पुन्हा प्रयत्न करताना संचयित निर्देशिका दाखवत आहोत",
+  "tooltip.copy_gps": "GPS कॉपी करा",
+  "tooltip.send_immediate_sos": "त्वरित SOS पाठवा",
+  "common.close": "बंद करा",
+  "common.back": "मागे"
 }

@@ -408,7 +408,7 @@ export default function App() {
                     🆔 ID{!medicalIdConfigured ? ' ●' : ''}
                   </button>
                   {DEMO_MODE && (
-                    <button className="test-crash-btn" onClick={() => setCrashOpen(true)} title="Test crash alert">
+                    <button className="test-crash-btn" onClick={() => setCrashOpen(true)} title={t('tooltip.test_crash', 'Test crash alert')}>
                       <AlertTriangle size={12} strokeWidth={2.5} style={{ marginRight: 4 }} />
                       TEST CRASH
                     </button>

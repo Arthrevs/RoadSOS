@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "Armazenar rota para uso offline",
   "plan_trip.close": "Fechar",
   "plan_trip.done": "Concluído",
-  "actions.refresh_location": "Atualizar localização"
+  "actions.refresh_location": "Atualizar localização",
+  "tooltip.test_crash": "Alerta de teste de acidente",
+  "tooltip.manual_location": "Localização definida manualmente em uso",
+  "tooltip.backend_warming": "Servidor a iniciar — primeira solicitação após inatividade pode demorar 30–55 s",
+  "tooltip.backend_fallback": "Servidor não retornou dados ao vivo — mostrando diretório armazenado enquanto tentamos novamente",
+  "tooltip.copy_gps": "Copiar GPS",
+  "tooltip.send_immediate_sos": "Enviar SOS imediato",
+  "common.close": "Fechar",
+  "common.back": "Voltar"
 }

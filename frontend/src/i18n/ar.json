@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "تخزين المسار للاستخدام دون اتصال",
   "plan_trip.close": "إغلاق",
   "plan_trip.done": "تم",
-  "actions.refresh_location": "تحديث الموقع"
+  "actions.refresh_location": "تحديث الموقع",
+  "tooltip.test_crash": "تنبيه اختبار حادث",
+  "tooltip.manual_location": "الموقع المحدد يدوياً قيد الاستخدام",
+  "tooltip.backend_warming": "الخادم يستيقظ — قد يستغرق الطلب الأول بعد الخمول 30–55 ثانية",
+  "tooltip.backend_fallback": "لم يُرجع الخادم بيانات حية — نعرض الدليل المخزن أثناء إعادة المحاولة",
+  "tooltip.copy_gps": "نسخ GPS",
+  "tooltip.send_immediate_sos": "إرسال SOS فوري",
+  "common.close": "إغلاق",
+  "common.back": "رجوع"
 }

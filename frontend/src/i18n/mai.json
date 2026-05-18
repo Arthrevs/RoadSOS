@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "ऑफलाइनक लेल मार्ग कैश",
   "plan_trip.close": "बन्द",
   "plan_trip.done": "भगेल",
-  "actions.refresh_location": "स्थान रीफ्रेश"
+  "actions.refresh_location": "स्थान रीफ्रेश",
+  "tooltip.test_crash": "Test crash alert",
+  "tooltip.manual_location": "Using manually set location",
+  "tooltip.backend_warming": "Waking the backend up — first request after idle can take 30–55s",
+  "tooltip.backend_fallback": "Backend did not return live data — showing pre-loaded directory while we retry",
+  "tooltip.copy_gps": "Copy GPS",
+  "tooltip.send_immediate_sos": "Send immediate SOS",
+  "common.close": "Close",
+  "common.back": "Back"
 }

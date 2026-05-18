@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "ஆஃப்லைனுக்காக வழியை சேமி",
   "plan_trip.close": "மூடு",
   "plan_trip.done": "முடிந்தது",
-  "actions.refresh_location": "இடம் புதுப்பி"
+  "actions.refresh_location": "இடம் புதுப்பி",
+  "tooltip.test_crash": "சோதனை விபத்து எச்சரிக்கை",
+  "tooltip.manual_location": "கைமுறையாக அமைக்கப்பட்ட இடம் பயன்பாட்டில்",
+  "tooltip.backend_warming": "சேவையகம் எழுந்துகொண்டிருக்கிறது — செயலற்ற நிலைக்குப் பிறகு முதல் கோரிக்கை 30–55வி எடுக்கலாம்",
+  "tooltip.backend_fallback": "சேவையகம் நேரடி தரவை வழங்கவில்லை — மீண்டும் முயற்சிக்கும்போது சேமித்த அடைவைக் காட்டுகிறோம்",
+  "tooltip.copy_gps": "GPS நகலெடு",
+  "tooltip.send_immediate_sos": "உடனடி SOS அனுப்பு",
+  "common.close": "மூடு",
+  "common.back": "திரும்பு"
 }

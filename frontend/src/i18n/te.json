@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "ఆఫ్‌లైన్ ఉపయోగం కోసం రూట్ సేవ్ చేయండి",
   "plan_trip.close": "మూసివేయి",
   "plan_trip.done": "పూర్తయింది",
-  "actions.refresh_location": "స్థానం రిఫ్రెష్"
+  "actions.refresh_location": "స్థానం రిఫ్రెష్",
+  "tooltip.test_crash": "పరీక్ష ప్రమాద హెచ్చరిక",
+  "tooltip.manual_location": "మాన్యువల్‌గా సెట్ చేసిన స్థానం ఉపయోగంలో ఉంది",
+  "tooltip.backend_warming": "సర్వర్ మేల్కొంటోంది — నిష్క్రియ తర్వాత మొదటి అభ్యర్థన 30–55 సెకన్లు పట్టవచ్చు",
+  "tooltip.backend_fallback": "సర్వర్ లైవ్ డేటాను తిరిగి ఇవ్వలేదు — మళ్లీ ప్రయత్నిస్తున్నప్పుడు నిల్వ చేసిన డైరెక్టరీని చూపిస్తున్నాము",
+  "tooltip.copy_gps": "GPS కాపీ చేయి",
+  "tooltip.send_immediate_sos": "తక్షణ SOS పంపండి",
+  "common.close": "మూసివేయి",
+  "common.back": "వెనుకకు"
 }

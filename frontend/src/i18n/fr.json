@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "Mettre la route en cache hors ligne",
   "plan_trip.close": "Fermer",
   "plan_trip.done": "Terminé",
-  "actions.refresh_location": "Actualiser l'emplacement"
+  "actions.refresh_location": "Actualiser l'emplacement",
+  "tooltip.test_crash": "Alerte de test d'accident",
+  "tooltip.manual_location": "Position définie manuellement en cours d'utilisation",
+  "tooltip.backend_warming": "Le serveur démarre — la première requête après inactivité peut prendre 30–55 s",
+  "tooltip.backend_fallback": "Le serveur n'a pas renvoyé de données en direct — affichage du répertoire stocké pendant la nouvelle tentative",
+  "tooltip.copy_gps": "Copier GPS",
+  "tooltip.send_immediate_sos": "Envoyer SOS immédiat",
+  "common.close": "Fermer",
+  "common.back": "Retour"
 }

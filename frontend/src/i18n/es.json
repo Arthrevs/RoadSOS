@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "Almacenar ruta para uso sin conexión",
   "plan_trip.close": "Cerrar",
   "plan_trip.done": "Hecho",
-  "actions.refresh_location": "Actualizar ubicación"
+  "actions.refresh_location": "Actualizar ubicación",
+  "tooltip.test_crash": "Alerta de prueba de accidente",
+  "tooltip.manual_location": "Ubicación establecida manualmente en uso",
+  "tooltip.backend_warming": "El servidor se está iniciando — la primera solicitud tras inactividad puede tardar 30–55 s",
+  "tooltip.backend_fallback": "El servidor no devolvió datos en vivo — mostrando directorio almacenado mientras reintentamos",
+  "tooltip.copy_gps": "Copiar GPS",
+  "tooltip.send_immediate_sos": "Enviar SOS inmediato",
+  "common.close": "Cerrar",
+  "common.back": "Atrás"
 }

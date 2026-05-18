@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "ઓફલાઇન ઉપયોગ માટે રૂટ કેશ કરો",
   "plan_trip.close": "બંધ",
   "plan_trip.done": "પૂર્ણ",
-  "actions.refresh_location": "સ્થાન રિફ્રેશ"
+  "actions.refresh_location": "સ્થાન રિફ્રેશ",
+  "tooltip.test_crash": "ટેસ્ટ ક્રેશ ચેતવણી",
+  "tooltip.manual_location": "મેન્યુઅલી સેટ કરેલ સ્થાન ઉપયોગમાં છે",
+  "tooltip.backend_warming": "સર્વર જાગી રહ્યું છે — નિષ્ક્રિયતા પછી પ્રથમ વિનંતી 30–55 સેકન્ડ લઈ શકે છે",
+  "tooltip.backend_fallback": "સર્વરે લાઇવ ડેટા પાછો આપ્યો નથી — ફરી પ્રયાસ કરતી વખતે સંગ્રહિત ડિરેક્ટરી બતાવી રહ્યા છીએ",
+  "tooltip.copy_gps": "GPS કૉપિ કરો",
+  "tooltip.send_immediate_sos": "તાત્કાલિક SOS મોકલો",
+  "common.close": "બંધ કરો",
+  "common.back": "પાછા"
 }

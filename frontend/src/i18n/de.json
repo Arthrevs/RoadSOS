@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "Route für Offline-Nutzung speichern",
   "plan_trip.close": "Schließen",
   "plan_trip.done": "Fertig",
-  "actions.refresh_location": "Standort aktualisieren"
+  "actions.refresh_location": "Standort aktualisieren",
+  "tooltip.test_crash": "Test-Crash-Warnung",
+  "tooltip.manual_location": "Manuell festgelegter Standort in Verwendung",
+  "tooltip.backend_warming": "Server startet — erste Anfrage nach Leerlauf kann 30–55 s dauern",
+  "tooltip.backend_fallback": "Server lieferte keine Live-Daten — Anzeige des gespeicherten Verzeichnisses während Wiederholung",
+  "tooltip.copy_gps": "GPS kopieren",
+  "tooltip.send_immediate_sos": "Sofortiges SOS senden",
+  "common.close": "Schließen",
+  "common.back": "Zurück"
 }

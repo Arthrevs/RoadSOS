@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "অফলাইন ব্যৱহাৰৰ বাবে ৰূট কেচ",
   "plan_trip.close": "বন্ধ",
   "plan_trip.done": "সম্পন্ন",
-  "actions.refresh_location": "অৱস্থান ৰিফ্ৰেছ"
+  "actions.refresh_location": "অৱস্থান ৰিফ্ৰেছ",
+  "tooltip.test_crash": "Test crash alert",
+  "tooltip.manual_location": "Using manually set location",
+  "tooltip.backend_warming": "Waking the backend up — first request after idle can take 30–55s",
+  "tooltip.backend_fallback": "Backend did not return live data — showing pre-loaded directory while we retry",
+  "tooltip.copy_gps": "Copy GPS",
+  "tooltip.send_immediate_sos": "Send immediate SOS",
+  "common.close": "Close",
+  "common.back": "Back"
 }

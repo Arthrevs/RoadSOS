@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "缓存路线以供离线使用",
   "plan_trip.close": "关闭",
   "plan_trip.done": "完成",
-  "actions.refresh_location": "刷新位置"
+  "actions.refresh_location": "刷新位置",
+  "tooltip.test_crash": "测试碰撞警报",
+  "tooltip.manual_location": "正在使用手动设置的位置",
+  "tooltip.backend_warming": "服务器正在启动 — 闲置后首次请求可能需要 30–55 秒",
+  "tooltip.backend_fallback": "服务器未返回实时数据 — 重试时显示已存目录",
+  "tooltip.copy_gps": "复制 GPS",
+  "tooltip.send_immediate_sos": "立即发送 SOS",
+  "common.close": "关闭",
+  "common.back": "返回"
 }

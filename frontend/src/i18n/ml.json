@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "ഓഫ്‌ലൈൻ ഉപയോഗത്തിനായി റൂട്ട് കാഷെ ചെയ്യുക",
   "plan_trip.close": "അടയ്ക്കുക",
   "plan_trip.done": "പൂർത്തിയായി",
-  "actions.refresh_location": "സ്ഥാനം പുതുക്കുക"
+  "actions.refresh_location": "സ്ഥാനം പുതുക്കുക",
+  "tooltip.test_crash": "പരീക്ഷണ അപകട മുന്നറിയിപ്പ്",
+  "tooltip.manual_location": "സ്വമേധയാ സജ്ജമാക്കിയ സ്ഥാനം ഉപയോഗത്തിലാണ്",
+  "tooltip.backend_warming": "സെർവർ ഉണരുന്നു — നിഷ്ക്രിയത്വത്തിന് ശേഷം ആദ്യത്തെ അഭ്യർത്ഥനയ്ക്ക് 30–55 സെക്കൻഡ് എടുത്തേക്കാം",
+  "tooltip.backend_fallback": "സെർവർ ലൈവ് ഡാറ്റ തിരികെ നൽകിയില്ല — വീണ്ടും ശ്രമിക്കുമ്പോൾ സംഭരിച്ച ഡയറക്ടറി കാണിക്കുന്നു",
+  "tooltip.copy_gps": "GPS പകർത്തുക",
+  "tooltip.send_immediate_sos": "ഉടനടി SOS അയയ്‌ക്കുക",
+  "common.close": "അടയ്ക്കുക",
+  "common.back": "തിരികെ"
 }

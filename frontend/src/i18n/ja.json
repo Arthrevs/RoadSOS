@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "オフラインで使用するルートをキャッシュ",
   "plan_trip.close": "閉じる",
   "plan_trip.done": "完了",
-  "actions.refresh_location": "位置を更新"
+  "actions.refresh_location": "位置を更新",
+  "tooltip.test_crash": "テストクラッシュ警報",
+  "tooltip.manual_location": "手動で設定した位置を使用中",
+  "tooltip.backend_warming": "サーバー起動中 — アイドル後の最初のリクエストは 30〜55 秒かかることがあります",
+  "tooltip.backend_fallback": "サーバーがライブデータを返しませんでした — 再試行中に保存されたディレクトリを表示しています",
+  "tooltip.copy_gps": "GPS をコピー",
+  "tooltip.send_immediate_sos": "即時 SOS を送信",
+  "common.close": "閉じる",
+  "common.back": "戻る"
 }

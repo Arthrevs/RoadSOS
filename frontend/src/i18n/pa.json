@@ -183,5 +183,13 @@
   "plan_trip.cache_route": "ਆਫਲਾਈਨ ਲਈ ਰੂਟ ਕੈਸ਼",
   "plan_trip.close": "ਬੰਦ",
   "plan_trip.done": "ਮੁਕੰਮਲ",
-  "actions.refresh_location": "ਟਿਕਾਣਾ ਤਾਜ਼ਾ"
+  "actions.refresh_location": "ਟਿਕਾਣਾ ਤਾਜ਼ਾ",
+  "tooltip.test_crash": "ਟੈਸਟ ਕਰੈਸ਼ ਚਿਤਾਵਨੀ",
+  "tooltip.manual_location": "ਹੱਥੀਂ ਸੈੱਟ ਕੀਤਾ ਸਥਾਨ ਵਰਤੋਂ ਵਿੱਚ ਹੈ",
+  "tooltip.backend_warming": "ਸਰਵਰ ਜਾਗ ਰਿਹਾ ਹੈ — ਨਿਸ਼ਕਿਰਿਆ ਤੋਂ ਬਾਅਦ ਪਹਿਲੀ ਬੇਨਤੀ 30–55 ਸੈਕਿੰਡ ਲੈ ਸਕਦੀ ਹੈ",
+  "tooltip.backend_fallback": "ਸਰਵਰ ਨੇ ਲਾਈਵ ਡਾਟਾ ਵਾਪਸ ਨਹੀਂ ਕੀਤਾ — ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰਨ ਵੇਲੇ ਸਟੋਰ ਕੀਤੀ ਡਾਇਰੈਕਟਰੀ ਦਿਖਾ ਰਹੇ ਹਾਂ",
+  "tooltip.copy_gps": "GPS ਕਾਪੀ ਕਰੋ",
+  "tooltip.send_immediate_sos": "ਤੁਰੰਤ SOS ਭੇਜੋ",
+  "common.close": "ਬੰਦ ਕਰੋ",
+  "common.back": "ਵਾਪਸ"
 }

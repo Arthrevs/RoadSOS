@@ -227,8 +227,8 @@ export default function MapHero({
             <button
               className="mh-action-btn mh-action-btn--crash"
               onClick={onTestCrash}
-              title="Test crash alert"
-              aria-label="Test crash"
+              title={t('tooltip.test_crash', 'Test crash alert')}
+              aria-label={t('actions.test_crash', 'Test crash')}
             >
               <AlertTriangle size={13} strokeWidth={2.5} />
             </button>
@@ -246,7 +246,7 @@ export default function MapHero({
               return (
                 <div
                   className="mh-status-pill mh-status-manual"
-                  title="Using manually set location"
+                  title={t('tooltip.manual_location', 'Using manually set location')}
                 >
                   <MapPin size={11} strokeWidth={2.4} />
                   {t('status.manual', 'MANUAL')}
@@ -272,7 +272,7 @@ export default function MapHero({
               return (
                 <div
                   className="mh-status-pill mh-status-warming"
-                  title="Waking the backend up — Render free tier needs 30–55 s after idle"
+                  title={t('tooltip.backend_warming', 'Waking the backend up — first request after idle can take 30–55s')}
                 >
                   <Loader2 size={11} strokeWidth={2.6} className="mh-status-spin" />
                   {t('status.connecting', 'Connecting…')}
@@ -286,7 +286,7 @@ export default function MapHero({
               return (
                 <div
                   className="mh-status-pill mh-status-warming"
-                  title="Backend didn't return live data — showing pre-loaded directory while we retry"
+                  title={t('tooltip.backend_fallback', 'Backend did not return live data — showing pre-loaded directory while we retry')}
                 >
                   <Loader2 size={11} strokeWidth={2.6} className="mh-status-spin" />
                   {t('status.connecting', 'Connecting…')}

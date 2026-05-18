@@ -101,7 +101,7 @@ export default function TriageModal({ open, loading, onSubmit, onSkip, location,
           <button 
             onClick={handleMiniSOS}
             className="triage-sos-btn"
-            title="Send immediate SOS"
+            title={t('tooltip.send_immediate_sos', 'Send immediate SOS')}
           >
             {t("triage.sos_btn", "SOS")}
           </button>
