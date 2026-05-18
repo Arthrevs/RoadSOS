@@ -61,7 +61,11 @@ SEARCH_QUERIES: list[tuple[str | None, str | None, str]] = [
     # Keyword queries for categories Google has no native type for
     (None, "tyre puncture repair", "tyre"),
     (None, "puncture wala tire shop", "tyre"),  # Indian colloquial — catches more local shops
-    (None, "towing service crane recovery", "towing"),  # broader match for recovery/wrecker services
+    (
+        None,
+        "towing service crane recovery",
+        "towing",
+    ),  # broader match for recovery/wrecker services
 ]
 
 TYPE_CATEGORY_MAP = {
