@@ -10,10 +10,10 @@
 // `region`  — UI grouping label in the picker.
 
 export const LOCALES = [
-  // ── English (universal default) ──────────────────────────────────────────
-  { code: 'en',  native: 'English',         english: 'English',          bcp47: 'en',     dir: 'ltr', region: 'World' },
-
-  // ── 22 official languages of India (8th Schedule) ────────────────────────
+  // ── 22 official languages of India (8th Schedule) + English ──────────────
+  // English placed first in the India section so it appears right next to
+  // Hindi in the language picker — most Indian users expect English at the top.
+  { code: 'en',  native: 'English',         english: 'English',          bcp47: 'en',     dir: 'ltr', region: 'India' },
   { code: 'hi',  native: 'हिन्दी',           english: 'Hindi',            bcp47: 'hi-IN',  dir: 'ltr', region: 'India' },
   { code: 'bn',  native: 'বাংলা',            english: 'Bengali',          bcp47: 'bn-IN',  dir: 'ltr', region: 'India' },
   { code: 'ta',  native: 'தமிழ்',            english: 'Tamil',            bcp47: 'ta-IN',  dir: 'ltr', region: 'India' },

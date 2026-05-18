@@ -30,4 +30,22 @@ if ('serviceWorker' in navigator) {
       window.location.reload();
     }
   });
+
+  // ── Force update check on every page load ──────────────────────────────
+  // The browser's default SW update check happens at most every 24 h.
+  // For a hackathon where deployments happen several times a day, that's
+  // far too slow — users who opened the URL earlier see stale content.
+  // Calling registration.update() forces an immediate byte-diff check
+  // against the server's sw.js.  If the file changed, the new SW installs
+  // and skipWaiting() + controllerchange triggers the reload above.
+  navigator.serviceWorker.ready.then((registration) => {
+    // Immediate check on load
+    registration.update().catch(() => {});
+
+    // Also check every 60 s while the tab is open — catches deploys that
+    // land while the user is staring at the app.
+    setInterval(() => {
+      registration.update().catch(() => {});
+    }, 60_000);
+  });
 }

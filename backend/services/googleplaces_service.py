@@ -79,6 +79,73 @@ TYPE_CATEGORY_MAP = {
     "showroom": "showroom",
 }
 
+# Types that are NEVER relevant for emergency services.  Google Places
+# `rankby=distance` sometimes returns loosely matched businesses (e.g.
+# a fashion boutique tagged as "car_repair" by the owner for SEO).
+# If ANY of these types appear in a place's type list, discard the place.
+IRRELEVANT_TYPES: set[str] = {
+    "clothing_store",
+    "shoe_store",
+    "jewelry_store",
+    "beauty_salon",
+    "hair_care",
+    "spa",
+    "gym",
+    "night_club",
+    "bar",
+    "cafe",
+    "bakery",
+    "restaurant",
+    "food",
+    "meal_delivery",
+    "meal_takeaway",
+    "liquor_store",
+    "supermarket",
+    "grocery_or_supermarket",
+    "convenience_store",
+    "department_store",
+    "shopping_mall",
+    "furniture_store",
+    "home_goods_store",
+    "electronics_store",
+    "book_store",
+    "florist",
+    "pet_store",
+    "travel_agency",
+    "real_estate_agency",
+    "insurance_agency",
+    "accounting",
+    "lawyer",
+    "laundry",
+    "lodging",
+    "movie_theater",
+    "museum",
+    "library",
+    "church",
+    "mosque",
+    "hindu_temple",
+    "synagogue",
+    "cemetery",
+    "funeral_home",
+    "school",
+    "university",
+    "primary_school",
+    "secondary_school",
+    "amusement_park",
+    "aquarium",
+    "art_gallery",
+    "bowling_alley",
+    "casino",
+    "zoo",
+    "stadium",
+    "park",
+}
+
+
+def _is_irrelevant(types: list[str]) -> bool:
+    """Return True if the place's types indicate it's clearly not emergency-related."""
+    return bool(IRRELEVANT_TYPES.intersection(types))
+
 
 def haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     R = 6371.0
@@ -292,7 +359,16 @@ async def search_nearby_places(
                 place_id = place.get("place_id", "")
                 if not place_id or place_id in seen_ids:
                     continue
-                category = map_google_types(place.get("types", [])) or fallback_category
+                place_types = place.get("types", [])
+                # Skip businesses that are obviously irrelevant (fashion
+                # stores, restaurants, etc.) — Google's loose matching
+                # sometimes returns them for car_repair or keyword queries.
+                if _is_irrelevant(place_types):
+                    logger.debug(
+                        "Skipping irrelevant place: %s (types: %s)", place.get("name"), place_types
+                    )
+                    continue
+                category = map_google_types(place_types) or fallback_category
                 if not category:
                     continue
                 seen_ids.add(place_id)
