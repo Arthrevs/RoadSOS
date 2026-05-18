@@ -64,6 +64,30 @@ def deduplicate(contacts: list[dict]) -> list[dict]:
     return out
 
 
+# ── Per-phase time budgets ──────────────────────────────────────────────────
+# These caps GUARANTEE /search never exceeds ~25 s end-to-end, even when
+# upstreams (Overpass, Google Places) get pathologically slow in sparse
+# rural areas.  Without these, we measured 122 s for Jonai/Assam — way
+# beyond any reasonable frontend timeout.  A partial result is always
+# better than no result.
+GEOCODE_BUDGET_S = 5.0
+OVERPASS_BUDGET_S = 10.0
+GOOGLE_BUDGET_S = 12.0
+ENRICH_BUDGET_S = 10.0
+
+
+async def _with_budget(coro, budget_s: float, label: str, fallback):
+    """Run coro with a hard wall-clock cap.  Return fallback on timeout."""
+    try:
+        return await asyncio.wait_for(coro, timeout=budget_s)
+    except TimeoutError:
+        logger.warning("%s exceeded %.0fs budget — using fallback", label, budget_s)
+        return fallback
+    except Exception as exc:
+        logger.warning("%s failed: %s", label, exc)
+        return fallback
+
+
 async def _safe_overpass(lat: float, lon: float) -> list[dict]:
     """Try Overpass at 5km, expand to 10km if sparse. Never raises."""
     try:
@@ -121,21 +145,29 @@ async def search_facilities(
     lon: float = Query(..., ge=-180, le=180, description="Longitude, WGS84"),
     _: None = Depends(_check_rate_limit),
 ):
-    # ─── Phase 1: geocode + Overpass in parallel ─────────────────────────
-    # Geocode first so we know the country (used as a Google region hint).
-    # Overpass runs concurrently to save wall-clock time.
-    geo_task = asyncio.create_task(_safe_geocode(lat, lon))
-    osm_task = asyncio.create_task(_safe_overpass(lat, lon))
-    geo, osm_contacts = await asyncio.gather(geo_task, osm_task)
+    # ─── Phase 1: geocode + Overpass in parallel, each with hard budget ──
+    geo, osm_contacts = await asyncio.gather(
+        _with_budget(
+            _safe_geocode(lat, lon),
+            GEOCODE_BUDGET_S,
+            "geocode",
+            {"landmark": f"{lat:.4f}°, {lon:.4f}°", "country_code": None},
+        ),
+        _with_budget(_safe_overpass(lat, lon), OVERPASS_BUDGET_S, "overpass", []),
+    )
 
-    # ─── Phase 2: Google Places (uses country_code from geo) ─────────────
+    # ─── Phase 2: Google Places (uses country_code from geo), budgeted ───
     # Run only if needed — keeps Google quota down when OSM already has
-    # enough phoned contacts. Threshold: 3 dialable phones is the floor
-    # below which an emergency app feels useless.
+    # enough phoned contacts. Threshold: 3 dialable phones.
     phoned_osm = [c for c in osm_contacts if c.get("phone")]
     google_contacts: list[dict] = []
     if len(phoned_osm) < 3:
-        google_contacts = await _safe_google(lat, lon, geo.get("country_code"))
+        google_contacts = await _with_budget(
+            _safe_google(lat, lon, geo.get("country_code")),
+            GOOGLE_BUDGET_S,
+            "google-places",
+            [],
+        )
 
     # ─── Phase 3: merge, dedupe, sort ────────────────────────────────────
     merged = deduplicate((osm_contacts or []) + (google_contacts or []))
@@ -143,12 +175,13 @@ async def search_facilities(
         merged.sort(key=lambda x: x.get("distance", float("inf")))
 
     # ─── Phase 4: phone enrichment for top closest phoneless contacts ────
-    # No-op if no Google API key is configured. Capped to 6 lookups so
-    # one search never costs more than ~6 × Place Details requests.
-    try:
-        merged = await enrich_missing_phones(merged, region=geo.get("country_code"), max_lookups=6)
-    except Exception as exc:
-        logger.warning("Phone enrichment failed: %s", exc)
+    # Budget-capped: partial enrichment is better than blowing the timeout.
+    merged = await _with_budget(
+        enrich_missing_phones(merged, region=geo.get("country_code"), max_lookups=6),
+        ENRICH_BUDGET_S,
+        "phone-enrichment",
+        merged,  # if enrichment times out, return unenriched contacts
+    )
 
     # ─── Source label: report what actually contributed ──────────────────
     sources = []
