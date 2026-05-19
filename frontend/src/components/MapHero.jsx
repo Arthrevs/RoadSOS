@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2, RotateCw, MapPin, Globe, Activity } from 'lucide-react';
+import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2, RotateCw, MapPin, Globe, Activity, Sun, Moon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import RealMap from './RealMap';
 import SOSButton from './SOSButton';
@@ -53,12 +53,12 @@ function MiniContact({ contact, last }) {
       href={callHref || '#'}
       className="mh-mini-contact"
       style={{
-        borderBottomLeftRadius: last ? 16 : 0,
-        borderBottomRightRadius: last ? 16 : 0,
+        borderBottomLeftRadius: last ? 14 : 0,
+        borderBottomRightRadius: last ? 14 : 0,
       }}
     >
       <span className="mh-mini-icon" style={{ background: colors.bg }}>
-        <Icon size={15} color={colors.fg} strokeWidth={2.3} />
+        <Icon size={13} color={colors.fg} strokeWidth={2.3} />
       </span>
       <span className="mh-mini-body">
         <span className="mh-mini-name">{contact.name}</span>
@@ -71,8 +71,7 @@ function MiniContact({ contact, last }) {
         </span>
       </span>
       <span className="mh-mini-call">
-        <PhoneCall size={11} color="#1D4ED8" strokeWidth={2.4} fill="#1D4ED8" />
-        <span>{contact.phone || 'No phone'}</span>
+        <PhoneCall size={10} color="#1D4ED8" strokeWidth={2.4} fill="#1D4ED8" />
       </span>
     </a>
   );
@@ -102,11 +101,13 @@ export default function MapHero({
   searchLoading,
   usingFallbackData,
   onLanguagePicker,
+  theme,
+  onToggleTheme,
 }) {
   const { t } = useTranslation();
   // Pick up to 6 nearest contacts for markers on real map
   const markerContacts = (contacts || []).slice(0, 6);
-  const dockContacts = (contacts || []).slice(0, 3);
+  const dockContacts = (contacts || []).slice(0, 2);
 
   // Backend readiness — drives the warming-up state of the status pill.
   // 'warming' / 'cold' downgrade the green online indicator to amber so
@@ -170,8 +171,8 @@ export default function MapHero({
       <div className="map-hero-header">
         <div className="mh-top-row">
           <div className="mh-brand-shield">
-            <Shield size={36} color="#3B82F6" fill="#3B82F6" style={{ position: 'absolute', top: 0, left: 0 }} />
-            <Activity size={18} color="#ffffff" strokeWidth={2.5} style={{ position: 'relative', zIndex: 1, marginTop: '-2px' }} />
+            <Shield size={28} color="#3B82F6" fill="#3B82F6" style={{ position: 'absolute', top: 0, left: 0 }} />
+            <Activity size={14} color="#ffffff" strokeWidth={2.5} style={{ position: 'relative', zIndex: 1, marginTop: '-1px' }} />
           </div>
 
           {/* Action strip — Medical ID, Plan Trip, Refresh Location, Set Location, status pill */}
@@ -193,6 +194,16 @@ export default function MapHero({
               aria-label={t('actions.change_language', 'Change Language')}
             >
               <Globe size={14} strokeWidth={2} />
+            </button>
+          )}
+          {onToggleTheme && (
+            <button
+              className="mh-action-btn"
+              onClick={onToggleTheme}
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              aria-label="Toggle Theme"
+            >
+              {theme === 'dark' ? <Sun size={14} strokeWidth={2} /> : <Moon size={14} strokeWidth={2} />}
             </button>
           )}
           <button

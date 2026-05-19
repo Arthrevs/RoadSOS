@@ -153,10 +153,10 @@ export default function SOSButton({ location, landmark, countryCode, onFirstTap 
   const btnLabel = sent
     ? <><Check size={18} strokeWidth={2.5} /> {t('sos.sent')}</>
     : !hasLocation
-      ? <><Signal size={16} strokeWidth={2.2} /> {t('sos.waiting')}</>
+      ? t('sos.waiting')
       : hasContacts
-        ? <><Signal size={16} strokeWidth={2.2} /> {t('sos.to_contacts', { name: contactSummary })}</>
-        : <><Signal size={16} strokeWidth={2.2} /> {t('sos.send')}</>;
+        ? t('sos.to_contacts', { name: contactSummary })
+        : t('sos.send');
 
   return (
     <div className="glass-sos-container">

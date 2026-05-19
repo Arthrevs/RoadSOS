@@ -35,7 +35,7 @@ export default function CountryEmergency({ numbers }) {
             onClick={(e) => guardedTelDial(e, num, label)}
           >
             <div className="nat-icon" style={{ background: color + '22' }}>
-              <Icon size={20} color={color} strokeWidth={2.3} />
+              <Icon size={16} color={color} strokeWidth={2.3} />
             </div>
             <div className="nat-body">
               <div className="nat-label" data-short={short}>{label}</div>

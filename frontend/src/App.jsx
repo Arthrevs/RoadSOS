@@ -206,6 +206,16 @@ export default function App() {
   const [triaged, setTriaged] = useState(false);
   const [triageOffline, setTriageOffline] = useState(false);
 
+  // ── Theme State ──
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+  const toggleTheme = useCallback(() => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  }, []);
+
   const searchLat = activeLocation?.lat ?? null;
   const searchLon = activeLocation?.lon ?? null;
 
@@ -374,6 +384,8 @@ export default function App() {
         demoMode={DEMO_MODE}
         searchLoading={searchLoading}
         usingFallbackData={!!searchData && !searchHasRealData}
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
 
       {/* ── (Legacy) Sticky Telemetry Header — kept hidden by CSS .has-map-hero override ── */}
@@ -497,7 +509,7 @@ export default function App() {
           id="open-triage-btn"
           title={t('actions.prioritise')}
         >
-          🤖 {t('actions.prioritise')}
+          {t('actions.prioritise')}
         </button>
       )}
       {triaged && (
@@ -506,7 +518,7 @@ export default function App() {
           className="triage-trigger-btn triage-trigger-btn--redo"
           onClick={() => setTriageOpen(true)}
         >
-          🔄 {t('actions.re_prioritise')}
+          {t('actions.re_prioritise')}
         </button>
       )}
 

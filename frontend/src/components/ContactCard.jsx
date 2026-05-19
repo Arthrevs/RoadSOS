@@ -36,76 +36,75 @@ export default function ContactCard({ contact, isLast }) {
   else if (typeof distance === 'number' && distance >= 4) statusAttr = 'far';
 
   return (
-    <div className="svc-card" data-km={kmValue} data-status={statusAttr}>
-      {aiReason && (
-        <div className="svc-ai">
-          <Zap size={13} fill="currentColor" />
-          <span>{aiReason}</span>
-        </div>
-      )}
-
-      {/* Name row */}
-      <div className="svc-main">
-        <div className="svc-icon" style={{ background: dot + '18' }}>
-          <Icon size={17} color={dot} strokeWidth={2} />
-        </div>
-        <div className="svc-info">
-          <div className="svc-name">{name}</div>
-          <div className="svc-status-row">
-            {isOpen === true && (
-              <>
-                <div className="open-dot" style={{ background: '#22C55E' }} />
-                <span className="open-label">{t('card.open')}</span>
-              </>
-            )}
-            {isOpen === false && (
-              <>
-                <div className="closed-dot" style={{ background: '#EF4444' }} />
-                <span className="closed-label">{t('card.closed')}</span>
-              </>
-            )}
-            {isOpen === null && (
-              <span className="svc-dist" style={{ fontSize: 10 }}>{t('card.unknown_status')}</span>
-            )}
-            <span style={{ color: '#CBD5E1' }}>·</span>
-            <span style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, fontSize: 10 }}>{t(`category.${cat === 'tyre' ? 'puncture' : cat}`, cat)}</span>
-          </div>
-        </div>
+    <div className="svc-card" data-status={statusAttr}>
+      <div className="svc-card-left">
+        <div className="svc-card-dist">{kmValue}</div>
+        <div className="svc-card-unit">KM</div>
       </div>
-
-      {/* Call + Directions row */}
-      <div className="call-row">
-        {callHref ? (
-          <a
-            href={callHref}
-            className="call-btn"
-            id={`call-btn-${phoneClean}`}
-            aria-label={`Call ${name} at ${phone}`}
-            onClick={(e) => guardedTelDial(e, phoneClean, name)}
-          >
-            <PhoneCall size={13} className="call-btn-icon" strokeWidth={2.4} fill="#fff" />
-            <span className="call-btn-num">{phone}</span>
-          </a>
-        ) : (
-          <div className="call-btn" style={{ opacity: 0.5, cursor: 'not-allowed' }}>
-            <PhoneCall size={13} strokeWidth={2.4} />
-            <span className="call-btn-num">{t('actions.no_phone')}</span>
+      
+      <div className="svc-card-right">
+        {aiReason && (
+          <div className="svc-ai">
+            <Zap size={13} fill="currentColor" />
+            <span>{aiReason}</span>
           </div>
         )}
 
-        {mapsHref && (
-          <a
-            href={mapsHref}
-            className="maps-link"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Open directions to ${name} in Google Maps`}
-            style={{ flex: '0 0 auto', marginTop: 0, padding: '0 12px' }}
-          >
-            <Navigation size={13} color="#1D4ED8" strokeWidth={2.4} />
-            {t('actions.directions')}
-          </a>
-        )}
+        <div className="svc-name">{name}</div>
+        <div className="svc-status-row">
+          {isOpen === true && (
+            <>
+              <div className="open-dot" />
+              <span className="open-label">{t('card.open')}</span>
+            </>
+          )}
+          {isOpen === false && (
+            <>
+              <div className="closed-dot" />
+              <span className="closed-label">{t('card.closed')}</span>
+            </>
+          )}
+          {isOpen === null && (
+            <span style={{ fontSize: 10 }}>{t('card.unknown_status')}</span>
+          )}
+          <span style={{ color: 'var(--rs-slate-500)' }}>·</span>
+          <span style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, fontSize: 10 }}>
+            {t(`category.${cat === 'tyre' ? 'puncture' : cat}`, cat)}
+          </span>
+        </div>
+
+        <div className="call-row">
+          {callHref ? (
+            <a
+              href={callHref}
+              className="call-btn"
+              id={`call-btn-${phoneClean}`}
+              aria-label={`Call ${name} at ${phone}`}
+              onClick={(e) => guardedTelDial(e, phoneClean, name)}
+            >
+              <PhoneCall size={14} className="call-btn-icon" strokeWidth={2.4} fill="currentColor" />
+              <span className="call-btn-num">{phone}</span>
+            </a>
+          ) : (
+            <div className="call-btn" style={{ opacity: 0.5, cursor: 'not-allowed' }}>
+              <PhoneCall size={14} strokeWidth={2.4} fill="currentColor" />
+              <span className="call-btn-num">{t('actions.no_phone')}</span>
+            </div>
+          )}
+
+          {mapsHref && (
+            <a
+              href={mapsHref}
+              className="maps-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open directions to ${name} in Google Maps`}
+            >
+              <Navigation size={12} color="currentColor" strokeWidth={2.4} />
+              {t('actions.directions')}
+            </a>
+          )}
+        </div>
       </div>
     </div>
   );
