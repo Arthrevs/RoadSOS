@@ -637,6 +637,12 @@ def main() -> int:
     OUT_TEX.write_text(tex, encoding="utf-8")
     print(f"  wrote {OUT_TEX}  ({len(tex):,} chars)")
 
+    # Remove stale aux files so lualatex doesn't choke on a corrupted previous run
+    for ext in (".aux", ".toc", ".out"):
+        stale = OUT_TEX.with_suffix(ext)
+        if stale.exists():
+            stale.unlink()
+
     # Compile twice so TOC page numbers settle
     log_file = OUT_TEX.with_suffix(".log")
     for pass_n in (1, 2):
@@ -648,7 +654,7 @@ def main() -> int:
                 str(OUT_TEX),
             ],
             capture_output=True,
-            timeout=180,
+            timeout=600,
         )
         if result.returncode != 0:
             # Decode log bytes safely

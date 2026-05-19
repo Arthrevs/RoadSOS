@@ -377,7 +377,7 @@ Paths are relative to the repository root.
 The full Git history is at \url{https://github.com/Arthrevs/Roadproj}.}
 
 \subsection{Root configuration}
-\subsubsection{\file{README.md}  [Markdown, 29,523 chars]}
+\subsubsection{\file{README.md}  [Markdown, 30,551 chars]}
 \begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 <div align="center">
 
@@ -409,6 +409,16 @@ The full Git history is at \url{https://github.com/Arthrevs/Roadproj}.}
 **[[U+1F3AF] Problem](#-the-problem) [U+00B7] [[U+26A1] Features](#-features) [U+00B7] [[U+1F3D7] Architecture](#-architecture) [U+00B7] [[U+1F680] Quick Start](#-quick-start) [U+00B7] [[U+1F3A4] Walkthrough](#-three-minute-walkthrough) [U+00B7] [[U+1F4CA] Capabilities](#-capabilities-summary) [U+00B7] [[U+1F5FA] Roadmap](#-roadmap) [U+00B7] [[U+1F4D8] Docs](docs/)**
 
 </div>
+
+---
+
+## [U+1F4C4] Documentation
+
+| Document | Description |
+|---|---|
+| [**Technical Reference** (PDF)](docs/TECHNICAL.pdf) | Full 35-page technical deep-dive: backend orchestration, search-phase budgets, offline tiers, crash detection, i18n, CI/CD, deployment, observability |
+| [**Architecture Review** (Markdown)](docs/ARCHITECTURE.md) | ADR-style post-merge architecture audit: system topology, service interactions, reliability patterns, known risks |
+| [**Hackathon Submission** (PDF)](docs/RoadSOS_Submission.pdf) | Judges' submission package: assumptions, software packages, architecture summary, entire source code verbatim |
 
 ---
 
@@ -704,9 +714,16 @@ Roadproj/
 [U+2502]           [U+2514][U+2500][U+2500] bundled_facilities.json # 249 facilities [U+00D7] 196 countries
 [U+2502]
 [U+251C][U+2500][U+2500] docs/                             # Engineering documentation
-[U+2502]   [U+251C][U+2500][U+2500] ARCHITECTURE.md               # System design + ADRs + risk assessment
+[U+2502]   [U+251C][U+2500][U+2500] ARCHITECTURE.md               # ADR-style post-merge architecture audit
 [U+2502]   [U+251C][U+2500][U+2500] TECHNICAL.tex                 # LaTeX source for technical reference
-[U+2502]   [U+2514][U+2500][U+2500] TECHNICAL.pdf                 # Compiled 21-page PDF
+[U+2502]   [U+251C][U+2500][U+2500] TECHNICAL.pdf                 # Compiled 35-page technical deep-dive
+[U+2502]   [U+251C][U+2500][U+2500] RoadSOS_Submission.tex        # LaTeX source [U+2014] hackathon submission package
+[U+2502]   [U+2514][U+2500][U+2500] RoadSOS_Submission.pdf        # Compiled submission: assumptions + packages + code
+[U+2502]
+[U+251C][U+2500][U+2500] scripts/
+[U+2502]   [U+2514][U+2500][U+2500] build_submission_tex.py       # Regenerates RoadSOS_Submission.tex + .pdf from source
+[U+2502]
+[U+251C][U+2500][U+2500] resolve_i18n_conflicts.mjs        # Utility: resolves Git merge conflicts in i18n JSON files
 [U+2502]
 [U+251C][U+2500][U+2500] .github/workflows/                # 3 CI workflows
 [U+2502]   [U+251C][U+2500][U+2500] frontend-ci.yml               # Build + Vitest on Node 20 & 22
@@ -5133,7 +5150,7 @@ class TestDeduplicate:
 \end{lstlisting}
 
 \subsubsection{\file{frontend/vite.config.js}  [JavaScript, 1,188 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -5229,7 +5246,7 @@ export default defineConfig({
 
 \subsection{Frontend --- entry point}
 \subsubsection{\file{frontend/src/App.jsx}  [JSX, 23,104 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WifiOff, ChevronDown, AlertTriangle } from 'lucide-react';
@@ -5819,7 +5836,7 @@ export default function App() {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/constants.js}  [JavaScript, 381 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 // Shared constants used by multiple components.
 // Moved out of App.jsx to break a circular import between App.jsx and
 // ContactList.jsx (which broke production with a TDZ error after a
@@ -5839,7 +5856,7 @@ export const CATS = [
 
 \subsection{Frontend --- components}
 \subsubsection{\file{frontend/src/components/ContactCard.jsx}  [JSX, 4,331 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hospital, Shield, Ambulance, Truck, Wrench, Cog, Car, PhoneCall, Navigation, Zap } from 'lucide-react';
@@ -5955,7 +5972,7 @@ export default function ContactCard({ contact, isLast }) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/ContactList.jsx}  [JSX, 3,279 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import ContactCard from './ContactCard';
@@ -6060,7 +6077,7 @@ export default function ContactList({ contacts, loading, error, cachedAt, cat, s
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/CountryEmergency.jsx}  [JSX, 1,783 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React from 'react';
 import { Ambulance, Shield, Flame, Phone } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -6113,7 +6130,7 @@ export default function CountryEmergency({ numbers }) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/CrashAlert.jsx}  [JSX, 22,789 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Bot, PhoneCall, Check, Ambulance, Shield, Phone, Copy, X, Navigation2 } from "lucide-react";
 import { useTranslation } from 'react-i18next';
@@ -6651,7 +6668,7 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/DispatchScreen.jsx}  [JSX, 12,383 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React, { useEffect, useState } from 'react';
 import { Check, Ambulance, Navigation2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -6966,7 +6983,7 @@ export default function DispatchScreen({ open, onClose, location, landmark, cont
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/LanguagePicker.jsx}  [JSX, 2,602 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LOCALES, changeLanguage } from '../i18n';
@@ -7048,7 +7065,7 @@ function LangTile({ loc, selected, onPick }) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/LocationCard.jsx}  [JSX, 588 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React from 'react';
 
 export default function LocationCard({ landmark, loading, source, countryName }) {
@@ -7076,7 +7093,7 @@ export default function LocationCard({ landmark, loading, source, countryName })
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/ManualLocationModal.jsx}  [JSX, 5,443 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React, { useState, useRef, useEffect } from 'react';
 import { MapPin, X, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -7248,7 +7265,7 @@ export default function ManualLocationModal({ open, onClose, onSetLocation, mapR
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/MapHero.jsx}  [JSX, 13,217 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2, RotateCw, MapPin, Globe, Activity } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -7598,7 +7615,7 @@ export default function MapHero({
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/MedicalIdModal.jsx}  [JSX, 22,576 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React, { useState, useEffect } from "react";
 import { User, Droplets, Phone, Check, ArrowRight, Shield, ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -8201,7 +8218,7 @@ export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/OfflineBanner.jsx}  [JSX, 728 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React from 'react';
 import { useNetwork } from '../hooks/useNetwork';
 
@@ -8228,7 +8245,7 @@ export default function OfflineBanner() {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/QuickContactsDock.jsx}  [JSX, 4,338 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React from 'react';
 
 // Mini contact card for the dock
@@ -8397,7 +8414,7 @@ export function QuickContactsDock({ contacts = [] }) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/RealMap.jsx}  [JSX, 7,540 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker, ZoomControl, useMap } from 'react-leaflet';
 import L from 'leaflet';
@@ -8641,7 +8658,7 @@ export default RealMap;
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/RoutePlanner.jsx}  [JSX, 22,574 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { MapPin, Navigation, ArrowRight, Download, X, Map, ChevronRight, Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -9348,7 +9365,7 @@ export default function RoutePlanner({ open, onClose }) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/SOSButton.jsx}  [JSX, 11,284 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React, { useState, useMemo, useRef } from 'react';
 import { Signal, Check, Copy, Link, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -9653,7 +9670,7 @@ export default function SOSButton({ location, landmark, countryCode, onFirstTap 
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/components/TriageModal.jsx}  [JSX, 7,037 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Activity, AlertTriangle, CheckCircle, XCircle, ArrowRight, Stethoscope, Car, Signal } from "lucide-react";
@@ -9844,7 +9861,7 @@ export default function TriageModal({ open, loading, onSubmit, onSkip, location,
 
 \subsection{Frontend --- hooks}
 \subsubsection{\file{frontend/src/hooks/useLocation.js}  [JavaScript, 22,885 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 // [U+2500][U+2500][U+2500] GPS acquisition tuning [U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500][U+2500]
@@ -10414,7 +10431,7 @@ export function useLocation({ onCrashDetected } = {}) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/hooks/useNetwork.js}  [JavaScript, 548 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import { useState, useEffect } from 'react';
 
 export function useNetwork() {
@@ -10439,7 +10456,7 @@ export function useNetwork() {
 
 \subsection{Frontend --- utilities}
 \subsubsection{\file{frontend/src/utils/alarmUtils.js}  [JavaScript, 3,537 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Bystander alarm system.
  *
@@ -10578,7 +10595,7 @@ export function isAlarmActive() {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/backendWarmup.js}  [JavaScript, 6,116 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Backend warmup + readiness tracker.
  *
@@ -10756,7 +10773,7 @@ export function subscribeBackendStatus(handler) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/bundledFacilities.js}  [JavaScript, 4,119 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Bundled emergency-facility directory.
  *
@@ -10870,7 +10887,7 @@ export const BUNDLED_FACILITY_COUNT = facilities.length;
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/demoMode.js}  [JavaScript, 3,442 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Demo-mode safety guards.
  *
@@ -10980,7 +10997,7 @@ export function isDemoMode() { return DEMO_MODE; }
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/designSystem.js}  [JavaScript, 3,147 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 // Design system constants [U+2014] color palette, typography, spacing, animations
 // Aligned with RoadSOS Improved hi-fi design system
 
@@ -11116,7 +11133,7 @@ export const SHADOWS = {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/emergencyNumbers.js}  [JavaScript, 18,679 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 // Bundled offline [U+2014] country code [U+2192] emergency numbers. Always available, no network needed.
 // Auto-synced with backend/data/emergency_seed.json [U+2014] 196 countries.
 export const emergencyNumbersMap = {
@@ -11325,7 +11342,7 @@ export function getEmergencyNumbers(countryCode) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/geocode.js}  [JavaScript, 4,629 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Free-text [U+2192] coordinates geocoder for the trip planner.
  *
@@ -11465,7 +11482,7 @@ export const QUICK_PICK_CITIES = [
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/googlePlaces.js}  [JavaScript, 3,386 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 // Backend handles Google Places fallback automatically via /search.
 // This wraps the /triage API endpoint with a client-side rule-based fallback
 // so triage works even when the device is completely offline.
@@ -11541,7 +11558,7 @@ export async function triageContacts(injured, blocking, contacts) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/medicalId.js}  [JavaScript, 5,975 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Local-only Emergency Medical ID.
  *
@@ -11712,7 +11729,7 @@ export function buildSosSmsHref(phone, body) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/offlineDB.js}  [JavaScript, 2,441 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 const CACHE_KEY_PREFIX = 'roadsos_cache_';
 const TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
@@ -11794,7 +11811,7 @@ export async function getOfflineNearestCities(lat, lon, maxResults = 10) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/overpass.js}  [JavaScript, 969 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 // Backend handles Overpass queries. This wraps the /search API endpoint.
 
 // In production, fall back to the deployed Render backend so the app works
@@ -11816,7 +11833,7 @@ export async function searchNearby(lat, lon, signal, accuracy = null) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/plusCodes.js}  [JavaScript, 3,949 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Open Location Code (Plus Codes) [U+2014] encode GPS coordinates to a short,
  * speakable, dispatcher-friendly string. Algorithm by Google. Spec:
@@ -11932,7 +11949,7 @@ export function gMapsLink(lat, lon) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/routeCache.js}  [JavaScript, 4,873 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Route pre-cache for offline-by-design road trips.
  *
@@ -12071,7 +12088,7 @@ export async function prefetchRoute(origin, destination, opts = {}) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/sosAlert.js}  [JavaScript, 5,559 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * SOS alert [U+2014] emergency audio tone + scene photo capture + torch flash.
  *
@@ -12231,7 +12248,7 @@ export async function triggerSOSAlert() {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/sosDispatch.js}  [JavaScript, 3,533 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Shared SOS dispatch logic.
  *
@@ -12337,7 +12354,7 @@ export function autoFireSos(location, landmark, countryCode) {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/speechUtils.js}  [JavaScript, 4,100 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Browser Web Speech Synthesis wrapper.
  * Free, offline, no API key. Works on Chrome, Safari, Firefox, Edge.
@@ -12472,7 +12489,7 @@ export function isSpeaking() {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/trackingSession.js}  [JavaScript, 2,850 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Real-time location tracking session.
  *
@@ -19365,7 +19382,7 @@ body {
 
 \subsection{Frontend --- i18n (48 locale bundles)}
 \subsubsection{\file{frontend/src/i18n/index.js}  [JavaScript, 4,421 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
@@ -19530,7 +19547,7 @@ export default i18n;
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/i18n/locales.js}  [JavaScript, 6,783 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 // Supported locales for RoadSOS.
 // India: every official language of the 8th Schedule of the Constitution.
 // World: the most-used language for each remaining country.
@@ -19602,7 +19619,7 @@ export const getLocale = (code) => LOCALES.find((l) => l.code === code) || LOCAL
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/i18n/countryLanguage.js}  [JavaScript, 3,716 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 // ISO-3166 country [U+2192] preferred i18n language code.
 // Used by the language picker to pre-select a sensible default based on
 // the user's GPS-derived country code. The user can always override it.
@@ -31310,7 +31327,7 @@ export function languageForCountry(countryCode) {
 
 \subsection{Frontend --- tests}
 \subsubsection{\file{frontend/src/\_\_tests\_\_/data-integrity.test.js}  [JavaScript, 9,853 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Data-integrity tests for the offline tier.
  *
@@ -31584,7 +31601,7 @@ describe('LOCALES metadata [U+2194] imported bundles', () => {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/\_\_tests\_\_/offline-fallback.test.js}  [JavaScript, 9,097 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 // @vitest-environment jsdom
 /**
  * Tests for the 4-tier offline fallback chain.
@@ -31816,7 +31833,7 @@ describe('End-to-end offline simulation', () => {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/\_\_tests\_\_/bundledFacilities.test.js}  [JavaScript, 3,571 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Tests for the bundled facility directory.
  *
@@ -31918,7 +31935,7 @@ describe('buildBundledSearchResult', () => {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/\_\_tests\_\_/geocode.test.js}  [JavaScript, 5,999 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Tests for the free-text geocoder that backs the trip planner.
  *
@@ -32088,7 +32105,7 @@ describe('QUICK_PICK_CITIES', () => {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/\_\_tests\_\_/googlePlaces.test.js}  [JavaScript, 3,522 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Unit tests for client-side rule-based triage.
  *
@@ -32174,7 +32191,7 @@ describe('ruleBasedTriage', () => {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/\_\_tests\_\_/medicalId.test.js}  [JavaScript, 3,694 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Tests for the local-only Medical ID store + SOS-by-SMS composer.
  *
@@ -32282,7 +32299,7 @@ describe('buildSosSmsHref', () => {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/\_\_tests\_\_/plusCodes.test.js}  [JavaScript, 3,325 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Tests for the offline Plus Code (Open Location Code) encoder.
  *
@@ -32379,7 +32396,7 @@ describe('gMapsLink', () => {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/\_\_tests\_\_/routeCache.test.js}  [JavaScript, 3,389 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Tests for the route prefetch utility.
  *
@@ -32486,7 +32503,7 @@ describe('prefetchRoute', () => {
 \end{lstlisting}
 
 \subsubsection{\file{frontend/src/utils/\_\_tests\_\_/sosDispatchRouting.test.js}  [JavaScript, 5,816 chars]}
-\begin{lstlisting}[language=JavaScript,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 // @vitest-environment jsdom
 /**
  * Tests for country-aware SOS dispatch routing.
