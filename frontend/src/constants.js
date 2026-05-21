@@ -4,12 +4,12 @@
 // chunk-ordering shift: "Cannot access 'ae' before initialization").
 
 export const CATS = [
-  "All",
   "Hospital",
+  "All",
   "Police",
+  "Fire",
   "Repair",
   "Towing",
-  "Fire",
   "Showroom",
   "Puncture",
 ];

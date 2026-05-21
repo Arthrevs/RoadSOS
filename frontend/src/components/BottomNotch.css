@@ -1,0 +1,202 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   BOTTOM NOTCH — Ultra-Sleek Bottom Deck
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.bottom-notch-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 899;
+  pointer-events: none;
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.22s ease;
+}
+
+.bottom-notch-container.hidden {
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none !important;
+}
+
+/* ── Dock shell ── */
+.bottom-notch {
+  width: 100%;
+  max-width: 380px;
+  background: #000000;
+  border-radius: 16px 16px 0 0;
+  padding: 2px 2px max(8px, env(safe-area-inset-bottom, 8px)) 2px;
+  pointer-events: auto;
+  border: 1px solid rgba(255, 255, 255, 0.08); /* Top Notch border */
+  border-bottom: none;
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.bn-layout {
+  display: grid;
+  grid-template-columns: 1fr 3.3fr 1fr;
+  gap: 6px;
+}
+
+.bn-center-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bn-center-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  flex: 1;
+}
+
+.bn-header-btn {
+  width: 100%;
+  background: #1D62D3;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 12px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(29, 98, 211, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bn-header-btn:hover {
+  background: #1551b5;
+}
+
+.bn-header-btn:active {
+  transform: scale(0.95);
+}
+
+/* ── Individual card ── */
+.bn-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom, #ffffff 40%, #e2e8f0 80%, #64748b 100%);
+  border-radius: 14px;
+  padding: 6px 4px;
+  border: 1px solid #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.bn-card:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.bn-card.ambulance:hover { border-color: rgba(240,68,56,0.4); }
+.bn-card.police:hover { border-color: rgba(29,98,211,0.4); }
+.bn-card.fire:hover { border-color: rgba(240,68,56,0.4); }
+.bn-card.general:hover { border-color: rgba(115,115,115,0.4); }
+
+.bn-card-bg-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--rs-font-mono);
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--theme-color);
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
+  line-height: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SIDE CARDS (Medical / Police) — vertically stacked: icon → label → num
+   ═══════════════════════════════════════════════════════════════════════ */
+.bn-card--side {
+  justify-content: center;
+  gap: 1px;
+  padding: 4px 2px;
+}
+
+.bn-side-icon {
+  position: relative;
+  z-index: 1;
+}
+
+.bn-side-label {
+  font-size: 8px;
+  font-weight: 800;
+  color: #111827;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  position: relative;
+  z-index: 1;
+}
+
+.bn-side-num {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   CENTER CARDS (Fire / Disaster) — icon left + label right, number below
+   ═══════════════════════════════════════════════════════════════════════ */
+.bn-card--center {
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  padding: 4px 6px;
+}
+
+.bn-center-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  position: relative;
+  z-index: 1;
+}
+
+.bn-center-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: #111827;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  position: relative;
+  z-index: 1;
+}
+
+.bn-center-num {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+}
+
+/* ── Slide-up entrance ── */
+@keyframes bn-slideUp {
+  from { opacity: 0; transform: translateY(100%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.bottom-notch-container:not(.hidden) {
+  animation: bn-slideUp 0.5s ease-out forwards;
+}

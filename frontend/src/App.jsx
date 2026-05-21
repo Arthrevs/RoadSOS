@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WifiOff, ChevronDown, AlertTriangle } from 'lucide-react';
 import { useLocation } from './hooks/useLocation';
@@ -13,7 +13,6 @@ import { buildBundledSearchResult, BUNDLED_FACILITY_COUNT } from './utils/bundle
 
 import CountryEmergency from './components/CountryEmergency';
 import ContactList from './components/ContactList';
-import SOSButton from './components/SOSButton';
 import TriageModal from './components/TriageModal';
 import CrashAlert from './components/CrashAlert';
 // LocationCard.jsx exists but is unused — MapHero handles location display
@@ -23,8 +22,10 @@ import MedicalIdModal from './components/MedicalIdModal';
 import MapHero from './components/MapHero';
 import DispatchScreen from './components/DispatchScreen';
 import LanguagePicker from './components/LanguagePicker';
+import TopNotch from './components/TopNotch';
+import BottomNotch from './components/BottomNotch';
 import { hasUserChosenLanguage } from './i18n';
-import { requestMotionPermission } from './hooks/useLocation';
+import { requestMotionPermission, refreshGpsLocation } from './hooks/useLocation';
 import { DEMO_MODE } from './utils/demoMode';
 import { startBackendWarmup, subscribeBackendStatus } from './utils/backendWarmup';
 
@@ -132,7 +133,7 @@ function isFirstLaunch() {
   try { return !localStorage.getItem(ONBOARDED_KEY); } catch { return false; }
 }
 function markOnboarded() {
-  try { localStorage.setItem(ONBOARDED_KEY, '1'); } catch {}
+  try { localStorage.setItem(ONBOARDED_KEY, '1'); } catch { }
 }
 
 // ─── App ──────────────────────────────────────────────────────────────────────
@@ -311,8 +312,8 @@ export default function App() {
     })();
 
     return () => { cancelled = true; controller.abort(); clearTimeout(hardTimeout); };
-  // searchRetry increments when the warmup confirms the backend is ready
-  // after a previous attempt failed — triggers a clean retry automatically.
+    // searchRetry increments when the warmup confirms the backend is ready
+    // after a previous attempt failed — triggers a clean retry automatically.
   }, [searchLat, searchLon, searchRetry]);
 
   const countryCode = searchData?.country_code || activeLocation?.country_code || 'IN';
@@ -352,6 +353,46 @@ export default function App() {
   // GPS lost detection — use cached location flag when no live GPS
   const gpsLost = !activeLocation?.lat && !!gpsError;
 
+  // ── Swipe panel refs & auto-swipe ──
+  const swipeRef = useRef(null);
+  const prevSearchLoading = useRef(searchLoading);
+  const prevOnline = useRef(isOnline);
+
+  const swipeToServices = useCallback(() => {
+    if (swipeRef.current) {
+      swipeRef.current.scrollTo({ left: window.innerWidth, behavior: 'smooth' });
+    }
+  }, []);
+
+  const swipeToMain = useCallback(() => {
+    if (swipeRef.current) {
+      swipeRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+    }
+  }, []);
+
+  // Auto-swipe to services when contacts finish loading (connecting → online)
+  useEffect(() => {
+    if (prevSearchLoading.current && !searchLoading && searchData?.contacts?.length > 0) {
+      // Small delay so the UI paints the results first
+      setTimeout(() => {
+        setCat('Hospital');
+        swipeToServices();
+      }, 400);
+    }
+    prevSearchLoading.current = searchLoading;
+  }, [searchLoading, searchData, swipeToServices]);
+
+  // Auto-swipe to services when network drops (show cached contacts)
+  useEffect(() => {
+    if (prevOnline.current && !isOnline) {
+      setTimeout(() => {
+        setCat('Hospital');
+        swipeToServices();
+      }, 300);
+    }
+    prevOnline.current = isOnline;
+  }, [isOnline, swipeToServices]);
+
   return (
     <div className="app has-map-hero">
 
@@ -366,181 +407,123 @@ export default function App() {
         />
       )}
 
-      {/* ── Map-anchored Hero (replaces old telemetry header + SOS section) ── */}
-      <MapHero
+      {/* ── Top Notch Dynamic Island ── */}
+      <TopNotch
         location={activeLocation}
         landmark={searchData?.landmark}
         countryCode={countryCode}
         contacts={searchData?.contacts || []}
-        topContact={topContact}
+        onLocate={() => window.dispatchEvent(new Event('open-manual-location'))}
+        onId={() => setMedicalOpen(true)}
+        onSos={() => document.getElementById('sos-main-btn')?.click()}
+        onCopy={async () => {
+          const text = activeLocation?.lat && activeLocation?.lon
+            ? `${activeLocation.lat.toFixed(5)}, ${activeLocation.lon.toFixed(5)}`
+            : "Searching for GPS coordinates...";
+          try { await navigator.clipboard.writeText(text); } catch { }
+        }}
+        onMap={() => setRoutePlannerOpen(true)}
+        onMoon={toggleTheme}
+        onRefresh={refreshGpsLocation}
+        onLang={() => setLangPickerOpen(true)}
         isOnline={isOnline}
         gpsLost={gpsLost}
-        onFirstTap={handleMotionPermissionOnce}
-        onPlanTrip={() => setRoutePlannerOpen(true)}
-        onMedicalId={() => setMedicalOpen(true)}
-        medicalIdConfigured={medicalIdConfigured}
-        onTestCrash={() => setCrashOpen(true)}
-        onLanguagePicker={() => setLangPickerOpen(true)}
-        demoMode={DEMO_MODE}
+        locationSource={activeLocation?.source}
         searchLoading={searchLoading}
-        usingFallbackData={!!searchData && !searchHasRealData}
-        theme={theme}
-        onToggleTheme={toggleTheme}
+        hidden={triageOpen || crashOpen || routePlannerOpen || medicalOpen || dispatchOpen || langPickerOpen}
       />
 
-      {/* ── (Legacy) Sticky Telemetry Header — kept hidden by CSS .has-map-hero override ── */}
-      <header className="telemetry-header">
-        <div className="telemetry-block">
-          <div className="telemetry-glow" />
-          <div className="telemetry-content">
-            {/* Top Section */}
-            <div className="telemetry-top">
-              <div className="telemetry-brand">
-                <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
-                  <path d="M24 4L6 10V22C6 31.3 13.7 40 24 44C34.3 40 42 31.3 42 22V10L24 4Z" fill="#3b82f6" stroke="#3b82f6" strokeWidth="2" strokeLinejoin="round"/>
-                  <path d="M10 26 H 18 L 22 14 L 26 36 L 30 26 H 38" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <div style={{ fontSize: '22px', fontWeight: 900, letterSpacing: '-0.05em', display: 'flex', alignItems: 'center' }}>
-                  <span style={{ color: '#f8fafc' }}>Road</span>
-                  <span style={{ color: '#3b82f6' }}>SOS</span>
-                </div>
-                {DEMO_MODE && <span className="demo-badge" style={{ marginLeft: 4 }}>🧪 DEMO</span>}
-              </div>
-              
-              <div className="telemetry-status">
-                <div className="header-actions" style={{ marginRight: 6 }}>
-                  <button className="plan-trip-btn" onClick={() => setRoutePlannerOpen(true)} title={`Pre-cache emergency contacts along your route (${BUNDLED_FACILITY_COUNT} facilities bundled offline)`}>
-                    🗺 Plan Trip
-                  </button>
-                  <button
-                    className={`medical-id-btn ${medicalIdConfigured ? 'medical-id-btn--set' : ''}`}
-                    onClick={() => setMedicalOpen(true)}
-                    title={medicalIdConfigured ? 'View / edit your Medical ID' : 'Set up your Medical ID'}
-                  >
-                    🆔 ID{!medicalIdConfigured ? ' ●' : ''}
-                  </button>
-                  {DEMO_MODE && (
-                    <button className="test-crash-btn" onClick={() => setCrashOpen(true)} title={t('tooltip.test_crash', 'Test crash alert')}>
-                      <AlertTriangle size={12} strokeWidth={2.5} style={{ marginRight: 4 }} />
-                      TEST CRASH
-                    </button>
-                  )}
-                </div>
+      {/* ═══════════════════════════════════════════════════════════════
+           SWIPE CONTAINER — Two horizontal pages
+           ═══════════════════════════════════════════════════════════════ */}
+      <div className="swipe-container" ref={swipeRef}>
 
-                <div className="telemetry-ping-container">
-                  <span className={`telemetry-ping ${!isOnline ? 'offline' : ''}`} />
-                  <span className={`telemetry-ping-dot ${!isOnline ? 'offline' : ''}`} />
-                </div>
-                {DEMO_MODE ? (
-                  <div className="gps-dropdown-wrapper">
-                    <span className="telemetry-status-text">
-                      {isOnline ? (demoIdx === 0 ? 'MY GPS ACTIVE' : DEMO_LOCATIONS[demoIdx].label) : 'OFFLINE MODE'}
-                    </span>
-                    <ChevronDown size={12} color="#9ca3af" />
-                    <select className="gps-dropdown-select" value={demoIdx} onChange={(e) => setDemoIdx(Number(e.target.value))}>
-                      <option disabled>📍 GPS</option>
-                      {DEMO_LOCATIONS.map((d, i) => <option key={i} value={i}>{d.label}</option>)}
-                    </select>
-                  </div>
-                ) : (
-                  <span className="telemetry-status-text">
-                    {isOnline ? 'MY GPS ACTIVE' : 'OFFLINE MODE'}
-                  </span>
-                )}
-              </div>
-            </div>
+        {/* ── PAGE 1: Main Screen (Map Hero) ── */}
+        <div className="swipe-page page-main">
+          {/* ── Map-anchored Hero (replaces old telemetry header + SOS section) ── */}
+          <MapHero
+            location={activeLocation}
+            landmark={searchData?.landmark}
+            countryCode={countryCode}
+            contacts={searchData?.contacts || []}
+            topContact={topContact}
+            isOnline={isOnline}
+            gpsLost={gpsLost}
+            onCopy={async () => {
+              const text = activeLocation?.lat && activeLocation?.lon
+                ? `${activeLocation.lat.toFixed(5)}, ${activeLocation.lon.toFixed(5)}`
+                : "Searching for GPS coordinates...";
+              try { await navigator.clipboard.writeText(text); } catch { }
+            }}
+            onFirstTap={handleMotionPermissionOnce}
+            onPlanTrip={() => setRoutePlannerOpen(true)}
+            onMedicalId={() => setMedicalOpen(true)}
+            medicalIdConfigured={medicalIdConfigured}
+            onTestCrash={() => setCrashOpen(true)}
+            onLanguagePicker={() => setLangPickerOpen(true)}
+            demoMode={DEMO_MODE}
+            searchLoading={searchLoading}
+            usingFallbackData={!!searchData && !searchHasRealData}
+            theme={theme}
+            onToggleTheme={toggleTheme}
+          />
 
-            {/* Bottom Section: Location */}
-            <div className="telemetry-bottom">
-              <div className="telemetry-icon">
-                <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-              </div>
-              <div className="telemetry-details">
-                <p className="telemetry-address">
-                  {(searchLoading && !searchData) ? 'Connecting to GPS...' : (searchData?.landmark || 'Finding nearest landmark...')}
-                </p>
-                <p className="telemetry-coords">
-                  {activeLocation ? `Lat: ${activeLocation.lat.toFixed(4)} • Lon: ${activeLocation.lon.toFixed(4)}` : 'Waiting for signal...'}
-                  {` • ${countryName}`}
-                </p>
-              </div>
+
+
+          {/* ── Offline banner (self-contained, uses useNetwork internally) ── */}
+          <OfflineBanner />
+
+          {/* ── GPS error strip ── */}
+          {gpsError && demoIdx === 0 && !activeLocation && (
+            <div className="status-strip status-strip--error" style={{ marginTop: 20 }}>
+              {gpsError} — using national numbers below.
             </div>
+          )}
+        </div>
+
+        {/* ── PAGE 2: Nearby Services ── */}
+        <div className="swipe-page page-services">
+          {/* ── Nearby Services Header ── */}
+          <div id="nearby-services" className="sec-head" style={{ paddingTop: 22 }}>
+            <span className="sec-title">{t('header.nearby_services')}</span>
+            <span className="sec-note">
+              {searchLoading
+                ? t('header.searching')
+                : t('header.found', { n: searchData?.count ?? searchData?.contacts?.length ?? 0 })}
+              {triaged && (triageOffline ? ` ⚡ ${t('header.prioritised')}` : ` ✨ ${t('header.ai')}`)}
+            </span>
           </div>
+
+          <ContactList
+            contacts={searchData?.contacts}
+            loading={searchLoading}
+            error={searchError}
+            cachedAt={cachedAt}
+            cat={cat}
+            setCat={setCat}
+          />
+
+          {/* ── Footer Note ── */}
+          {(searchError || searchData?.source === 'Mock data') && (
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 7, padding: "14px 20px 0", opacity: 0.5 }}>
+              <WifiOff size={12} color="#334E6E" strokeWidth={1.8} style={{ flexShrink: 0, marginTop: 1 }} />
+              <span style={{ fontSize: 11, color: "#1E3655", lineHeight: 1.6 }}>
+                {searchError || t('footer.offline_fallback')}
+              </span>
+            </div>
+          )}
         </div>
-      </header>
 
-      {/* ── Offline banner (self-contained, uses useNetwork internally) ── */}
-      <OfflineBanner />
-
-      {/* ── GPS error strip ── */}
-      {gpsError && demoIdx === 0 && !activeLocation && (
-        <div className="status-strip status-strip--error" style={{ marginTop: 20 }}>
-          {gpsError} — using national numbers below.
-        </div>
-      )}
-
-      {/* ── National Emergency ── */}
-      <div className="sec-head">
-        <span className="sec-title">{t('header.emergency_numbers')}</span>
-        <span className="sec-note">{t('header.always_offline')}</span>
       </div>
-      <CountryEmergency numbers={numbers} />
+      {/* ═══ END SWIPE CONTAINER ═══ */}
 
-      {/* ── Nearby Services ── */}
-      <div id="nearby-services" className="sec-head" style={{ paddingTop: 22 }}>
-        <span className="sec-title">{t('header.nearby_services')}</span>
-        <span className="sec-note">
-          {searchLoading
-            ? t('header.searching')
-            : t('header.found', { n: searchData?.count ?? searchData?.contacts?.length ?? 0 })}
-          {triaged && (triageOffline ? ` ⚡ ${t('header.prioritised')}` : ` ✨ ${t('header.ai')}`)}
-        </span>
-      </div>
-
-      {/* Manual triage trigger — opt-in, not auto-open on every search */}
-      {searchData?.contacts?.length > 0 && !triaged && (
-        <button
-          type="button"
-          className="triage-trigger-btn"
-          onClick={() => setTriageOpen(true)}
-          id="open-triage-btn"
-          title={t('actions.prioritise')}
-        >
-          {t('actions.prioritise')}
-        </button>
-      )}
-      {triaged && (
-        <button
-          type="button"
-          className="triage-trigger-btn triage-trigger-btn--redo"
-          onClick={() => setTriageOpen(true)}
-        >
-          {t('actions.re_prioritise')}
-        </button>
-      )}
-
-      <ContactList
-        contacts={searchData?.contacts}
-        loading={searchLoading}
-        error={searchError}
-        cachedAt={cachedAt}
-        cat={cat}
-        setCat={setCat}
+      {/* ── Bottom Notch ── */}
+      <BottomNotch
+        numbers={numbers}
+        onPrioritize={() => setTriageOpen(true)}
+        triaged={triaged}
+        hidden={triageOpen || crashOpen || routePlannerOpen || medicalOpen || dispatchOpen || langPickerOpen}
       />
-
-      {/* ── Footer Note ── */}
-      {(searchError || searchData?.source === 'Mock data') && (
-        <div style={{ display: "flex", alignItems: "flex-start", gap: 7, padding: "14px 20px 0", opacity: 0.5 }}>
-          <WifiOff size={12} color="#334E6E" strokeWidth={1.8} style={{ flexShrink: 0, marginTop: 1 }} />
-          <span style={{ fontSize: 11, color: "#1E3655", lineHeight: 1.6 }}>
-            {searchError || t('footer.offline_fallback')}
-          </span>
-        </div>
-      )}
-      {/* ── Footer Note ── */}
 
       {/* ── Modals ── */}
       <TriageModal

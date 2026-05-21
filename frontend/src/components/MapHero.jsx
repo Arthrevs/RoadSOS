@@ -1,11 +1,15 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2, RotateCw, MapPin, Globe, Activity, Sun, Moon } from 'lucide-react';
+import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2, RotateCw, MapPin, Globe, Activity, Sun, Moon, Copy, Check, Link } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import RealMap from './RealMap';
-import SOSButton from './SOSButton';
 import ManualLocationModal from './ManualLocationModal';
 import { subscribeBackendStatus } from '../utils/backendWarmup';
 import { setManualLocation, refreshGpsLocation } from '../hooks/useLocation';
+import { getEmergencyContacts, buildSosSmsBody } from '../utils/medicalId';
+import { encodePlusCode } from '../utils/plusCodes';
+import { isWaCountry } from '../utils/sosDispatch';
+import { triggerSOSAlert } from '../utils/sosAlert';
+import { createTrackingSession } from '../utils/trackingSession';
 
 const CAT_ICONS = {
   hospital: Hospital,
@@ -103,20 +107,117 @@ export default function MapHero({
   onLanguagePicker,
   theme,
   onToggleTheme,
+  onCopy,
 }) {
   const { t } = useTranslation();
   // Pick up to 6 nearest contacts for markers on real map
+  const [copied, setCopied] = useState(false);
   const markerContacts = (contacts || []).slice(0, 6);
   const dockContacts = (contacts || []).slice(0, 2);
 
   // Backend readiness — drives the warming-up state of the status pill.
-  // 'warming' / 'cold' downgrade the green online indicator to amber so
-  // the user understands the search backend is still spinning up.
   const [backendStatus, setBackendStatus] = useState('unknown');
   const [refreshing, setRefreshing] = useState(false);
   const [manualLocationOpen, setManualLocationOpen] = useState(false);
   const mapRef = useRef(null);
   useEffect(() => subscribeBackendStatus(setBackendStatus), []);
+
+  // ── SOS State ──
+  const [sosSent,       setSosSent]       = useState(false);
+  const [sosDispatched, setSosDispatched] = useState(false);
+  const [trackingUrl,   setTrackingUrl]   = useState(null);
+  const [trackLoading,  setTrackLoading]  = useState(false);
+  const [trackCopied,   setTrackCopied]   = useState(false);
+  const tappedRef = useRef(false);
+
+  const hasLocation = !!(location?.lat && location?.lon);
+  const preferWA    = isWaCountry(countryCode);
+  const emergencyContacts = getEmergencyContacts();
+  const hasContacts = emergencyContacts.length > 0;
+
+  const phonesKey = emergencyContacts.map(c => c.phone).join(',');
+  const sosData = React.useMemo(() => {
+    if (!hasLocation) return { body: '', primaryWaUrl: '', allSmsUrl: '', perContact: [] };
+    const plusCode = encodePlusCode(location.lat, location.lon);
+    const msgBody  = buildSosSmsBody({ lat: location.lat, lon: location.lon, plusCode, landmark });
+    const waUrlFn  = (phone, body) => {
+      const num = (phone || '').replace(/[^\d+]/g, '').replace(/^\+/, '');
+      return `https://wa.me/${num}?text=${encodeURIComponent(body)}`;
+    };
+    const smsUrlFn = (phones, body) => {
+      const nums = (Array.isArray(phones) ? phones : [phones])
+        .map(p => (p || '').replace(/[^\d+]/g, '')).filter(Boolean).join(',');
+      return `sms:${nums}?body=${encodeURIComponent(body)}`;
+    };
+    if (emergencyContacts.length === 0) {
+      const enc = encodeURIComponent(msgBody);
+      return { body: msgBody, primaryWaUrl: `https://wa.me/?text=${enc}`, allSmsUrl: `sms:?body=${enc}`, perContact: [], waUrlFn, smsUrlFn };
+    }
+    return {
+      body: msgBody,
+      primaryWaUrl: waUrlFn(emergencyContacts[0].phone, msgBody),
+      allSmsUrl: smsUrlFn(emergencyContacts.map(c => c.phone), msgBody),
+      perContact: emergencyContacts.map(c => ({
+        name: c.name || c.phone,
+        waHref: waUrlFn(c.phone, msgBody),
+        smsHref: smsUrlFn([c.phone], msgBody),
+      })),
+      waUrlFn,
+      smsUrlFn,
+    };
+  }, [hasLocation, location?.lat, location?.lon, landmark, phonesKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleCopyClick = async (e) => {
+    e.stopPropagation();
+    if (onCopy) {
+      await onCopy();
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleSOS = () => {
+    if (!tappedRef.current) { tappedRef.current = true; onFirstTap?.(); }
+    if (!hasLocation) return;
+    triggerSOSAlert();
+    const { primaryWaUrl, allSmsUrl, perContact } = sosData;
+    if (preferWA && hasContacts) {
+      window.open(primaryWaUrl, '_blank');
+    } else if (!preferWA && emergencyContacts.length > 1) {
+      window.location.href = allSmsUrl;
+    } else if (hasContacts) {
+      const win = window.open(primaryWaUrl, '_blank');
+      setTimeout(() => { if (!win || win.closed || win.closed === undefined) window.location.href = perContact[0]?.smsHref || allSmsUrl; }, 800);
+    } else {
+      const win = window.open(primaryWaUrl, '_blank');
+      setTimeout(() => { if (!win || win.closed || win.closed === undefined) window.location.href = allSmsUrl; }, 800);
+    }
+    setSosSent(true);
+    setSosDispatched(true);
+    setTimeout(() => setSosSent(false), 2500);
+    setTrackingUrl(null);
+    setTrackLoading(true);
+    createTrackingSession(location, landmark).then(url => {
+      setTrackingUrl(url);
+      setTrackLoading(false);
+    });
+    try {
+      window.dispatchEvent(new CustomEvent('roadsos:sos-sent', {
+        detail: { location, landmark, countryCode, contacts: emergencyContacts },
+      }));
+    } catch {}
+  };
+
+  const handleCopyTrackingUrl = async () => {
+    if (!trackingUrl) return;
+    try { await navigator.clipboard.writeText(trackingUrl); setTrackCopied(true); setTimeout(() => setTrackCopied(false), 2500); } catch {}
+  };
+
+  useEffect(() => {
+    const handleOpen = () => setManualLocationOpen(true);
+    window.addEventListener('open-manual-location', handleOpen);
+    return () => window.removeEventListener('open-manual-location', handleOpen);
+  }, []);
 
   // ── Manual location refresh (fixes stale browser geolocation cache on laptops) ──
   // Clears any manual override, then forces a fresh GPS acquisition via the
@@ -164,9 +265,6 @@ export default function MapHero({
         zoom={15}
       />
 
-      {/* Top gradient overlay for header readability */}
-      <div className="map-hero-top-fade" />
-
       {/* Compact header */}
       <div className="map-hero-header">
         <div className="mh-top-row">
@@ -175,143 +273,7 @@ export default function MapHero({
             <Activity size={14} color="#ffffff" strokeWidth={2.5} style={{ position: 'relative', zIndex: 1, marginTop: '-1px' }} />
           </div>
 
-          {/* Action strip — Medical ID, Plan Trip, Refresh Location, Set Location, status pill */}
-          <div className="mh-actions">
-          <button
-            className="mh-action-btn"
-            onClick={handleRefreshLocation}
-            disabled={refreshing}
-            title={t('actions.refresh_location', 'Refresh location')}
-            aria-label={t('actions.refresh_location', 'Refresh location')}
-          >
-            <RotateCw size={14} strokeWidth={2} className={refreshing ? 'mh-action-spin' : ''} />
-          </button>
-          {onLanguagePicker && (
-            <button
-              className="mh-action-btn"
-              onClick={onLanguagePicker}
-              title={t('actions.change_language', 'Change Language')}
-              aria-label={t('actions.change_language', 'Change Language')}
-            >
-              <Globe size={14} strokeWidth={2} />
-            </button>
-          )}
-          {onToggleTheme && (
-            <button
-              className="mh-action-btn"
-              onClick={onToggleTheme}
-              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              aria-label="Toggle Theme"
-            >
-              {theme === 'dark' ? <Sun size={14} strokeWidth={2} /> : <Moon size={14} strokeWidth={2} />}
-            </button>
-          )}
-          <button
-            className="mh-action-btn"
-            onClick={() => setManualLocationOpen(true)}
-            title={t('actions.set_location', 'Set location manually')}
-            aria-label={t('actions.set_location', 'Set location manually')}
-          >
-            <MapPin size={14} strokeWidth={2} />
-          </button>
-          {onPlanTrip && (
-            <button
-              className="mh-action-btn"
-              onClick={onPlanTrip}
-              title={t('actions.plan_trip')}
-              aria-label={t('actions.plan_trip')}
-            >
-              <Map size={14} strokeWidth={2} />
-            </button>
-          )}
-          {onMedicalId && (
-            <button
-              className={`mh-action-btn mh-action-btn--id ${!medicalIdConfigured ? 'mh-action-btn--unset' : ''}`}
-              onClick={onMedicalId}
-              title={medicalIdConfigured ? t('actions.medical_id') : t('actions.medical_id_unset')}
-              aria-label={t('actions.medical_id')}
-            >
-              🆔{!medicalIdConfigured && <span className="mh-action-dot" />}
-            </button>
-          )}
-          {demoMode && onTestCrash && (
-            <button
-              className="mh-action-btn mh-action-btn--crash"
-              onClick={onTestCrash}
-              title={t('tooltip.test_crash', 'Test crash alert')}
-              aria-label={t('actions.test_crash', 'Test crash')}
-            >
-              <AlertTriangle size={13} strokeWidth={2.5} />
-            </button>
-          )}
-          {(() => {
-            // Status pill reflects the WHOLE pipeline, not just /health:
-            //   1. MANUAL    — user pinned location manually
-            //   2. OFFLINE   — browser offline or GPS lost
-            //   3. WAKING…   — search in flight, OR backend warmup pending
-            //                  (covers Render free-tier cold start)
-            //   4. FALLBACK  — backend never returned real data, showing
-            //                  bundled directory (amber, NOT green)
-            //   5. ONLINE    — backend healthy AND we have real search data
-            if (location?.source === 'manual') {
-              return (
-                <div
-                  className="mh-status-pill mh-status-manual"
-                  title={t('tooltip.manual_location', 'Using manually set location')}
-                >
-                  <MapPin size={11} strokeWidth={2.4} />
-                  {t('status.manual', 'MANUAL')}
-                </div>
-              );
-            }
-            const isOffline = !isOnline || gpsLost;
-            if (isOffline) {
-              return (
-                <div className="mh-status-pill mh-status-offline">
-                  <WifiOff size={11} strokeWidth={2.4} />
-                  {t('status.offline')}
-                </div>
-              );
-            }
-            const backendNotReady =
-              backendStatus === 'warming' ||
-              backendStatus === 'cold' ||
-              backendStatus === 'unknown';
-            // While the search is in flight (cold start can take ~55s on
-            // Render free tier), show a spinner instead of green ONLINE.
-            if (searchLoading || backendNotReady) {
-              return (
-                <div
-                  className="mh-status-pill mh-status-warming"
-                  title={t('tooltip.backend_warming', 'Waking the backend up — first request after idle can take 30–55s')}
-                >
-                  <Loader2 size={11} strokeWidth={2.6} className="mh-status-spin" />
-                  {t('status.connecting', 'Connecting…')}
-                </div>
-              );
-            }
-            // Search completed but we fell back to bundled/mock data:
-            // don't lie about being ONLINE.  The warmup retry will swap
-            // this for real data once it confirms backend is ready.
-            if (usingFallbackData) {
-              return (
-                <div
-                  className="mh-status-pill mh-status-warming"
-                  title={t('tooltip.backend_fallback', 'Backend did not return live data — showing pre-loaded directory while we retry')}
-                >
-                  <Loader2 size={11} strokeWidth={2.6} className="mh-status-spin" />
-                  {t('status.connecting', 'Connecting…')}
-                </div>
-              );
-            }
-            return (
-              <div className="mh-status-pill mh-status-online">
-                <span className="mh-status-dot" />
-                {t('status.online')}
-              </div>
-            );
-          })()}
-        </div>
+
         </div>
 
         <div className="mh-location" style={{ marginTop: '4px' }}>
@@ -323,15 +285,74 @@ export default function MapHero({
         </div>
       </div>
 
-      {/* Bottom dock gradient + SOS + Quick contacts */}
+      {/* Bottom dock gradient + Quick contacts */}
       <div className="map-hero-dock">
-        <SOSButton
-          location={location}
-          landmark={landmark}
-          topContact={topContact}
-          countryCode={countryCode}
-          onFirstTap={onFirstTap}
-        />
+        {/* SOS Button — above tap-to-call card */}
+        <div className="glass-sos-container">
+          <div className="glass-sos-row" style={{ position: 'relative' }}>
+            <button
+              id="sos-main-btn"
+              className={`glass-sos-btn${sosSent ? ' sent' : ''}${!hasLocation ? ' disabled' : ''}`}
+              onClick={handleSOS}
+              disabled={!hasLocation}
+            >
+              {!hasLocation ? '⏳ Waiting for GPS…' : sosSent ? '✓ SOS Sent' : '🆘 SOS — Send My Location'}
+            </button>
+            <div className="mh-copy-btn" onClick={handleCopyClick}>
+              {copied ? (
+                <Check size={16} color="#22C55E" strokeWidth={2.5} />
+              ) : (
+                <Copy size={16} color="rgba(255,255,255,0.7)" strokeWidth={2} />
+              )}
+            </div>
+          </div>
+
+          {/* Dispatch follow-up panel */}
+          {sosDispatched && hasContacts && hasLocation && (
+            <div className="sos-dispatch">
+              <div className="sos-dispatch__header">
+                {preferWA
+                  ? `WhatsApp sent to ${sosData.perContact[0]?.name}. Also notify:`
+                  : emergencyContacts.length > 1
+                    ? `SMS sent to all ${emergencyContacts.length} contacts. Also via WhatsApp:`
+                    : `Sent to ${sosData.perContact[0]?.name}. Also:`
+                }
+              </div>
+              <div className="sos-dispatch__links">
+                {sosData.perContact.map((c, i) => {
+                  const showWa  = !preferWA || i > 0;
+                  const showSms = preferWA || emergencyContacts.length === 1;
+                  return (
+                    <div key={i} className="sos-dispatch__row">
+                      <span className="sos-dispatch__name">{c.name}</span>
+                      <div className="sos-dispatch__btns">
+                        {showWa && <a href={c.waHref} target="_blank" rel="noopener noreferrer" className="sos-dispatch__btn sos-dispatch__btn--wa">💬 WA</a>}
+                        {showSms && <a href={c.smsHref} className="sos-dispatch__btn sos-dispatch__btn--sms">📱 SMS</a>}
+                      </div>
+                    </div>
+                  );
+                })}
+                {preferWA && emergencyContacts.length > 0 && (
+                  <a href={sosData.allSmsUrl} className="sos-dispatch__group-link">📱 SMS all {emergencyContacts.length} contacts at once</a>
+                )}
+              </div>
+              <div className="sos-track-block">
+                <span className="sos-track-label"><Link size={11} strokeWidth={2.3} />{t('track.share_prompt')}</span>
+                {trackLoading && <span className="sos-track-creating"><Loader2 size={11} strokeWidth={2.4} className="sos-track-spin" />{t('track.creating')}</span>}
+                {!trackLoading && trackingUrl && (
+                  <div className="sos-track-url-row">
+                    <span className="sos-track-url">{trackingUrl}</span>
+                    <button className="sos-track-copy" onClick={handleCopyTrackingUrl}>
+                      {trackCopied ? <><Check size={11} strokeWidth={2.5} /> {t('track.copied')}</> : <><Copy size={11} strokeWidth={2} /> {t('track.copy_link')}</>}
+                    </button>
+                  </div>
+                )}
+                {!trackLoading && !trackingUrl && <span className="sos-track-unavailable">{t('track.failed')}</span>}
+              </div>
+              <button className="sos-dispatch__done" onClick={() => setSosDispatched(false)}>✓ Done</button>
+            </div>
+          )}
+        </div>
 
         {dockContacts.length > 0 && (
           <div className="mh-dock-card">

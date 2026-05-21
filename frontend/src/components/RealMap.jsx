@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { MapContainer, TileLayer, Marker, ZoomControl, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, ZoomControl, useMap, GeoJSON } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -158,6 +158,14 @@ const RealMap = React.forwardRef(function RealMap(
 ) {
   const internalMapRef = useRef(null);
   const [tilesLoaded, setTilesLoaded] = useState(false);
+  const [statesData, setStatesData] = useState(null);
+
+  useEffect(() => {
+    fetch('/india-states-new.json')
+      .then(res => res.json())
+      .then(data => setStatesData(data))
+      .catch(err => console.error('Failed to load India states:', err));
+  }, []);
 
   // Default fallback (India centroid) until GPS arrives — better than a blank screen.
   const lat = location?.lat ?? 20.5937;
@@ -204,7 +212,7 @@ const RealMap = React.forwardRef(function RealMap(
         style={{ width: '100%', height: '100%' }}
       >
         <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
           subdomains="abcd"
           maxZoom={20}
@@ -219,6 +227,30 @@ const RealMap = React.forwardRef(function RealMap(
 
         <MapResizer />
         <MapRecenter lat={lat} lon={lon} zoom={hasGps ? zoom : 4} />
+
+        {/* Internal State/UT Borders */}
+        {statesData && (
+          <GeoJSON
+            data={statesData}
+            style={{
+              color: '#9CA3AF',
+              weight: 1.5,
+              fill: false,
+              opacity: 0.8,
+              dashArray: '4, 4',
+            }}
+            onEachFeature={(feature, layer) => {
+              const name = feature.properties.NAME_1 || feature.properties.name || '';
+              if (name) {
+                layer.bindTooltip(name, {
+                  permanent: false,
+                  direction: 'center',
+                  className: 'rs-state-tooltip',
+                });
+              }
+            }}
+          />
+        )}
 
         {hasGps && (
           <Marker position={[lat, lon]} icon={userIcon} interactive={false} />
