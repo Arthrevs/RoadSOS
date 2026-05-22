@@ -181,6 +181,26 @@
     "notes": "Apex trauma referral hospital"
   },
   {
+    "id": "bf-sassoon-pune",
+    "name": "Sassoon General Hospital, Pune",
+    "category": "hospital",
+    "lat": 18.5314,
+    "lon": 73.8741,
+    "phone": "+91 20 2612 8000",
+    "country_code": "IN",
+    "notes": "Maharashtra's largest govt hospital outside Mumbai, 24/7 trauma"
+  },
+  {
+    "id": "bf-aiims-nagpur",
+    "name": "GMCH / Mayo Hospital, Nagpur",
+    "category": "hospital",
+    "lat": 21.1458,
+    "lon": 79.0882,
+    "phone": "+91 712 276 0000",
+    "country_code": "IN",
+    "notes": "NH-44 corridor critical trauma centre, Vidarbha region"
+  },
+  {
     "id": "bf-kem-mumbai",
     "name": "KEM Hospital, Mumbai",
     "category": "hospital",
@@ -197,6 +217,36 @@
     "lon": 72.8615,
     "phone": "+91 22 2407 6381",
     "country_code": "IN"
+  },
+  {
+    "id": "bf-jss-mysuru",
+    "name": "JSS Hospital, Mysuru",
+    "category": "hospital",
+    "lat": 12.3089,
+    "lon": 76.6444,
+    "phone": "+91 821 254 8400",
+    "country_code": "IN",
+    "notes": "Mysuru–Ooty NH-181 corridor, 24/7 emergency"
+  },
+  {
+    "id": "bf-wenlock-mangalore",
+    "name": "Wenlock District Hospital, Mangalore",
+    "category": "hospital",
+    "lat": 12.8677,
+    "lon": 74.8420,
+    "phone": "+91 824 242 1782",
+    "country_code": "IN",
+    "notes": "Coastal Karnataka main govt hospital, NH-75 corridor"
+  },
+  {
+    "id": "bf-kims-hubli",
+    "name": "KIMS Hospital, Hubli",
+    "category": "hospital",
+    "lat": 15.3647,
+    "lon": 75.1240,
+    "phone": "+91 836 237 5000",
+    "country_code": "IN",
+    "notes": "North Karnataka hub, NH-48 / NH-67 junction"
   },
   {
     "id": "bf-nimhans-bengaluru",
@@ -321,6 +371,542 @@
     "phone": "+91 3842 262 046",
     "country_code": "IN",
     "notes": "Barak Valley tertiary care"
+  },
+
+  {
+    "id": "bf-kgh-visakhapatnam",
+    "name": "King George Hospital, Visakhapatnam",
+    "category": "hospital",
+    "lat": 17.7231,
+    "lon": 83.3136,
+    "phone": "+91 891 256 4024",
+    "country_code": "IN",
+    "notes": "Largest govt hospital in AP, 24/7 trauma"
+  },
+  {
+    "id": "bf-ggh-vijayawada",
+    "name": "Govt General Hospital, Vijayawada",
+    "category": "hospital",
+    "lat": 16.5063,
+    "lon": 80.6315,
+    "phone": "+91 866 257 0700",
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-ggh-guntur",
+    "name": "Govt General Hospital, Guntur",
+    "category": "hospital",
+    "lat": 16.3067,
+    "lon": 80.4365,
+    "phone": "+91 863 235 2591",
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-trihms-naharlagun",
+    "name": "Tomo Riba Institute of Health & Medical Sciences, Naharlagun",
+    "category": "hospital",
+    "lat": 27.1020,
+    "lon": 93.6890,
+    "phone": null,
+    "country_code": "IN",
+    "notes": "Only medical college in Arunachal Pradesh"
+  },
+  {
+    "id": "bf-pmch-patna",
+    "name": "Patna Medical College Hospital (PMCH)",
+    "category": "hospital",
+    "lat": 25.6097,
+    "lon": 85.1376,
+    "phone": "+91 612 267 0341",
+    "country_code": "IN",
+    "notes": "Largest govt hospital in Bihar"
+  },
+  {
+    "id": "bf-aiims-patna",
+    "name": "AIIMS Patna",
+    "category": "hospital",
+    "lat": 25.5662,
+    "lon": 84.9524,
+    "phone": "+91 612 245 1070",
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-aiims-raipur",
+    "name": "AIIMS Raipur",
+    "category": "hospital",
+    "lat": 21.2500,
+    "lon": 81.6033,
+    "phone": "+91 771 257 3714",
+    "country_code": "IN",
+    "notes": "Central govt tertiary hospital, Chhattisgarh"
+  },
+  {
+    "id": "bf-ambedkar-hospital-raipur",
+    "name": "Dr BR Ambedkar Memorial Hospital, Raipur",
+    "category": "hospital",
+    "lat": 21.2514,
+    "lon": 81.6296,
+    "phone": "+91 771 222 5234",
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-gmch-goa",
+    "name": "Goa Medical College & Hospital, Bambolim",
+    "category": "hospital",
+    "lat": 15.4644,
+    "lon": 73.8542,
+    "phone": "+91 832 245 8727",
+    "country_code": "IN",
+    "notes": "Only govt medical college in Goa, 24/7 A&E"
+  },
+  {
+    "id": "bf-civil-hospital-ahmedabad",
+    "name": "Civil Hospital Ahmedabad",
+    "category": "hospital",
+    "lat": 23.0225,
+    "lon": 72.5714,
+    "phone": "+91 79 2268 3721",
+    "country_code": "IN",
+    "notes": "Gujarat's largest public hospital, trauma unit"
+  },
+  {
+    "id": "bf-surat-civil",
+    "name": "New Civil Hospital Surat",
+    "category": "hospital",
+    "lat": 21.1949,
+    "lon": 72.8259,
+    "phone": "+91 261 224 5001",
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-ssg-vadodara",
+    "name": "Sayajirao General (SSG) Hospital, Vadodara",
+    "category": "hospital",
+    "lat": 22.3010,
+    "lon": 73.1812,
+    "phone": "+91 265 223 3333",
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-aiims-rajkot",
+    "name": "AIIMS Rajkot",
+    "category": "hospital",
+    "lat": 22.2623,
+    "lon": 70.8491,
+    "phone": null,
+    "country_code": "IN",
+    "notes": "Saurashtra region tertiary referral"
+  },
+  {
+    "id": "bf-pgims-rohtak",
+    "name": "PGIMS (Pt BD Sharma UHS) Rohtak",
+    "category": "hospital",
+    "lat": 28.9021,
+    "lon": 76.5817,
+    "phone": "+91 1262 213 280",
+    "country_code": "IN",
+    "notes": "Haryana's primary trauma referral hospital"
+  },
+  {
+    "id": "bf-civil-hospital-ambala",
+    "name": "Civil Hospital Ambala",
+    "category": "hospital",
+    "lat": 30.3784,
+    "lon": 76.7769,
+    "phone": null,
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-igmc-shimla",
+    "name": "Indira Gandhi Medical College (IGMC), Shimla",
+    "category": "hospital",
+    "lat": 31.0896,
+    "lon": 77.1734,
+    "phone": "+91 177 280 4251",
+    "country_code": "IN",
+    "notes": "Himachal Pradesh main referral hospital"
+  },
+  {
+    "id": "bf-drpgmc-tanda",
+    "name": "Dr Rajendra Prasad Govt Medical College, Kangra (Tanda)",
+    "category": "hospital",
+    "lat": 32.0839,
+    "lon": 76.1477,
+    "phone": "+91 1892 267 114",
+    "country_code": "IN",
+    "notes": "Largest hospital in HP hills, NH-154 corridor"
+  },
+  {
+    "id": "bf-rims-ranchi",
+    "name": "Rajendra Institute of Medical Sciences (RIMS), Ranchi",
+    "category": "hospital",
+    "lat": 23.3441,
+    "lon": 85.3096,
+    "phone": "+91 651 254 5235",
+    "country_code": "IN",
+    "notes": "Jharkhand's apex govt hospital"
+  },
+  {
+    "id": "bf-mgmch-jamshedpur",
+    "name": "MGM Medical College Hospital, Jamshedpur",
+    "category": "hospital",
+    "lat": 22.8046,
+    "lon": 86.2029,
+    "phone": null,
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-gmch-thiruvananthapuram",
+    "name": "Govt Medical College Hospital, Thiruvananthapuram",
+    "category": "hospital",
+    "lat": 8.5167,
+    "lon": 76.9552,
+    "phone": "+91 471 252 8386",
+    "country_code": "IN",
+    "notes": "Kerala's apex referral trauma centre"
+  },
+  {
+    "id": "bf-amrita-kochi",
+    "name": "Amrita Institute of Medical Sciences, Kochi",
+    "category": "hospital",
+    "lat": 9.9894,
+    "lon": 76.3177,
+    "phone": "+91 484 285 1234",
+    "country_code": "IN",
+    "notes": "24/7 multi-specialty trauma"
+  },
+  {
+    "id": "bf-gmch-kozhikode",
+    "name": "Govt Medical College Hospital, Kozhikode",
+    "category": "hospital",
+    "lat": 11.2588,
+    "lon": 75.7804,
+    "phone": "+91 495 235 6277",
+    "country_code": "IN",
+    "notes": "North Kerala main referral"
+  },
+  {
+    "id": "bf-hamidia-bhopal",
+    "name": "Hamidia Hospital, Bhopal",
+    "category": "hospital",
+    "lat": 23.2633,
+    "lon": 77.4003,
+    "phone": "+91 755 254 0253",
+    "country_code": "IN",
+    "notes": "Madhya Pradesh apex govt hospital"
+  },
+  {
+    "id": "bf-aiims-bhopal",
+    "name": "AIIMS Bhopal",
+    "category": "hospital",
+    "lat": 23.2833,
+    "lon": 77.4667,
+    "phone": "+91 755 429 6000",
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-myhospital-indore",
+    "name": "MY Hospital (MGM Medical College), Indore",
+    "category": "hospital",
+    "lat": 22.7196,
+    "lon": 75.8577,
+    "phone": "+91 731 252 8900",
+    "country_code": "IN",
+    "notes": "Largest govt hospital in western MP"
+  },
+  {
+    "id": "bf-mch-jabalpur",
+    "name": "Medical College Hospital, Jabalpur",
+    "category": "hospital",
+    "lat": 23.1765,
+    "lon": 79.9864,
+    "phone": null,
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-rims-imphal",
+    "name": "Regional Institute of Medical Sciences (RIMS), Imphal",
+    "category": "hospital",
+    "lat": 24.8170,
+    "lon": 93.9368,
+    "phone": "+91 385 241 5022",
+    "country_code": "IN",
+    "notes": "Manipur's apex referral hospital"
+  },
+  {
+    "id": "bf-neigrihms-shillong",
+    "name": "NEIGRIHMS, Shillong",
+    "category": "hospital",
+    "lat": 25.5731,
+    "lon": 91.8933,
+    "phone": "+91 364 253 8025",
+    "country_code": "IN",
+    "notes": "North-East India medical institute, Meghalaya"
+  },
+  {
+    "id": "bf-civil-hospital-aizawl",
+    "name": "Civil Hospital Aizawl",
+    "category": "hospital",
+    "lat": 23.7275,
+    "lon": 92.7176,
+    "phone": null,
+    "country_code": "IN",
+    "notes": "Mizoram's main govt hospital"
+  },
+  {
+    "id": "bf-naha-kohima",
+    "name": "Naga Hospital Authority, Kohima",
+    "category": "hospital",
+    "lat": 25.6701,
+    "lon": 94.1098,
+    "phone": null,
+    "country_code": "IN",
+    "notes": "Nagaland primary referral hospital"
+  },
+  {
+    "id": "bf-aiims-bhubaneswar",
+    "name": "AIIMS Bhubaneswar",
+    "category": "hospital",
+    "lat": 20.2961,
+    "lon": 85.8245,
+    "phone": "+91 674 247 6789",
+    "country_code": "IN",
+    "notes": "Odisha apex govt hospital, 24/7 trauma"
+  },
+  {
+    "id": "bf-scb-cuttack",
+    "name": "SCB Medical College Hospital, Cuttack",
+    "category": "hospital",
+    "lat": 20.4536,
+    "lon": 85.8830,
+    "phone": "+91 671 241 4404",
+    "country_code": "IN",
+    "notes": "Odisha's largest hospital, major trauma centre"
+  },
+  {
+    "id": "bf-sms-jaipur",
+    "name": "SMS Hospital, Jaipur",
+    "category": "hospital",
+    "lat": 26.9124,
+    "lon": 75.7873,
+    "phone": "+91 141 256 0291",
+    "country_code": "IN",
+    "notes": "Rajasthan's largest public hospital, level 1 trauma"
+  },
+  {
+    "id": "bf-aiims-jodhpur",
+    "name": "AIIMS Jodhpur",
+    "category": "hospital",
+    "lat": 26.2389,
+    "lon": 73.0243,
+    "phone": "+91 291 263 3641",
+    "country_code": "IN",
+    "notes": "Western Rajasthan referral hospital"
+  },
+  {
+    "id": "bf-jln-ajmer",
+    "name": "JLN Hospital, Ajmer",
+    "category": "hospital",
+    "lat": 26.4499,
+    "lon": 74.6399,
+    "phone": null,
+    "country_code": "IN",
+    "notes": "Central Rajasthan govt hospital"
+  },
+  {
+    "id": "bf-stnm-gangtok",
+    "name": "STNM Hospital, Gangtok",
+    "category": "hospital",
+    "lat": 27.3314,
+    "lon": 88.6138,
+    "phone": "+91 3592 202 433",
+    "country_code": "IN",
+    "notes": "Sikkim's main referral hospital"
+  },
+  {
+    "id": "bf-gbp-agartala",
+    "name": "Govind Ballabh Pant Hospital, Agartala",
+    "category": "hospital",
+    "lat": 23.8315,
+    "lon": 91.2868,
+    "phone": "+91 381 232 3530",
+    "country_code": "IN",
+    "notes": "Tripura's apex govt hospital"
+  },
+  {
+    "id": "bf-sgpgi-lucknow",
+    "name": "SGPGI Lucknow",
+    "category": "hospital",
+    "lat": 26.8543,
+    "lon": 80.9734,
+    "phone": "+91 522 266 8700",
+    "country_code": "IN",
+    "notes": "UP's premier multi-specialty institute"
+  },
+  {
+    "id": "bf-kgmu-lucknow",
+    "name": "King George's Medical University (KGMU), Lucknow",
+    "category": "hospital",
+    "lat": 26.8467,
+    "lon": 80.9462,
+    "phone": "+91 522 225 8880",
+    "country_code": "IN",
+    "notes": "North India level 1 trauma centre"
+  },
+  {
+    "id": "bf-bhu-ims-varanasi",
+    "name": "BHU Institute of Medical Sciences, Varanasi",
+    "category": "hospital",
+    "lat": 25.2677,
+    "lon": 82.9913,
+    "phone": "+91 542 230 7311",
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-sn-mc-agra",
+    "name": "SN Medical College Hospital, Agra",
+    "category": "hospital",
+    "lat": 27.1767,
+    "lon": 78.0081,
+    "phone": "+91 562 252 4624",
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-gsvm-kanpur",
+    "name": "GSVM Medical College Hospital, Kanpur",
+    "category": "hospital",
+    "lat": 26.4499,
+    "lon": 80.3319,
+    "phone": "+91 512 252 8800",
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-aiims-gorakhpur",
+    "name": "AIIMS Gorakhpur",
+    "category": "hospital",
+    "lat": 26.7606,
+    "lon": 83.3732,
+    "phone": null,
+    "country_code": "IN",
+    "notes": "Eastern UP referral hospital"
+  },
+  {
+    "id": "bf-llrm-meerut",
+    "name": "LLRM Medical College Hospital, Meerut",
+    "category": "hospital",
+    "lat": 28.9845,
+    "lon": 77.7064,
+    "phone": null,
+    "country_code": "IN",
+    "notes": "Western UP main referral, NCR highway corridor"
+  },
+  {
+    "id": "bf-aiims-rishikesh",
+    "name": "AIIMS Rishikesh",
+    "category": "hospital",
+    "lat": 30.0869,
+    "lon": 78.2768,
+    "phone": "+91 135 247 1000",
+    "country_code": "IN",
+    "notes": "Uttarakhand primary referral, NH-58 corridor"
+  },
+  {
+    "id": "bf-doon-hospital-dehradun",
+    "name": "Doon Hospital, Dehradun",
+    "category": "hospital",
+    "lat": 30.3165,
+    "lon": 78.0322,
+    "phone": "+91 135 265 7630",
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-base-hospital-haldwani",
+    "name": "Govt Base Hospital, Haldwani",
+    "category": "hospital",
+    "lat": 29.2183,
+    "lon": 79.5130,
+    "phone": null,
+    "country_code": "IN",
+    "notes": "Kumaon division main hospital, NH-109 corridor"
+  },
+  {
+    "id": "bf-sskm-kolkata",
+    "name": "SSKM (PG) Hospital, Kolkata",
+    "category": "hospital",
+    "lat": 22.5378,
+    "lon": 88.3476,
+    "phone": "+91 33 2223 1436",
+    "country_code": "IN",
+    "notes": "West Bengal apex trauma referral"
+  },
+  {
+    "id": "bf-nrs-kolkata",
+    "name": "NRS Medical College & Hospital, Kolkata",
+    "category": "hospital",
+    "lat": 22.5622,
+    "lon": 88.3697,
+    "phone": null,
+    "country_code": "IN"
+  },
+  {
+    "id": "bf-nbmc-siliguri",
+    "name": "North Bengal Medical College Hospital, Siliguri",
+    "category": "hospital",
+    "lat": 26.7271,
+    "lon": 88.3953,
+    "phone": null,
+    "country_code": "IN",
+    "notes": "North Bengal and Sikkim highway coverage"
+  },
+  {
+    "id": "bf-skims-srinagar",
+    "name": "SKIMS, Srinagar",
+    "category": "hospital",
+    "lat": 34.0837,
+    "lon": 74.8057,
+    "phone": "+91 194 242 0045",
+    "country_code": "IN",
+    "notes": "J&K's premier medical institute"
+  },
+  {
+    "id": "bf-smhs-srinagar",
+    "name": "SMHS Hospital, Srinagar",
+    "category": "hospital",
+    "lat": 34.0780,
+    "lon": 74.7950,
+    "phone": null,
+    "country_code": "IN",
+    "notes": "Main trauma receiving hospital in Kashmir Valley"
+  },
+  {
+    "id": "bf-gmc-jammu",
+    "name": "Govt Medical College Hospital, Jammu",
+    "category": "hospital",
+    "lat": 32.7266,
+    "lon": 74.8570,
+    "phone": "+91 191 254 0310",
+    "country_code": "IN",
+    "notes": "Jammu division primary referral"
+  },
+  {
+    "id": "bf-snm-leh",
+    "name": "SNM Hospital, Leh",
+    "category": "hospital",
+    "lat": 34.1526,
+    "lon": 77.5770,
+    "phone": "+91 1982 252 014",
+    "country_code": "IN",
+    "notes": "Only major hospital in Ladakh, high-altitude trauma"
+  },
+  {
+    "id": "bf-gbpant-portblair",
+    "name": "GB Pant Hospital, Port Blair",
+    "category": "hospital",
+    "lat": 11.6756,
+    "lon": 92.7462,
+    "phone": "+91 3192 233 422",
+    "country_code": "IN",
+    "notes": "Andaman & Nicobar Islands main hospital"
   },
 
   {
