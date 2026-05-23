@@ -155,7 +155,7 @@ Common CI failure causes:
 
 ### Live URLs
 
-- **Frontend**: https://roadsos.vercel.app (Vercel, auto-deploys from `main`)
+- **Frontend**: https://roadsos-frontend.vercel.app (Vercel, auto-deploys from `main`)
 - **Backend**: https://roadsos-pl3k.onrender.com (Render, spins down after 15 min idle — first request after idle takes ~30s cold start)
 
 ### Environment Variables
