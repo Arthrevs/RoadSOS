@@ -13,7 +13,7 @@ const CATEGORY_CONFIG = {
   showroom:  { Icon: Car,       dot: '#10B981' },
 };
 
-export default function ContactCard({ contact, isLast }) {
+export default function ContactCard({ contact, isLast, variant }) {
   const { t } = useTranslation();
   const { name, category, distance, phone, isOpen, aiReason, lat, lon } = contact;
 
@@ -34,6 +34,46 @@ export default function ContactCard({ contact, isLast }) {
   let statusAttr = 'reachable';
   if (isOpen === false) statusAttr = 'closed';
   else if (typeof distance === 'number' && distance >= 4) statusAttr = 'far';
+
+  if (variant === 'popup') {
+    return (
+      <div className="popup-variant-card">
+        <div className="popup-name">{name}</div>
+        <div className="popup-phone-row">
+          {callHref ? (
+            <a
+              href={callHref}
+              className="call-btn"
+              id={`call-btn-${phoneClean}`}
+              onClick={(e) => guardedTelDial(e, phoneClean, name)}
+            >
+              <PhoneCall size={13} strokeWidth={2.4} fill="#fff" />
+              <span className="call-btn-num">{phone}</span>
+            </a>
+          ) : (
+            <div className="call-btn disabled" style={{ opacity: 0.5 }}>
+              <PhoneCall size={13} strokeWidth={2.4} />
+              <span className="call-btn-num">{t('actions.no_phone')}</span>
+            </div>
+          )}
+        </div>
+        <div className="popup-bottom-row">
+          <div className="popup-km-text">{kmValue} {t('card.km', 'KM')}</div>
+          {mapsHref && (
+            <a
+              href={mapsHref}
+              className="maps-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Navigation size={13} color="#1D4ED8" strokeWidth={2.4} />
+              {t('actions.directions')}
+            </a>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="svc-card" data-km={kmValue} data-status={statusAttr}>

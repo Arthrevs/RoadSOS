@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { MapContainer, TileLayer, Marker, ZoomControl, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, ZoomControl, useMap, Polyline, Popup } from 'react-leaflet';
+import ContactCard from './ContactCard';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -153,6 +154,7 @@ const RealMap = React.forwardRef(function RealMap(
     gpsLost = false,
     draggable = true,
     zoom = 15,
+    mapTheme = 'dark',
   },
   externalRef
 ) {
@@ -204,7 +206,8 @@ const RealMap = React.forwardRef(function RealMap(
         style={{ width: '100%', height: '100%' }}
       >
         <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          key={mapTheme} // Force re-render of TileLayer when theme changes
+          url={`https://{s}.basemaps.cartocdn.com/${mapTheme === 'light' ? 'light_all' : 'dark_all'}/{z}/{x}/{y}{r}.png`}
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
           subdomains="abcd"
           maxZoom={20}
@@ -229,10 +232,34 @@ const RealMap = React.forwardRef(function RealMap(
             key={c.id || `${c.lat},${c.lon}`}
             position={[c.lat, c.lon]}
             icon={buildServiceIcon(c)}
-            interactive={false}
-          />
+            interactive={true}
+          >
+            <Popup className="rs-custom-popup">
+              <ContactCard contact={c} isLast={true} variant="popup" />
+            </Popup>
+          </Marker>
         ))}
       </MapContainer>
+
+      {/* Recenter Button Overlay */}
+      {hasGps && (
+        <button 
+          className="rs-recenter-btn" 
+          title="Recenter"
+          onClick={(e) => {
+            e.preventDefault();
+            if (internalMapRef.current) {
+              const targetZoom = serviceMarkers?.length > 0 ? zoom + 1 : zoom;
+              internalMapRef.current.setView([lat, lon], targetZoom, { animate: true, duration: 0.6 });
+            }
+          }}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2v4M12 18v4M4 12H2M22 12h-2M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" />
+            <circle cx="12" cy="12" r="3" fill="currentColor" />
+          </svg>
+        </button>
+      )}
     </div>
   );
 });

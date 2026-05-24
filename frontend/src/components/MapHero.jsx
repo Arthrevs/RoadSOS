@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2, RotateCw, MapPin, Globe, Activity } from 'lucide-react';
+import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2, RotateCw, MapPin, Globe, Activity, Moon, Sun } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import RealMap from './RealMap';
 import SOSButton from './SOSButton';
@@ -98,10 +98,13 @@ export default function MapHero({
   onTestCrash,
   demoMode,
   // Truthful status signals: even if /health returned 200, we shouldn't
-  // claim ONLINE while the user is staring at bundled fallback data.
+  // show "Online" if the frontend is still showing cached/bundled fallback
+  // because the live /search call hasn't succeeded yet.
   searchLoading,
   usingFallbackData,
   onLanguagePicker,
+  mapTheme = 'dark',
+  onToggleTheme,
 }) {
   const { t } = useTranslation();
   // Pick up to 6 nearest contacts for markers on real map
@@ -160,6 +163,8 @@ export default function MapHero({
         gpsLost={gpsLost}
         draggable={true}
         zoom={15}
+        theme={mapTheme}
+        mapTheme={mapTheme}
       />
 
       {/* Top gradient overlay for header readability */}
@@ -168,13 +173,8 @@ export default function MapHero({
       {/* Compact header */}
       <div className="map-hero-header">
         <div className="mh-top-row">
-          <div className="mh-brand-shield">
-            <Shield size={36} color="#3B82F6" fill="#3B82F6" style={{ position: 'absolute', top: 0, left: 0 }} />
-            <Activity size={18} color="#ffffff" strokeWidth={2.5} style={{ position: 'relative', zIndex: 1, marginTop: '-2px' }} />
-          </div>
-
           {/* Action strip — Medical ID, Plan Trip, Refresh Location, Set Location, status pill */}
-          <div className="mh-actions">
+          <div className="mh-actions" style={{ marginLeft: 0 }}>
           <button
             className="mh-action-btn"
             onClick={handleRefreshLocation}
@@ -184,6 +184,16 @@ export default function MapHero({
           >
             <RotateCw size={14} strokeWidth={2} className={refreshing ? 'mh-action-spin' : ''} />
           </button>
+          {onToggleTheme && (
+            <button
+              className="mh-action-btn"
+              onClick={onToggleTheme}
+              title="Toggle Dark/Light Mode"
+              aria-label="Toggle Dark/Light Mode"
+            >
+              {mapTheme === 'light' ? <Moon size={14} strokeWidth={2} /> : <Sun size={14} strokeWidth={2} />}
+            </button>
+          )}
           {onLanguagePicker && (
             <button
               className="mh-action-btn"

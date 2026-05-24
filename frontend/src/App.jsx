@@ -159,6 +159,7 @@ export default function App() {
   } = useLocation({ onCrashDetected: () => setCrashOpen(true) });
 
   const isOnline = useNetwork();
+  const [mapTheme, setMapTheme] = useState('dark');
 
   // Wake up the Render backend immediately on app load
   useEffect(() => {
@@ -342,7 +343,7 @@ export default function App() {
   const gpsLost = !activeLocation?.lat && !!gpsError;
 
   return (
-    <div className="app has-map-hero">
+    <div className={`app has-map-hero theme-${mapTheme}`}>
 
       {/* ── First-launch language picker (gates Medical ID) ── */}
       {langPickerOpen && (
@@ -373,6 +374,8 @@ export default function App() {
         demoMode={DEMO_MODE}
         searchLoading={searchLoading}
         usingFallbackData={!!searchData && !searchHasRealData}
+        mapTheme={mapTheme}
+        onToggleTheme={() => setMapTheme(t => t === 'dark' ? 'light' : 'dark')}
       />
 
       {/* ── Offline banner (self-contained, uses useNetwork internally) ── */}
@@ -412,7 +415,7 @@ export default function App() {
           id="open-triage-btn"
           title={t('actions.prioritise')}
         >
-          🤖 {t('actions.prioritise')}
+          {t('actions.prioritise')}
         </button>
       )}
       {triaged && (
@@ -421,7 +424,7 @@ export default function App() {
           className="triage-trigger-btn triage-trigger-btn--redo"
           onClick={() => setTriageOpen(true)}
         >
-          🔄 {t('actions.re_prioritise')}
+          {t('actions.re_prioritise')}
         </button>
       )}
 

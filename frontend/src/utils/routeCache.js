@@ -53,7 +53,7 @@ function greatCircleInterpolate(origin, destination, n) {
 }
 
 /** Fetch the OSRM driving polyline. Returns array of [lon, lat] or null. */
-async function fetchOSRMPolyline(origin, destination) {
+export async function fetchOSRMPolyline(origin, destination) {
   const url =
     `${OSRM_URL}/${origin.lon},${origin.lat};${destination.lon},${destination.lat}` +
     `?overview=full&geometries=geojson`;
