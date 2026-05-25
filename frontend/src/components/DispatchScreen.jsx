@@ -91,7 +91,7 @@ export default function DispatchScreen({ open, onClose, location, landmark, cont
         <div className="dx-brand">
           <div className="dx-brand-cross">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2v20M2 12h20" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" />
+              <path d="M12 2v20M2 12h20" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
             </svg>
           </div>
           <div>
@@ -148,7 +148,7 @@ export default function DispatchScreen({ open, onClose, location, landmark, cont
             </div>
             <div className="dx-eta-icon">
               <div className="dx-eta-halo" />
-              <Ambulance size={26} color="#fff" strokeWidth={2.2} />
+              <Ambulance size={26} color="currentColor" strokeWidth={2.2} />
             </div>
           </div>
         )}

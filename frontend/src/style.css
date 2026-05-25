@@ -49,7 +49,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
     background: #060E1C;
     min-height: 100dvh;
-    max-width: 430px;
+    max-width: 800px;
     margin: 0 auto;
     padding-bottom: 120px;
 }
@@ -818,7 +818,7 @@ body {
   z-index: 1000; padding: 20px;
 }
 .sheet {
-  position: relative; z-index: 10; width: 100%; max-width: 430px;
+  position: relative; z-index: 10; width: 100%; max-width: 800px;
   background: #FFFFFF; border-radius: 24px; overflow: hidden;
   box-shadow: 0 10px 50px rgba(0,0,0,0.5);
 }
@@ -1602,6 +1602,78 @@ body {
   margin-top: 3px;
   line-height: 1.4;
 }
+
+/* Crash Alert Plus Code */
+.cf-plus-row {
+  font-size: 13px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.cf-plus-label {
+  font-weight: 700;
+  color: #475569;
+}
+.cf-plus-value {
+  font-family: monospace;
+  font-weight: 600;
+  color: #1D4ED8;
+}
+
+/* Dark Mode Overrides for Crash Alert Manual Phase */
+.app.theme-dark .head-title {
+  color: #F8FAFC !important;
+}
+.app.theme-dark .head-sub {
+  color: #94A3B8 !important;
+}
+.app.theme-dark .head-eyebrow {
+  color: #60A5FA !important;
+}
+.app.theme-dark .cf-plus-label {
+  color: #94A3B8 !important;
+}
+.app.theme-dark .cf-plus-value {
+  color: #60A5FA !important;
+}
+
+/* Dark Mode Overrides for Location Block & Dismiss Button */
+.app.theme-dark .loc-block {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+.app.theme-dark .loc-label {
+  color: #3B82F6 !important;
+}
+.app.theme-dark .loc-address {
+  color: #F8FAFC !important;
+}
+.app.theme-dark .loc-gps {
+  color: #94A3B8 !important;
+}
+.app.theme-dark .loc-icon-box {
+  background: rgba(59, 130, 246, 0.15) !important;
+}
+.app.theme-dark .copy-gps {
+  color: #64748B !important;
+}
+.app.theme-dark .copy-gps:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #F8FAFC !important;
+}
+.app.theme-dark .dismiss-btn {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #E2E8F0 !important;
+}
+.app.theme-dark .dismiss-btn:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #F8FAFC !important;
+}
+.app.theme-dark .sec-label {
+  color: #94A3B8 !important;
+}
+
 .close-btn {
   width: 32px; height: 32px;
   border-radius: 50%;

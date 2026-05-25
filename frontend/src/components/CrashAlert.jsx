@@ -7,6 +7,7 @@ import { safeAutoDial, guardedTelDial } from '../utils/demoMode';
 import { encodePlusCode } from '../utils/plusCodes';
 import { isWaCountry, buildSosLinks } from '../utils/sosDispatch';
 import { triggerSOSAlert } from '../utils/sosAlert';
+import '../dispatcher-card.css';
 
 const CHOOSE_SECONDS = 10;
 const AUTO_SECONDS   = 4;
@@ -25,7 +26,7 @@ const PHASE = {
   MANUAL     : 'manual',
 };
 
-export default function CrashAlert({ open, onConfirm, onCancel, numbers, location, landmark, countryCode }) {
+export default function CrashAlert({ open, onConfirm, onCancel, numbers, location, landmark, countryCode, mapTheme }) {
   const { t, i18n } = useTranslation();
   const [phase, setPhase]       = useState(PHASE.CHOOSING);
   const [seconds, setSeconds]   = useState(CHOOSE_SECONDS);
@@ -33,6 +34,7 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
   const [pinError, setPinError] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const [copied, setCopied]     = useState(false);
+  const [plusCopied, setPlusCopied] = useState(false);
   const [sosSent, setSosSent]   = useState(null);
   const intervalRef             = useRef(null);
   const scenePhotoRef           = useRef(null);
@@ -140,7 +142,6 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
   function handleChooseManual() {
     clearInterval(intervalRef.current);
     stopAlarm();
-    dispatchSos();
     setPhase(PHASE.MANUAL);
   }
 
@@ -220,20 +221,20 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
         {/* Status pill */}
         <span className="cf-pill">
           <span className="cf-pill-dot" />
-          CRASH DETECTED
+          {t('crash_choosing.crash_detected')}
         </span>
 
         {/* Content (centered, upper area) */}
         <div className="cf-content">
-          <div className="cf-do-not-panic">DO NOT PANIC</div>
+          <div className="cf-do-not-panic">{t('crash_choosing.do_not_panic')}</div>
           <div className="cf-count">{countText}</div>
-          <div className="cf-count-label">seconds until auto-SOS</div>
+          <div className="cf-count-label">{t('crash_choosing.seconds_until')}</div>
 
           <div className="cf-details">
-            Sudden deceleration at {speedKmh} km/h.<br />
+            {t('crash_choosing.deceleration', { speed: speedKmh })}<br />
             <strong style={{ fontWeight: 800 }}>
-              {callNumber} · {topContactName(numbers)} · {alertedCount > 0 ? 'emergency contacts' : 'no contacts set'}
-            </strong>{' '}will be alerted.
+              {callNumber} · {topContactName(numbers)} · {alertedCount > 0 ? t('crash_choosing.emergency_contacts') : t('crash_choosing.no_contacts')}
+            </strong>{' '}{t('crash_choosing.will_be_alerted')}
           </div>
         </div>
 
@@ -241,37 +242,42 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
         <div className="cf-modes">
           <button className="cf-mode cf-mode--auto" onClick={triggerAutomatic}>
             <Bot size={20} strokeWidth={2.2} />
-            <span className="cf-mode-title">Automatic</span>
-            <span className="cf-mode-desc">Calls + notifies contacts</span>
+            <span className="cf-mode-title">{t('crash_choosing.automatic')}</span>
+            <span className="cf-mode-desc">{t('crash_choosing.auto_desc')}</span>
           </button>
           <button className="cf-mode cf-mode--manual" onClick={handleChooseManual}>
             <PhoneCall size={20} strokeWidth={2.2} />
-            <span className="cf-mode-title">Manual</span>
-            <span className="cf-mode-desc">I'll call — contacts notified</span>
+            <span className="cf-mode-title">{t('crash_choosing.manual')}</span>
+            <span className="cf-mode-desc">{t('crash_choosing.manual_desc')}</span>
           </button>
         </div>
 
         {/* Raised "I'M OK — CANCEL" button */}
         <button className="cf-cancel-btn" onClick={handleCancelAuto}>
-          I'M OK — CANCEL
+          {t('crash_choosing.im_ok_cancel')}
         </button>
 
         {/* PIN-gated false alarm cancel */}
         <div className="cf-pin-zone">
-          <div className="cf-pin-label">False alarm? Enter PIN to silence:</div>
+          <div className="cf-pin-label">{t('crash_choosing.false_alarm')}</div>
           <div className="cf-pin-row">
             <input
               className={`cf-pin-input ${pinError ? 'cf-pin-input--error' : ''}`}
               type="tel" inputMode="numeric" maxLength={4}
               value={pin}
               onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && pin.length === 4) {
+                  handleCancelFalseAlarm();
+                }
+              }}
               placeholder="0000"
             />
             <button className="cf-pin-btn" onClick={handleCancelFalseAlarm} disabled={pin.length !== 4}>
-              Stop alarm
+              {t('crash_choosing.stop_alarm')}
             </button>
           </div>
-          {pinError && <div className="cf-pin-error">Incorrect PIN</div>}
+          {pinError && <div className="cf-pin-error">{t('crash_choosing.incorrect_pin')}</div>}
         </div>
 
         {/* Spacer pushes Send SOS Now toward bottom */}
@@ -280,9 +286,9 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
         <button className="cf-send-now" onClick={() => {
           clearInterval(intervalRef.current);
           stopAlarm();
-          fireCall();   // fireCall() already calls dispatchSos() internally
+          fireCall();
         }}>
-          Send SOS now
+          {t('crash_choosing.send_sos_now')}
         </button>
       </div>
     );
@@ -408,11 +414,9 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
 
             {/* Plus Code */}
             {plusCode && (
-              <div style={{ padding: '0 20px 16px' }}>
-                <div style={{ fontSize: 13, color: '#475569', display: 'flex', gap: 8, alignItems: 'center' }}>
-                  <span style={{ fontWeight: 700 }}>📍 Plus Code:</span>
-                  <span style={{ fontFamily: 'monospace', fontWeight: 600, color: '#1D4ED8' }}>{plusCode}</span>
-                </div>
+              <div className="cf-plus-row" style={{ padding: '0 20px 16px' }}>
+                <span className="cf-plus-label">📌 Plus Code:</span>
+                <span className="cf-plus-value">{plusCode}</span>
               </div>
             )}
 
@@ -445,86 +449,95 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
 
   // ─── MANUAL phase ──────────────────────────────────────────────────────
   const MANUAL_CALLS = [];
-  if (numbers?.ambulance) MANUAL_CALLS.push({ label: "Ambulance", num: numbers.ambulance, Icon: Ambulance, cls: "btn-ambulance", name: "Ambulance" });
-  if (numbers?.police)    MANUAL_CALLS.push({ label: "Police",    num: numbers.police,    Icon: Shield,    cls: "btn-police", name: "Police" });
-  if (numbers?.general && numbers.general !== numbers.ambulance) MANUAL_CALLS.push({ label: "General",   num: numbers.general,   Icon: Phone,     cls: "btn-general", name: "Emergency" });
+  if (numbers?.ambulance) MANUAL_CALLS.push({ label: t('dispatcher.ambulance'), num: numbers.ambulance, cls: "amb", name: "Ambulance" });
+  if (numbers?.police)    MANUAL_CALLS.push({ label: t('dispatcher.police'),    num: numbers.police,    cls: "pol", name: "Police" });
+  if (numbers?.general)   MANUAL_CALLS.push({ label: t('dispatcher.general'),   num: numbers.general,   cls: "gen", name: "Emergency" });
+
+  const themeClass = mapTheme === 'light' ? 'card-light' : 'card-dark';
 
   return (
-    <div className="modal-backdrop modal-backdrop--alert" role="alertdialog" aria-modal="true">
-      <div style={{ width: '100%', maxWidth: 430, margin: '0 auto', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', height: '100%', paddingBottom: 32 }}>
-        <div className="sheet">
-          <div className="handle-bar"><div className="handle" /></div>
-
-          {/* Header */}
-          <div className="sheet-head">
-            <div className="head-left">
-              <div className="head-eyebrow">
-                <PhoneCall size={11} strokeWidth={2.5} />
-                Call a dispatcher
-              </div>
-              <div className="head-title">You're in Control</div>
-              <div className="head-sub">Explain the situation and share your location.</div>
+    <div className="modal-backdrop" role="alertdialog" aria-modal="true">
+      <div className="dispatcher-card-wrapper">
+        <div className={`card ${themeClass}`}>
+          <div className="card-top">
+            <div className="corner-mark"></div>
+            <div className="card-eyebrow">
+              <div className="live-dot"></div>
+              <span className="eyebrow-text">{t('dispatcher.call_dispatcher')}</span>
             </div>
+            <div className="card-title">{t('dispatcher.in_control')}</div>
+            <div className="card-sub">{t('dispatcher.explain_location')}</div>
             <button className="close-btn" onClick={() => { cancelSpeech(); onCancel?.(); }}>
-              <X size={15} strokeWidth={2.5} />
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
             </button>
           </div>
 
-          {/* Location */}
-          <div className="loc-block">
-            <div className="loc-icon-box">
-              <Navigation2 size={15} color="#1D4ED8" strokeWidth={2} />
+          <div className="loc-row">
+            <div className="loc-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+              </svg>
             </div>
             <div className="loc-body">
-              <div className="loc-label">Your location</div>
-              <div className="loc-address">{landmark || "Location approximate"}</div>
-              <div className="loc-gps">
-                {location?.lat ? `${location.lat.toFixed(5)}, ${location.lon.toFixed(5)}` : "Acquiring GPS..."}
+              <div className="loc-place">{landmark || t('dispatcher.loc_approx')}</div>
+              <div className="loc-coords">
+                {location?.lat ? `${location.lat.toFixed(5)}, ${location.lon.toFixed(5)}` : t('dispatcher.acquiring_gps')}
               </div>
             </div>
-            <button className="copy-gps" onClick={doCopy} title="Copy GPS">
+            <button className="copy-btn" onClick={doCopy} title="Copy GPS">
               {copied
-                ? <Check size={15} strokeWidth={2.5} color="#22C55E" />
-                : <Copy size={15} strokeWidth={1.8} />
+                ? <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                : <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
               }
             </button>
           </div>
 
-          {/* Call buttons */}
-          <div className="sec-label" style={{ color: '#64748B' }}>Select a service to call</div>
-          <div className="call-list">
-            {MANUAL_CALLS.map(({ label, num, Icon, cls, name }) => (
-              <a
-                key={label}
-                href={`tel:${num}`}
-                onClick={(e) => guardedTelDial(e, num, name)}
-                className={`call-btn ${cls}`}
-              >
-                <div className="call-icon">
-                  <Icon size={18} color="#fff" strokeWidth={2} />
+          <div className="svc-label">{t('dispatcher.select_service')}</div>
+          <div className="services">
+            {MANUAL_CALLS.map(({ label, num, cls, name }) => (
+              <button key={label} className="svc-row" onClick={(e) => guardedTelDial(e, num, name)}>
+                <div className={`svc-dot dot-${cls}`}></div>
+                <div className={`svc-icon icon-${cls}`}>
+                  {cls === 'amb' && <svg width="15" height="15" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>}
+                  {cls === 'pol' && <svg width="15" height="15" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>}
+                  {cls === 'gen' && <svg width="15" height="15" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.91-.91a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7a2 2 0 0 1 1.72 2.01z"/></svg>}
                 </div>
-                <span className="call-label">{label}</span>
-                <span className="call-num">{num}</span>
-                <PhoneCall size={15} className="call-chev" strokeWidth={2} />
-              </a>
+                <span className="svc-name">{label}</span>
+                <span className={`svc-num num-${cls}`}>{num}</span>
+                <div className="svc-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+              </button>
             ))}
           </div>
 
-          {/* Plus Code */}
-          {plusCode && (
-            <div style={{ padding: '0 20px 8px', fontSize: 13, color: '#475569', display: 'flex', gap: 8 }}>
-              <span style={{ fontWeight: 700 }}>📍 Plus Code:</span>
-              <span style={{ fontFamily: 'monospace', fontWeight: 600, color: '#1D4ED8' }}>{plusCode}</span>
+          {SosFollowUp && (
+            <div style={{ padding: '10px 20px 0' }}>
+              {SosFollowUp}
             </div>
           )}
 
-          {/* SOS follow-up */}
-          {SosFollowUp}
-
-          {/* Dismiss */}
-          <div className="actions">
+          <div className="footer">
+            {plusCode ? (
+              <div className="plus-code">
+                <div>
+                  <span className="plus-code-label">{t('dispatcher.plus_code')}</span>
+                  <span className="plus-code-value">{plusCode}</span>
+                </div>
+                <button className="plus-copy-btn" onClick={() => {
+                  navigator.clipboard.writeText(plusCode);
+                  setPlusCopied(true);
+                  setTimeout(() => setPlusCopied(false), 1800);
+                }} title="Copy Plus Code">
+                  {plusCopied
+                    ? <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    : <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  }
+                </button>
+              </div>
+            ) : <div />}
             <button className="dismiss-btn" onClick={() => { cancelSpeech(); onCancel?.(); }}>
-              Close — go back to contacts
+              {t('common.close')}
             </button>
           </div>
         </div>

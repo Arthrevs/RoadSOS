@@ -7,7 +7,7 @@ import { searchNearby } from './utils/overpass';
 import { triageContacts } from './utils/googlePlaces';
 import { saveSearchResult, loadSearchResult } from './utils/offlineDB';
 import { getEmergencyNumbers } from './utils/emergencyNumbers';
-import { hasMedicalId } from './utils/medicalId';
+import { hasMedicalId, getMedicalIdCompletion } from './utils/medicalId';
 import { autoFireSos } from './utils/sosDispatch';
 import { buildBundledSearchResult } from './utils/bundledFacilities';
 
@@ -22,6 +22,7 @@ import MedicalIdModal from './components/MedicalIdModal';
 import MapHero from './components/MapHero';
 import DispatchScreen from './components/DispatchScreen';
 import LanguagePicker from './components/LanguagePicker';
+import TutorialOverlay from './components/TutorialOverlay';
 import { hasUserChosenLanguage } from './i18n';
 import { requestMotionPermission } from './hooks/useLocation';
 import { DEMO_MODE } from './utils/demoMode';
@@ -146,11 +147,16 @@ export default function App() {
   const [medicalOpen, setMedicalOpen] = useState(
     () => !hasUserChosenLanguage() ? false : isFirstLaunch(),
   );
-  const [medicalIdConfigured, setMedicalIdConfigured] = useState(() => hasMedicalId());
+  const [medicalIdCompletion, setMedicalIdCompletion] = useState(() => getMedicalIdCompletion());
   const [dispatchOpen, setDispatchOpen] = useState(false);
   const [dispatchedAt, setDispatchedAt] = useState(null);
   const [dispatchContext, setDispatchContext] = useState({ isCrash: false, reason: null });
   const [scenePhoto, setScenePhoto] = useState(null);
+
+  // Tutorial state
+  const [tutorialStep, setTutorialStep] = useState(0);
+  const [tutorialForceSidebar, setTutorialForceSidebar] = useState(false);
+  const [tutorialForceInfo, setTutorialForceInfo] = useState(false);
 
   const {
     location: gpsLocation,
@@ -343,14 +349,38 @@ export default function App() {
   const gpsLost = !activeLocation?.lat && !!gpsError;
 
   return (
-    <div className={`app has-map-hero theme-${mapTheme}`}>
+    <div className={`app has-map-hero theme-${mapTheme} ${tutorialStep > 0 ? `tutorial-step-${tutorialStep}` : ''}`}>
 
       {/* ── First-launch language picker (gates Medical ID) ── */}
       {langPickerOpen && (
         <LanguagePicker
           onConfirm={() => {
             setLangPickerOpen(false);
-            // After language chosen, open Medical ID on first launch
+            // After language chosen, open Tutorial on first launch
+            if (isFirstLaunch()) {
+              setTutorialStep(1);
+            }
+          }}
+        />
+      )}
+
+      {/* 🪄 Tutorial Overlay 🪄 */}
+      {tutorialStep > 0 && (
+        <TutorialOverlay
+          theme={mapTheme}
+          triggerSidebar={setTutorialForceSidebar}
+          triggerInfo={setTutorialForceInfo}
+          onStepChange={setTutorialStep}
+          onComplete={() => {
+            setTutorialStep(0);
+            setTutorialForceSidebar(false);
+            setTutorialForceInfo(false);
+            if (isFirstLaunch()) setMedicalOpen(true);
+          }}
+          onSkip={() => {
+            setTutorialStep(0);
+            setTutorialForceSidebar(false);
+            setTutorialForceInfo(false);
             if (isFirstLaunch()) setMedicalOpen(true);
           }}
         />
@@ -368,14 +398,17 @@ export default function App() {
         onFirstTap={handleMotionPermissionOnce}
         onPlanTrip={() => setRoutePlannerOpen(true)}
         onMedicalId={() => setMedicalOpen(true)}
-        medicalIdConfigured={medicalIdConfigured}
+        medicalIdCompletion={medicalIdCompletion}
         onTestCrash={() => setCrashOpen(true)}
         onLanguagePicker={() => setLangPickerOpen(true)}
         demoMode={DEMO_MODE}
         searchLoading={searchLoading}
         usingFallbackData={!!searchData && !searchHasRealData}
         mapTheme={mapTheme}
-        onToggleTheme={() => setMapTheme(t => t === 'dark' ? 'light' : 'dark')}
+        onToggleTheme={() => setMapTheme(prev => prev === 'dark' ? 'light' : 'dark')}
+        forceSidebarOpen={tutorialForceSidebar}
+        forceInfoOpen={tutorialForceInfo}
+        onTutorialStart={() => setTutorialStep(1)}
       />
 
       {/* ── Offline banner (self-contained, uses useNetwork internally) ── */}
@@ -410,21 +443,33 @@ export default function App() {
       {searchData?.contacts?.length > 0 && !triaged && (
         <button
           type="button"
-          className="triage-trigger-btn"
+          className="btn-prioritise"
           onClick={() => setTriageOpen(true)}
           id="open-triage-btn"
           title={t('actions.prioritise')}
         >
-          {t('actions.prioritise')}
+          <span>{t('actions.prioritise')}</span>
+          <div className="arrow">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.7 }}>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
         </button>
       )}
       {triaged && (
         <button
           type="button"
-          className="triage-trigger-btn triage-trigger-btn--redo"
+          className="btn-prioritise"
           onClick={() => setTriageOpen(true)}
         >
-          {t('actions.re_prioritise')}
+          <span>{t('actions.re_prioritise')}</span>
+          <div className="arrow">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.7 }}>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
         </button>
       )}
 
@@ -437,11 +482,11 @@ export default function App() {
         setCat={setCat}
       />
 
-      {/* ── Footer Note ── */}
+      {/* 💡 Footer Note 💡 */}
       {(searchError || searchData?.source === 'Mock data') && (
-        <div style={{ display: "flex", alignItems: "flex-start", gap: 7, padding: "14px 20px 0", opacity: 0.5 }}>
-          <WifiOff size={12} color="#334E6E" strokeWidth={1.8} style={{ flexShrink: 0, marginTop: 1 }} />
-          <span style={{ fontSize: 11, color: "#1E3655", lineHeight: 1.6 }}>
+        <div className="footer-error-note">
+          <WifiOff size={12} strokeWidth={1.8} className="footer-error-icon" style={{ flexShrink: 0, marginTop: 1 }} />
+          <span className="footer-error-text">
             {searchError || t('footer.offline_fallback')}
           </span>
         </div>
@@ -467,6 +512,7 @@ export default function App() {
         location={activeLocation}
         landmark={searchData?.landmark}
         countryCode={countryCode}
+        mapTheme={mapTheme}
       />
 
       <RoutePlanner
@@ -477,10 +523,11 @@ export default function App() {
       <MedicalIdModal
         open={medicalOpen}
         startInEdit={!hasMedicalId()}
+        mapTheme={mapTheme}
         onClose={() => {
           markOnboarded();
           setMedicalOpen(false);
-          setMedicalIdConfigured(hasMedicalId());
+          setMedicalIdCompletion(getMedicalIdCompletion());
         }}
       />
 

@@ -350,6 +350,92 @@ const css = `
   transition: background 0.15s, color 0.15s;
 }
 .offline-trip-fullscreen .cancel-btn:hover { background: #F8FAFC; color: #64748B; }
+
+  /* 🌙 DARK MODE OVERRIDES 🌙 */
+  .app.theme-dark .offline-trip-fullscreen .sheet {
+    background: var(--rs-navy-soft, #0F172A);
+  }
+  .app.theme-dark .offline-trip-fullscreen .head-title {
+    color: #F8FAFC;
+  }
+  .app.theme-dark .offline-trip-fullscreen .head-sub,
+  .app.theme-dark .offline-trip-fullscreen .route-label,
+  .app.theme-dark .offline-trip-fullscreen .quick-label {
+    color: #94A3B8;
+  }
+  .app.theme-dark .offline-trip-fullscreen .head-badge {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: #93C5FD;
+  }
+  .app.theme-dark .offline-trip-fullscreen .close-btn {
+    background: rgba(255, 255, 255, 0.08);
+    color: #E2E8F0;
+  }
+  .app.theme-dark .offline-trip-fullscreen .route-input-wrap {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .app.theme-dark .offline-trip-fullscreen .route-input-wrap:focus-within {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #3B82F6;
+  }
+  .app.theme-dark .offline-trip-fullscreen .route-input {
+    color: #F8FAFC;
+    background: transparent;
+  }
+  .app.theme-dark .offline-trip-fullscreen .route-input::placeholder {
+    color: #64748B;
+  }
+  .app.theme-dark .offline-trip-fullscreen .route-suggest {
+    background: #1E293B;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .app.theme-dark .offline-trip-fullscreen .route-suggest-item:hover,
+  .app.theme-dark .offline-trip-fullscreen .route-suggest-item.is-active {
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .app.theme-dark .offline-trip-fullscreen .route-suggest-primary {
+    color: #F8FAFC;
+  }
+  .app.theme-dark .offline-trip-fullscreen .route-suggest-context {
+    color: #64748B;
+  }
+  .app.theme-dark .offline-trip-fullscreen .use-location-btn {
+    background: rgba(59, 130, 246, 0.15);
+    color: #93C5FD;
+  }
+  .app.theme-dark .offline-trip-fullscreen .quick-chip {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #CBD5E1;
+  }
+  .app.theme-dark .offline-trip-fullscreen .quick-chip:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #F8FAFC;
+  }
+  .app.theme-dark .offline-trip-fullscreen .quick-chip.selected {
+    background: #1D4ED8;
+    border-color: #1D4ED8;
+    color: #FFFFFF;
+  }
+  .app.theme-dark .offline-trip-fullscreen .submit-btn {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #94A3B8 !important;
+  }
+  .app.theme-dark .offline-trip-fullscreen .submit-btn:not(:disabled) {
+    background: #3B82F6 !important;
+    color: #FFFFFF !important;
+  }
+  .app.theme-dark .offline-trip-fullscreen .cancel-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #F8FAFC;
+  }
+  .app.theme-dark .offline-trip-fullscreen .divider,
+  .app.theme-dark .offline-trip-fullscreen .quick-label::after {
+    background: rgba(255, 255, 255, 0.1);
+  }
 `;
 
 function PlaceInput({ label, value, onChange, onGeocoded, geo, disabled, id, activeColor, onUseLocation, t }) {

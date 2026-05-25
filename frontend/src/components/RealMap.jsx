@@ -155,6 +155,7 @@ const RealMap = React.forwardRef(function RealMap(
     draggable = true,
     zoom = 15,
     mapTheme = 'dark',
+    onToggleSidebar
   },
   externalRef
 ) {
@@ -195,6 +196,7 @@ const RealMap = React.forwardRef(function RealMap(
         }}
         center={[lat, lon]}
         zoom={hasGps ? zoom : 4}
+        maxZoom={20}
         zoomControl={false}
         scrollWheelZoom={draggable}
         dragging={draggable}
@@ -216,10 +218,6 @@ const RealMap = React.forwardRef(function RealMap(
 
         <TileLoadSignal onLoad={() => setTilesLoaded(true)} />
 
-        {/* Zoom control on the right edge — far from the brand cross
-            (top-left) and the SOS dock (bottom). */}
-        {draggable && <ZoomControl position="topright" />}
-
         <MapResizer />
         <MapRecenter lat={lat} lon={lon} zoom={hasGps ? zoom : 4} />
 
@@ -228,18 +226,57 @@ const RealMap = React.forwardRef(function RealMap(
         )}
 
         {serviceMarkers.map((c) => (
-          <Marker
-            key={c.id || `${c.lat},${c.lon}`}
-            position={[c.lat, c.lon]}
-            icon={buildServiceIcon(c)}
-            interactive={true}
-          >
-            <Popup className="rs-custom-popup">
-              <ContactCard contact={c} isLast={true} variant="popup" />
-            </Popup>
-          </Marker>
+          <React.Fragment key={c.id || `${c.lat},${c.lon}`}>
+            {hasGps && (
+              <Polyline
+                positions={[[lat, lon], [c.lat, c.lon]]}
+                pathOptions={{
+                  dashArray: '6, 8',
+                  color: mapTheme === 'light' ? '#475569' : '#cbd5e1',
+                  weight: 3,
+                  opacity: 0.7
+                }}
+                interactive={false}
+              />
+            )}
+            <Marker
+              position={[c.lat, c.lon]}
+              icon={buildServiceIcon(c)}
+              interactive={true}
+            >
+              <Popup className="rs-custom-popup">
+                <ContactCard contact={c} isLast={true} variant="popup" />
+              </Popup>
+            </Marker>
+          </React.Fragment>
         ))}
       </MapContainer>
+
+      {/* Custom Zoom Panel Overlay */}
+      {draggable && (
+        <div className="rs-zoom-panel">
+          <button 
+            className="rs-zoom-btn" 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); if(internalMapRef.current) internalMapRef.current.zoomIn(); }}
+          >
+            +
+          </button>
+          <button 
+            className="rs-zoom-btn" 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); if(internalMapRef.current) internalMapRef.current.zoomOut(); }}
+          >
+            -
+          </button>
+          <button 
+            className="rs-zoom-btn" 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (onToggleSidebar) onToggleSidebar(); }}
+            title="Open Sidebar Menu"
+            aria-label="Open Sidebar Menu"
+          >
+            &lt;
+          </button>
+        </div>
+      )}
 
       {/* Recenter Button Overlay */}
       {hasGps && (
@@ -254,10 +291,7 @@ const RealMap = React.forwardRef(function RealMap(
             }
           }}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2v4M12 18v4M4 12H2M22 12h-2M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" />
-            <circle cx="12" cy="12" r="3" fill="currentColor" />
-          </svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" strokeWidth="1.8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
         </button>
       )}
     </div>

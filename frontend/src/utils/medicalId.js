@@ -85,6 +85,13 @@ export function hasMedicalId() {
   );
 }
 
+export function getMedicalIdCompletion(data = null) {
+  const m = data || getMedicalId();
+  const keys = ["name", "age", "bloodType", "allergies", "conditions", "medications", "primaryContactName", "primaryContactPhone"];
+  const count = keys.filter(k => (m[k] || "").toString().trim()).length;
+  return Math.round((count / keys.length) * 100);
+}
+
 /**
  * Compose an SMS body for SOS-by-SMS, using the Medical ID + coordinates.
  *

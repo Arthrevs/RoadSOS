@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle } from 'lucide-react';
-import { LOCALES, changeLanguage } from '../i18n';
+import { AlertTriangle, ArrowLeft } from 'lucide-react';
+import { LOCALES, changeLanguage, hasUserChosenLanguage } from '../i18n';
 
 /**
  * Detect browsers that may have reduced functionality with RoadSOS.
@@ -62,6 +62,15 @@ function detectCompatibilityWarning() {
 export default function LanguagePicker({ onConfirm }) {
   const { t, i18n } = useTranslation();
   const compatWarning = useMemo(() => detectCompatibilityWarning(), []);
+  const canGoBack = useMemo(() => hasUserChosenLanguage(), []);
+
+  useEffect(() => {
+    // Prevent background scrolling while modal is open
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
 
   // No language pre-selected — user must actively choose.
   const [selected, setSelected] = useState(null);
@@ -79,6 +88,11 @@ export default function LanguagePicker({ onConfirm }) {
   return (
     <div className="lang-picker-overlay" role="dialog" aria-modal="true">
       <div className="lang-picker-card">
+        {canGoBack && (
+          <button className="lang-picker-back-btn top-back" onClick={() => onConfirm?.()}>
+            <ArrowLeft size={18} /> {t('actions.back', 'Back')}
+          </button>
+        )}
 
         {/* Browser compatibility warning — shown before language tiles */}
         {compatWarning && (
@@ -114,7 +128,11 @@ export default function LanguagePicker({ onConfirm }) {
           ))}
         </div>
 
-
+        {canGoBack && (
+          <button className="lang-picker-back-btn bottom-back" onClick={() => onConfirm?.()}>
+            <ArrowLeft size={18} /> {t('actions.back', 'Back')}
+          </button>
+        )}
       </div>
     </div>
   );

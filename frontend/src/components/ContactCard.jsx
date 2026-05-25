@@ -76,77 +76,79 @@ export default function ContactCard({ contact, isLast, variant }) {
   }
 
   return (
-    <div className="svc-card" data-km={kmValue} data-status={statusAttr}>
+    <div className="cc-card">
       {aiReason && (
-        <div className="svc-ai">
-          <Zap size={13} fill="currentColor" />
+        <div className="svc-ai" style={{ position: 'absolute', top: 10, right: 10, zIndex: 2, fontSize: 10 }}>
+          <Zap size={11} fill="currentColor" />
           <span>{aiReason}</span>
         </div>
       )}
 
-      {/* Name row */}
-      <div className="svc-main">
-        <div className="svc-icon" style={{ background: dot + '18' }}>
-          <Icon size={17} color={dot} strokeWidth={2} />
+      <div className="cc-row-top">
+        <div className="cc-dist-block">
+          <span className="cc-dist-num">{kmValue}</span>
+          <span className="cc-dist-unit">{t('card.km', 'KM')}</span>
         </div>
-        <div className="svc-info">
-          <div className="svc-name">{name}</div>
-          <div className="svc-status-row">
-            {isOpen === true && (
-              <>
-                <div className="open-dot" style={{ background: '#22C55E' }} />
-                <span className="open-label">{t('card.open')}</span>
-              </>
-            )}
-            {isOpen === false && (
-              <>
-                <div className="closed-dot" style={{ background: '#EF4444' }} />
-                <span className="closed-label">{t('card.closed')}</span>
-              </>
-            )}
-            {isOpen === null && (
-              <span className="svc-dist" style={{ fontSize: 10 }}>{t('card.unknown_status')}</span>
-            )}
-            <span style={{ color: '#CBD5E1' }}>·</span>
-            <span style={{ textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, fontSize: 10 }}>{t(`category.${cat === 'tyre' ? 'puncture' : cat}`, cat)}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Call + Directions row */}
-      <div className="call-row">
-        {callHref ? (
-          <a
-            href={callHref}
-            className="call-btn"
-            id={`call-btn-${phoneClean}`}
-            aria-label={`Call ${name} at ${phone}`}
-            onClick={(e) => guardedTelDial(e, phoneClean, name)}
-          >
-            <PhoneCall size={13} className="call-btn-icon" strokeWidth={2.4} fill="#fff" />
-            <span className="call-btn-num">{phone}</span>
-          </a>
-        ) : (
-          <div className="call-btn" style={{ opacity: 0.5, cursor: 'not-allowed' }}>
-            <PhoneCall size={13} strokeWidth={2.4} />
-            <span className="call-btn-num">{t('actions.no_phone')}</span>
-          </div>
-        )}
-
-        {mapsHref && (
-          <a
-            href={mapsHref}
-            className="maps-link"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Open directions to ${name} in Google Maps`}
-            style={{ flex: '0 0 auto', marginTop: 0, padding: '0 12px' }}
-          >
-            <Navigation size={13} color="#1D4ED8" strokeWidth={2.4} />
+        {mapsHref ? (
+          <a href={mapsHref} className="cc-dir-btn" target="_blank" rel="noopener noreferrer" aria-label={`Open directions to ${name} in Google Maps`}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+            </svg>
             {t('actions.directions')}
           </a>
+        ) : (
+          <div className="cc-dir-btn" style={{ opacity: 0.5, cursor: 'not-allowed' }}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+            </svg>
+            {t('actions.directions')}
+          </div>
         )}
       </div>
+
+      <div className="cc-row-mid">
+        <div className="cc-card-name">{name}</div>
+        <div className="cc-card-tags">
+          {isOpen === true && (
+            <div className="cc-tag-status"><div className="cc-tag-dot open"></div>{t('card.open')}</div>
+          )}
+          {isOpen === false && (
+            <div className="cc-tag-status"><div className="cc-tag-dot closed"></div>{t('card.closed')}</div>
+          )}
+          {isOpen === null && (
+            <div className="cc-tag-status">{t('card.unknown_status')}</div>
+          )}
+          
+          <div className="cc-tag-sep"></div>
+          <span className="cc-tag-type">{t(`category.${cat === 'tyre' ? 'puncture' : cat}`, cat)}</span>
+        </div>
+      </div>
+
+      {callHref ? (
+        <a
+          href={callHref}
+          className="cc-call-btn"
+          id={`call-btn-${phoneClean}`}
+          aria-label={`Call ${name} at ${phone}`}
+          onClick={(e) => guardedTelDial(e, phoneClean, name)}
+        >
+          <div className="cc-phone-icon-wrap">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.91-.91a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7a2 2 0 0 1 1.72 2.01z"/>
+            </svg>
+          </div>
+          <span className="cc-phone-num">{phone}</span>
+        </a>
+      ) : (
+        <div className="cc-call-btn" style={{ opacity: 0.5, cursor: 'not-allowed' }}>
+          <div className="cc-phone-icon-wrap">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.91-.91a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7a2 2 0 0 1 1.72 2.01z"/>
+            </svg>
+          </div>
+          <span className="cc-phone-num">{t('actions.no_phone')}</span>
+        </div>
+      )}
     </div>
   );
 }

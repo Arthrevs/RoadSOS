@@ -219,6 +219,10 @@ const css = `
   appearance: none;
   cursor: pointer;
 }
+.medical-id-fullscreen .field-select option {
+  background: #13273D;
+  color: #E2E8F0;
+}
 .medical-id-fullscreen .field-select.ph { color: #4A7AB5; font-weight: 400; }
 
 .medical-id-fullscreen .field-row { display: flex; }
@@ -386,7 +390,7 @@ const CONTACTS = [
   { prefix: "tertiary", labelKey: "medical_id.contact3_label", labelDef: "Contact 3", required: false },
 ];
 
-export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
+export default function MedicalIdModal({ open, onClose, startInEdit = false, mapTheme = 'dark' }) {
   const { t } = useTranslation();
   const [data, setData] = useState(getMedicalId());
   const [saved, setSaved] = useState(false);
@@ -417,7 +421,7 @@ export default function MedicalIdModal({ open, onClose, startInEdit = false }) {
     <>
       <style>{css}</style>
       <div className="medical-id-fullscreen">
-        <div className="app">
+        <div className={`app theme-${mapTheme}`}>
 
           {/* Hero */}
           <div className="hero">

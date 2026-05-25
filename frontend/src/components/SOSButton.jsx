@@ -189,35 +189,54 @@ export default function SOSButton({ location, landmark, countryCode, onFirstTap 
         </div>
       )}
 
-      {/* SOS button row — relative wrapper for btn + copy icon */}
-      <div className="glass-sos-row">
-        <button
-          id="sos-main-btn"
-          className={`glass-sos-btn ${sent ? 'sent' : ''}`}
-          onClick={handleSOS}
-          aria-label={hasContacts
-            ? `Send SOS via ${channelLabel} to ${contactSummary}`
-            : 'Send SOS with your location via WhatsApp'}
-          title={hasContacts
-            ? `Sends via ${channelLabel} to ${contactSummary}`
-            : 'Set emergency contacts in Medical ID for direct messaging'}
-        >
-          {btnLabel}
-        </button>
+      {/* SOS button row — new sos-bar design */}
+      <button 
+        className="sos-bar"
+        onClick={handleSOS}
+        id="sos-main-btn"
+        aria-label={hasContacts ? `Send SOS via ${channelLabel} to ${contactSummary}` : 'Send SOS'}
+        title={hasContacts ? `Sends via ${channelLabel} to ${contactSummary}` : 'Set emergency contacts'}
+        style={{ border: 'none', textAlign: 'left', outline: 'none' }}
+      >
+        <div className="signal">
+          <span></span><span></span><span></span><span></span>
+        </div>
 
-        <button
+        <div className="vdiv"></div>
+
+        <span className="sos-label">SOS</span>
+        <span className="arrow-sep">→</span>
+        <span className="sos-dest">
+          {sent
+            ? t('sos.sent')
+            : !hasLocation
+              ? t('actions.waiting_gps', 'Waiting for GPS')
+              : hasContacts
+                ? contactSummary
+                : t('actions.send_location', 'Send Location')}
+        </span>
+
+        <div 
+          className="sos-copy-btn" 
           id="copy-coords-btn"
-          className="glass-copy-btn"
-          onClick={handleCopyCoords}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            handleCopyCoords();
+          }}
           aria-label={t('sos.copy_coords')}
           title={t('sos.copy_coords')}
         >
-          {copied
-            ? <Check size={18} strokeWidth={2.5} color="#22C55E" />
-            : <Copy size={18} strokeWidth={1.8} />
-          }
-        </button>
-      </div>
+          {copied ? (
+            <Check size={15} strokeWidth={2.5} color="#22C55E" />
+          ) : (
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+          )}
+        </div>
+      </button>
 
       {/* Follow-up dispatch panel */}
       {dispatched && hasContacts && hasLocation && (
