@@ -4137,6 +4137,15 @@
   background: #F4F4F4 !important;
 }
 
+/* Route loading pulse animation */
+@keyframes rs-route-pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+.rs-route-loading {
+  animation: rs-route-pulse 1s ease-in-out infinite;
+}
+
 /* Pop box size reduction (approx 45% smaller) */
 .rs-custom-popup .leaflet-popup-content {
   min-width: 170px !important;
@@ -5563,7 +5572,7 @@
 
 /* left: SOS label */
 .sos-label {
-  font-size: 13px;
+  font-size: 14.5px;
   font-weight: 800;
   color: #fff;
   letter-spacing: 0.06em;
@@ -5572,7 +5581,7 @@
 
 /* arrow */
 .arrow-sep {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   color: rgba(255,255,255,0.4);
   flex-shrink: 0;
@@ -5580,7 +5589,7 @@
 
 /* destination */
 .sos-dest {
-  font-size: 13px; /* matched to SOS */
+  font-size: 14.5px; /* matched to SOS */
   font-weight: 800; /* matched to SOS */
   color: #fff; /* matched to SOS */
   letter-spacing: 0.01em;

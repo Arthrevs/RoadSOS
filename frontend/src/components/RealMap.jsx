@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { MapContainer, TileLayer, Marker, ZoomControl, useMap, Polyline, Popup } from 'react-leaflet';
+import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
+import { MapContainer, TileLayer, Marker, ZoomControl, useMap, useMapEvents, Polyline, Popup } from 'react-leaflet';
 import ContactCard from './ContactCard';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { fetchOSRMPolyline } from '../utils/routeCache';
 
 /**
  * Real GPS-anchored map using Leaflet + OpenStreetMap tiles.
@@ -128,6 +129,14 @@ function MapResizer() {
   return null;
 }
 
+/** Listens for clicks on the map background to clear the active route. */
+function MapClickHandler({ onMapClick }) {
+  useMapEvents({
+    click: () => onMapClick?.(),
+  });
+  return null;
+}
+
 /** Tile-load listener — flips off the loading shimmer when the first
  *  batch of CartoDB tiles has actually rendered. */
 function TileLoadSignal({ onLoad }) {
@@ -161,6 +170,9 @@ const RealMap = React.forwardRef(function RealMap(
 ) {
   const internalMapRef = useRef(null);
   const [tilesLoaded, setTilesLoaded] = useState(false);
+  const [activeRouteId, setActiveRouteId] = useState(null);
+  const [activeRouteCoords, setActiveRouteCoords] = useState(null);
+  const [routeLoading, setRouteLoading] = useState(false);
 
   // Default fallback (India centroid) until GPS arrives — better than a blank screen.
   const lat = location?.lat ?? 20.5937;
@@ -175,6 +187,43 @@ const RealMap = React.forwardRef(function RealMap(
         .slice(0, 6),
     [contacts],
   );
+
+  /** Fetch OSRM road route for a specific contact marker. */
+  const handleMarkerClick = useCallback(async (contact) => {
+    const cId = contact.id || `${contact.lat},${contact.lon}`;
+    // If same marker tapped again, just toggle off
+    if (activeRouteId === cId) {
+      setActiveRouteId(null);
+      setActiveRouteCoords(null);
+      return;
+    }
+    setActiveRouteId(cId);
+    setActiveRouteCoords(null);
+    setRouteLoading(true);
+    try {
+      const polyline = await fetchOSRMPolyline(
+        { lat, lon },
+        { lat: contact.lat, lon: contact.lon }
+      );
+      if (polyline) {
+        // OSRM returns [lon, lat] pairs — convert to [lat, lon] for Leaflet
+        setActiveRouteCoords(polyline.map(([lng, lt]) => [lt, lng]));
+      } else {
+        // Fallback: keep straight line if OSRM fails
+        setActiveRouteCoords(null);
+      }
+    } catch {
+      setActiveRouteCoords(null);
+    } finally {
+      setRouteLoading(false);
+    }
+  }, [activeRouteId, lat, lon]);
+
+  /** Clear active route when user taps map background or popup closes. */
+  const clearActiveRoute = useCallback(() => {
+    setActiveRouteId(null);
+    setActiveRouteCoords(null);
+  }, []);
 
   return (
     <div className={`rs-real-map ${tilesLoaded ? 'is-loaded' : 'is-loading'}`}>
@@ -220,36 +269,76 @@ const RealMap = React.forwardRef(function RealMap(
 
         <MapResizer />
         <MapRecenter lat={lat} lon={lon} zoom={hasGps ? zoom : 4} />
+        <MapClickHandler onMapClick={clearActiveRoute} />
 
         {hasGps && (
           <Marker position={[lat, lon]} icon={userIcon} interactive={false} />
         )}
 
-        {serviceMarkers.map((c) => (
-          <React.Fragment key={c.id || `${c.lat},${c.lon}`}>
-            {hasGps && (
-              <Polyline
-                positions={[[lat, lon], [c.lat, c.lon]]}
-                pathOptions={{
-                  dashArray: '6, 8',
-                  color: mapTheme === 'light' ? '#475569' : '#cbd5e1',
-                  weight: 3,
-                  opacity: 0.7
+        {serviceMarkers.map((c) => {
+          const cId = c.id || `${c.lat},${c.lon}`;
+          const isActive = activeRouteId === cId;
+          const hasRoadRoute = isActive && activeRouteCoords;
+
+          return (
+            <React.Fragment key={cId}>
+              {hasGps && hasRoadRoute && (
+                /* Glowing road polyline — underlay (glow) + overlay (sharp line) */
+                <>
+                  <Polyline
+                    positions={activeRouteCoords}
+                    pathOptions={{
+                      color: mapTheme === 'light' ? '#000000' : '#ffffff',
+                      weight: 8,
+                      opacity: 0.25,
+                      lineCap: 'round',
+                      lineJoin: 'round',
+                    }}
+                    interactive={false}
+                  />
+                  <Polyline
+                    positions={activeRouteCoords}
+                    pathOptions={{
+                      color: mapTheme === 'light' ? '#1e293b' : '#f8fafc',
+                      weight: 3.5,
+                      opacity: 0.9,
+                      dashArray: '8, 6',
+                      lineCap: 'round',
+                      lineJoin: 'round',
+                    }}
+                    interactive={false}
+                  />
+                </>
+              )}
+              {hasGps && !hasRoadRoute && (
+                <Polyline
+                  positions={[[lat, lon], [c.lat, c.lon]]}
+                  pathOptions={{
+                    dashArray: '6, 8',
+                    color: mapTheme === 'light' ? '#475569' : '#cbd5e1',
+                    weight: isActive && routeLoading ? 4 : 3,
+                    opacity: isActive && routeLoading ? 0.9 : 0.7,
+                    className: isActive && routeLoading ? 'rs-route-loading' : '',
+                  }}
+                  interactive={false}
+                />
+              )}
+              <Marker
+                position={[c.lat, c.lon]}
+                icon={buildServiceIcon(c)}
+                interactive={true}
+                eventHandlers={{
+                  click: () => handleMarkerClick(c),
+                  popupclose: clearActiveRoute,
                 }}
-                interactive={false}
-              />
-            )}
-            <Marker
-              position={[c.lat, c.lon]}
-              icon={buildServiceIcon(c)}
-              interactive={true}
-            >
-              <Popup className="rs-custom-popup">
-                <ContactCard contact={c} isLast={true} variant="popup" />
-              </Popup>
-            </Marker>
-          </React.Fragment>
-        ))}
+              >
+                <Popup className="rs-custom-popup">
+                  <ContactCard contact={c} isLast={true} variant="popup" />
+                </Popup>
+              </Marker>
+            </React.Fragment>
+          );
+        })}
       </MapContainer>
 
       {/* Custom Zoom Panel Overlay */}
@@ -285,10 +374,36 @@ const RealMap = React.forwardRef(function RealMap(
           title="Recenter"
           onClick={(e) => {
             e.preventDefault();
-            if (internalMapRef.current) {
-              const targetZoom = serviceMarkers?.length > 0 ? zoom + 1 : zoom;
-              internalMapRef.current.setView([lat, lon], targetZoom, { animate: true, duration: 0.6 });
-            }
+            if (!internalMapRef.current) return;
+            const map = internalMapRef.current;
+            const container = map.getContainer();
+            const containerH = container.offsetHeight;
+
+            // Measure the top toolbar and bottom SOS bar heights
+            const toolbar = document.querySelector('.toolbar');
+            const sosBar = document.querySelector('.glass-sos-container') || document.querySelector('.dock-interactive-zone');
+            const topH = toolbar ? toolbar.offsetHeight + toolbar.getBoundingClientRect().top - container.getBoundingClientRect().top : 56;
+            const bottomH = sosBar ? containerH - (sosBar.getBoundingClientRect().top - container.getBoundingClientRect().top) : 80;
+
+            // Visible area between top bar and SOS bar
+            const visibleH = containerH - topH - bottomH;
+            // The visible midpoint (from top of container) = topH + visibleH/2
+            const visibleMid = topH + visibleH / 2;
+            // The geometric center is containerH/2
+            const geomCenter = containerH / 2;
+            // panBy positive Y = viewport shifts down = dot moves UP on screen
+            // We want the dot at visibleMid (above geomCenter), so offset is positive
+            const offsetY = geomCenter - visibleMid;
+
+            // Zoom in 25% more than base zoom
+            const targetZoom = Math.min(zoom + 2, 18);
+
+            // First center on the user location at the target zoom
+            map.setView([lat, lon], targetZoom, { animate: true, duration: 0.6 });
+            // Then shift by the offset so the dot is in the visible center
+            setTimeout(() => {
+              map.panBy([0, offsetY], { animate: true, duration: 0.3 });
+            }, 650);
           }}
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" strokeWidth="1.8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
