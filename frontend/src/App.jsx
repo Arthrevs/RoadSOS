@@ -343,6 +343,7 @@ export default function App() {
 
   const handleMotionPermissionOnce = useCallback(() => {
     requestMotionPermission();
+    import('./utils/sosAlert').then(m => m.requestCameraPermission());
   }, []);
 
   // GPS lost detection — use cached location flag when no live GPS

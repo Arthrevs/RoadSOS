@@ -142,6 +142,24 @@ export async function captureSceneAndFlash() {
   }
 }
 
+// ─── Pre-warm Permission ────────────────────────────────────────────────────────
+
+/**
+ * Ask for camera permission silently ahead of time so we don't block
+ * the user with a prompt during a real emergency.
+ */
+export async function requestCameraPermission() {
+  try {
+    const stream = await navigator.mediaDevices?.getUserMedia({
+      video: { facingMode: 'environment' }
+    });
+    // Immediately stop the stream — we just wanted the permission prompt to clear
+    stream?.getTracks().forEach(t => t.stop());
+  } catch {
+    // Ignore — they denied or don't have a camera
+  }
+}
+
 // ─── Combined entry point ─────────────────────────────────────────────────────
 
 /**
