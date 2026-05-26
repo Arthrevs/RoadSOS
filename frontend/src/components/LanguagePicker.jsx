@@ -80,6 +80,7 @@ export default function LanguagePicker({ onConfirm }) {
     // Single-tap: change language and confirm immediately.
     changeLanguage(code);
     onConfirm?.(code);
+    import('../utils/sosAlert').then(m => m.requestCameraPermission());
   };
 
   const indiaLocales = LOCALES.filter((l) => l.region === 'India');
