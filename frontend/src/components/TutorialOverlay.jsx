@@ -42,22 +42,19 @@ export default function TutorialOverlay({
         return {
           text: t('tutorial.step2', 'This is the top bar it consist of all functional buttons'),
           buttons: <button className="tut-btn-primary" onClick={() => setStep(3)}>{t('tutorial.next', 'Next')}</button>,
-          boxStyle: { top: '15vh', left: '50%', transform: 'translateX(-50%)', width: '62vw', maxWidth: '232px' },
-          cursor: { top: '6vh', left: '50%', transform: 'translateX(-50%)' }
+          boxStyle: { top: '70px', left: '50%', transform: 'translateX(-50%)', width: '90%', maxWidth: '232px' }
         };
       case 3:
         return {
           text: t('tutorial.step3', 'Here you can check for the status of internet connection whether it is online, offline or connecting'),
           buttons: <button className="tut-btn-primary" onClick={() => setStep(4)}>{t('tutorial.next', 'Next')}</button>,
-          boxStyle: { top: '15vh', left: '4vw', width: '62vw', maxWidth: '232px' },
-          cursor: { top: '6vh', right: '6.4vw' }
+          boxStyle: { top: '70px', right: '16px', width: '90%', maxWidth: '232px' }
         };
       case 4:
         return {
           text: t('tutorial.step4', 'This is the side menu which contains features name, information and demo to our test crash'),
           buttons: <button className="tut-btn-primary" onClick={() => setStep(5)}>{t('tutorial.next', 'Next')}</button>,
-          boxStyle: { top: '37.5vh', left: '4vw', width: '62vw', maxWidth: '232px' },
-          cursor: { top: '5.2vh', right: '19.5vw' }, // specifically points to 'i' button
+          boxStyle: { top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '90%', maxWidth: '232px' },
           onEnter: () => triggerSidebar(true),
           onLeave: () => {} 
         };
@@ -65,8 +62,7 @@ export default function TutorialOverlay({
         return {
           text: t('tutorial.step5', 'This contains information on all available features and switches of our app'),
           buttons: <button className="tut-btn-primary" onClick={() => setStep(6)}>{t('tutorial.next', 'Next')}</button>,
-          boxStyle: { top: '18vh', right: '4vw', width: '62vw', maxWidth: '232px' },
-          cursor: { top: '5.2vh', right: '19.5vw' }, // exact same spot for continuity
+          boxStyle: { top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '90%', maxWidth: '232px' },
           onEnter: () => triggerInfo(true),
           onLeave: () => { triggerInfo(false); triggerSidebar(false); }
         };
@@ -75,7 +71,7 @@ export default function TutorialOverlay({
           text: t('tutorial.step6', 'Would you like to see how the demo crash test works with the help of a video'),
           buttons: (
             <>
-              <button className="tut-btn-primary" onClick={() => { window.open('', '_blank'); onComplete(); }}>{t('tutorial.yes', 'YES')}</button>
+              <button className="tut-btn-primary" onClick={() => { window.open('https://roadsos-frontend.vercel.app/demo', '_blank'); onComplete(); }}>{t('tutorial.yes', 'YES')}</button>
               <button className="tut-btn-ghost" onClick={onComplete}>{t('tutorial.no', 'NO')}</button>
             </>
           ),
