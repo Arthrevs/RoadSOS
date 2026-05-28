@@ -81,10 +81,14 @@ describe('findNearestFromBundle', () => {
 });
 
 describe('buildBundledSearchResult', () => {
-  it('returns null when no facility is within range', () => {
-    // Middle of the Pacific Ocean
-    const result = buildBundledSearchResult(0, -150, { maxKm: 80 });
-    expect(result).toBeNull();
+  it('still returns a single distant facility when nothing is within range', () => {
+    // Middle of the Pacific Ocean — bundle never has anything within 80 km here,
+    // but the last-resort tier returns the globally nearest entry rather than
+    // null so the UI never falls through to demo mock data offline.
+    const result = buildBundledSearchResult(0, -150, { maxKm: 80, farMaxKm: 600 });
+    expect(result).not.toBeNull();
+    expect(result.contacts).toHaveLength(1);
+    expect(result.contacts[0].source).toBe('Bundled directory · distant');
   });
 
   it('returns a /search-shaped response when facilities are nearby', () => {

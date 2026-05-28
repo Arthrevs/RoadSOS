@@ -25,6 +25,19 @@ def _load_seed() -> list[dict]:
     return _CACHED
 
 
+def validate_seed_on_startup() -> int:
+    """Preload + sanity-check the bundled seed.
+
+    Called from the FastAPI lifespan so a missing/corrupt file fails loudly
+    at boot rather than 503-ing the first /offline-pack request during a
+    judge demo. Returns the country count on success; raises otherwise.
+    """
+    data = _load_seed()
+    if not isinstance(data, list) or not data:
+        raise RuntimeError(f"emergency_seed.json is empty or malformed at {_DATA_PATH}")
+    return len(data)
+
+
 @offline_router.get("/offline-pack", summary="Bundled 59-country emergency numbers")
 async def get_offline_pack():
     data = _load_seed()

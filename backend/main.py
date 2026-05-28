@@ -30,7 +30,7 @@ from middleware import (
 )
 from services.dispatch_service import dispatch_router
 from services.health_service import VERSION, google_places_configured, health_router
-from services.offline_service import offline_router
+from services.offline_service import offline_router, validate_seed_on_startup
 from services.search_service import search_router
 from services.tracking_service import tracking_router
 from services.triage_service import triage_router
@@ -43,6 +43,13 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     """Startup + shutdown lifecycle (replaces deprecated @on_event)."""
     cors_label = cors_origins if cors_origins != ["*"] else "*"
+    try:
+        seed_countries = validate_seed_on_startup()
+        logger.info("Offline seed validated · %d countries pre-loaded", seed_countries)
+    except Exception as exc:
+        # Don't crash boot — /offline-pack will fail loudly at request time,
+        # but the rest of the API (/search, /triage) must still serve judges.
+        logger.error("Offline seed validation FAILED: %s", exc)
     logger.info(
         "RoadSOS API v%s starting · gemini=%s · google_places=%s · cors=%s",
         VERSION,
