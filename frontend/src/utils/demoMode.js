@@ -25,16 +25,14 @@ function readDemoMode() {
   const demo = params.get('demo');
   const live = params.get('live');
   if (demo === '0' || demo === 'false' || live === '1' || live === 'true') return false;
-  if (demo === '1' || demo === 'true') return true;
+  if (demo === '1' || demo === 'true' || live === '0' || live === 'false') return true;
 
   const path = window.location.pathname;
   if (path === '/demo' || path.startsWith('/demo/')) return true;
 
-  // Default: demo ON. A judge accessing the deployed URL must not be able
-  // to dial 108 / 911 with a single accidental tap. Real users in a genuine
-  // emergency tap twice within 4 s (guardedTelDial) to confirm and dial.
-  // For first-responder / production deployments, append ?live=1.
-  return true;
+  // Default: demo OFF on the main website (real dials enabled).
+  // Demo mode is active on /demo or when forced via ?demo=1.
+  return false;
 }
 
 export const DEMO_MODE = readDemoMode();
