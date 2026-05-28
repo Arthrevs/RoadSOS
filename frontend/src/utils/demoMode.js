@@ -18,19 +18,23 @@
 function readDemoMode() {
   if (typeof window === 'undefined') return false;
 
-  // /demo path → always demo mode (safe for sharing with judges/teammates)
-  // main URL   → production mode (real calls enabled)
+  // Explicit overrides win.
+  //   ?demo=0   or   ?live=1   →  real-dial mode (for genuine emergency use)
+  //   ?demo=1   or   /demo path →  demo mode (safe for judges & sharing)
+  const params = new URLSearchParams(window.location.search);
+  const demo = params.get('demo');
+  const live = params.get('live');
+  if (demo === '0' || demo === 'false' || live === '1' || live === 'true') return false;
+  if (demo === '1' || demo === 'true') return true;
+
   const path = window.location.pathname;
   if (path === '/demo' || path.startsWith('/demo/')) return true;
 
-  // Legacy ?demo=0 / ?demo=1 query param still works for backward compat
-  const params = new URLSearchParams(window.location.search);
-  const v = params.get('demo');
-  if (v === '0' || v === 'false') return false;
-  if (v === '1' || v === 'true')  return true;
-
-  // Main URL with no params → production mode
-  return false;
+  // Default: demo ON. A judge accessing the deployed URL must not be able
+  // to dial 108 / 911 with a single accidental tap. Real users in a genuine
+  // emergency tap twice within 4 s (guardedTelDial) to confirm and dial.
+  // For first-responder / production deployments, append ?live=1.
+  return true;
 }
 
 export const DEMO_MODE = readDemoMode();

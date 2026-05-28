@@ -243,8 +243,10 @@ async def build_and_fetch_query(lat: float, lon: float, radius: int = 5000) -> l
         data = await _fetch_with_retry(query)
     except Exception as exc:
         logger.warning(f"Overpass request failed after retries · {type(exc).__name__}: {exc}")
-        # Cache empty result briefly so we don't hammer Overpass for a known-bad area
-        await overpass_cache.set(cache_key, [])
+        # Cache the failure briefly (60 s) so we don't hammer Overpass for a
+        # known-bad area, but not for the full 1 h default — otherwise one
+        # flaky first call poisons subsequent demo requests at the same spot.
+        await overpass_cache.set(cache_key, [], ttl=60)
         raise
 
     raw_results: list[dict] = []
@@ -256,11 +258,18 @@ async def build_and_fetch_query(lat: float, lon: float, radius: int = 5000) -> l
     deduped = _dedupe_smart(raw_results)
     sorted_results = sorted(deduped, key=lambda x: x["distance"])
 
-    # Don't cache if zero contacts have phones — a phoneless cache would
-    # serve stale results and block Google enrichment on subsequent requests.
+    # Cache policy:
+    #   - At least one phone present → cache for the default 1 h (real, useful data).
+    #   - Empty list                  → cache briefly (60 s) so a transient
+    #                                   sparse-area response can be retried
+    #                                   without a fresh hit poisoning demos.
+    #   - No-phone results            → don't cache; let Google enrichment
+    #                                   fill phones on subsequent requests.
     phones_found = sum(1 for c in sorted_results if c.get("phone"))
-    if phones_found > 0 or len(sorted_results) == 0:
+    if phones_found > 0:
         await overpass_cache.set(cache_key, sorted_results)
+    elif len(sorted_results) == 0:
+        await overpass_cache.set(cache_key, sorted_results, ttl=60)
     logger.info(
         f"Overpass fetched · {cache_key} · {len(sorted_results)} contacts · {phones_found} with phone"
     )

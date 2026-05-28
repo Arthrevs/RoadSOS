@@ -58,12 +58,13 @@ class RateLimiter:
             bucket.tokens -= 1.0
 
 
-# Shared instance — sized so a venue of 10 judges sharing a NAT IP during
-# live demo (one /search per judge in 5–10 s) does not trip 429s, while
-# still capping automated abuse.  60 reqs/min, 30 burst → ~3 quick demos
-# back-to-back without bottoming the bucket.
-search_limiter = RateLimiter(rate_per_minute=60, burst=30)
-triage_limiter = RateLimiter(rate_per_minute=40, burst=15)
+# Shared instance — sized so a venue of ~15 judges sharing a NAT IP during
+# live demo (each running 3–5 /search requests as they explore demo
+# locations) does not trip 429s, while still capping automated abuse.
+# 120 reqs/min, 80 burst → roughly 80 quick requests without throttling
+# before the bucket starts metering at 2 req/s.
+search_limiter = RateLimiter(rate_per_minute=120, burst=80)
+triage_limiter = RateLimiter(rate_per_minute=80, burst=40)
 
 
 def get_client_ip(request: Request) -> str:
