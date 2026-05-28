@@ -282,13 +282,13 @@ export default function MapHero({
             )}
             {demoMode && onTestCrash && (
               <button
-                className="btn-icon"
+                className="btn-demo-crash"
                 onClick={onTestCrash}
                 title={t('tooltip.test_crash', 'Test crash alert')}
                 aria-label={t('actions.test_crash', 'Test crash')}
               >
-                <AlertTriangle size={19} strokeWidth={1.8} />
-                <span className="tip">Crash</span>
+                <AlertTriangle size={16} strokeWidth={2} />
+                <span className="demo-crash-text">Demo test crash</span>
               </button>
             )}
 

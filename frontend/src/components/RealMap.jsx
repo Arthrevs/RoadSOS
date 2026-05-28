@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
-import { MapContainer, TileLayer, Marker, ZoomControl, useMap, useMapEvents, Polyline, Popup } from 'react-leaflet';
-import ContactCard from './ContactCard';
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { fetchOSRMPolyline } from '../utils/routeCache';
+import ContactCard from './ContactCard';
 
 /**
  * Real GPS-anchored map using Leaflet + OpenStreetMap tiles.
@@ -89,6 +88,7 @@ function buildServiceIcon(contact) {
     `,
     iconSize: [60, 80],
     iconAnchor: [30, 80],
+    popupAnchor: [0, -85],
   });
 }
 
@@ -169,10 +169,9 @@ const RealMap = React.forwardRef(function RealMap(
   externalRef
 ) {
   const internalMapRef = useRef(null);
+  const preTapViewRef = useRef(null); // saves { center, zoom } before marker tap
   const [tilesLoaded, setTilesLoaded] = useState(false);
-  const [activeRouteId, setActiveRouteId] = useState(null);
-  const [activeRouteCoords, setActiveRouteCoords] = useState(null);
-  const [routeLoading, setRouteLoading] = useState(false);
+  const [activeMarkerId, setActiveMarkerId] = useState(null);
 
   // Default fallback (India centroid) until GPS arrives — better than a blank screen.
   const lat = location?.lat ?? 20.5937;
@@ -188,41 +187,40 @@ const RealMap = React.forwardRef(function RealMap(
     [contacts],
   );
 
-  /** Fetch OSRM road route for a specific contact marker. */
-  const handleMarkerClick = useCallback(async (contact) => {
+  const handleMarkerClick = useCallback((contact) => {
     const cId = contact.id || `${contact.lat},${contact.lon}`;
+    const map = internalMapRef.current;
+    if (!map) return;
+    
     // If same marker tapped again, just toggle off
-    if (activeRouteId === cId) {
-      setActiveRouteId(null);
-      setActiveRouteCoords(null);
+    if (activeMarkerId === cId) {
+      setActiveMarkerId(null);
+      if (preTapViewRef.current) {
+        map.setView(preTapViewRef.current.center, preTapViewRef.current.zoom, { animate: true, duration: 0.5 });
+        preTapViewRef.current = null;
+      }
       return;
     }
-    setActiveRouteId(cId);
-    setActiveRouteCoords(null);
-    setRouteLoading(true);
-    try {
-      const polyline = await fetchOSRMPolyline(
-        { lat, lon },
-        { lat: contact.lat, lon: contact.lon }
-      );
-      if (polyline) {
-        // OSRM returns [lon, lat] pairs — convert to [lat, lon] for Leaflet
-        setActiveRouteCoords(polyline.map(([lng, lt]) => [lt, lng]));
-      } else {
-        // Fallback: keep straight line if OSRM fails
-        setActiveRouteCoords(null);
-      }
-    } catch {
-      setActiveRouteCoords(null);
-    } finally {
-      setRouteLoading(false);
+    
+    // Save current map state before any changes
+    if (!preTapViewRef.current) {
+      preTapViewRef.current = { center: map.getCenter(), zoom: map.getZoom() };
     }
-  }, [activeRouteId, lat, lon]);
+    
+    setActiveMarkerId(cId);
+    // Zoom in by 1 level (brings marker closer to user's view)
+    const targetZoom = Math.min(map.getMaxZoom() || 18, map.getZoom() + 1);
+    
+    map.setView([contact.lat, contact.lon], targetZoom, { animate: true, duration: 0.5 });
+  }, [activeMarkerId]);
 
-  /** Clear active route when user taps map background or popup closes. */
-  const clearActiveRoute = useCallback(() => {
-    setActiveRouteId(null);
-    setActiveRouteCoords(null);
+  const clearActiveMarker = useCallback(() => {
+    setActiveMarkerId(null);
+    const map = internalMapRef.current;
+    if (map && preTapViewRef.current) {
+      map.setView(preTapViewRef.current.center, preTapViewRef.current.zoom, { animate: true, duration: 0.5 });
+      preTapViewRef.current = null;
+    }
   }, []);
 
   return (
@@ -269,7 +267,7 @@ const RealMap = React.forwardRef(function RealMap(
 
         <MapResizer />
         <MapRecenter lat={lat} lon={lon} zoom={hasGps ? zoom : 4} />
-        <MapClickHandler onMapClick={clearActiveRoute} />
+        <MapClickHandler onMapClick={clearActiveMarker} />
 
         {hasGps && (
           <Marker position={[lat, lon]} icon={userIcon} interactive={false} />
@@ -277,59 +275,15 @@ const RealMap = React.forwardRef(function RealMap(
 
         {serviceMarkers.map((c) => {
           const cId = c.id || `${c.lat},${c.lon}`;
-          const isActive = activeRouteId === cId;
-          const hasRoadRoute = isActive && activeRouteCoords;
-
           return (
             <React.Fragment key={cId}>
-              {hasGps && hasRoadRoute && (
-                /* Glowing road polyline — underlay (glow) + overlay (sharp line) */
-                <>
-                  <Polyline
-                    positions={activeRouteCoords}
-                    pathOptions={{
-                      color: mapTheme === 'light' ? '#000000' : '#ffffff',
-                      weight: 8,
-                      opacity: 0.25,
-                      lineCap: 'round',
-                      lineJoin: 'round',
-                    }}
-                    interactive={false}
-                  />
-                  <Polyline
-                    positions={activeRouteCoords}
-                    pathOptions={{
-                      color: mapTheme === 'light' ? '#1e293b' : '#f8fafc',
-                      weight: 3.5,
-                      opacity: 0.9,
-                      dashArray: '8, 6',
-                      lineCap: 'round',
-                      lineJoin: 'round',
-                    }}
-                    interactive={false}
-                  />
-                </>
-              )}
-              {hasGps && !hasRoadRoute && (
-                <Polyline
-                  positions={[[lat, lon], [c.lat, c.lon]]}
-                  pathOptions={{
-                    dashArray: '6, 8',
-                    color: mapTheme === 'light' ? '#475569' : '#cbd5e1',
-                    weight: isActive && routeLoading ? 4 : 3,
-                    opacity: isActive && routeLoading ? 0.9 : 0.7,
-                    className: isActive && routeLoading ? 'rs-route-loading' : '',
-                  }}
-                  interactive={false}
-                />
-              )}
               <Marker
                 position={[c.lat, c.lon]}
                 icon={buildServiceIcon(c)}
                 interactive={true}
                 eventHandlers={{
                   click: () => handleMarkerClick(c),
-                  popupclose: clearActiveRoute,
+                  popupclose: clearActiveMarker,
                 }}
               >
                 <Popup className="rs-custom-popup">
