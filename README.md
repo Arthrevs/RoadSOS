@@ -546,11 +546,16 @@ Every item here was considered, prototyped on paper, and rejected for a specific
 |---|---|
 | **Accelerometer crash detection** | Phone-drop forces (~40 m/s²) overlap with serious crash forces (20–80 m/s²) and large potholes (15–30 m/s²). Apple still gets false positives on roller coasters with dedicated hardware. Indian highways have continuous pothole jerks — false positive rate would make the app unusable. |
 | **Vehicle ECU / Smartcar integration** | India's connected-car API coverage is near zero. Any demo would be a simulated mock. Out of scope for a phone-only PWA. |
-| **Background passive monitoring** | iOS restricts background processes at the OS level. A significant portion of Indian users are on iPhones. A feature that does not work on iOS is not a feature. |
+| **Background passive monitoring** | Mobile operating systems (iOS and Android) sandboxes strictly block background browser execution and motion sensor polling to protect user privacy and save battery. A PWA cannot run accelerometer tracking when the phone is locked or the browser is closed. |
 | **Real-time ambulance tracking** | Requires formal API agreements with dispatch services and live telemetry from ambulance vehicles. Not achievable in three weeks. |
 | **User accounts / login** | Adds friction in an emergency. The worst possible moment to ask someone to log in is at a crash scene. |
 
-**What we built instead:** GPS velocity collapse detection — a phone-only approximation of crash detection that works without dedicated hardware, with PIN-based cancel to prevent accidental dismissal by an unconscious hand on the screen.
+**What we built instead — Dashboard Companion Mode:**
+We designed RoadSOS to operate as a **dashboard driving companion app** (similar to active Google Maps or Waze navigation). The driver mounts their phone on a dashboard holder with the app open in the foreground. In this active mode, the screen remains on, and the sensor integration operates continuously.
+
+**Technical Constraint & Production Roadmap:**
+To prevent step-tracking keyloggers and severe battery drain, modern mobile operating systems strictly prohibit background sensor polling in web browsers. To run crash detection when the phone is locked in a pocket or the app is closed, native system permissions are required. 
+Our production roadmap includes compiling this React codebase using **Capacitor** or **React Native** into native packages. This will allow the app to request native background physical activity and geofencing permissions to run monitoring services in the background.
 
 ---
 
