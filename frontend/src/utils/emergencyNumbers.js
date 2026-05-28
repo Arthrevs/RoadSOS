@@ -197,6 +197,10 @@ export const emergencyNumbersMap = {
   YE: { country: "Yemen", police: "194", ambulance: "191", fire: "191", general: "112" },
   ZM: { country: "Zambia", police: "991", ambulance: "992", fire: "993", general: "999" },
   ZW: { country: "Zimbabwe", police: "995", ambulance: "994", fire: "993", general: "112" },
+  CK: { country: "Cook Islands", police: "999", ambulance: "999", fire: "999", general: "999" },
+  NU: { country: "Niue", police: "999", ambulance: "999", fire: "999", general: "999" },
+  KP: { country: "North Korea", police: "110", ambulance: "8119", fire: "8119", general: "110" },
+  EH: { country: "Western Sahara", police: "19", ambulance: "15", fire: "15", general: "112" },
 };
 
 export function getEmergencyNumbers(countryCode) {

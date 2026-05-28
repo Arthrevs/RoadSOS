@@ -26,7 +26,7 @@ describe('bundled facilities — data integrity', () => {
       expect(f.name).toBeTruthy();
       expect(typeof f.lat).toBe('number');
       expect(typeof f.lon).toBe('number');
-      expect(['hospital', 'police', 'ambulance', 'towing', 'repair']).toContain(f.category);
+      expect(['hospital', 'police', 'ambulance', 'towing', 'repair', 'tyre', 'showroom']).toContain(f.category);
     }
   });
 

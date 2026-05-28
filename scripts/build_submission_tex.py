@@ -233,8 +233,8 @@ ASSUMPTIONS: list[tuple[str, list[str]]] = [
         "Locations are cached at ~110 m grid resolution (3 decimal places) — coarse enough for high cache hit-rate, fine enough for emergency-contact relevance.",
     ]),
     ("Geography and data coverage", [
-        "OSM data quality is best in India, Europe, and dense urban areas. In sparse rural regions the Overpass radius expands 5 km → 10 km → 20 km and falls back on bundled facilities (315 across 196 countries).",
-        "Country emergency numbers are pre-bundled for all 196 countries and always render without a network call.",
+        "OSM data quality is best in India, Europe, and dense urban areas. In sparse rural regions the Overpass radius expands 5 km → 10 km → 20 km and falls back on bundled facilities (349 across 200 countries).",
+        "Country emergency numbers are pre-bundled for all 200 countries and always render without a network call.",
         "ISO-3166 country code is resolved from Nominatim reverse-geocode; if Nominatim fails the app falls back to coarse bounding-box matching against the bundled country dataset.",
     ]),
     ("User behaviour and consent", [
@@ -424,10 +424,10 @@ Reliability &
   exponential back-off. API always returns HTTP 200 with a valid shape. \\
 Offline functionality &
   Four-tier fallback: live backend $\to$ 24\,h localStorage cache $\to$ bundled JSON
-  (315 facilities, 196 countries) $\to$ hardcoded mock. Country emergency numbers
+  (349 facilities, 200 countries) $\to$ hardcoded mock. Country emergency numbers
   always offline. \\
 International coverage &
-  196 countries pre-loaded. ISO-3166 code from Nominatim. Emergency numbers switch
+  200 countries pre-loaded. ISO-3166 code from Nominatim. Emergency numbers switch
   automatically at borders. \\
 Six mandatory service categories &
   \code{hospital} · \code{police} · \code{ambulance} · \code{towing} · \code{tyre} ·
@@ -542,7 +542,7 @@ The summary below captures the request flow and the four-tier offline strategy.}
   \item \textbf{Tier 2} --- Service Worker + localStorage cache, 24\,h TTL,
         keyed at $\sim$1.1\,km grid.
   \item \textbf{Tier 3} --- Bundled JSON shipped with the PWA:
-        315 facilities across 196 countries.
+        349 facilities across 200 countries.
   \item \textbf{Tier 4} --- Hardcoded mock so the UI never shows an empty state.
 \end{enumerate}
 

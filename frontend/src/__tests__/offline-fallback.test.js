@@ -7,7 +7,7 @@
  *
  *   Tier 1 — backend /search (live network)
  *   Tier 2 — localStorage cache (24h TTL, ~1.1 km grid)
- *   Tier 3 — bundled_facilities.json (315 records, 196 countries)
+ *   Tier 3 — bundled_facilities.json (349 records, 200 countries)
  *   Tier 4 — hardcoded mock data (final visual placeholder)
  *
  * Each tier is exercised here in isolation: tier 2 with the localStorage

@@ -83,7 +83,7 @@ Two simple questions — *injured? blocking traffic?* — and an LLM reorders th
 <td>
 
 ### 📶 Genuinely Offline (4-tier)
-Service Worker + localStorage (24h TTL, ~1.1km grid) + **bundled 315-facility directory across all 196 countries** + bundled 196-country national emergency numbers. Pre-fetch hospitals along Chennai→Bengaluru before you leave, then crash anywhere on NH-44 — the right number is still there.
+Service Worker + localStorage (24h TTL, ~1.1km grid) + **bundled 349-facility directory across all 200 countries** + bundled 200-country national emergency numbers. Pre-fetch hospitals along Chennai→Bengaluru before you leave, then crash anywhere on NH-44 — the right number is still there.
 
 ### 🆔 Emergency Medical ID
 Stores blood type, allergies, conditions, medications, and an emergency contact entirely on-device (localStorage — **nothing ever leaves the phone**). A first responder arriving at a crash scene can tap the persistent **🆔 Medical ID** button on the home screen to see this in a high-contrast paramedic-friendly card.
@@ -228,8 +228,8 @@ GET /search ─────► Service Worker         Tier 1: Backend /search
                                                   └─ no entry for this grid
 
                                           Tier 3: Bundled JSON
-                                                  (315 facilities across
-                                                  196 countries, haversine
+                                                  (349 facilities across
+                                                  200 countries, haversine
                                                   search, 80km → 600km
                                                   radius expansion)
 
@@ -330,7 +330,7 @@ Roadproj/
 │       │   ├── locales.js            # Metadata: native, English, dir, region
 │       │   └── *.json                # 43 translation bundles
 │       └── data/
-│           └── bundled_facilities.json # 315 facilities × 196 countries
+│           └── bundled_facilities.json # 349 facilities × 200 countries
 │
 ├── docs/                             # Engineering documentation
 │   ├── ARCHITECTURE.md               # ADR-style post-merge architecture audit
@@ -608,10 +608,10 @@ Our production roadmap includes compiling this React codebase using **Capacitor*
 |---|---|
 | **Dual-source contact discovery** | OSM Overpass and Google Places fired in **parallel** via `asyncio.gather`. Each result carries a `source` provenance tag (`OpenStreetMap`, `Google Places`, `OSM + Google`, `Bundled directory`). `tel:` links use phone numbers normalised by the `phonenumbers` library. |
 | **Contact volume per query** | 9 OSM categories + 4 Google categories queried in parallel. Auto-expand from 5 km → 10 km radius when sparse. Top-6 phoneless results get Google Place Details lookups capped at 6 calls/search. Typical urban result: 10–15 contacts. |
-| **Offline operation** | 4-tier fallback chain in `App.jsx`: (1) backend `/search` with 8-second Workbox `NetworkFirst`, (2) `localStorage` cache keyed by ~1.1 km grid with 24-hour TTL, (3) `bundled_facilities.json` — 315 verified trauma centres and major hospitals across all 196 countries with 80 km → 600 km radius expansion, (4) hardcoded mock as final placeholder. Country emergency-number banner renders entirely from bundled data with zero network dependency. |
+| **Offline operation** | 4-tier fallback chain in `App.jsx`: (1) backend `/search` with 8-second Workbox `NetworkFirst`, (2) `localStorage` cache keyed by ~1.1 km grid with 24-hour TTL, (3) `bundled_facilities.json` — 349 verified trauma centres and major hospitals across all 200 countries with 80 km → 600 km radius expansion, (4) hardcoded mock as final placeholder. Country emergency-number banner renders entirely from bundled data with zero network dependency. |
 | **AI integration** | Gemini 2.0 Flash triage with explicit reasoning visible on the top card. Three-layer fallback: model response → JSON validation → rule-based 4-quadrant priority table → original ordering. Free-tier API (60 RPM, 1500 RPD), no SDK — direct REST via httpx. |
 | **Crash detection** | Two-signal fusion: GPS velocity collapse (≥25 km/h → ≤5 km/h within 2 s) AND accelerometer spike (≥3.5 G) within a 4-second alignment window. PIN-cancel safety layer. 12-second post-alert cooldown. |
-| **International coverage** | 196 countries pre-loaded with national emergency numbers. ISO-3166 country code derived from Nominatim reverse-geocoding. Demo-location picker switches across cities (BLR / LON / TYO / BER) to verify cross-border behaviour. |
+| **International coverage** | 200 countries pre-loaded with national emergency numbers. ISO-3166 country code derived from Nominatim reverse-geocoding. Demo-location picker switches across cities (BLR / LON / TYO / BER) to verify cross-border behaviour. |
 | **Languages** | 43 locales — all 22 Indian Schedule-VIII languages + 21 global. RTL layout for Arabic, Persian, Hebrew, Urdu, Kashmiri, Sindhi. |
 | **Real map** | Leaflet 1.9 + CartoDB Dark Matter OSM tiles. No API key. Up to 6 nearest contacts plotted at their actual coordinates. Map re-centres smoothly when the location changes. |
 | **Reliability hardening** | Every upstream call wrapped in `_safe_*` helper. API never returns 5xx for upstream failure — degrades to empty contacts with transparent `source`. Three-mirror Overpass with exponential backoff (overpass-api.de → kumi.systems → openstreetmap.fr). Multi-key Google Places rotation. Per-IP rate limiting (30/min `/search`, 20/min `/triage`). |
