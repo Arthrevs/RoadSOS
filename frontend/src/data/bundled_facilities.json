@@ -3270,10 +3270,4700 @@
     "id": "bf-belmehdi-hosp-laayoune",
     "name": "Belmehdi El Hassan Hospital (Laayoune)",
     "category": "hospital",
-    "lat": 27.1500,
-    "lon": -13.2000,
+    "lat": 27.15,
+    "lon": -13.2,
     "phone": null,
     "country_code": "EH",
     "notes": "Main regional hospital in Laayoune"
+  },
+  {
+    "id": "bf-nat-amb-af",
+    "name": "National Ambulance — Afghanistan",
+    "category": "ambulance",
+    "lat": 34.5553,
+    "lon": 69.2075,
+    "phone": "112",
+    "country_code": "AF",
+    "notes": "National ambulance number for Afghanistan"
+  },
+  {
+    "id": "bf-nat-pol-af",
+    "name": "National Police — Afghanistan",
+    "category": "police",
+    "lat": 34.5553,
+    "lon": 69.2075,
+    "phone": "119",
+    "country_code": "AF",
+    "notes": "National police number for Afghanistan"
+  },
+  {
+    "id": "bf-nat-amb-al",
+    "name": "National Ambulance — Albania",
+    "category": "ambulance",
+    "lat": 41.3275,
+    "lon": 19.8187,
+    "phone": "127",
+    "country_code": "AL",
+    "notes": "National ambulance number for Albania"
+  },
+  {
+    "id": "bf-nat-pol-al",
+    "name": "National Police — Albania",
+    "category": "police",
+    "lat": 41.3275,
+    "lon": 19.8187,
+    "phone": "129",
+    "country_code": "AL",
+    "notes": "National police number for Albania"
+  },
+  {
+    "id": "bf-nat-fir-al",
+    "name": "National Fire/Rescue — Albania",
+    "category": "ambulance",
+    "lat": 41.3275,
+    "lon": 19.8187,
+    "phone": "128",
+    "country_code": "AL",
+    "notes": "National fire number for Albania"
+  },
+  {
+    "id": "bf-nat-amb-dz",
+    "name": "National Ambulance — Algeria",
+    "category": "ambulance",
+    "lat": 36.7538,
+    "lon": 3.0588,
+    "phone": "14",
+    "country_code": "DZ",
+    "notes": "National ambulance number for Algeria"
+  },
+  {
+    "id": "bf-nat-pol-dz",
+    "name": "National Police — Algeria",
+    "category": "police",
+    "lat": 36.7538,
+    "lon": 3.0588,
+    "phone": "17",
+    "country_code": "DZ",
+    "notes": "National police number for Algeria"
+  },
+  {
+    "id": "bf-nat-amb-ad",
+    "name": "National Ambulance — Andorra",
+    "category": "ambulance",
+    "lat": 42.5063,
+    "lon": 1.5218,
+    "phone": "116",
+    "country_code": "AD",
+    "notes": "National ambulance number for Andorra"
+  },
+  {
+    "id": "bf-nat-pol-ad",
+    "name": "National Police — Andorra",
+    "category": "police",
+    "lat": 42.5063,
+    "lon": 1.5218,
+    "phone": "110",
+    "country_code": "AD",
+    "notes": "National police number for Andorra"
+  },
+  {
+    "id": "bf-nat-fir-ad",
+    "name": "National Fire/Rescue — Andorra",
+    "category": "ambulance",
+    "lat": 42.5063,
+    "lon": 1.5218,
+    "phone": "118",
+    "country_code": "AD",
+    "notes": "National fire number for Andorra"
+  },
+  {
+    "id": "bf-nat-amb-ao",
+    "name": "National Ambulance — Angola",
+    "category": "ambulance",
+    "lat": -8.839,
+    "lon": 13.2894,
+    "phone": "112",
+    "country_code": "AO",
+    "notes": "National ambulance number for Angola"
+  },
+  {
+    "id": "bf-nat-pol-ao",
+    "name": "National Police — Angola",
+    "category": "police",
+    "lat": -8.839,
+    "lon": 13.2894,
+    "phone": "113",
+    "country_code": "AO",
+    "notes": "National police number for Angola"
+  },
+  {
+    "id": "bf-nat-fir-ao",
+    "name": "National Fire/Rescue — Angola",
+    "category": "ambulance",
+    "lat": -8.839,
+    "lon": 13.2894,
+    "phone": "115",
+    "country_code": "AO",
+    "notes": "National fire number for Angola"
+  },
+  {
+    "id": "bf-nat-amb-ag",
+    "name": "National Ambulance — Antigua and Barbuda",
+    "category": "ambulance",
+    "lat": 17.1175,
+    "lon": -61.8456,
+    "phone": "911",
+    "country_code": "AG",
+    "notes": "National ambulance number for Antigua and Barbuda"
+  },
+  {
+    "id": "bf-nat-amb-ar",
+    "name": "National Ambulance — Argentina",
+    "category": "ambulance",
+    "lat": -34.6037,
+    "lon": -58.3816,
+    "phone": "107",
+    "country_code": "AR",
+    "notes": "National ambulance number for Argentina"
+  },
+  {
+    "id": "bf-nat-pol-ar",
+    "name": "National Police — Argentina",
+    "category": "police",
+    "lat": -34.6037,
+    "lon": -58.3816,
+    "phone": "101",
+    "country_code": "AR",
+    "notes": "National police number for Argentina"
+  },
+  {
+    "id": "bf-nat-fir-ar",
+    "name": "National Fire/Rescue — Argentina",
+    "category": "ambulance",
+    "lat": -34.6037,
+    "lon": -58.3816,
+    "phone": "100",
+    "country_code": "AR",
+    "notes": "National fire number for Argentina"
+  },
+  {
+    "id": "bf-nat-amb-am",
+    "name": "National Ambulance — Armenia",
+    "category": "ambulance",
+    "lat": 40.1792,
+    "lon": 44.4991,
+    "phone": "103",
+    "country_code": "AM",
+    "notes": "National ambulance number for Armenia"
+  },
+  {
+    "id": "bf-nat-pol-am",
+    "name": "National Police — Armenia",
+    "category": "police",
+    "lat": 40.1792,
+    "lon": 44.4991,
+    "phone": "102",
+    "country_code": "AM",
+    "notes": "National police number for Armenia"
+  },
+  {
+    "id": "bf-nat-fir-am",
+    "name": "National Fire/Rescue — Armenia",
+    "category": "ambulance",
+    "lat": 40.1792,
+    "lon": 44.4991,
+    "phone": "101",
+    "country_code": "AM",
+    "notes": "National fire number for Armenia"
+  },
+  {
+    "id": "bf-nat-amb-au",
+    "name": "National Ambulance — Australia",
+    "category": "ambulance",
+    "lat": -35.2809,
+    "lon": 149.13,
+    "phone": "000",
+    "country_code": "AU",
+    "notes": "National ambulance number for Australia"
+  },
+  {
+    "id": "bf-nat-amb-at",
+    "name": "National Ambulance — Austria",
+    "category": "ambulance",
+    "lat": 48.2082,
+    "lon": 16.3738,
+    "phone": "144",
+    "country_code": "AT",
+    "notes": "National ambulance number for Austria"
+  },
+  {
+    "id": "bf-nat-pol-at",
+    "name": "National Police — Austria",
+    "category": "police",
+    "lat": 48.2082,
+    "lon": 16.3738,
+    "phone": "133",
+    "country_code": "AT",
+    "notes": "National police number for Austria"
+  },
+  {
+    "id": "bf-nat-fir-at",
+    "name": "National Fire/Rescue — Austria",
+    "category": "ambulance",
+    "lat": 48.2082,
+    "lon": 16.3738,
+    "phone": "122",
+    "country_code": "AT",
+    "notes": "National fire number for Austria"
+  },
+  {
+    "id": "bf-nat-amb-az",
+    "name": "National Ambulance — Azerbaijan",
+    "category": "ambulance",
+    "lat": 40.4093,
+    "lon": 49.8671,
+    "phone": "103",
+    "country_code": "AZ",
+    "notes": "National ambulance number for Azerbaijan"
+  },
+  {
+    "id": "bf-nat-pol-az",
+    "name": "National Police — Azerbaijan",
+    "category": "police",
+    "lat": 40.4093,
+    "lon": 49.8671,
+    "phone": "102",
+    "country_code": "AZ",
+    "notes": "National police number for Azerbaijan"
+  },
+  {
+    "id": "bf-nat-fir-az",
+    "name": "National Fire/Rescue — Azerbaijan",
+    "category": "ambulance",
+    "lat": 40.4093,
+    "lon": 49.8671,
+    "phone": "101",
+    "country_code": "AZ",
+    "notes": "National fire number for Azerbaijan"
+  },
+  {
+    "id": "bf-nat-amb-bs",
+    "name": "National Ambulance — Bahamas",
+    "category": "ambulance",
+    "lat": 25.048,
+    "lon": -77.3554,
+    "phone": "919",
+    "country_code": "BS",
+    "notes": "National ambulance number for Bahamas"
+  },
+  {
+    "id": "bf-nat-pol-bs",
+    "name": "National Police — Bahamas",
+    "category": "police",
+    "lat": 25.048,
+    "lon": -77.3554,
+    "phone": "911",
+    "country_code": "BS",
+    "notes": "National police number for Bahamas"
+  },
+  {
+    "id": "bf-nat-amb-bh",
+    "name": "National Ambulance — Bahrain",
+    "category": "ambulance",
+    "lat": 26.2285,
+    "lon": 50.586,
+    "phone": "999",
+    "country_code": "BH",
+    "notes": "National ambulance number for Bahrain"
+  },
+  {
+    "id": "bf-nat-amb-bd",
+    "name": "National Ambulance — Bangladesh",
+    "category": "ambulance",
+    "lat": 23.8103,
+    "lon": 90.4125,
+    "phone": "999",
+    "country_code": "BD",
+    "notes": "National ambulance number for Bangladesh"
+  },
+  {
+    "id": "bf-nat-amb-bb",
+    "name": "National Ambulance — Barbados",
+    "category": "ambulance",
+    "lat": 13.0969,
+    "lon": -59.6145,
+    "phone": "511",
+    "country_code": "BB",
+    "notes": "National ambulance number for Barbados"
+  },
+  {
+    "id": "bf-nat-pol-bb",
+    "name": "National Police — Barbados",
+    "category": "police",
+    "lat": 13.0969,
+    "lon": -59.6145,
+    "phone": "211",
+    "country_code": "BB",
+    "notes": "National police number for Barbados"
+  },
+  {
+    "id": "bf-nat-fir-bb",
+    "name": "National Fire/Rescue — Barbados",
+    "category": "ambulance",
+    "lat": 13.0969,
+    "lon": -59.6145,
+    "phone": "311",
+    "country_code": "BB",
+    "notes": "National fire number for Barbados"
+  },
+  {
+    "id": "bf-nat-amb-by",
+    "name": "National Ambulance — Belarus",
+    "category": "ambulance",
+    "lat": 53.9045,
+    "lon": 27.5615,
+    "phone": "103",
+    "country_code": "BY",
+    "notes": "National ambulance number for Belarus"
+  },
+  {
+    "id": "bf-nat-pol-by",
+    "name": "National Police — Belarus",
+    "category": "police",
+    "lat": 53.9045,
+    "lon": 27.5615,
+    "phone": "102",
+    "country_code": "BY",
+    "notes": "National police number for Belarus"
+  },
+  {
+    "id": "bf-nat-fir-by",
+    "name": "National Fire/Rescue — Belarus",
+    "category": "ambulance",
+    "lat": 53.9045,
+    "lon": 27.5615,
+    "phone": "101",
+    "country_code": "BY",
+    "notes": "National fire number for Belarus"
+  },
+  {
+    "id": "bf-nat-amb-be",
+    "name": "National Ambulance — Belgium",
+    "category": "ambulance",
+    "lat": 50.8503,
+    "lon": 4.3517,
+    "phone": "100",
+    "country_code": "BE",
+    "notes": "National ambulance number for Belgium"
+  },
+  {
+    "id": "bf-nat-pol-be",
+    "name": "National Police — Belgium",
+    "category": "police",
+    "lat": 50.8503,
+    "lon": 4.3517,
+    "phone": "101",
+    "country_code": "BE",
+    "notes": "National police number for Belgium"
+  },
+  {
+    "id": "bf-nat-amb-bz",
+    "name": "National Ambulance — Belize",
+    "category": "ambulance",
+    "lat": 17.251,
+    "lon": -88.759,
+    "phone": "911",
+    "country_code": "BZ",
+    "notes": "National ambulance number for Belize"
+  },
+  {
+    "id": "bf-nat-amb-bj",
+    "name": "National Ambulance — Benin",
+    "category": "ambulance",
+    "lat": 6.4969,
+    "lon": 2.6289,
+    "phone": "112",
+    "country_code": "BJ",
+    "notes": "National ambulance number for Benin"
+  },
+  {
+    "id": "bf-nat-pol-bj",
+    "name": "National Police — Benin",
+    "category": "police",
+    "lat": 6.4969,
+    "lon": 2.6289,
+    "phone": "117",
+    "country_code": "BJ",
+    "notes": "National police number for Benin"
+  },
+  {
+    "id": "bf-nat-fir-bj",
+    "name": "National Fire/Rescue — Benin",
+    "category": "ambulance",
+    "lat": 6.4969,
+    "lon": 2.6289,
+    "phone": "118",
+    "country_code": "BJ",
+    "notes": "National fire number for Benin"
+  },
+  {
+    "id": "bf-nat-amb-bt",
+    "name": "National Ambulance — Bhutan",
+    "category": "ambulance",
+    "lat": 27.4728,
+    "lon": 89.639,
+    "phone": "112",
+    "country_code": "BT",
+    "notes": "National ambulance number for Bhutan"
+  },
+  {
+    "id": "bf-nat-pol-bt",
+    "name": "National Police — Bhutan",
+    "category": "police",
+    "lat": 27.4728,
+    "lon": 89.639,
+    "phone": "113",
+    "country_code": "BT",
+    "notes": "National police number for Bhutan"
+  },
+  {
+    "id": "bf-nat-fir-bt",
+    "name": "National Fire/Rescue — Bhutan",
+    "category": "ambulance",
+    "lat": 27.4728,
+    "lon": 89.639,
+    "phone": "110",
+    "country_code": "BT",
+    "notes": "National fire number for Bhutan"
+  },
+  {
+    "id": "bf-nat-amb-bo",
+    "name": "National Ambulance — Bolivia",
+    "category": "ambulance",
+    "lat": -16.4897,
+    "lon": -68.1193,
+    "phone": "118",
+    "country_code": "BO",
+    "notes": "National ambulance number for Bolivia"
+  },
+  {
+    "id": "bf-nat-pol-bo",
+    "name": "National Police — Bolivia",
+    "category": "police",
+    "lat": -16.4897,
+    "lon": -68.1193,
+    "phone": "110",
+    "country_code": "BO",
+    "notes": "National police number for Bolivia"
+  },
+  {
+    "id": "bf-nat-fir-bo",
+    "name": "National Fire/Rescue — Bolivia",
+    "category": "ambulance",
+    "lat": -16.4897,
+    "lon": -68.1193,
+    "phone": "119",
+    "country_code": "BO",
+    "notes": "National fire number for Bolivia"
+  },
+  {
+    "id": "bf-nat-amb-ba",
+    "name": "National Ambulance — Bosnia and Herzegovina",
+    "category": "ambulance",
+    "lat": 43.8563,
+    "lon": 18.4131,
+    "phone": "124",
+    "country_code": "BA",
+    "notes": "National ambulance number for Bosnia and Herzegovina"
+  },
+  {
+    "id": "bf-nat-pol-ba",
+    "name": "National Police — Bosnia and Herzegovina",
+    "category": "police",
+    "lat": 43.8563,
+    "lon": 18.4131,
+    "phone": "122",
+    "country_code": "BA",
+    "notes": "National police number for Bosnia and Herzegovina"
+  },
+  {
+    "id": "bf-nat-fir-ba",
+    "name": "National Fire/Rescue — Bosnia and Herzegovina",
+    "category": "ambulance",
+    "lat": 43.8563,
+    "lon": 18.4131,
+    "phone": "123",
+    "country_code": "BA",
+    "notes": "National fire number for Bosnia and Herzegovina"
+  },
+  {
+    "id": "bf-nat-amb-bw",
+    "name": "National Ambulance — Botswana",
+    "category": "ambulance",
+    "lat": -24.6282,
+    "lon": 25.9231,
+    "phone": "997",
+    "country_code": "BW",
+    "notes": "National ambulance number for Botswana"
+  },
+  {
+    "id": "bf-nat-pol-bw",
+    "name": "National Police — Botswana",
+    "category": "police",
+    "lat": -24.6282,
+    "lon": 25.9231,
+    "phone": "999",
+    "country_code": "BW",
+    "notes": "National police number for Botswana"
+  },
+  {
+    "id": "bf-nat-fir-bw",
+    "name": "National Fire/Rescue — Botswana",
+    "category": "ambulance",
+    "lat": -24.6282,
+    "lon": 25.9231,
+    "phone": "998",
+    "country_code": "BW",
+    "notes": "National fire number for Botswana"
+  },
+  {
+    "id": "bf-nat-amb-br",
+    "name": "National Ambulance — Brazil",
+    "category": "ambulance",
+    "lat": -15.7975,
+    "lon": -47.8919,
+    "phone": "192",
+    "country_code": "BR",
+    "notes": "National ambulance number for Brazil"
+  },
+  {
+    "id": "bf-nat-pol-br",
+    "name": "National Police — Brazil",
+    "category": "police",
+    "lat": -15.7975,
+    "lon": -47.8919,
+    "phone": "190",
+    "country_code": "BR",
+    "notes": "National police number for Brazil"
+  },
+  {
+    "id": "bf-nat-fir-br",
+    "name": "National Fire/Rescue — Brazil",
+    "category": "ambulance",
+    "lat": -15.7975,
+    "lon": -47.8919,
+    "phone": "193",
+    "country_code": "BR",
+    "notes": "National fire number for Brazil"
+  },
+  {
+    "id": "bf-nat-amb-bn",
+    "name": "National Ambulance — Brunei",
+    "category": "ambulance",
+    "lat": 4.9031,
+    "lon": 114.9398,
+    "phone": "991",
+    "country_code": "BN",
+    "notes": "National ambulance number for Brunei"
+  },
+  {
+    "id": "bf-nat-pol-bn",
+    "name": "National Police — Brunei",
+    "category": "police",
+    "lat": 4.9031,
+    "lon": 114.9398,
+    "phone": "993",
+    "country_code": "BN",
+    "notes": "National police number for Brunei"
+  },
+  {
+    "id": "bf-nat-fir-bn",
+    "name": "National Fire/Rescue — Brunei",
+    "category": "ambulance",
+    "lat": 4.9031,
+    "lon": 114.9398,
+    "phone": "995",
+    "country_code": "BN",
+    "notes": "National fire number for Brunei"
+  },
+  {
+    "id": "bf-nat-amb-bg",
+    "name": "National Ambulance — Bulgaria",
+    "category": "ambulance",
+    "lat": 42.6977,
+    "lon": 23.3219,
+    "phone": "112",
+    "country_code": "BG",
+    "notes": "National ambulance number for Bulgaria"
+  },
+  {
+    "id": "bf-nat-amb-bf",
+    "name": "National Ambulance — Burkina Faso",
+    "category": "ambulance",
+    "lat": 12.3714,
+    "lon": -1.5197,
+    "phone": "112",
+    "country_code": "BF",
+    "notes": "National ambulance number for Burkina Faso"
+  },
+  {
+    "id": "bf-nat-pol-bf",
+    "name": "National Police — Burkina Faso",
+    "category": "police",
+    "lat": 12.3714,
+    "lon": -1.5197,
+    "phone": "17",
+    "country_code": "BF",
+    "notes": "National police number for Burkina Faso"
+  },
+  {
+    "id": "bf-nat-fir-bf",
+    "name": "National Fire/Rescue — Burkina Faso",
+    "category": "ambulance",
+    "lat": 12.3714,
+    "lon": -1.5197,
+    "phone": "18",
+    "country_code": "BF",
+    "notes": "National fire number for Burkina Faso"
+  },
+  {
+    "id": "bf-nat-amb-bi",
+    "name": "National Ambulance — Burundi",
+    "category": "ambulance",
+    "lat": -3.3731,
+    "lon": 29.3644,
+    "phone": "112",
+    "country_code": "BI",
+    "notes": "National ambulance number for Burundi"
+  },
+  {
+    "id": "bf-nat-pol-bi",
+    "name": "National Police — Burundi",
+    "category": "police",
+    "lat": -3.3731,
+    "lon": 29.3644,
+    "phone": "117",
+    "country_code": "BI",
+    "notes": "National police number for Burundi"
+  },
+  {
+    "id": "bf-nat-fir-bi",
+    "name": "National Fire/Rescue — Burundi",
+    "category": "ambulance",
+    "lat": -3.3731,
+    "lon": 29.3644,
+    "phone": "118",
+    "country_code": "BI",
+    "notes": "National fire number for Burundi"
+  },
+  {
+    "id": "bf-nat-amb-cv",
+    "name": "National Ambulance — Cabo Verde",
+    "category": "ambulance",
+    "lat": 14.9315,
+    "lon": -23.5133,
+    "phone": "130",
+    "country_code": "CV",
+    "notes": "National ambulance number for Cabo Verde"
+  },
+  {
+    "id": "bf-nat-pol-cv",
+    "name": "National Police — Cabo Verde",
+    "category": "police",
+    "lat": 14.9315,
+    "lon": -23.5133,
+    "phone": "132",
+    "country_code": "CV",
+    "notes": "National police number for Cabo Verde"
+  },
+  {
+    "id": "bf-nat-fir-cv",
+    "name": "National Fire/Rescue — Cabo Verde",
+    "category": "ambulance",
+    "lat": 14.9315,
+    "lon": -23.5133,
+    "phone": "131",
+    "country_code": "CV",
+    "notes": "National fire number for Cabo Verde"
+  },
+  {
+    "id": "bf-nat-amb-kh",
+    "name": "National Ambulance — Cambodia",
+    "category": "ambulance",
+    "lat": 11.5564,
+    "lon": 104.9282,
+    "phone": "119",
+    "country_code": "KH",
+    "notes": "National ambulance number for Cambodia"
+  },
+  {
+    "id": "bf-nat-pol-kh",
+    "name": "National Police — Cambodia",
+    "category": "police",
+    "lat": 11.5564,
+    "lon": 104.9282,
+    "phone": "117",
+    "country_code": "KH",
+    "notes": "National police number for Cambodia"
+  },
+  {
+    "id": "bf-nat-fir-kh",
+    "name": "National Fire/Rescue — Cambodia",
+    "category": "ambulance",
+    "lat": 11.5564,
+    "lon": 104.9282,
+    "phone": "118",
+    "country_code": "KH",
+    "notes": "National fire number for Cambodia"
+  },
+  {
+    "id": "bf-nat-amb-cm",
+    "name": "National Ambulance — Cameroon",
+    "category": "ambulance",
+    "lat": 3.848,
+    "lon": 11.5021,
+    "phone": "119",
+    "country_code": "CM",
+    "notes": "National ambulance number for Cameroon"
+  },
+  {
+    "id": "bf-nat-pol-cm",
+    "name": "National Police — Cameroon",
+    "category": "police",
+    "lat": 3.848,
+    "lon": 11.5021,
+    "phone": "117",
+    "country_code": "CM",
+    "notes": "National police number for Cameroon"
+  },
+  {
+    "id": "bf-nat-fir-cm",
+    "name": "National Fire/Rescue — Cameroon",
+    "category": "ambulance",
+    "lat": 3.848,
+    "lon": 11.5021,
+    "phone": "118",
+    "country_code": "CM",
+    "notes": "National fire number for Cameroon"
+  },
+  {
+    "id": "bf-nat-amb-ca",
+    "name": "National Ambulance — Canada",
+    "category": "ambulance",
+    "lat": 45.4215,
+    "lon": -75.6972,
+    "phone": "911",
+    "country_code": "CA",
+    "notes": "National ambulance number for Canada"
+  },
+  {
+    "id": "bf-nat-amb-cf",
+    "name": "National Ambulance — Central African Republic",
+    "category": "ambulance",
+    "lat": 4.3947,
+    "lon": 18.5582,
+    "phone": "1220",
+    "country_code": "CF",
+    "notes": "National ambulance number for Central African Republic"
+  },
+  {
+    "id": "bf-nat-pol-cf",
+    "name": "National Police — Central African Republic",
+    "category": "police",
+    "lat": 4.3947,
+    "lon": 18.5582,
+    "phone": "117",
+    "country_code": "CF",
+    "notes": "National police number for Central African Republic"
+  },
+  {
+    "id": "bf-nat-fir-cf",
+    "name": "National Fire/Rescue — Central African Republic",
+    "category": "ambulance",
+    "lat": 4.3947,
+    "lon": 18.5582,
+    "phone": "118",
+    "country_code": "CF",
+    "notes": "National fire number for Central African Republic"
+  },
+  {
+    "id": "bf-nat-amb-td",
+    "name": "National Ambulance — Chad",
+    "category": "ambulance",
+    "lat": 12.1348,
+    "lon": 15.0557,
+    "phone": "2251-4242",
+    "country_code": "TD",
+    "notes": "National ambulance number for Chad"
+  },
+  {
+    "id": "bf-nat-pol-td",
+    "name": "National Police — Chad",
+    "category": "police",
+    "lat": 12.1348,
+    "lon": 15.0557,
+    "phone": "17",
+    "country_code": "TD",
+    "notes": "National police number for Chad"
+  },
+  {
+    "id": "bf-nat-fir-td",
+    "name": "National Fire/Rescue — Chad",
+    "category": "ambulance",
+    "lat": 12.1348,
+    "lon": 15.0557,
+    "phone": "18",
+    "country_code": "TD",
+    "notes": "National fire number for Chad"
+  },
+  {
+    "id": "bf-nat-amb-cl",
+    "name": "National Ambulance — Chile",
+    "category": "ambulance",
+    "lat": -33.4489,
+    "lon": -70.6693,
+    "phone": "131",
+    "country_code": "CL",
+    "notes": "National ambulance number for Chile"
+  },
+  {
+    "id": "bf-nat-pol-cl",
+    "name": "National Police — Chile",
+    "category": "police",
+    "lat": -33.4489,
+    "lon": -70.6693,
+    "phone": "133",
+    "country_code": "CL",
+    "notes": "National police number for Chile"
+  },
+  {
+    "id": "bf-nat-fir-cl",
+    "name": "National Fire/Rescue — Chile",
+    "category": "ambulance",
+    "lat": -33.4489,
+    "lon": -70.6693,
+    "phone": "132",
+    "country_code": "CL",
+    "notes": "National fire number for Chile"
+  },
+  {
+    "id": "bf-nat-amb-cn",
+    "name": "National Ambulance — China",
+    "category": "ambulance",
+    "lat": 39.9042,
+    "lon": 116.4074,
+    "phone": "120",
+    "country_code": "CN",
+    "notes": "National ambulance number for China"
+  },
+  {
+    "id": "bf-nat-pol-cn",
+    "name": "National Police — China",
+    "category": "police",
+    "lat": 39.9042,
+    "lon": 116.4074,
+    "phone": "110",
+    "country_code": "CN",
+    "notes": "National police number for China"
+  },
+  {
+    "id": "bf-nat-fir-cn",
+    "name": "National Fire/Rescue — China",
+    "category": "ambulance",
+    "lat": 39.9042,
+    "lon": 116.4074,
+    "phone": "119",
+    "country_code": "CN",
+    "notes": "National fire number for China"
+  },
+  {
+    "id": "bf-nat-amb-co",
+    "name": "National Ambulance — Colombia",
+    "category": "ambulance",
+    "lat": 4.711,
+    "lon": -74.0721,
+    "phone": "125",
+    "country_code": "CO",
+    "notes": "National ambulance number for Colombia"
+  },
+  {
+    "id": "bf-nat-pol-co",
+    "name": "National Police — Colombia",
+    "category": "police",
+    "lat": 4.711,
+    "lon": -74.0721,
+    "phone": "112",
+    "country_code": "CO",
+    "notes": "National police number for Colombia"
+  },
+  {
+    "id": "bf-nat-fir-co",
+    "name": "National Fire/Rescue — Colombia",
+    "category": "ambulance",
+    "lat": 4.711,
+    "lon": -74.0721,
+    "phone": "119",
+    "country_code": "CO",
+    "notes": "National fire number for Colombia"
+  },
+  {
+    "id": "bf-nat-amb-km",
+    "name": "National Ambulance — Comoros",
+    "category": "ambulance",
+    "lat": -11.7172,
+    "lon": 43.2473,
+    "phone": "772-03-73",
+    "country_code": "KM",
+    "notes": "National ambulance number for Comoros"
+  },
+  {
+    "id": "bf-nat-pol-km",
+    "name": "National Police — Comoros",
+    "category": "police",
+    "lat": -11.7172,
+    "lon": 43.2473,
+    "phone": "17",
+    "country_code": "KM",
+    "notes": "National police number for Comoros"
+  },
+  {
+    "id": "bf-nat-fir-km",
+    "name": "National Fire/Rescue — Comoros",
+    "category": "ambulance",
+    "lat": -11.7172,
+    "lon": 43.2473,
+    "phone": "18",
+    "country_code": "KM",
+    "notes": "National fire number for Comoros"
+  },
+  {
+    "id": "bf-nat-amb-cg",
+    "name": "National Ambulance — Congo (Congo-Brazzaville)",
+    "category": "ambulance",
+    "lat": -4.2634,
+    "lon": 15.2429,
+    "phone": "112",
+    "country_code": "CG",
+    "notes": "National ambulance number for Congo (Congo-Brazzaville)"
+  },
+  {
+    "id": "bf-nat-pol-cg",
+    "name": "National Police — Congo (Congo-Brazzaville)",
+    "category": "police",
+    "lat": -4.2634,
+    "lon": 15.2429,
+    "phone": "117",
+    "country_code": "CG",
+    "notes": "National police number for Congo (Congo-Brazzaville)"
+  },
+  {
+    "id": "bf-nat-fir-cg",
+    "name": "National Fire/Rescue — Congo (Congo-Brazzaville)",
+    "category": "ambulance",
+    "lat": -4.2634,
+    "lon": 15.2429,
+    "phone": "118",
+    "country_code": "CG",
+    "notes": "National fire number for Congo (Congo-Brazzaville)"
+  },
+  {
+    "id": "bf-nat-amb-ck",
+    "name": "National Ambulance — Cook Islands",
+    "category": "ambulance",
+    "lat": -21.2367,
+    "lon": -159.7777,
+    "phone": "999",
+    "country_code": "CK",
+    "notes": "National ambulance number for Cook Islands"
+  },
+  {
+    "id": "bf-nat-amb-cr",
+    "name": "National Ambulance — Costa Rica",
+    "category": "ambulance",
+    "lat": 9.9281,
+    "lon": -84.0907,
+    "phone": "911",
+    "country_code": "CR",
+    "notes": "National ambulance number for Costa Rica"
+  },
+  {
+    "id": "bf-nat-amb-hr",
+    "name": "National Ambulance — Croatia",
+    "category": "ambulance",
+    "lat": 45.815,
+    "lon": 15.9819,
+    "phone": "194",
+    "country_code": "HR",
+    "notes": "National ambulance number for Croatia"
+  },
+  {
+    "id": "bf-nat-pol-hr",
+    "name": "National Police — Croatia",
+    "category": "police",
+    "lat": 45.815,
+    "lon": 15.9819,
+    "phone": "192",
+    "country_code": "HR",
+    "notes": "National police number for Croatia"
+  },
+  {
+    "id": "bf-nat-fir-hr",
+    "name": "National Fire/Rescue — Croatia",
+    "category": "ambulance",
+    "lat": 45.815,
+    "lon": 15.9819,
+    "phone": "193",
+    "country_code": "HR",
+    "notes": "National fire number for Croatia"
+  },
+  {
+    "id": "bf-nat-amb-cu",
+    "name": "National Ambulance — Cuba",
+    "category": "ambulance",
+    "lat": 23.1136,
+    "lon": -82.3666,
+    "phone": "104",
+    "country_code": "CU",
+    "notes": "National ambulance number for Cuba"
+  },
+  {
+    "id": "bf-nat-pol-cu",
+    "name": "National Police — Cuba",
+    "category": "police",
+    "lat": 23.1136,
+    "lon": -82.3666,
+    "phone": "106",
+    "country_code": "CU",
+    "notes": "National police number for Cuba"
+  },
+  {
+    "id": "bf-nat-fir-cu",
+    "name": "National Fire/Rescue — Cuba",
+    "category": "ambulance",
+    "lat": 23.1136,
+    "lon": -82.3666,
+    "phone": "105",
+    "country_code": "CU",
+    "notes": "National fire number for Cuba"
+  },
+  {
+    "id": "bf-nat-amb-cy",
+    "name": "National Ambulance — Cyprus",
+    "category": "ambulance",
+    "lat": 35.1856,
+    "lon": 33.3823,
+    "phone": "112",
+    "country_code": "CY",
+    "notes": "National ambulance number for Cyprus"
+  },
+  {
+    "id": "bf-nat-amb-cz",
+    "name": "National Ambulance — Czechia (Czech Republic)",
+    "category": "ambulance",
+    "lat": 50.0755,
+    "lon": 14.4378,
+    "phone": "155",
+    "country_code": "CZ",
+    "notes": "National ambulance number for Czechia (Czech Republic)"
+  },
+  {
+    "id": "bf-nat-pol-cz",
+    "name": "National Police — Czechia (Czech Republic)",
+    "category": "police",
+    "lat": 50.0755,
+    "lon": 14.4378,
+    "phone": "158",
+    "country_code": "CZ",
+    "notes": "National police number for Czechia (Czech Republic)"
+  },
+  {
+    "id": "bf-nat-fir-cz",
+    "name": "National Fire/Rescue — Czechia (Czech Republic)",
+    "category": "ambulance",
+    "lat": 50.0755,
+    "lon": 14.4378,
+    "phone": "150",
+    "country_code": "CZ",
+    "notes": "National fire number for Czechia (Czech Republic)"
+  },
+  {
+    "id": "bf-nat-amb-ci",
+    "name": "National Ambulance — Côte d'Ivoire",
+    "category": "ambulance",
+    "lat": 6.8276,
+    "lon": -5.2893,
+    "phone": "185",
+    "country_code": "CI",
+    "notes": "National ambulance number for Côte d'Ivoire"
+  },
+  {
+    "id": "bf-nat-pol-ci",
+    "name": "National Police — Côte d'Ivoire",
+    "category": "police",
+    "lat": 6.8276,
+    "lon": -5.2893,
+    "phone": "111",
+    "country_code": "CI",
+    "notes": "National police number for Côte d'Ivoire"
+  },
+  {
+    "id": "bf-nat-fir-ci",
+    "name": "National Fire/Rescue — Côte d'Ivoire",
+    "category": "ambulance",
+    "lat": 6.8276,
+    "lon": -5.2893,
+    "phone": "180",
+    "country_code": "CI",
+    "notes": "National fire number for Côte d'Ivoire"
+  },
+  {
+    "id": "bf-nat-amb-cd",
+    "name": "National Ambulance — Democratic Republic of the Congo",
+    "category": "ambulance",
+    "lat": -4.4419,
+    "lon": 15.2663,
+    "phone": "112",
+    "country_code": "CD",
+    "notes": "National ambulance number for Democratic Republic of the Congo"
+  },
+  {
+    "id": "bf-nat-fir-cd",
+    "name": "National Fire/Rescue — Democratic Republic of the Congo",
+    "category": "ambulance",
+    "lat": -4.4419,
+    "lon": 15.2663,
+    "phone": "118",
+    "country_code": "CD",
+    "notes": "National fire number for Democratic Republic of the Congo"
+  },
+  {
+    "id": "bf-nat-amb-dk",
+    "name": "National Ambulance — Denmark",
+    "category": "ambulance",
+    "lat": 55.6761,
+    "lon": 12.5683,
+    "phone": "112",
+    "country_code": "DK",
+    "notes": "National ambulance number for Denmark"
+  },
+  {
+    "id": "bf-nat-pol-dk",
+    "name": "National Police — Denmark",
+    "category": "police",
+    "lat": 55.6761,
+    "lon": 12.5683,
+    "phone": "114",
+    "country_code": "DK",
+    "notes": "National police number for Denmark"
+  },
+  {
+    "id": "bf-nat-amb-dj",
+    "name": "National Ambulance — Djibouti",
+    "category": "ambulance",
+    "lat": 11.5721,
+    "lon": 43.1456,
+    "phone": "19",
+    "country_code": "DJ",
+    "notes": "National ambulance number for Djibouti"
+  },
+  {
+    "id": "bf-nat-pol-dj",
+    "name": "National Police — Djibouti",
+    "category": "police",
+    "lat": 11.5721,
+    "lon": 43.1456,
+    "phone": "17",
+    "country_code": "DJ",
+    "notes": "National police number for Djibouti"
+  },
+  {
+    "id": "bf-nat-fir-dj",
+    "name": "National Fire/Rescue — Djibouti",
+    "category": "ambulance",
+    "lat": 11.5721,
+    "lon": 43.1456,
+    "phone": "18",
+    "country_code": "DJ",
+    "notes": "National fire number for Djibouti"
+  },
+  {
+    "id": "bf-nat-amb-dm",
+    "name": "National Ambulance — Dominica",
+    "category": "ambulance",
+    "lat": 15.301,
+    "lon": -61.387,
+    "phone": "999",
+    "country_code": "DM",
+    "notes": "National ambulance number for Dominica"
+  },
+  {
+    "id": "bf-nat-amb-do",
+    "name": "National Ambulance — Dominican Republic",
+    "category": "ambulance",
+    "lat": 18.4861,
+    "lon": -69.9312,
+    "phone": "911",
+    "country_code": "DO",
+    "notes": "National ambulance number for Dominican Republic"
+  },
+  {
+    "id": "bf-nat-amb-ec",
+    "name": "National Ambulance — Ecuador",
+    "category": "ambulance",
+    "lat": -0.1807,
+    "lon": -78.4678,
+    "phone": "911",
+    "country_code": "EC",
+    "notes": "National ambulance number for Ecuador"
+  },
+  {
+    "id": "bf-nat-amb-eg",
+    "name": "National Ambulance — Egypt",
+    "category": "ambulance",
+    "lat": 30.0444,
+    "lon": 31.2357,
+    "phone": "123",
+    "country_code": "EG",
+    "notes": "National ambulance number for Egypt"
+  },
+  {
+    "id": "bf-nat-pol-eg",
+    "name": "National Police — Egypt",
+    "category": "police",
+    "lat": 30.0444,
+    "lon": 31.2357,
+    "phone": "122",
+    "country_code": "EG",
+    "notes": "National police number for Egypt"
+  },
+  {
+    "id": "bf-nat-fir-eg",
+    "name": "National Fire/Rescue — Egypt",
+    "category": "ambulance",
+    "lat": 30.0444,
+    "lon": 31.2357,
+    "phone": "180",
+    "country_code": "EG",
+    "notes": "National fire number for Egypt"
+  },
+  {
+    "id": "bf-nat-amb-sv",
+    "name": "National Ambulance — El Salvador",
+    "category": "ambulance",
+    "lat": 13.6929,
+    "lon": -89.2182,
+    "phone": "132",
+    "country_code": "SV",
+    "notes": "National ambulance number for El Salvador"
+  },
+  {
+    "id": "bf-nat-pol-sv",
+    "name": "National Police — El Salvador",
+    "category": "police",
+    "lat": 13.6929,
+    "lon": -89.2182,
+    "phone": "911",
+    "country_code": "SV",
+    "notes": "National police number for El Salvador"
+  },
+  {
+    "id": "bf-nat-fir-sv",
+    "name": "National Fire/Rescue — El Salvador",
+    "category": "ambulance",
+    "lat": 13.6929,
+    "lon": -89.2182,
+    "phone": "913",
+    "country_code": "SV",
+    "notes": "National fire number for El Salvador"
+  },
+  {
+    "id": "bf-nat-amb-gq",
+    "name": "National Ambulance — Equatorial Guinea",
+    "category": "ambulance",
+    "lat": 3.7504,
+    "lon": 8.7371,
+    "phone": "115",
+    "country_code": "GQ",
+    "notes": "National ambulance number for Equatorial Guinea"
+  },
+  {
+    "id": "bf-nat-pol-gq",
+    "name": "National Police — Equatorial Guinea",
+    "category": "police",
+    "lat": 3.7504,
+    "lon": 8.7371,
+    "phone": "114",
+    "country_code": "GQ",
+    "notes": "National police number for Equatorial Guinea"
+  },
+  {
+    "id": "bf-nat-fir-gq",
+    "name": "National Fire/Rescue — Equatorial Guinea",
+    "category": "ambulance",
+    "lat": 3.7504,
+    "lon": 8.7371,
+    "phone": "112",
+    "country_code": "GQ",
+    "notes": "National fire number for Equatorial Guinea"
+  },
+  {
+    "id": "bf-nat-amb-er",
+    "name": "National Ambulance — Eritrea",
+    "category": "ambulance",
+    "lat": 15.3229,
+    "lon": 38.9251,
+    "phone": "114",
+    "country_code": "ER",
+    "notes": "National ambulance number for Eritrea"
+  },
+  {
+    "id": "bf-nat-pol-er",
+    "name": "National Police — Eritrea",
+    "category": "police",
+    "lat": 15.3229,
+    "lon": 38.9251,
+    "phone": "113",
+    "country_code": "ER",
+    "notes": "National police number for Eritrea"
+  },
+  {
+    "id": "bf-nat-fir-er",
+    "name": "National Fire/Rescue — Eritrea",
+    "category": "ambulance",
+    "lat": 15.3229,
+    "lon": 38.9251,
+    "phone": "116",
+    "country_code": "ER",
+    "notes": "National fire number for Eritrea"
+  },
+  {
+    "id": "bf-nat-amb-ee",
+    "name": "National Ambulance — Estonia",
+    "category": "ambulance",
+    "lat": 59.437,
+    "lon": 24.7536,
+    "phone": "112",
+    "country_code": "EE",
+    "notes": "National ambulance number for Estonia"
+  },
+  {
+    "id": "bf-nat-amb-sz",
+    "name": "National Ambulance — Eswatini",
+    "category": "ambulance",
+    "lat": -26.3054,
+    "lon": 31.1367,
+    "phone": "977",
+    "country_code": "SZ",
+    "notes": "National ambulance number for Eswatini"
+  },
+  {
+    "id": "bf-nat-pol-sz",
+    "name": "National Police — Eswatini",
+    "category": "police",
+    "lat": -26.3054,
+    "lon": 31.1367,
+    "phone": "999",
+    "country_code": "SZ",
+    "notes": "National police number for Eswatini"
+  },
+  {
+    "id": "bf-nat-fir-sz",
+    "name": "National Fire/Rescue — Eswatini",
+    "category": "ambulance",
+    "lat": -26.3054,
+    "lon": 31.1367,
+    "phone": "933",
+    "country_code": "SZ",
+    "notes": "National fire number for Eswatini"
+  },
+  {
+    "id": "bf-nat-amb-et",
+    "name": "National Ambulance — Ethiopia",
+    "category": "ambulance",
+    "lat": 9.025,
+    "lon": 38.7469,
+    "phone": "907",
+    "country_code": "ET",
+    "notes": "National ambulance number for Ethiopia"
+  },
+  {
+    "id": "bf-nat-pol-et",
+    "name": "National Police — Ethiopia",
+    "category": "police",
+    "lat": 9.025,
+    "lon": 38.7469,
+    "phone": "991",
+    "country_code": "ET",
+    "notes": "National police number for Ethiopia"
+  },
+  {
+    "id": "bf-nat-fir-et",
+    "name": "National Fire/Rescue — Ethiopia",
+    "category": "ambulance",
+    "lat": 9.025,
+    "lon": 38.7469,
+    "phone": "939",
+    "country_code": "ET",
+    "notes": "National fire number for Ethiopia"
+  },
+  {
+    "id": "bf-nat-amb-fj",
+    "name": "National Ambulance — Fiji",
+    "category": "ambulance",
+    "lat": -18.1416,
+    "lon": 178.4419,
+    "phone": "911",
+    "country_code": "FJ",
+    "notes": "National ambulance number for Fiji"
+  },
+  {
+    "id": "bf-nat-amb-fi",
+    "name": "National Ambulance — Finland",
+    "category": "ambulance",
+    "lat": 60.1699,
+    "lon": 24.9384,
+    "phone": "112",
+    "country_code": "FI",
+    "notes": "National ambulance number for Finland"
+  },
+  {
+    "id": "bf-nat-amb-fr",
+    "name": "National Ambulance — France",
+    "category": "ambulance",
+    "lat": 48.8566,
+    "lon": 2.3522,
+    "phone": "15",
+    "country_code": "FR",
+    "notes": "National ambulance number for France"
+  },
+  {
+    "id": "bf-nat-pol-fr",
+    "name": "National Police — France",
+    "category": "police",
+    "lat": 48.8566,
+    "lon": 2.3522,
+    "phone": "17",
+    "country_code": "FR",
+    "notes": "National police number for France"
+  },
+  {
+    "id": "bf-nat-fir-fr",
+    "name": "National Fire/Rescue — France",
+    "category": "ambulance",
+    "lat": 48.8566,
+    "lon": 2.3522,
+    "phone": "18",
+    "country_code": "FR",
+    "notes": "National fire number for France"
+  },
+  {
+    "id": "bf-nat-amb-ga",
+    "name": "National Ambulance — Gabon",
+    "category": "ambulance",
+    "lat": 0.4162,
+    "lon": 9.4673,
+    "phone": "1300",
+    "country_code": "GA",
+    "notes": "National ambulance number for Gabon"
+  },
+  {
+    "id": "bf-nat-pol-ga",
+    "name": "National Police — Gabon",
+    "category": "police",
+    "lat": 0.4162,
+    "lon": 9.4673,
+    "phone": "1730",
+    "country_code": "GA",
+    "notes": "National police number for Gabon"
+  },
+  {
+    "id": "bf-nat-fir-ga",
+    "name": "National Fire/Rescue — Gabon",
+    "category": "ambulance",
+    "lat": 0.4162,
+    "lon": 9.4673,
+    "phone": "18",
+    "country_code": "GA",
+    "notes": "National fire number for Gabon"
+  },
+  {
+    "id": "bf-nat-amb-gm",
+    "name": "National Ambulance — Gambia",
+    "category": "ambulance",
+    "lat": 13.4549,
+    "lon": -16.579,
+    "phone": "116",
+    "country_code": "GM",
+    "notes": "National ambulance number for Gambia"
+  },
+  {
+    "id": "bf-nat-pol-gm",
+    "name": "National Police — Gambia",
+    "category": "police",
+    "lat": 13.4549,
+    "lon": -16.579,
+    "phone": "117",
+    "country_code": "GM",
+    "notes": "National police number for Gambia"
+  },
+  {
+    "id": "bf-nat-fir-gm",
+    "name": "National Fire/Rescue — Gambia",
+    "category": "ambulance",
+    "lat": 13.4549,
+    "lon": -16.579,
+    "phone": "118",
+    "country_code": "GM",
+    "notes": "National fire number for Gambia"
+  },
+  {
+    "id": "bf-nat-amb-ge",
+    "name": "National Ambulance — Georgia",
+    "category": "ambulance",
+    "lat": 41.7151,
+    "lon": 44.8271,
+    "phone": "112",
+    "country_code": "GE",
+    "notes": "National ambulance number for Georgia"
+  },
+  {
+    "id": "bf-nat-amb-de",
+    "name": "National Ambulance — Germany",
+    "category": "ambulance",
+    "lat": 52.52,
+    "lon": 13.405,
+    "phone": "112",
+    "country_code": "DE",
+    "notes": "National ambulance number for Germany"
+  },
+  {
+    "id": "bf-nat-pol-de",
+    "name": "National Police — Germany",
+    "category": "police",
+    "lat": 52.52,
+    "lon": 13.405,
+    "phone": "110",
+    "country_code": "DE",
+    "notes": "National police number for Germany"
+  },
+  {
+    "id": "bf-nat-amb-gh",
+    "name": "National Ambulance — Ghana",
+    "category": "ambulance",
+    "lat": 5.6037,
+    "lon": -0.187,
+    "phone": "193",
+    "country_code": "GH",
+    "notes": "National ambulance number for Ghana"
+  },
+  {
+    "id": "bf-nat-pol-gh",
+    "name": "National Police — Ghana",
+    "category": "police",
+    "lat": 5.6037,
+    "lon": -0.187,
+    "phone": "191",
+    "country_code": "GH",
+    "notes": "National police number for Ghana"
+  },
+  {
+    "id": "bf-nat-fir-gh",
+    "name": "National Fire/Rescue — Ghana",
+    "category": "ambulance",
+    "lat": 5.6037,
+    "lon": -0.187,
+    "phone": "192",
+    "country_code": "GH",
+    "notes": "National fire number for Ghana"
+  },
+  {
+    "id": "bf-nat-amb-gr",
+    "name": "National Ambulance — Greece",
+    "category": "ambulance",
+    "lat": 37.9838,
+    "lon": 23.7275,
+    "phone": "166",
+    "country_code": "GR",
+    "notes": "National ambulance number for Greece"
+  },
+  {
+    "id": "bf-nat-pol-gr",
+    "name": "National Police — Greece",
+    "category": "police",
+    "lat": 37.9838,
+    "lon": 23.7275,
+    "phone": "100",
+    "country_code": "GR",
+    "notes": "National police number for Greece"
+  },
+  {
+    "id": "bf-nat-fir-gr",
+    "name": "National Fire/Rescue — Greece",
+    "category": "ambulance",
+    "lat": 37.9838,
+    "lon": 23.7275,
+    "phone": "199",
+    "country_code": "GR",
+    "notes": "National fire number for Greece"
+  },
+  {
+    "id": "bf-nat-amb-gd",
+    "name": "National Ambulance — Grenada",
+    "category": "ambulance",
+    "lat": 12.0564,
+    "lon": -61.7485,
+    "phone": "911",
+    "country_code": "GD",
+    "notes": "National ambulance number for Grenada"
+  },
+  {
+    "id": "bf-nat-amb-gt",
+    "name": "National Ambulance — Guatemala",
+    "category": "ambulance",
+    "lat": 14.6349,
+    "lon": -90.5069,
+    "phone": "128",
+    "country_code": "GT",
+    "notes": "National ambulance number for Guatemala"
+  },
+  {
+    "id": "bf-nat-pol-gt",
+    "name": "National Police — Guatemala",
+    "category": "police",
+    "lat": 14.6349,
+    "lon": -90.5069,
+    "phone": "110",
+    "country_code": "GT",
+    "notes": "National police number for Guatemala"
+  },
+  {
+    "id": "bf-nat-fir-gt",
+    "name": "National Fire/Rescue — Guatemala",
+    "category": "ambulance",
+    "lat": 14.6349,
+    "lon": -90.5069,
+    "phone": "122",
+    "country_code": "GT",
+    "notes": "National fire number for Guatemala"
+  },
+  {
+    "id": "bf-nat-amb-gn",
+    "name": "National Ambulance — Guinea",
+    "category": "ambulance",
+    "lat": 9.6412,
+    "lon": -13.5784,
+    "phone": "18",
+    "country_code": "GN",
+    "notes": "National ambulance number for Guinea"
+  },
+  {
+    "id": "bf-nat-pol-gn",
+    "name": "National Police — Guinea",
+    "category": "police",
+    "lat": 9.6412,
+    "lon": -13.5784,
+    "phone": "117",
+    "country_code": "GN",
+    "notes": "National police number for Guinea"
+  },
+  {
+    "id": "bf-nat-fir-gn",
+    "name": "National Fire/Rescue — Guinea",
+    "category": "ambulance",
+    "lat": 9.6412,
+    "lon": -13.5784,
+    "phone": "442-020",
+    "country_code": "GN",
+    "notes": "National fire number for Guinea"
+  },
+  {
+    "id": "bf-nat-amb-gw",
+    "name": "National Ambulance — Guinea-Bissau",
+    "category": "ambulance",
+    "lat": 11.8637,
+    "lon": -15.598,
+    "phone": "119",
+    "country_code": "GW",
+    "notes": "National ambulance number for Guinea-Bissau"
+  },
+  {
+    "id": "bf-nat-pol-gw",
+    "name": "National Police — Guinea-Bissau",
+    "category": "police",
+    "lat": 11.8637,
+    "lon": -15.598,
+    "phone": "117",
+    "country_code": "GW",
+    "notes": "National police number for Guinea-Bissau"
+  },
+  {
+    "id": "bf-nat-fir-gw",
+    "name": "National Fire/Rescue — Guinea-Bissau",
+    "category": "ambulance",
+    "lat": 11.8637,
+    "lon": -15.598,
+    "phone": "118",
+    "country_code": "GW",
+    "notes": "National fire number for Guinea-Bissau"
+  },
+  {
+    "id": "bf-nat-amb-gy",
+    "name": "National Ambulance — Guyana",
+    "category": "ambulance",
+    "lat": 6.8013,
+    "lon": -58.1551,
+    "phone": "913",
+    "country_code": "GY",
+    "notes": "National ambulance number for Guyana"
+  },
+  {
+    "id": "bf-nat-pol-gy",
+    "name": "National Police — Guyana",
+    "category": "police",
+    "lat": 6.8013,
+    "lon": -58.1551,
+    "phone": "911",
+    "country_code": "GY",
+    "notes": "National police number for Guyana"
+  },
+  {
+    "id": "bf-nat-fir-gy",
+    "name": "National Fire/Rescue — Guyana",
+    "category": "ambulance",
+    "lat": 6.8013,
+    "lon": -58.1551,
+    "phone": "912",
+    "country_code": "GY",
+    "notes": "National fire number for Guyana"
+  },
+  {
+    "id": "bf-nat-amb-ht",
+    "name": "National Ambulance — Haiti",
+    "category": "ambulance",
+    "lat": 18.5944,
+    "lon": -72.3074,
+    "phone": "114",
+    "country_code": "HT",
+    "notes": "National ambulance number for Haiti"
+  },
+  {
+    "id": "bf-nat-amb-va",
+    "name": "National Ambulance — Holy See (Vatican City)",
+    "category": "ambulance",
+    "lat": 41.9029,
+    "lon": 12.4534,
+    "phone": "118",
+    "country_code": "VA",
+    "notes": "National ambulance number for Holy See (Vatican City)"
+  },
+  {
+    "id": "bf-nat-pol-va",
+    "name": "National Police — Holy See (Vatican City)",
+    "category": "police",
+    "lat": 41.9029,
+    "lon": 12.4534,
+    "phone": "112",
+    "country_code": "VA",
+    "notes": "National police number for Holy See (Vatican City)"
+  },
+  {
+    "id": "bf-nat-fir-va",
+    "name": "National Fire/Rescue — Holy See (Vatican City)",
+    "category": "ambulance",
+    "lat": 41.9029,
+    "lon": 12.4534,
+    "phone": "115",
+    "country_code": "VA",
+    "notes": "National fire number for Holy See (Vatican City)"
+  },
+  {
+    "id": "bf-nat-amb-hn",
+    "name": "National Ambulance — Honduras",
+    "category": "ambulance",
+    "lat": 14.0723,
+    "lon": -87.1921,
+    "phone": "195",
+    "country_code": "HN",
+    "notes": "National ambulance number for Honduras"
+  },
+  {
+    "id": "bf-nat-pol-hn",
+    "name": "National Police — Honduras",
+    "category": "police",
+    "lat": 14.0723,
+    "lon": -87.1921,
+    "phone": "911",
+    "country_code": "HN",
+    "notes": "National police number for Honduras"
+  },
+  {
+    "id": "bf-nat-fir-hn",
+    "name": "National Fire/Rescue — Honduras",
+    "category": "ambulance",
+    "lat": 14.0723,
+    "lon": -87.1921,
+    "phone": "198",
+    "country_code": "HN",
+    "notes": "National fire number for Honduras"
+  },
+  {
+    "id": "bf-nat-amb-hu",
+    "name": "National Ambulance — Hungary",
+    "category": "ambulance",
+    "lat": 47.4979,
+    "lon": 19.0402,
+    "phone": "104",
+    "country_code": "HU",
+    "notes": "National ambulance number for Hungary"
+  },
+  {
+    "id": "bf-nat-pol-hu",
+    "name": "National Police — Hungary",
+    "category": "police",
+    "lat": 47.4979,
+    "lon": 19.0402,
+    "phone": "107",
+    "country_code": "HU",
+    "notes": "National police number for Hungary"
+  },
+  {
+    "id": "bf-nat-fir-hu",
+    "name": "National Fire/Rescue — Hungary",
+    "category": "ambulance",
+    "lat": 47.4979,
+    "lon": 19.0402,
+    "phone": "105",
+    "country_code": "HU",
+    "notes": "National fire number for Hungary"
+  },
+  {
+    "id": "bf-nat-amb-is",
+    "name": "National Ambulance — Iceland",
+    "category": "ambulance",
+    "lat": 64.1466,
+    "lon": -21.9426,
+    "phone": "112",
+    "country_code": "IS",
+    "notes": "National ambulance number for Iceland"
+  },
+  {
+    "id": "bf-nat-amb-in",
+    "name": "National Ambulance — India",
+    "category": "ambulance",
+    "lat": 28.6139,
+    "lon": 77.209,
+    "phone": "108",
+    "country_code": "IN",
+    "notes": "National ambulance number for India"
+  },
+  {
+    "id": "bf-nat-pol-in",
+    "name": "National Police — India",
+    "category": "police",
+    "lat": 28.6139,
+    "lon": 77.209,
+    "phone": "100",
+    "country_code": "IN",
+    "notes": "National police number for India"
+  },
+  {
+    "id": "bf-nat-fir-in",
+    "name": "National Fire/Rescue — India",
+    "category": "ambulance",
+    "lat": 28.6139,
+    "lon": 77.209,
+    "phone": "101",
+    "country_code": "IN",
+    "notes": "National fire number for India"
+  },
+  {
+    "id": "bf-nat-amb-id",
+    "name": "National Ambulance — Indonesia",
+    "category": "ambulance",
+    "lat": -6.2088,
+    "lon": 106.8456,
+    "phone": "118",
+    "country_code": "ID",
+    "notes": "National ambulance number for Indonesia"
+  },
+  {
+    "id": "bf-nat-pol-id",
+    "name": "National Police — Indonesia",
+    "category": "police",
+    "lat": -6.2088,
+    "lon": 106.8456,
+    "phone": "110",
+    "country_code": "ID",
+    "notes": "National police number for Indonesia"
+  },
+  {
+    "id": "bf-nat-fir-id",
+    "name": "National Fire/Rescue — Indonesia",
+    "category": "ambulance",
+    "lat": -6.2088,
+    "lon": 106.8456,
+    "phone": "113",
+    "country_code": "ID",
+    "notes": "National fire number for Indonesia"
+  },
+  {
+    "id": "bf-nat-amb-ir",
+    "name": "National Ambulance — Iran",
+    "category": "ambulance",
+    "lat": 35.6892,
+    "lon": 51.389,
+    "phone": "115",
+    "country_code": "IR",
+    "notes": "National ambulance number for Iran"
+  },
+  {
+    "id": "bf-nat-pol-ir",
+    "name": "National Police — Iran",
+    "category": "police",
+    "lat": 35.6892,
+    "lon": 51.389,
+    "phone": "110",
+    "country_code": "IR",
+    "notes": "National police number for Iran"
+  },
+  {
+    "id": "bf-nat-fir-ir",
+    "name": "National Fire/Rescue — Iran",
+    "category": "ambulance",
+    "lat": 35.6892,
+    "lon": 51.389,
+    "phone": "125",
+    "country_code": "IR",
+    "notes": "National fire number for Iran"
+  },
+  {
+    "id": "bf-nat-amb-iq",
+    "name": "National Ambulance — Iraq",
+    "category": "ambulance",
+    "lat": 33.3152,
+    "lon": 44.3661,
+    "phone": "122",
+    "country_code": "IQ",
+    "notes": "National ambulance number for Iraq"
+  },
+  {
+    "id": "bf-nat-pol-iq",
+    "name": "National Police — Iraq",
+    "category": "police",
+    "lat": 33.3152,
+    "lon": 44.3661,
+    "phone": "104",
+    "country_code": "IQ",
+    "notes": "National police number for Iraq"
+  },
+  {
+    "id": "bf-nat-fir-iq",
+    "name": "National Fire/Rescue — Iraq",
+    "category": "ambulance",
+    "lat": 33.3152,
+    "lon": 44.3661,
+    "phone": "115",
+    "country_code": "IQ",
+    "notes": "National fire number for Iraq"
+  },
+  {
+    "id": "bf-nat-amb-ie",
+    "name": "National Ambulance — Ireland",
+    "category": "ambulance",
+    "lat": 53.3498,
+    "lon": -6.2603,
+    "phone": "999",
+    "country_code": "IE",
+    "notes": "National ambulance number for Ireland"
+  },
+  {
+    "id": "bf-nat-amb-il",
+    "name": "National Ambulance — Israel",
+    "category": "ambulance",
+    "lat": 31.7683,
+    "lon": 35.2137,
+    "phone": "101",
+    "country_code": "IL",
+    "notes": "National ambulance number for Israel"
+  },
+  {
+    "id": "bf-nat-pol-il",
+    "name": "National Police — Israel",
+    "category": "police",
+    "lat": 31.7683,
+    "lon": 35.2137,
+    "phone": "100",
+    "country_code": "IL",
+    "notes": "National police number for Israel"
+  },
+  {
+    "id": "bf-nat-fir-il",
+    "name": "National Fire/Rescue — Israel",
+    "category": "ambulance",
+    "lat": 31.7683,
+    "lon": 35.2137,
+    "phone": "102",
+    "country_code": "IL",
+    "notes": "National fire number for Israel"
+  },
+  {
+    "id": "bf-nat-amb-it",
+    "name": "National Ambulance — Italy",
+    "category": "ambulance",
+    "lat": 41.9028,
+    "lon": 12.4964,
+    "phone": "118",
+    "country_code": "IT",
+    "notes": "National ambulance number for Italy"
+  },
+  {
+    "id": "bf-nat-pol-it",
+    "name": "National Police — Italy",
+    "category": "police",
+    "lat": 41.9028,
+    "lon": 12.4964,
+    "phone": "112",
+    "country_code": "IT",
+    "notes": "National police number for Italy"
+  },
+  {
+    "id": "bf-nat-fir-it",
+    "name": "National Fire/Rescue — Italy",
+    "category": "ambulance",
+    "lat": 41.9028,
+    "lon": 12.4964,
+    "phone": "115",
+    "country_code": "IT",
+    "notes": "National fire number for Italy"
+  },
+  {
+    "id": "bf-nat-amb-jm",
+    "name": "National Ambulance — Jamaica",
+    "category": "ambulance",
+    "lat": 18.1096,
+    "lon": -77.2975,
+    "phone": "110",
+    "country_code": "JM",
+    "notes": "National ambulance number for Jamaica"
+  },
+  {
+    "id": "bf-nat-pol-jm",
+    "name": "National Police — Jamaica",
+    "category": "police",
+    "lat": 18.1096,
+    "lon": -77.2975,
+    "phone": "119",
+    "country_code": "JM",
+    "notes": "National police number for Jamaica"
+  },
+  {
+    "id": "bf-nat-amb-jp",
+    "name": "National Ambulance — Japan",
+    "category": "ambulance",
+    "lat": 35.6762,
+    "lon": 139.6503,
+    "phone": "119",
+    "country_code": "JP",
+    "notes": "National ambulance number for Japan"
+  },
+  {
+    "id": "bf-nat-pol-jp",
+    "name": "National Police — Japan",
+    "category": "police",
+    "lat": 35.6762,
+    "lon": 139.6503,
+    "phone": "110",
+    "country_code": "JP",
+    "notes": "National police number for Japan"
+  },
+  {
+    "id": "bf-nat-amb-jo",
+    "name": "National Ambulance — Jordan",
+    "category": "ambulance",
+    "lat": 31.9454,
+    "lon": 35.9284,
+    "phone": "911",
+    "country_code": "JO",
+    "notes": "National ambulance number for Jordan"
+  },
+  {
+    "id": "bf-nat-amb-kz",
+    "name": "National Ambulance — Kazakhstan",
+    "category": "ambulance",
+    "lat": 51.1694,
+    "lon": 71.4491,
+    "phone": "103",
+    "country_code": "KZ",
+    "notes": "National ambulance number for Kazakhstan"
+  },
+  {
+    "id": "bf-nat-pol-kz",
+    "name": "National Police — Kazakhstan",
+    "category": "police",
+    "lat": 51.1694,
+    "lon": 71.4491,
+    "phone": "102",
+    "country_code": "KZ",
+    "notes": "National police number for Kazakhstan"
+  },
+  {
+    "id": "bf-nat-fir-kz",
+    "name": "National Fire/Rescue — Kazakhstan",
+    "category": "ambulance",
+    "lat": 51.1694,
+    "lon": 71.4491,
+    "phone": "101",
+    "country_code": "KZ",
+    "notes": "National fire number for Kazakhstan"
+  },
+  {
+    "id": "bf-nat-amb-ke",
+    "name": "National Ambulance — Kenya",
+    "category": "ambulance",
+    "lat": -1.2921,
+    "lon": 36.8219,
+    "phone": "999",
+    "country_code": "KE",
+    "notes": "National ambulance number for Kenya"
+  },
+  {
+    "id": "bf-nat-amb-ki",
+    "name": "National Ambulance — Kiribati",
+    "category": "ambulance",
+    "lat": 1.4518,
+    "lon": 173.0186,
+    "phone": "194",
+    "country_code": "KI",
+    "notes": "National ambulance number for Kiribati"
+  },
+  {
+    "id": "bf-nat-pol-ki",
+    "name": "National Police — Kiribati",
+    "category": "police",
+    "lat": 1.4518,
+    "lon": 173.0186,
+    "phone": "192",
+    "country_code": "KI",
+    "notes": "National police number for Kiribati"
+  },
+  {
+    "id": "bf-nat-fir-ki",
+    "name": "National Fire/Rescue — Kiribati",
+    "category": "ambulance",
+    "lat": 1.4518,
+    "lon": 173.0186,
+    "phone": "193",
+    "country_code": "KI",
+    "notes": "National fire number for Kiribati"
+  },
+  {
+    "id": "bf-nat-amb-kw",
+    "name": "National Ambulance — Kuwait",
+    "category": "ambulance",
+    "lat": 29.3759,
+    "lon": 47.9774,
+    "phone": "112",
+    "country_code": "KW",
+    "notes": "National ambulance number for Kuwait"
+  },
+  {
+    "id": "bf-nat-amb-kg",
+    "name": "National Ambulance — Kyrgyzstan",
+    "category": "ambulance",
+    "lat": 42.8746,
+    "lon": 74.5698,
+    "phone": "103",
+    "country_code": "KG",
+    "notes": "National ambulance number for Kyrgyzstan"
+  },
+  {
+    "id": "bf-nat-pol-kg",
+    "name": "National Police — Kyrgyzstan",
+    "category": "police",
+    "lat": 42.8746,
+    "lon": 74.5698,
+    "phone": "102",
+    "country_code": "KG",
+    "notes": "National police number for Kyrgyzstan"
+  },
+  {
+    "id": "bf-nat-fir-kg",
+    "name": "National Fire/Rescue — Kyrgyzstan",
+    "category": "ambulance",
+    "lat": 42.8746,
+    "lon": 74.5698,
+    "phone": "101",
+    "country_code": "KG",
+    "notes": "National fire number for Kyrgyzstan"
+  },
+  {
+    "id": "bf-nat-amb-la",
+    "name": "National Ambulance — Laos",
+    "category": "ambulance",
+    "lat": 17.9757,
+    "lon": 102.6331,
+    "phone": "195",
+    "country_code": "LA",
+    "notes": "National ambulance number for Laos"
+  },
+  {
+    "id": "bf-nat-pol-la",
+    "name": "National Police — Laos",
+    "category": "police",
+    "lat": 17.9757,
+    "lon": 102.6331,
+    "phone": "191",
+    "country_code": "LA",
+    "notes": "National police number for Laos"
+  },
+  {
+    "id": "bf-nat-fir-la",
+    "name": "National Fire/Rescue — Laos",
+    "category": "ambulance",
+    "lat": 17.9757,
+    "lon": 102.6331,
+    "phone": "190",
+    "country_code": "LA",
+    "notes": "National fire number for Laos"
+  },
+  {
+    "id": "bf-nat-amb-lv",
+    "name": "National Ambulance — Latvia",
+    "category": "ambulance",
+    "lat": 56.9496,
+    "lon": 24.1052,
+    "phone": "113",
+    "country_code": "LV",
+    "notes": "National ambulance number for Latvia"
+  },
+  {
+    "id": "bf-nat-pol-lv",
+    "name": "National Police — Latvia",
+    "category": "police",
+    "lat": 56.9496,
+    "lon": 24.1052,
+    "phone": "110",
+    "country_code": "LV",
+    "notes": "National police number for Latvia"
+  },
+  {
+    "id": "bf-nat-fir-lv",
+    "name": "National Fire/Rescue — Latvia",
+    "category": "ambulance",
+    "lat": 56.9496,
+    "lon": 24.1052,
+    "phone": "112",
+    "country_code": "LV",
+    "notes": "National fire number for Latvia"
+  },
+  {
+    "id": "bf-nat-amb-lb",
+    "name": "National Ambulance — Lebanon",
+    "category": "ambulance",
+    "lat": 33.8938,
+    "lon": 35.5018,
+    "phone": "140",
+    "country_code": "LB",
+    "notes": "National ambulance number for Lebanon"
+  },
+  {
+    "id": "bf-nat-pol-lb",
+    "name": "National Police — Lebanon",
+    "category": "police",
+    "lat": 33.8938,
+    "lon": 35.5018,
+    "phone": "160",
+    "country_code": "LB",
+    "notes": "National police number for Lebanon"
+  },
+  {
+    "id": "bf-nat-fir-lb",
+    "name": "National Fire/Rescue — Lebanon",
+    "category": "ambulance",
+    "lat": 33.8938,
+    "lon": 35.5018,
+    "phone": "175",
+    "country_code": "LB",
+    "notes": "National fire number for Lebanon"
+  },
+  {
+    "id": "bf-nat-amb-ls",
+    "name": "National Ambulance — Lesotho",
+    "category": "ambulance",
+    "lat": -29.3142,
+    "lon": 27.4833,
+    "phone": "121",
+    "country_code": "LS",
+    "notes": "National ambulance number for Lesotho"
+  },
+  {
+    "id": "bf-nat-pol-ls",
+    "name": "National Police — Lesotho",
+    "category": "police",
+    "lat": -29.3142,
+    "lon": 27.4833,
+    "phone": "123",
+    "country_code": "LS",
+    "notes": "National police number for Lesotho"
+  },
+  {
+    "id": "bf-nat-fir-ls",
+    "name": "National Fire/Rescue — Lesotho",
+    "category": "ambulance",
+    "lat": -29.3142,
+    "lon": 27.4833,
+    "phone": "122",
+    "country_code": "LS",
+    "notes": "National fire number for Lesotho"
+  },
+  {
+    "id": "bf-nat-amb-lr",
+    "name": "National Ambulance — Liberia",
+    "category": "ambulance",
+    "lat": 6.2907,
+    "lon": -10.7605,
+    "phone": "911",
+    "country_code": "LR",
+    "notes": "National ambulance number for Liberia"
+  },
+  {
+    "id": "bf-nat-amb-ly",
+    "name": "National Ambulance — Libya",
+    "category": "ambulance",
+    "lat": 32.8872,
+    "lon": 13.1913,
+    "phone": "193",
+    "country_code": "LY",
+    "notes": "National ambulance number for Libya"
+  },
+  {
+    "id": "bf-nat-pol-ly",
+    "name": "National Police — Libya",
+    "category": "police",
+    "lat": 32.8872,
+    "lon": 13.1913,
+    "phone": "1515",
+    "country_code": "LY",
+    "notes": "National police number for Libya"
+  },
+  {
+    "id": "bf-nat-amb-li",
+    "name": "National Ambulance — Liechtenstein",
+    "category": "ambulance",
+    "lat": 47.166,
+    "lon": 9.5554,
+    "phone": "144",
+    "country_code": "LI",
+    "notes": "National ambulance number for Liechtenstein"
+  },
+  {
+    "id": "bf-nat-pol-li",
+    "name": "National Police — Liechtenstein",
+    "category": "police",
+    "lat": 47.166,
+    "lon": 9.5554,
+    "phone": "117",
+    "country_code": "LI",
+    "notes": "National police number for Liechtenstein"
+  },
+  {
+    "id": "bf-nat-fir-li",
+    "name": "National Fire/Rescue — Liechtenstein",
+    "category": "ambulance",
+    "lat": 47.166,
+    "lon": 9.5554,
+    "phone": "118",
+    "country_code": "LI",
+    "notes": "National fire number for Liechtenstein"
+  },
+  {
+    "id": "bf-nat-amb-lt",
+    "name": "National Ambulance — Lithuania",
+    "category": "ambulance",
+    "lat": 54.6872,
+    "lon": 25.2797,
+    "phone": "112",
+    "country_code": "LT",
+    "notes": "National ambulance number for Lithuania"
+  },
+  {
+    "id": "bf-nat-amb-lu",
+    "name": "National Ambulance — Luxembourg",
+    "category": "ambulance",
+    "lat": 49.6116,
+    "lon": 6.1319,
+    "phone": "112",
+    "country_code": "LU",
+    "notes": "National ambulance number for Luxembourg"
+  },
+  {
+    "id": "bf-nat-pol-lu",
+    "name": "National Police — Luxembourg",
+    "category": "police",
+    "lat": 49.6116,
+    "lon": 6.1319,
+    "phone": "113",
+    "country_code": "LU",
+    "notes": "National police number for Luxembourg"
+  },
+  {
+    "id": "bf-nat-amb-mg",
+    "name": "National Ambulance — Madagascar",
+    "category": "ambulance",
+    "lat": -18.8792,
+    "lon": 47.5079,
+    "phone": "124",
+    "country_code": "MG",
+    "notes": "National ambulance number for Madagascar"
+  },
+  {
+    "id": "bf-nat-pol-mg",
+    "name": "National Police — Madagascar",
+    "category": "police",
+    "lat": -18.8792,
+    "lon": 47.5079,
+    "phone": "117",
+    "country_code": "MG",
+    "notes": "National police number for Madagascar"
+  },
+  {
+    "id": "bf-nat-fir-mg",
+    "name": "National Fire/Rescue — Madagascar",
+    "category": "ambulance",
+    "lat": -18.8792,
+    "lon": 47.5079,
+    "phone": "118",
+    "country_code": "MG",
+    "notes": "National fire number for Madagascar"
+  },
+  {
+    "id": "bf-nat-amb-mw",
+    "name": "National Ambulance — Malawi",
+    "category": "ambulance",
+    "lat": -13.9626,
+    "lon": 33.7741,
+    "phone": "998",
+    "country_code": "MW",
+    "notes": "National ambulance number for Malawi"
+  },
+  {
+    "id": "bf-nat-pol-mw",
+    "name": "National Police — Malawi",
+    "category": "police",
+    "lat": -13.9626,
+    "lon": 33.7741,
+    "phone": "997",
+    "country_code": "MW",
+    "notes": "National police number for Malawi"
+  },
+  {
+    "id": "bf-nat-fir-mw",
+    "name": "National Fire/Rescue — Malawi",
+    "category": "ambulance",
+    "lat": -13.9626,
+    "lon": 33.7741,
+    "phone": "999",
+    "country_code": "MW",
+    "notes": "National fire number for Malawi"
+  },
+  {
+    "id": "bf-nat-amb-my",
+    "name": "National Ambulance — Malaysia",
+    "category": "ambulance",
+    "lat": 3.139,
+    "lon": 101.6869,
+    "phone": "999",
+    "country_code": "MY",
+    "notes": "National ambulance number for Malaysia"
+  },
+  {
+    "id": "bf-nat-fir-my",
+    "name": "National Fire/Rescue — Malaysia",
+    "category": "ambulance",
+    "lat": 3.139,
+    "lon": 101.6869,
+    "phone": "994",
+    "country_code": "MY",
+    "notes": "National fire number for Malaysia"
+  },
+  {
+    "id": "bf-nat-amb-mv",
+    "name": "National Ambulance — Maldives",
+    "category": "ambulance",
+    "lat": 4.1755,
+    "lon": 73.5093,
+    "phone": "100",
+    "country_code": "MV",
+    "notes": "National ambulance number for Maldives"
+  },
+  {
+    "id": "bf-nat-pol-mv",
+    "name": "National Police — Maldives",
+    "category": "police",
+    "lat": 4.1755,
+    "lon": 73.5093,
+    "phone": "119",
+    "country_code": "MV",
+    "notes": "National police number for Maldives"
+  },
+  {
+    "id": "bf-nat-fir-mv",
+    "name": "National Fire/Rescue — Maldives",
+    "category": "ambulance",
+    "lat": 4.1755,
+    "lon": 73.5093,
+    "phone": "118",
+    "country_code": "MV",
+    "notes": "National fire number for Maldives"
+  },
+  {
+    "id": "bf-nat-amb-ml",
+    "name": "National Ambulance — Mali",
+    "category": "ambulance",
+    "lat": 12.6392,
+    "lon": -8.0029,
+    "phone": "15",
+    "country_code": "ML",
+    "notes": "National ambulance number for Mali"
+  },
+  {
+    "id": "bf-nat-pol-ml",
+    "name": "National Police — Mali",
+    "category": "police",
+    "lat": 12.6392,
+    "lon": -8.0029,
+    "phone": "17",
+    "country_code": "ML",
+    "notes": "National police number for Mali"
+  },
+  {
+    "id": "bf-nat-fir-ml",
+    "name": "National Fire/Rescue — Mali",
+    "category": "ambulance",
+    "lat": 12.6392,
+    "lon": -8.0029,
+    "phone": "18",
+    "country_code": "ML",
+    "notes": "National fire number for Mali"
+  },
+  {
+    "id": "bf-nat-amb-mt",
+    "name": "National Ambulance — Malta",
+    "category": "ambulance",
+    "lat": 35.8989,
+    "lon": 14.5146,
+    "phone": "112",
+    "country_code": "MT",
+    "notes": "National ambulance number for Malta"
+  },
+  {
+    "id": "bf-nat-amb-mh",
+    "name": "National Ambulance — Marshall Islands",
+    "category": "ambulance",
+    "lat": 7.0897,
+    "lon": 171.3803,
+    "phone": "911",
+    "country_code": "MH",
+    "notes": "National ambulance number for Marshall Islands"
+  },
+  {
+    "id": "bf-nat-amb-mr",
+    "name": "National Ambulance — Mauritania",
+    "category": "ambulance",
+    "lat": 18.0735,
+    "lon": -15.9582,
+    "phone": "101",
+    "country_code": "MR",
+    "notes": "National ambulance number for Mauritania"
+  },
+  {
+    "id": "bf-nat-pol-mr",
+    "name": "National Police — Mauritania",
+    "category": "police",
+    "lat": 18.0735,
+    "lon": -15.9582,
+    "phone": "117",
+    "country_code": "MR",
+    "notes": "National police number for Mauritania"
+  },
+  {
+    "id": "bf-nat-fir-mr",
+    "name": "National Fire/Rescue — Mauritania",
+    "category": "ambulance",
+    "lat": 18.0735,
+    "lon": -15.9582,
+    "phone": "118",
+    "country_code": "MR",
+    "notes": "National fire number for Mauritania"
+  },
+  {
+    "id": "bf-nat-amb-mu",
+    "name": "National Ambulance — Mauritius",
+    "category": "ambulance",
+    "lat": -20.1609,
+    "lon": 57.5012,
+    "phone": "114",
+    "country_code": "MU",
+    "notes": "National ambulance number for Mauritius"
+  },
+  {
+    "id": "bf-nat-pol-mu",
+    "name": "National Police — Mauritius",
+    "category": "police",
+    "lat": -20.1609,
+    "lon": 57.5012,
+    "phone": "999",
+    "country_code": "MU",
+    "notes": "National police number for Mauritius"
+  },
+  {
+    "id": "bf-nat-fir-mu",
+    "name": "National Fire/Rescue — Mauritius",
+    "category": "ambulance",
+    "lat": -20.1609,
+    "lon": 57.5012,
+    "phone": "115",
+    "country_code": "MU",
+    "notes": "National fire number for Mauritius"
+  },
+  {
+    "id": "bf-nat-amb-mx",
+    "name": "National Ambulance — Mexico",
+    "category": "ambulance",
+    "lat": 19.4326,
+    "lon": -99.1332,
+    "phone": "911",
+    "country_code": "MX",
+    "notes": "National ambulance number for Mexico"
+  },
+  {
+    "id": "bf-nat-amb-fm",
+    "name": "National Ambulance — Micronesia",
+    "category": "ambulance",
+    "lat": 6.9248,
+    "lon": 158.161,
+    "phone": "911",
+    "country_code": "FM",
+    "notes": "National ambulance number for Micronesia"
+  },
+  {
+    "id": "bf-nat-amb-md",
+    "name": "National Ambulance — Moldova",
+    "category": "ambulance",
+    "lat": 47.0105,
+    "lon": 28.8638,
+    "phone": "112",
+    "country_code": "MD",
+    "notes": "National ambulance number for Moldova"
+  },
+  {
+    "id": "bf-nat-amb-mc",
+    "name": "National Ambulance — Monaco",
+    "category": "ambulance",
+    "lat": 43.7384,
+    "lon": 7.4246,
+    "phone": "18",
+    "country_code": "MC",
+    "notes": "National ambulance number for Monaco"
+  },
+  {
+    "id": "bf-nat-pol-mc",
+    "name": "National Police — Monaco",
+    "category": "police",
+    "lat": 43.7384,
+    "lon": 7.4246,
+    "phone": "17",
+    "country_code": "MC",
+    "notes": "National police number for Monaco"
+  },
+  {
+    "id": "bf-nat-amb-mn",
+    "name": "National Ambulance — Mongolia",
+    "category": "ambulance",
+    "lat": 47.8864,
+    "lon": 106.9057,
+    "phone": "103",
+    "country_code": "MN",
+    "notes": "National ambulance number for Mongolia"
+  },
+  {
+    "id": "bf-nat-pol-mn",
+    "name": "National Police — Mongolia",
+    "category": "police",
+    "lat": 47.8864,
+    "lon": 106.9057,
+    "phone": "102",
+    "country_code": "MN",
+    "notes": "National police number for Mongolia"
+  },
+  {
+    "id": "bf-nat-fir-mn",
+    "name": "National Fire/Rescue — Mongolia",
+    "category": "ambulance",
+    "lat": 47.8864,
+    "lon": 106.9057,
+    "phone": "101",
+    "country_code": "MN",
+    "notes": "National fire number for Mongolia"
+  },
+  {
+    "id": "bf-nat-amb-me",
+    "name": "National Ambulance — Montenegro",
+    "category": "ambulance",
+    "lat": 42.4304,
+    "lon": 19.2594,
+    "phone": "124",
+    "country_code": "ME",
+    "notes": "National ambulance number for Montenegro"
+  },
+  {
+    "id": "bf-nat-pol-me",
+    "name": "National Police — Montenegro",
+    "category": "police",
+    "lat": 42.4304,
+    "lon": 19.2594,
+    "phone": "122",
+    "country_code": "ME",
+    "notes": "National police number for Montenegro"
+  },
+  {
+    "id": "bf-nat-fir-me",
+    "name": "National Fire/Rescue — Montenegro",
+    "category": "ambulance",
+    "lat": 42.4304,
+    "lon": 19.2594,
+    "phone": "123",
+    "country_code": "ME",
+    "notes": "National fire number for Montenegro"
+  },
+  {
+    "id": "bf-nat-amb-ma",
+    "name": "National Ambulance — Morocco",
+    "category": "ambulance",
+    "lat": 33.9716,
+    "lon": -6.8498,
+    "phone": "15",
+    "country_code": "MA",
+    "notes": "National ambulance number for Morocco"
+  },
+  {
+    "id": "bf-nat-pol-ma",
+    "name": "National Police — Morocco",
+    "category": "police",
+    "lat": 33.9716,
+    "lon": -6.8498,
+    "phone": "19",
+    "country_code": "MA",
+    "notes": "National police number for Morocco"
+  },
+  {
+    "id": "bf-nat-amb-mz",
+    "name": "National Ambulance — Mozambique",
+    "category": "ambulance",
+    "lat": -25.9692,
+    "lon": 32.5732,
+    "phone": "117",
+    "country_code": "MZ",
+    "notes": "National ambulance number for Mozambique"
+  },
+  {
+    "id": "bf-nat-pol-mz",
+    "name": "National Police — Mozambique",
+    "category": "police",
+    "lat": -25.9692,
+    "lon": 32.5732,
+    "phone": "119",
+    "country_code": "MZ",
+    "notes": "National police number for Mozambique"
+  },
+  {
+    "id": "bf-nat-fir-mz",
+    "name": "National Fire/Rescue — Mozambique",
+    "category": "ambulance",
+    "lat": -25.9692,
+    "lon": 32.5732,
+    "phone": "198",
+    "country_code": "MZ",
+    "notes": "National fire number for Mozambique"
+  },
+  {
+    "id": "bf-nat-amb-mm",
+    "name": "National Ambulance — Myanmar",
+    "category": "ambulance",
+    "lat": 19.7633,
+    "lon": 96.0785,
+    "phone": "192",
+    "country_code": "MM",
+    "notes": "National ambulance number for Myanmar"
+  },
+  {
+    "id": "bf-nat-pol-mm",
+    "name": "National Police — Myanmar",
+    "category": "police",
+    "lat": 19.7633,
+    "lon": 96.0785,
+    "phone": "199",
+    "country_code": "MM",
+    "notes": "National police number for Myanmar"
+  },
+  {
+    "id": "bf-nat-fir-mm",
+    "name": "National Fire/Rescue — Myanmar",
+    "category": "ambulance",
+    "lat": 19.7633,
+    "lon": 96.0785,
+    "phone": "191",
+    "country_code": "MM",
+    "notes": "National fire number for Myanmar"
+  },
+  {
+    "id": "bf-nat-amb-na",
+    "name": "National Ambulance — Namibia",
+    "category": "ambulance",
+    "lat": -22.5609,
+    "lon": 17.0658,
+    "phone": "211111",
+    "country_code": "NA",
+    "notes": "National ambulance number for Namibia"
+  },
+  {
+    "id": "bf-nat-pol-na",
+    "name": "National Police — Namibia",
+    "category": "police",
+    "lat": -22.5609,
+    "lon": 17.0658,
+    "phone": "10111",
+    "country_code": "NA",
+    "notes": "National police number for Namibia"
+  },
+  {
+    "id": "bf-nat-amb-nr",
+    "name": "National Ambulance — Nauru",
+    "category": "ambulance",
+    "lat": -0.5477,
+    "lon": 166.9209,
+    "phone": "111",
+    "country_code": "NR",
+    "notes": "National ambulance number for Nauru"
+  },
+  {
+    "id": "bf-nat-pol-nr",
+    "name": "National Police — Nauru",
+    "category": "police",
+    "lat": -0.5477,
+    "lon": 166.9209,
+    "phone": "110",
+    "country_code": "NR",
+    "notes": "National police number for Nauru"
+  },
+  {
+    "id": "bf-nat-fir-nr",
+    "name": "National Fire/Rescue — Nauru",
+    "category": "ambulance",
+    "lat": -0.5477,
+    "lon": 166.9209,
+    "phone": "112",
+    "country_code": "NR",
+    "notes": "National fire number for Nauru"
+  },
+  {
+    "id": "bf-nat-amb-np",
+    "name": "National Ambulance — Nepal",
+    "category": "ambulance",
+    "lat": 27.7172,
+    "lon": 85.324,
+    "phone": "102",
+    "country_code": "NP",
+    "notes": "National ambulance number for Nepal"
+  },
+  {
+    "id": "bf-nat-pol-np",
+    "name": "National Police — Nepal",
+    "category": "police",
+    "lat": 27.7172,
+    "lon": 85.324,
+    "phone": "100",
+    "country_code": "NP",
+    "notes": "National police number for Nepal"
+  },
+  {
+    "id": "bf-nat-fir-np",
+    "name": "National Fire/Rescue — Nepal",
+    "category": "ambulance",
+    "lat": 27.7172,
+    "lon": 85.324,
+    "phone": "101",
+    "country_code": "NP",
+    "notes": "National fire number for Nepal"
+  },
+  {
+    "id": "bf-nat-amb-nl",
+    "name": "National Ambulance — Netherlands",
+    "category": "ambulance",
+    "lat": 52.3676,
+    "lon": 4.9041,
+    "phone": "112",
+    "country_code": "NL",
+    "notes": "National ambulance number for Netherlands"
+  },
+  {
+    "id": "bf-nat-amb-nz",
+    "name": "National Ambulance — New Zealand",
+    "category": "ambulance",
+    "lat": -41.2866,
+    "lon": 174.7756,
+    "phone": "111",
+    "country_code": "NZ",
+    "notes": "National ambulance number for New Zealand"
+  },
+  {
+    "id": "bf-nat-amb-ni",
+    "name": "National Ambulance — Nicaragua",
+    "category": "ambulance",
+    "lat": 12.115,
+    "lon": -86.2362,
+    "phone": "128",
+    "country_code": "NI",
+    "notes": "National ambulance number for Nicaragua"
+  },
+  {
+    "id": "bf-nat-pol-ni",
+    "name": "National Police — Nicaragua",
+    "category": "police",
+    "lat": 12.115,
+    "lon": -86.2362,
+    "phone": "118",
+    "country_code": "NI",
+    "notes": "National police number for Nicaragua"
+  },
+  {
+    "id": "bf-nat-fir-ni",
+    "name": "National Fire/Rescue — Nicaragua",
+    "category": "ambulance",
+    "lat": 12.115,
+    "lon": -86.2362,
+    "phone": "115",
+    "country_code": "NI",
+    "notes": "National fire number for Nicaragua"
+  },
+  {
+    "id": "bf-nat-amb-ne",
+    "name": "National Ambulance — Niger",
+    "category": "ambulance",
+    "lat": 13.5127,
+    "lon": 2.1128,
+    "phone": "15",
+    "country_code": "NE",
+    "notes": "National ambulance number for Niger"
+  },
+  {
+    "id": "bf-nat-pol-ne",
+    "name": "National Police — Niger",
+    "category": "police",
+    "lat": 13.5127,
+    "lon": 2.1128,
+    "phone": "17",
+    "country_code": "NE",
+    "notes": "National police number for Niger"
+  },
+  {
+    "id": "bf-nat-fir-ne",
+    "name": "National Fire/Rescue — Niger",
+    "category": "ambulance",
+    "lat": 13.5127,
+    "lon": 2.1128,
+    "phone": "18",
+    "country_code": "NE",
+    "notes": "National fire number for Niger"
+  },
+  {
+    "id": "bf-nat-amb-ng",
+    "name": "National Ambulance — Nigeria",
+    "category": "ambulance",
+    "lat": 9.0765,
+    "lon": 7.3986,
+    "phone": "112",
+    "country_code": "NG",
+    "notes": "National ambulance number for Nigeria"
+  },
+  {
+    "id": "bf-nat-amb-nu",
+    "name": "National Ambulance — Niue",
+    "category": "ambulance",
+    "lat": -19.0544,
+    "lon": -169.8672,
+    "phone": "999",
+    "country_code": "NU",
+    "notes": "National ambulance number for Niue"
+  },
+  {
+    "id": "bf-nat-amb-kp",
+    "name": "National Ambulance — North Korea",
+    "category": "ambulance",
+    "lat": 39.0392,
+    "lon": 125.7625,
+    "phone": "8119",
+    "country_code": "KP",
+    "notes": "National ambulance number for North Korea"
+  },
+  {
+    "id": "bf-nat-pol-kp",
+    "name": "National Police — North Korea",
+    "category": "police",
+    "lat": 39.0392,
+    "lon": 125.7625,
+    "phone": "110",
+    "country_code": "KP",
+    "notes": "National police number for North Korea"
+  },
+  {
+    "id": "bf-nat-amb-mk",
+    "name": "National Ambulance — North Macedonia",
+    "category": "ambulance",
+    "lat": 41.9973,
+    "lon": 21.428,
+    "phone": "194",
+    "country_code": "MK",
+    "notes": "National ambulance number for North Macedonia"
+  },
+  {
+    "id": "bf-nat-pol-mk",
+    "name": "National Police — North Macedonia",
+    "category": "police",
+    "lat": 41.9973,
+    "lon": 21.428,
+    "phone": "192",
+    "country_code": "MK",
+    "notes": "National police number for North Macedonia"
+  },
+  {
+    "id": "bf-nat-fir-mk",
+    "name": "National Fire/Rescue — North Macedonia",
+    "category": "ambulance",
+    "lat": 41.9973,
+    "lon": 21.428,
+    "phone": "193",
+    "country_code": "MK",
+    "notes": "National fire number for North Macedonia"
+  },
+  {
+    "id": "bf-nat-amb-no",
+    "name": "National Ambulance — Norway",
+    "category": "ambulance",
+    "lat": 59.9139,
+    "lon": 10.7522,
+    "phone": "113",
+    "country_code": "NO",
+    "notes": "National ambulance number for Norway"
+  },
+  {
+    "id": "bf-nat-pol-no",
+    "name": "National Police — Norway",
+    "category": "police",
+    "lat": 59.9139,
+    "lon": 10.7522,
+    "phone": "112",
+    "country_code": "NO",
+    "notes": "National police number for Norway"
+  },
+  {
+    "id": "bf-nat-fir-no",
+    "name": "National Fire/Rescue — Norway",
+    "category": "ambulance",
+    "lat": 59.9139,
+    "lon": 10.7522,
+    "phone": "110",
+    "country_code": "NO",
+    "notes": "National fire number for Norway"
+  },
+  {
+    "id": "bf-nat-amb-om",
+    "name": "National Ambulance — Oman",
+    "category": "ambulance",
+    "lat": 23.588,
+    "lon": 58.3829,
+    "phone": "9999",
+    "country_code": "OM",
+    "notes": "National ambulance number for Oman"
+  },
+  {
+    "id": "bf-nat-amb-pk",
+    "name": "National Ambulance — Pakistan",
+    "category": "ambulance",
+    "lat": 33.6844,
+    "lon": 73.0479,
+    "phone": "115",
+    "country_code": "PK",
+    "notes": "National ambulance number for Pakistan"
+  },
+  {
+    "id": "bf-nat-pol-pk",
+    "name": "National Police — Pakistan",
+    "category": "police",
+    "lat": 33.6844,
+    "lon": 73.0479,
+    "phone": "15",
+    "country_code": "PK",
+    "notes": "National police number for Pakistan"
+  },
+  {
+    "id": "bf-nat-fir-pk",
+    "name": "National Fire/Rescue — Pakistan",
+    "category": "ambulance",
+    "lat": 33.6844,
+    "lon": 73.0479,
+    "phone": "16",
+    "country_code": "PK",
+    "notes": "National fire number for Pakistan"
+  },
+  {
+    "id": "bf-nat-amb-pw",
+    "name": "National Ambulance — Palau",
+    "category": "ambulance",
+    "lat": 7.5,
+    "lon": 134.6243,
+    "phone": "911",
+    "country_code": "PW",
+    "notes": "National ambulance number for Palau"
+  },
+  {
+    "id": "bf-nat-amb-ps",
+    "name": "National Ambulance — Palestine State",
+    "category": "ambulance",
+    "lat": 31.9522,
+    "lon": 35.2332,
+    "phone": "101",
+    "country_code": "PS",
+    "notes": "National ambulance number for Palestine State"
+  },
+  {
+    "id": "bf-nat-pol-ps",
+    "name": "National Police — Palestine State",
+    "category": "police",
+    "lat": 31.9522,
+    "lon": 35.2332,
+    "phone": "100",
+    "country_code": "PS",
+    "notes": "National police number for Palestine State"
+  },
+  {
+    "id": "bf-nat-fir-ps",
+    "name": "National Fire/Rescue — Palestine State",
+    "category": "ambulance",
+    "lat": 31.9522,
+    "lon": 35.2332,
+    "phone": "102",
+    "country_code": "PS",
+    "notes": "National fire number for Palestine State"
+  },
+  {
+    "id": "bf-nat-amb-pa",
+    "name": "National Ambulance — Panama",
+    "category": "ambulance",
+    "lat": 8.9824,
+    "lon": -79.5199,
+    "phone": "911",
+    "country_code": "PA",
+    "notes": "National ambulance number for Panama"
+  },
+  {
+    "id": "bf-nat-pol-pa",
+    "name": "National Police — Panama",
+    "category": "police",
+    "lat": 8.9824,
+    "lon": -79.5199,
+    "phone": "104",
+    "country_code": "PA",
+    "notes": "National police number for Panama"
+  },
+  {
+    "id": "bf-nat-fir-pa",
+    "name": "National Fire/Rescue — Panama",
+    "category": "ambulance",
+    "lat": 8.9824,
+    "lon": -79.5199,
+    "phone": "103",
+    "country_code": "PA",
+    "notes": "National fire number for Panama"
+  },
+  {
+    "id": "bf-nat-amb-pg",
+    "name": "National Ambulance — Papua New Guinea",
+    "category": "ambulance",
+    "lat": -6.3149,
+    "lon": 143.9556,
+    "phone": "111",
+    "country_code": "PG",
+    "notes": "National ambulance number for Papua New Guinea"
+  },
+  {
+    "id": "bf-nat-pol-pg",
+    "name": "National Police — Papua New Guinea",
+    "category": "police",
+    "lat": -6.3149,
+    "lon": 143.9556,
+    "phone": "112",
+    "country_code": "PG",
+    "notes": "National police number for Papua New Guinea"
+  },
+  {
+    "id": "bf-nat-fir-pg",
+    "name": "National Fire/Rescue — Papua New Guinea",
+    "category": "ambulance",
+    "lat": -6.3149,
+    "lon": 143.9556,
+    "phone": "110",
+    "country_code": "PG",
+    "notes": "National fire number for Papua New Guinea"
+  },
+  {
+    "id": "bf-nat-amb-py",
+    "name": "National Ambulance — Paraguay",
+    "category": "ambulance",
+    "lat": -25.2637,
+    "lon": -57.5759,
+    "phone": "141",
+    "country_code": "PY",
+    "notes": "National ambulance number for Paraguay"
+  },
+  {
+    "id": "bf-nat-pol-py",
+    "name": "National Police — Paraguay",
+    "category": "police",
+    "lat": -25.2637,
+    "lon": -57.5759,
+    "phone": "912",
+    "country_code": "PY",
+    "notes": "National police number for Paraguay"
+  },
+  {
+    "id": "bf-nat-fir-py",
+    "name": "National Fire/Rescue — Paraguay",
+    "category": "ambulance",
+    "lat": -25.2637,
+    "lon": -57.5759,
+    "phone": "132",
+    "country_code": "PY",
+    "notes": "National fire number for Paraguay"
+  },
+  {
+    "id": "bf-nat-amb-pe",
+    "name": "National Ambulance — Peru",
+    "category": "ambulance",
+    "lat": -12.0464,
+    "lon": -77.0428,
+    "phone": "106",
+    "country_code": "PE",
+    "notes": "National ambulance number for Peru"
+  },
+  {
+    "id": "bf-nat-pol-pe",
+    "name": "National Police — Peru",
+    "category": "police",
+    "lat": -12.0464,
+    "lon": -77.0428,
+    "phone": "105",
+    "country_code": "PE",
+    "notes": "National police number for Peru"
+  },
+  {
+    "id": "bf-nat-fir-pe",
+    "name": "National Fire/Rescue — Peru",
+    "category": "ambulance",
+    "lat": -12.0464,
+    "lon": -77.0428,
+    "phone": "116",
+    "country_code": "PE",
+    "notes": "National fire number for Peru"
+  },
+  {
+    "id": "bf-nat-amb-ph",
+    "name": "National Ambulance — Philippines",
+    "category": "ambulance",
+    "lat": 14.5995,
+    "lon": 120.9842,
+    "phone": "911",
+    "country_code": "PH",
+    "notes": "National ambulance number for Philippines"
+  },
+  {
+    "id": "bf-nat-amb-pl",
+    "name": "National Ambulance — Poland",
+    "category": "ambulance",
+    "lat": 52.2297,
+    "lon": 21.0122,
+    "phone": "999",
+    "country_code": "PL",
+    "notes": "National ambulance number for Poland"
+  },
+  {
+    "id": "bf-nat-pol-pl",
+    "name": "National Police — Poland",
+    "category": "police",
+    "lat": 52.2297,
+    "lon": 21.0122,
+    "phone": "997",
+    "country_code": "PL",
+    "notes": "National police number for Poland"
+  },
+  {
+    "id": "bf-nat-fir-pl",
+    "name": "National Fire/Rescue — Poland",
+    "category": "ambulance",
+    "lat": 52.2297,
+    "lon": 21.0122,
+    "phone": "998",
+    "country_code": "PL",
+    "notes": "National fire number for Poland"
+  },
+  {
+    "id": "bf-nat-amb-pt",
+    "name": "National Ambulance — Portugal",
+    "category": "ambulance",
+    "lat": 38.7223,
+    "lon": -9.1393,
+    "phone": "112",
+    "country_code": "PT",
+    "notes": "National ambulance number for Portugal"
+  },
+  {
+    "id": "bf-nat-amb-qa",
+    "name": "National Ambulance — Qatar",
+    "category": "ambulance",
+    "lat": 25.2854,
+    "lon": 51.531,
+    "phone": "999",
+    "country_code": "QA",
+    "notes": "National ambulance number for Qatar"
+  },
+  {
+    "id": "bf-nat-amb-ro",
+    "name": "National Ambulance — Romania",
+    "category": "ambulance",
+    "lat": 44.4268,
+    "lon": 26.1025,
+    "phone": "112",
+    "country_code": "RO",
+    "notes": "National ambulance number for Romania"
+  },
+  {
+    "id": "bf-nat-amb-ru",
+    "name": "National Ambulance — Russia",
+    "category": "ambulance",
+    "lat": 55.7558,
+    "lon": 37.6173,
+    "phone": "103",
+    "country_code": "RU",
+    "notes": "National ambulance number for Russia"
+  },
+  {
+    "id": "bf-nat-pol-ru",
+    "name": "National Police — Russia",
+    "category": "police",
+    "lat": 55.7558,
+    "lon": 37.6173,
+    "phone": "102",
+    "country_code": "RU",
+    "notes": "National police number for Russia"
+  },
+  {
+    "id": "bf-nat-fir-ru",
+    "name": "National Fire/Rescue — Russia",
+    "category": "ambulance",
+    "lat": 55.7558,
+    "lon": 37.6173,
+    "phone": "101",
+    "country_code": "RU",
+    "notes": "National fire number for Russia"
+  },
+  {
+    "id": "bf-nat-amb-rw",
+    "name": "National Ambulance — Rwanda",
+    "category": "ambulance",
+    "lat": -1.9403,
+    "lon": 29.8739,
+    "phone": "912",
+    "country_code": "RW",
+    "notes": "National ambulance number for Rwanda"
+  },
+  {
+    "id": "bf-nat-pol-rw",
+    "name": "National Police — Rwanda",
+    "category": "police",
+    "lat": -1.9403,
+    "lon": 29.8739,
+    "phone": "112",
+    "country_code": "RW",
+    "notes": "National police number for Rwanda"
+  },
+  {
+    "id": "bf-nat-amb-kn",
+    "name": "National Ambulance — Saint Kitts and Nevis",
+    "category": "ambulance",
+    "lat": 17.3026,
+    "lon": -62.7177,
+    "phone": "911",
+    "country_code": "KN",
+    "notes": "National ambulance number for Saint Kitts and Nevis"
+  },
+  {
+    "id": "bf-nat-amb-lc",
+    "name": "National Ambulance — Saint Lucia",
+    "category": "ambulance",
+    "lat": 14.0101,
+    "lon": -60.987,
+    "phone": "911",
+    "country_code": "LC",
+    "notes": "National ambulance number for Saint Lucia"
+  },
+  {
+    "id": "bf-nat-pol-lc",
+    "name": "National Police — Saint Lucia",
+    "category": "police",
+    "lat": 14.0101,
+    "lon": -60.987,
+    "phone": "999",
+    "country_code": "LC",
+    "notes": "National police number for Saint Lucia"
+  },
+  {
+    "id": "bf-nat-amb-vc",
+    "name": "National Ambulance — Saint Vincent and the Grenadines",
+    "category": "ambulance",
+    "lat": 13.1587,
+    "lon": -61.2248,
+    "phone": "999",
+    "country_code": "VC",
+    "notes": "National ambulance number for Saint Vincent and the Grenadines"
+  },
+  {
+    "id": "bf-nat-amb-ws",
+    "name": "National Ambulance — Samoa",
+    "category": "ambulance",
+    "lat": -13.8333,
+    "lon": -171.75,
+    "phone": "996",
+    "country_code": "WS",
+    "notes": "National ambulance number for Samoa"
+  },
+  {
+    "id": "bf-nat-pol-ws",
+    "name": "National Police — Samoa",
+    "category": "police",
+    "lat": -13.8333,
+    "lon": -171.75,
+    "phone": "995",
+    "country_code": "WS",
+    "notes": "National police number for Samoa"
+  },
+  {
+    "id": "bf-nat-fir-ws",
+    "name": "National Fire/Rescue — Samoa",
+    "category": "ambulance",
+    "lat": -13.8333,
+    "lon": -171.75,
+    "phone": "994",
+    "country_code": "WS",
+    "notes": "National fire number for Samoa"
+  },
+  {
+    "id": "bf-nat-amb-sm",
+    "name": "National Ambulance — San Marino",
+    "category": "ambulance",
+    "lat": 43.9333,
+    "lon": 12.45,
+    "phone": "118",
+    "country_code": "SM",
+    "notes": "National ambulance number for San Marino"
+  },
+  {
+    "id": "bf-nat-pol-sm",
+    "name": "National Police — San Marino",
+    "category": "police",
+    "lat": 43.9333,
+    "lon": 12.45,
+    "phone": "113",
+    "country_code": "SM",
+    "notes": "National police number for San Marino"
+  },
+  {
+    "id": "bf-nat-fir-sm",
+    "name": "National Fire/Rescue — San Marino",
+    "category": "ambulance",
+    "lat": 43.9333,
+    "lon": 12.45,
+    "phone": "115",
+    "country_code": "SM",
+    "notes": "National fire number for San Marino"
+  },
+  {
+    "id": "bf-nat-amb-st",
+    "name": "National Ambulance — Sao Tome and Principe",
+    "category": "ambulance",
+    "lat": 0.1864,
+    "lon": 6.6131,
+    "phone": "112",
+    "country_code": "ST",
+    "notes": "National ambulance number for Sao Tome and Principe"
+  },
+  {
+    "id": "bf-nat-amb-sa",
+    "name": "National Ambulance — Saudi Arabia",
+    "category": "ambulance",
+    "lat": 24.7136,
+    "lon": 46.6753,
+    "phone": "997",
+    "country_code": "SA",
+    "notes": "National ambulance number for Saudi Arabia"
+  },
+  {
+    "id": "bf-nat-pol-sa",
+    "name": "National Police — Saudi Arabia",
+    "category": "police",
+    "lat": 24.7136,
+    "lon": 46.6753,
+    "phone": "999",
+    "country_code": "SA",
+    "notes": "National police number for Saudi Arabia"
+  },
+  {
+    "id": "bf-nat-fir-sa",
+    "name": "National Fire/Rescue — Saudi Arabia",
+    "category": "ambulance",
+    "lat": 24.7136,
+    "lon": 46.6753,
+    "phone": "998",
+    "country_code": "SA",
+    "notes": "National fire number for Saudi Arabia"
+  },
+  {
+    "id": "bf-nat-amb-sn",
+    "name": "National Ambulance — Senegal",
+    "category": "ambulance",
+    "lat": 14.7167,
+    "lon": -17.4677,
+    "phone": "18",
+    "country_code": "SN",
+    "notes": "National ambulance number for Senegal"
+  },
+  {
+    "id": "bf-nat-pol-sn",
+    "name": "National Police — Senegal",
+    "category": "police",
+    "lat": 14.7167,
+    "lon": -17.4677,
+    "phone": "17",
+    "country_code": "SN",
+    "notes": "National police number for Senegal"
+  },
+  {
+    "id": "bf-nat-fir-sn",
+    "name": "National Fire/Rescue — Senegal",
+    "category": "ambulance",
+    "lat": 14.7167,
+    "lon": -17.4677,
+    "phone": "1515",
+    "country_code": "SN",
+    "notes": "National fire number for Senegal"
+  },
+  {
+    "id": "bf-nat-amb-rs",
+    "name": "National Ambulance — Serbia",
+    "category": "ambulance",
+    "lat": 44.7866,
+    "lon": 20.4489,
+    "phone": "194",
+    "country_code": "RS",
+    "notes": "National ambulance number for Serbia"
+  },
+  {
+    "id": "bf-nat-pol-rs",
+    "name": "National Police — Serbia",
+    "category": "police",
+    "lat": 44.7866,
+    "lon": 20.4489,
+    "phone": "192",
+    "country_code": "RS",
+    "notes": "National police number for Serbia"
+  },
+  {
+    "id": "bf-nat-fir-rs",
+    "name": "National Fire/Rescue — Serbia",
+    "category": "ambulance",
+    "lat": 44.7866,
+    "lon": 20.4489,
+    "phone": "193",
+    "country_code": "RS",
+    "notes": "National fire number for Serbia"
+  },
+  {
+    "id": "bf-nat-amb-sc",
+    "name": "National Ambulance — Seychelles",
+    "category": "ambulance",
+    "lat": -4.6796,
+    "lon": 55.492,
+    "phone": "151",
+    "country_code": "SC",
+    "notes": "National ambulance number for Seychelles"
+  },
+  {
+    "id": "bf-nat-pol-sc",
+    "name": "National Police — Seychelles",
+    "category": "police",
+    "lat": -4.6796,
+    "lon": 55.492,
+    "phone": "133",
+    "country_code": "SC",
+    "notes": "National police number for Seychelles"
+  },
+  {
+    "id": "bf-nat-fir-sc",
+    "name": "National Fire/Rescue — Seychelles",
+    "category": "ambulance",
+    "lat": -4.6796,
+    "lon": 55.492,
+    "phone": "999",
+    "country_code": "SC",
+    "notes": "National fire number for Seychelles"
+  },
+  {
+    "id": "bf-nat-amb-sl",
+    "name": "National Ambulance — Sierra Leone",
+    "category": "ambulance",
+    "lat": 8.4657,
+    "lon": -13.2317,
+    "phone": "019",
+    "country_code": "SL",
+    "notes": "National ambulance number for Sierra Leone"
+  },
+  {
+    "id": "bf-nat-amb-sg",
+    "name": "National Ambulance — Singapore",
+    "category": "ambulance",
+    "lat": 1.3521,
+    "lon": 103.8198,
+    "phone": "995",
+    "country_code": "SG",
+    "notes": "National ambulance number for Singapore"
+  },
+  {
+    "id": "bf-nat-pol-sg",
+    "name": "National Police — Singapore",
+    "category": "police",
+    "lat": 1.3521,
+    "lon": 103.8198,
+    "phone": "999",
+    "country_code": "SG",
+    "notes": "National police number for Singapore"
+  },
+  {
+    "id": "bf-nat-amb-sk",
+    "name": "National Ambulance — Slovakia",
+    "category": "ambulance",
+    "lat": 48.1486,
+    "lon": 17.1077,
+    "phone": "155",
+    "country_code": "SK",
+    "notes": "National ambulance number for Slovakia"
+  },
+  {
+    "id": "bf-nat-pol-sk",
+    "name": "National Police — Slovakia",
+    "category": "police",
+    "lat": 48.1486,
+    "lon": 17.1077,
+    "phone": "158",
+    "country_code": "SK",
+    "notes": "National police number for Slovakia"
+  },
+  {
+    "id": "bf-nat-fir-sk",
+    "name": "National Fire/Rescue — Slovakia",
+    "category": "ambulance",
+    "lat": 48.1486,
+    "lon": 17.1077,
+    "phone": "150",
+    "country_code": "SK",
+    "notes": "National fire number for Slovakia"
+  },
+  {
+    "id": "bf-nat-amb-si",
+    "name": "National Ambulance — Slovenia",
+    "category": "ambulance",
+    "lat": 46.0569,
+    "lon": 14.5058,
+    "phone": "112",
+    "country_code": "SI",
+    "notes": "National ambulance number for Slovenia"
+  },
+  {
+    "id": "bf-nat-pol-si",
+    "name": "National Police — Slovenia",
+    "category": "police",
+    "lat": 46.0569,
+    "lon": 14.5058,
+    "phone": "113",
+    "country_code": "SI",
+    "notes": "National police number for Slovenia"
+  },
+  {
+    "id": "bf-nat-amb-sb",
+    "name": "National Ambulance — Solomon Islands",
+    "category": "ambulance",
+    "lat": -9.4456,
+    "lon": 160.0,
+    "phone": "111",
+    "country_code": "SB",
+    "notes": "National ambulance number for Solomon Islands"
+  },
+  {
+    "id": "bf-nat-pol-sb",
+    "name": "National Police — Solomon Islands",
+    "category": "police",
+    "lat": -9.4456,
+    "lon": 160.0,
+    "phone": "999",
+    "country_code": "SB",
+    "notes": "National police number for Solomon Islands"
+  },
+  {
+    "id": "bf-nat-fir-sb",
+    "name": "National Fire/Rescue — Solomon Islands",
+    "category": "ambulance",
+    "lat": -9.4456,
+    "lon": 160.0,
+    "phone": "988",
+    "country_code": "SB",
+    "notes": "National fire number for Solomon Islands"
+  },
+  {
+    "id": "bf-nat-amb-so",
+    "name": "National Ambulance — Somalia",
+    "category": "ambulance",
+    "lat": 2.0469,
+    "lon": 45.3182,
+    "phone": "999",
+    "country_code": "SO",
+    "notes": "National ambulance number for Somalia"
+  },
+  {
+    "id": "bf-nat-pol-so",
+    "name": "National Police — Somalia",
+    "category": "police",
+    "lat": 2.0469,
+    "lon": 45.3182,
+    "phone": "888",
+    "country_code": "SO",
+    "notes": "National police number for Somalia"
+  },
+  {
+    "id": "bf-nat-fir-so",
+    "name": "National Fire/Rescue — Somalia",
+    "category": "ambulance",
+    "lat": 2.0469,
+    "lon": 45.3182,
+    "phone": "555",
+    "country_code": "SO",
+    "notes": "National fire number for Somalia"
+  },
+  {
+    "id": "bf-nat-amb-za",
+    "name": "National Ambulance — South Africa",
+    "category": "ambulance",
+    "lat": -25.7479,
+    "lon": 28.2293,
+    "phone": "10177",
+    "country_code": "ZA",
+    "notes": "National ambulance number for South Africa"
+  },
+  {
+    "id": "bf-nat-pol-za",
+    "name": "National Police — South Africa",
+    "category": "police",
+    "lat": -25.7479,
+    "lon": 28.2293,
+    "phone": "10111",
+    "country_code": "ZA",
+    "notes": "National police number for South Africa"
+  },
+  {
+    "id": "bf-nat-amb-kr",
+    "name": "National Ambulance — South Korea",
+    "category": "ambulance",
+    "lat": 37.5665,
+    "lon": 126.978,
+    "phone": "119",
+    "country_code": "KR",
+    "notes": "National ambulance number for South Korea"
+  },
+  {
+    "id": "bf-nat-pol-kr",
+    "name": "National Police — South Korea",
+    "category": "police",
+    "lat": 37.5665,
+    "lon": 126.978,
+    "phone": "112",
+    "country_code": "KR",
+    "notes": "National police number for South Korea"
+  },
+  {
+    "id": "bf-nat-amb-ss",
+    "name": "National Ambulance — South Sudan",
+    "category": "ambulance",
+    "lat": 4.8517,
+    "lon": 31.5825,
+    "phone": "999",
+    "country_code": "SS",
+    "notes": "National ambulance number for South Sudan"
+  },
+  {
+    "id": "bf-nat-amb-es",
+    "name": "National Ambulance — Spain",
+    "category": "ambulance",
+    "lat": 40.4168,
+    "lon": -3.7038,
+    "phone": "061",
+    "country_code": "ES",
+    "notes": "National ambulance number for Spain"
+  },
+  {
+    "id": "bf-nat-pol-es",
+    "name": "National Police — Spain",
+    "category": "police",
+    "lat": 40.4168,
+    "lon": -3.7038,
+    "phone": "112",
+    "country_code": "ES",
+    "notes": "National police number for Spain"
+  },
+  {
+    "id": "bf-nat-fir-es",
+    "name": "National Fire/Rescue — Spain",
+    "category": "ambulance",
+    "lat": 40.4168,
+    "lon": -3.7038,
+    "phone": "080",
+    "country_code": "ES",
+    "notes": "National fire number for Spain"
+  },
+  {
+    "id": "bf-nat-amb-lk",
+    "name": "National Ambulance — Sri Lanka",
+    "category": "ambulance",
+    "lat": 6.9271,
+    "lon": 79.8612,
+    "phone": "1990",
+    "country_code": "LK",
+    "notes": "National ambulance number for Sri Lanka"
+  },
+  {
+    "id": "bf-nat-pol-lk",
+    "name": "National Police — Sri Lanka",
+    "category": "police",
+    "lat": 6.9271,
+    "lon": 79.8612,
+    "phone": "119",
+    "country_code": "LK",
+    "notes": "National police number for Sri Lanka"
+  },
+  {
+    "id": "bf-nat-fir-lk",
+    "name": "National Fire/Rescue — Sri Lanka",
+    "category": "ambulance",
+    "lat": 6.9271,
+    "lon": 79.8612,
+    "phone": "110",
+    "country_code": "LK",
+    "notes": "National fire number for Sri Lanka"
+  },
+  {
+    "id": "bf-nat-amb-sd",
+    "name": "National Ambulance — Sudan",
+    "category": "ambulance",
+    "lat": 15.5007,
+    "lon": 32.5599,
+    "phone": "999",
+    "country_code": "SD",
+    "notes": "National ambulance number for Sudan"
+  },
+  {
+    "id": "bf-nat-amb-sr",
+    "name": "National Ambulance — Suriname",
+    "category": "ambulance",
+    "lat": 5.852,
+    "lon": -55.2038,
+    "phone": "113",
+    "country_code": "SR",
+    "notes": "National ambulance number for Suriname"
+  },
+  {
+    "id": "bf-nat-pol-sr",
+    "name": "National Police — Suriname",
+    "category": "police",
+    "lat": 5.852,
+    "lon": -55.2038,
+    "phone": "115",
+    "country_code": "SR",
+    "notes": "National police number for Suriname"
+  },
+  {
+    "id": "bf-nat-fir-sr",
+    "name": "National Fire/Rescue — Suriname",
+    "category": "ambulance",
+    "lat": 5.852,
+    "lon": -55.2038,
+    "phone": "110",
+    "country_code": "SR",
+    "notes": "National fire number for Suriname"
+  },
+  {
+    "id": "bf-nat-amb-se",
+    "name": "National Ambulance — Sweden",
+    "category": "ambulance",
+    "lat": 59.3293,
+    "lon": 18.0686,
+    "phone": "112",
+    "country_code": "SE",
+    "notes": "National ambulance number for Sweden"
+  },
+  {
+    "id": "bf-nat-amb-ch",
+    "name": "National Ambulance — Switzerland",
+    "category": "ambulance",
+    "lat": 46.948,
+    "lon": 7.4474,
+    "phone": "144",
+    "country_code": "CH",
+    "notes": "National ambulance number for Switzerland"
+  },
+  {
+    "id": "bf-nat-pol-ch",
+    "name": "National Police — Switzerland",
+    "category": "police",
+    "lat": 46.948,
+    "lon": 7.4474,
+    "phone": "117",
+    "country_code": "CH",
+    "notes": "National police number for Switzerland"
+  },
+  {
+    "id": "bf-nat-fir-ch",
+    "name": "National Fire/Rescue — Switzerland",
+    "category": "ambulance",
+    "lat": 46.948,
+    "lon": 7.4474,
+    "phone": "118",
+    "country_code": "CH",
+    "notes": "National fire number for Switzerland"
+  },
+  {
+    "id": "bf-nat-amb-sy",
+    "name": "National Ambulance — Syria",
+    "category": "ambulance",
+    "lat": 33.5138,
+    "lon": 36.2765,
+    "phone": "110",
+    "country_code": "SY",
+    "notes": "National ambulance number for Syria"
+  },
+  {
+    "id": "bf-nat-pol-sy",
+    "name": "National Police — Syria",
+    "category": "police",
+    "lat": 33.5138,
+    "lon": 36.2765,
+    "phone": "112",
+    "country_code": "SY",
+    "notes": "National police number for Syria"
+  },
+  {
+    "id": "bf-nat-fir-sy",
+    "name": "National Fire/Rescue — Syria",
+    "category": "ambulance",
+    "lat": 33.5138,
+    "lon": 36.2765,
+    "phone": "113",
+    "country_code": "SY",
+    "notes": "National fire number for Syria"
+  },
+  {
+    "id": "bf-nat-amb-tw",
+    "name": "National Ambulance — Taiwan",
+    "category": "ambulance",
+    "lat": 25.033,
+    "lon": 121.5654,
+    "phone": "119",
+    "country_code": "TW",
+    "notes": "National ambulance number for Taiwan"
+  },
+  {
+    "id": "bf-nat-pol-tw",
+    "name": "National Police — Taiwan",
+    "category": "police",
+    "lat": 25.033,
+    "lon": 121.5654,
+    "phone": "110",
+    "country_code": "TW",
+    "notes": "National police number for Taiwan"
+  },
+  {
+    "id": "bf-nat-amb-tj",
+    "name": "National Ambulance — Tajikistan",
+    "category": "ambulance",
+    "lat": 38.5598,
+    "lon": 68.774,
+    "phone": "103",
+    "country_code": "TJ",
+    "notes": "National ambulance number for Tajikistan"
+  },
+  {
+    "id": "bf-nat-pol-tj",
+    "name": "National Police — Tajikistan",
+    "category": "police",
+    "lat": 38.5598,
+    "lon": 68.774,
+    "phone": "102",
+    "country_code": "TJ",
+    "notes": "National police number for Tajikistan"
+  },
+  {
+    "id": "bf-nat-fir-tj",
+    "name": "National Fire/Rescue — Tajikistan",
+    "category": "ambulance",
+    "lat": 38.5598,
+    "lon": 68.774,
+    "phone": "101",
+    "country_code": "TJ",
+    "notes": "National fire number for Tajikistan"
+  },
+  {
+    "id": "bf-nat-amb-tz",
+    "name": "National Ambulance — Tanzania",
+    "category": "ambulance",
+    "lat": -6.7924,
+    "lon": 39.2083,
+    "phone": "114",
+    "country_code": "TZ",
+    "notes": "National ambulance number for Tanzania"
+  },
+  {
+    "id": "bf-nat-pol-tz",
+    "name": "National Police — Tanzania",
+    "category": "police",
+    "lat": -6.7924,
+    "lon": 39.2083,
+    "phone": "999",
+    "country_code": "TZ",
+    "notes": "National police number for Tanzania"
+  },
+  {
+    "id": "bf-nat-fir-tz",
+    "name": "National Fire/Rescue — Tanzania",
+    "category": "ambulance",
+    "lat": -6.7924,
+    "lon": 39.2083,
+    "phone": "115",
+    "country_code": "TZ",
+    "notes": "National fire number for Tanzania"
+  },
+  {
+    "id": "bf-nat-amb-th",
+    "name": "National Ambulance — Thailand",
+    "category": "ambulance",
+    "lat": 13.7563,
+    "lon": 100.5018,
+    "phone": "1669",
+    "country_code": "TH",
+    "notes": "National ambulance number for Thailand"
+  },
+  {
+    "id": "bf-nat-pol-th",
+    "name": "National Police — Thailand",
+    "category": "police",
+    "lat": 13.7563,
+    "lon": 100.5018,
+    "phone": "191",
+    "country_code": "TH",
+    "notes": "National police number for Thailand"
+  },
+  {
+    "id": "bf-nat-fir-th",
+    "name": "National Fire/Rescue — Thailand",
+    "category": "ambulance",
+    "lat": 13.7563,
+    "lon": 100.5018,
+    "phone": "199",
+    "country_code": "TH",
+    "notes": "National fire number for Thailand"
+  },
+  {
+    "id": "bf-nat-amb-tl",
+    "name": "National Ambulance — Timor-Leste",
+    "category": "ambulance",
+    "lat": -8.5569,
+    "lon": 125.5603,
+    "phone": "112",
+    "country_code": "TL",
+    "notes": "National ambulance number for Timor-Leste"
+  },
+  {
+    "id": "bf-nat-amb-tg",
+    "name": "National Ambulance — Togo",
+    "category": "ambulance",
+    "lat": 6.1256,
+    "lon": 1.2254,
+    "phone": "8200",
+    "country_code": "TG",
+    "notes": "National ambulance number for Togo"
+  },
+  {
+    "id": "bf-nat-pol-tg",
+    "name": "National Police — Togo",
+    "category": "police",
+    "lat": 6.1256,
+    "lon": 1.2254,
+    "phone": "117",
+    "country_code": "TG",
+    "notes": "National police number for Togo"
+  },
+  {
+    "id": "bf-nat-fir-tg",
+    "name": "National Fire/Rescue — Togo",
+    "category": "ambulance",
+    "lat": 6.1256,
+    "lon": 1.2254,
+    "phone": "118",
+    "country_code": "TG",
+    "notes": "National fire number for Togo"
+  },
+  {
+    "id": "bf-nat-amb-to",
+    "name": "National Ambulance — Tonga",
+    "category": "ambulance",
+    "lat": -21.2088,
+    "lon": -175.1982,
+    "phone": "933",
+    "country_code": "TO",
+    "notes": "National ambulance number for Tonga"
+  },
+  {
+    "id": "bf-nat-pol-to",
+    "name": "National Police — Tonga",
+    "category": "police",
+    "lat": -21.2088,
+    "lon": -175.1982,
+    "phone": "922",
+    "country_code": "TO",
+    "notes": "National police number for Tonga"
+  },
+  {
+    "id": "bf-nat-fir-to",
+    "name": "National Fire/Rescue — Tonga",
+    "category": "ambulance",
+    "lat": -21.2088,
+    "lon": -175.1982,
+    "phone": "999",
+    "country_code": "TO",
+    "notes": "National fire number for Tonga"
+  },
+  {
+    "id": "bf-nat-amb-tt",
+    "name": "National Ambulance — Trinidad and Tobago",
+    "category": "ambulance",
+    "lat": 10.6918,
+    "lon": -61.2225,
+    "phone": "811",
+    "country_code": "TT",
+    "notes": "National ambulance number for Trinidad and Tobago"
+  },
+  {
+    "id": "bf-nat-pol-tt",
+    "name": "National Police — Trinidad and Tobago",
+    "category": "police",
+    "lat": 10.6918,
+    "lon": -61.2225,
+    "phone": "999",
+    "country_code": "TT",
+    "notes": "National police number for Trinidad and Tobago"
+  },
+  {
+    "id": "bf-nat-fir-tt",
+    "name": "National Fire/Rescue — Trinidad and Tobago",
+    "category": "ambulance",
+    "lat": 10.6918,
+    "lon": -61.2225,
+    "phone": "990",
+    "country_code": "TT",
+    "notes": "National fire number for Trinidad and Tobago"
+  },
+  {
+    "id": "bf-nat-amb-tn",
+    "name": "National Ambulance — Tunisia",
+    "category": "ambulance",
+    "lat": 36.8065,
+    "lon": 10.1815,
+    "phone": "190",
+    "country_code": "TN",
+    "notes": "National ambulance number for Tunisia"
+  },
+  {
+    "id": "bf-nat-pol-tn",
+    "name": "National Police — Tunisia",
+    "category": "police",
+    "lat": 36.8065,
+    "lon": 10.1815,
+    "phone": "197",
+    "country_code": "TN",
+    "notes": "National police number for Tunisia"
+  },
+  {
+    "id": "bf-nat-fir-tn",
+    "name": "National Fire/Rescue — Tunisia",
+    "category": "ambulance",
+    "lat": 36.8065,
+    "lon": 10.1815,
+    "phone": "198",
+    "country_code": "TN",
+    "notes": "National fire number for Tunisia"
+  },
+  {
+    "id": "bf-nat-amb-tr",
+    "name": "National Ambulance — Turkey",
+    "category": "ambulance",
+    "lat": 39.9334,
+    "lon": 32.8597,
+    "phone": "112",
+    "country_code": "TR",
+    "notes": "National ambulance number for Turkey"
+  },
+  {
+    "id": "bf-nat-amb-tm",
+    "name": "National Ambulance — Turkmenistan",
+    "category": "ambulance",
+    "lat": 37.9601,
+    "lon": 58.3261,
+    "phone": "03",
+    "country_code": "TM",
+    "notes": "National ambulance number for Turkmenistan"
+  },
+  {
+    "id": "bf-nat-pol-tm",
+    "name": "National Police — Turkmenistan",
+    "category": "police",
+    "lat": 37.9601,
+    "lon": 58.3261,
+    "phone": "02",
+    "country_code": "TM",
+    "notes": "National police number for Turkmenistan"
+  },
+  {
+    "id": "bf-nat-fir-tm",
+    "name": "National Fire/Rescue — Turkmenistan",
+    "category": "ambulance",
+    "lat": 37.9601,
+    "lon": 58.3261,
+    "phone": "01",
+    "country_code": "TM",
+    "notes": "National fire number for Turkmenistan"
+  },
+  {
+    "id": "bf-nat-amb-tv",
+    "name": "National Ambulance — Tuvalu",
+    "category": "ambulance",
+    "lat": -8.5211,
+    "lon": 179.1962,
+    "phone": "999",
+    "country_code": "TV",
+    "notes": "National ambulance number for Tuvalu"
+  },
+  {
+    "id": "bf-nat-pol-tv",
+    "name": "National Police — Tuvalu",
+    "category": "police",
+    "lat": -8.5211,
+    "lon": 179.1962,
+    "phone": "911",
+    "country_code": "TV",
+    "notes": "National police number for Tuvalu"
+  },
+  {
+    "id": "bf-nat-fir-tv",
+    "name": "National Fire/Rescue — Tuvalu",
+    "category": "ambulance",
+    "lat": -8.5211,
+    "lon": 179.1962,
+    "phone": "000",
+    "country_code": "TV",
+    "notes": "National fire number for Tuvalu"
+  },
+  {
+    "id": "bf-nat-amb-ug",
+    "name": "National Ambulance — Uganda",
+    "category": "ambulance",
+    "lat": 0.3476,
+    "lon": 32.5825,
+    "phone": "911",
+    "country_code": "UG",
+    "notes": "National ambulance number for Uganda"
+  },
+  {
+    "id": "bf-nat-pol-ug",
+    "name": "National Police — Uganda",
+    "category": "police",
+    "lat": 0.3476,
+    "lon": 32.5825,
+    "phone": "999",
+    "country_code": "UG",
+    "notes": "National police number for Uganda"
+  },
+  {
+    "id": "bf-nat-fir-ug",
+    "name": "National Fire/Rescue — Uganda",
+    "category": "ambulance",
+    "lat": 0.3476,
+    "lon": 32.5825,
+    "phone": "112",
+    "country_code": "UG",
+    "notes": "National fire number for Uganda"
+  },
+  {
+    "id": "bf-nat-amb-ua",
+    "name": "National Ambulance — Ukraine",
+    "category": "ambulance",
+    "lat": 50.4501,
+    "lon": 30.5234,
+    "phone": "103",
+    "country_code": "UA",
+    "notes": "National ambulance number for Ukraine"
+  },
+  {
+    "id": "bf-nat-pol-ua",
+    "name": "National Police — Ukraine",
+    "category": "police",
+    "lat": 50.4501,
+    "lon": 30.5234,
+    "phone": "102",
+    "country_code": "UA",
+    "notes": "National police number for Ukraine"
+  },
+  {
+    "id": "bf-nat-fir-ua",
+    "name": "National Fire/Rescue — Ukraine",
+    "category": "ambulance",
+    "lat": 50.4501,
+    "lon": 30.5234,
+    "phone": "101",
+    "country_code": "UA",
+    "notes": "National fire number for Ukraine"
+  },
+  {
+    "id": "bf-nat-amb-ae",
+    "name": "National Ambulance — United Arab Emirates",
+    "category": "ambulance",
+    "lat": 24.4539,
+    "lon": 54.3773,
+    "phone": "998",
+    "country_code": "AE",
+    "notes": "National ambulance number for United Arab Emirates"
+  },
+  {
+    "id": "bf-nat-pol-ae",
+    "name": "National Police — United Arab Emirates",
+    "category": "police",
+    "lat": 24.4539,
+    "lon": 54.3773,
+    "phone": "999",
+    "country_code": "AE",
+    "notes": "National police number for United Arab Emirates"
+  },
+  {
+    "id": "bf-nat-fir-ae",
+    "name": "National Fire/Rescue — United Arab Emirates",
+    "category": "ambulance",
+    "lat": 24.4539,
+    "lon": 54.3773,
+    "phone": "997",
+    "country_code": "AE",
+    "notes": "National fire number for United Arab Emirates"
+  },
+  {
+    "id": "bf-nat-amb-gb",
+    "name": "National Ambulance — United Kingdom",
+    "category": "ambulance",
+    "lat": 51.5074,
+    "lon": -0.1278,
+    "phone": "999",
+    "country_code": "GB",
+    "notes": "National ambulance number for United Kingdom"
+  },
+  {
+    "id": "bf-nat-amb-us",
+    "name": "National Ambulance — United States of America",
+    "category": "ambulance",
+    "lat": 38.9072,
+    "lon": -77.0369,
+    "phone": "911",
+    "country_code": "US",
+    "notes": "National ambulance number for United States of America"
+  },
+  {
+    "id": "bf-nat-amb-uy",
+    "name": "National Ambulance — Uruguay",
+    "category": "ambulance",
+    "lat": -34.9011,
+    "lon": -56.1645,
+    "phone": "105",
+    "country_code": "UY",
+    "notes": "National ambulance number for Uruguay"
+  },
+  {
+    "id": "bf-nat-pol-uy",
+    "name": "National Police — Uruguay",
+    "category": "police",
+    "lat": -34.9011,
+    "lon": -56.1645,
+    "phone": "109",
+    "country_code": "UY",
+    "notes": "National police number for Uruguay"
+  },
+  {
+    "id": "bf-nat-fir-uy",
+    "name": "National Fire/Rescue — Uruguay",
+    "category": "ambulance",
+    "lat": -34.9011,
+    "lon": -56.1645,
+    "phone": "104",
+    "country_code": "UY",
+    "notes": "National fire number for Uruguay"
+  },
+  {
+    "id": "bf-nat-amb-uz",
+    "name": "National Ambulance — Uzbekistan",
+    "category": "ambulance",
+    "lat": 41.2995,
+    "lon": 69.2401,
+    "phone": "103",
+    "country_code": "UZ",
+    "notes": "National ambulance number for Uzbekistan"
+  },
+  {
+    "id": "bf-nat-pol-uz",
+    "name": "National Police — Uzbekistan",
+    "category": "police",
+    "lat": 41.2995,
+    "lon": 69.2401,
+    "phone": "102",
+    "country_code": "UZ",
+    "notes": "National police number for Uzbekistan"
+  },
+  {
+    "id": "bf-nat-fir-uz",
+    "name": "National Fire/Rescue — Uzbekistan",
+    "category": "ambulance",
+    "lat": 41.2995,
+    "lon": 69.2401,
+    "phone": "101",
+    "country_code": "UZ",
+    "notes": "National fire number for Uzbekistan"
+  },
+  {
+    "id": "bf-nat-amb-vu",
+    "name": "National Ambulance — Vanuatu",
+    "category": "ambulance",
+    "lat": -17.7333,
+    "lon": 168.3273,
+    "phone": "112",
+    "country_code": "VU",
+    "notes": "National ambulance number for Vanuatu"
+  },
+  {
+    "id": "bf-nat-pol-vu",
+    "name": "National Police — Vanuatu",
+    "category": "police",
+    "lat": -17.7333,
+    "lon": 168.3273,
+    "phone": "111",
+    "country_code": "VU",
+    "notes": "National police number for Vanuatu"
+  },
+  {
+    "id": "bf-nat-fir-vu",
+    "name": "National Fire/Rescue — Vanuatu",
+    "category": "ambulance",
+    "lat": -17.7333,
+    "lon": 168.3273,
+    "phone": "113",
+    "country_code": "VU",
+    "notes": "National fire number for Vanuatu"
+  },
+  {
+    "id": "bf-nat-amb-ve",
+    "name": "National Ambulance — Venezuela",
+    "category": "ambulance",
+    "lat": 10.4806,
+    "lon": -66.9036,
+    "phone": "911",
+    "country_code": "VE",
+    "notes": "National ambulance number for Venezuela"
+  },
+  {
+    "id": "bf-nat-amb-vn",
+    "name": "National Ambulance — Vietnam",
+    "category": "ambulance",
+    "lat": 21.0278,
+    "lon": 105.8342,
+    "phone": "115",
+    "country_code": "VN",
+    "notes": "National ambulance number for Vietnam"
+  },
+  {
+    "id": "bf-nat-pol-vn",
+    "name": "National Police — Vietnam",
+    "category": "police",
+    "lat": 21.0278,
+    "lon": 105.8342,
+    "phone": "113",
+    "country_code": "VN",
+    "notes": "National police number for Vietnam"
+  },
+  {
+    "id": "bf-nat-fir-vn",
+    "name": "National Fire/Rescue — Vietnam",
+    "category": "ambulance",
+    "lat": 21.0278,
+    "lon": 105.8342,
+    "phone": "114",
+    "country_code": "VN",
+    "notes": "National fire number for Vietnam"
+  },
+  {
+    "id": "bf-nat-amb-eh",
+    "name": "National Ambulance — Western Sahara",
+    "category": "ambulance",
+    "lat": 27.1536,
+    "lon": -13.2034,
+    "phone": "15",
+    "country_code": "EH",
+    "notes": "National ambulance number for Western Sahara"
+  },
+  {
+    "id": "bf-nat-pol-eh",
+    "name": "National Police — Western Sahara",
+    "category": "police",
+    "lat": 27.1536,
+    "lon": -13.2034,
+    "phone": "19",
+    "country_code": "EH",
+    "notes": "National police number for Western Sahara"
+  },
+  {
+    "id": "bf-nat-amb-ye",
+    "name": "National Ambulance — Yemen",
+    "category": "ambulance",
+    "lat": 15.3694,
+    "lon": 44.191,
+    "phone": "191",
+    "country_code": "YE",
+    "notes": "National ambulance number for Yemen"
+  },
+  {
+    "id": "bf-nat-pol-ye",
+    "name": "National Police — Yemen",
+    "category": "police",
+    "lat": 15.3694,
+    "lon": 44.191,
+    "phone": "194",
+    "country_code": "YE",
+    "notes": "National police number for Yemen"
+  },
+  {
+    "id": "bf-nat-amb-zm",
+    "name": "National Ambulance — Zambia",
+    "category": "ambulance",
+    "lat": -15.3875,
+    "lon": 28.3228,
+    "phone": "992",
+    "country_code": "ZM",
+    "notes": "National ambulance number for Zambia"
+  },
+  {
+    "id": "bf-nat-pol-zm",
+    "name": "National Police — Zambia",
+    "category": "police",
+    "lat": -15.3875,
+    "lon": 28.3228,
+    "phone": "911",
+    "country_code": "ZM",
+    "notes": "National police number for Zambia"
+  },
+  {
+    "id": "bf-nat-fir-zm",
+    "name": "National Fire/Rescue — Zambia",
+    "category": "ambulance",
+    "lat": -15.3875,
+    "lon": 28.3228,
+    "phone": "993",
+    "country_code": "ZM",
+    "notes": "National fire number for Zambia"
+  },
+  {
+    "id": "bf-nat-amb-zw",
+    "name": "National Ambulance — Zimbabwe",
+    "category": "ambulance",
+    "lat": -17.8252,
+    "lon": 31.0335,
+    "phone": "994",
+    "country_code": "ZW",
+    "notes": "National ambulance number for Zimbabwe"
+  },
+  {
+    "id": "bf-nat-pol-zw",
+    "name": "National Police — Zimbabwe",
+    "category": "police",
+    "lat": -17.8252,
+    "lon": 31.0335,
+    "phone": "995",
+    "country_code": "ZW",
+    "notes": "National police number for Zimbabwe"
+  },
+  {
+    "id": "bf-nat-fir-zw",
+    "name": "National Fire/Rescue — Zimbabwe",
+    "category": "ambulance",
+    "lat": -17.8252,
+    "lon": 31.0335,
+    "phone": "993",
+    "country_code": "ZW",
+    "notes": "National fire number for Zimbabwe"
+  },
+  {
+    "id": "bf-nat-amb-xk",
+    "name": "National Ambulance — Kosovo",
+    "category": "ambulance",
+    "lat": 42.6629,
+    "lon": 21.1655,
+    "phone": "194",
+    "country_code": "XK",
+    "notes": "National ambulance number for Kosovo"
+  },
+  {
+    "id": "bf-nat-pol-xk",
+    "name": "National Police — Kosovo",
+    "category": "police",
+    "lat": 42.6629,
+    "lon": 21.1655,
+    "phone": "192",
+    "country_code": "XK",
+    "notes": "National police number for Kosovo"
+  },
+  {
+    "id": "bf-nat-fir-xk",
+    "name": "National Fire/Rescue — Kosovo",
+    "category": "ambulance",
+    "lat": 42.6629,
+    "lon": 21.1655,
+    "phone": "193",
+    "country_code": "XK",
+    "notes": "National fire number for Kosovo"
   }
 ]

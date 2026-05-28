@@ -14,7 +14,7 @@ RoadSOS is a **PWA-first emergency-services discovery app**. A user opens it, th
 │  ├─ Leaflet (real OSM map)                                          │
 │  ├─ i18next (43 languages)                                          │
 │  ├─ IndexedDB-style localStorage cache                              │
-│  └─ Bundled facilities JSON (349 records, 200 countries)            │
+│  └─ Bundled facilities JSON (818 entries, 200 countries)            │
 └────────────────────────────┬────────────────────────────────────────┘
                              │ HTTPS
                              ▼
@@ -181,7 +181,7 @@ mount
         │  2. loadSearchResult() → localStorage      │
         │     (24h TTL, ~1.1km grid key)             │
         │  3. buildBundledSearchResult() →           │
-        │     bundled_facilities.json (349 recs,     │
+        │     bundled_facilities.json (818 entries,  │
         │     80km → 600km fallback)                 │
         │  4. MOCK_DATA (7 hardcoded contacts)       │
         └────────────────────────────────────────────┘
@@ -196,7 +196,7 @@ mount
 | Workbox SW (`public/sw.js`) | App shell (JS/CSS/HTML) via `__WB_MANIFEST` | until next deploy | `skipWaiting()` on install |
 | Workbox runtime cache | `/search` responses (NetworkFirst, 8s timeout) | 24h | LRU at 50 entries |
 | `offlineDB.js` (localStorage) | Search results keyed by ~1.1km grid | 24h | manual `clearCache()` |
-| `bundled_facilities.json` | 349 emergency facilities × 200 countries | build-time | new build |
+| `bundled_facilities.json` | 818 entries × 200 countries | build-time | new build |
 | `emergencyNumbers.js` | Country code → emergency dial codes (108, 911, 112…) | build-time | new build |
 
 **Offline-first guarantees:**
@@ -294,7 +294,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 
 **Context:** First-time users in low-connectivity regions can't reach backend or use cached results.
 
-**Decision:** Ship 349-record facility catalog with the app (`bundled_facilities.json`, ~50KB gzipped).
+**Decision:** Ship 818-entry facility catalog with the app (`bundled_facilities.json`, ~120KB gzipped).
 
 **Trade-off:** +50KB bundle vs zero-network usefulness. Critical for hackathon demo offline criterion. Falls back from 80km → 600km radius when sparse.
 

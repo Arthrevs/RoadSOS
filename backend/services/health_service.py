@@ -14,6 +14,7 @@ from datetime import UTC, datetime
 from fastapi import APIRouter
 
 from services.cache import geocode_cache, google_cache, overpass_cache
+from services.gemini_quota import gemini_quota
 
 health_router = APIRouter()
 
@@ -87,4 +88,5 @@ async def health():
             "google_places": google_cache.stats(),
             "geocode": geocode_cache.stats(),
         },
+        "gemini_quota": gemini_quota.stats(),
     }
