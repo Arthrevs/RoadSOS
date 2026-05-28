@@ -30,7 +30,7 @@ export const COUNTRY_LANGUAGE = {
   // ── MIDDLE EAST / NORTH AFRICA ───────────────────────────────────────────
   SA: 'ar', AE: 'ar', QA: 'ar', BH: 'ar', KW: 'ar', OM: 'ar', YE: 'ar',
   IQ: 'ar', SY: 'ar', JO: 'ar', LB: 'ar', PS: 'ar', EG: 'ar',
-  LY: 'ar', TN: 'ar', DZ: 'ar', MA: 'ar', SD: 'ar', MR: 'ar', DJ: 'ar',
+  LY: 'ar', TN: 'ar', DZ: 'ar', MA: 'ar', SD: 'ar', MR: 'ar', DJ: 'ar', EH: 'ar',
   KM: 'ar', SO: 'sw',
   IL: 'he',
   IR: 'fa', AF: 'fa', TJ: 'fa',
@@ -79,6 +79,7 @@ export const COUNTRY_LANGUAGE = {
   // ── OCEANIA ──────────────────────────────────────────────────────────────
   AU: 'en', NZ: 'en', FJ: 'en', PG: 'en', SB: 'en', VU: 'fr', WS: 'en',
   TO: 'en', KI: 'en', TV: 'en', NR: 'en', FM: 'en', MH: 'en', PW: 'en',
+  CK: 'en', NU: 'en',
 };
 
 export function languageForCountry(countryCode) {

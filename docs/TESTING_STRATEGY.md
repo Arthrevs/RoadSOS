@@ -61,11 +61,11 @@ The entire Google Places integration is untested. Concretely missing:
 
 The dataset behind the offline tier is large and easy to break by hand:
 
-- `bundled_facilities.json` — 249 entries, every entry needs valid `lat`, `lon`, `category`, `country_code`
+- `bundled_facilities.json` — 315 entries, every entry needs valid `lat`, `lon`, `category`, `country_code`
 - `emergencyNumbers.js` — every ISO-3166 country code that has bundled facilities should also have an emergency number entry
 - 48 i18n JSON bundles — should all carry the same key set; a missing key in one file causes UI text to fall back silently
 
-Today's audit (May 2026) shows the data is clean: 249 facilities × 196 unique countries, all 48 i18n bundles have all 49 keys. The risk is that nothing locks this in for the future. One typo in a PR could silently degrade an offline scenario for a single country, and no CI signal would fire.
+Today's audit (May 2026) shows the data is clean: 315 facilities × 196 unique countries, all 48 i18n bundles have all 49 keys. The risk is that nothing locks this in for the future. One typo in a PR could silently degrade an offline scenario for a single country, and no CI signal would fire.
 
 ---
 

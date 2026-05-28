@@ -17,7 +17,7 @@
  * - India (Tamil Nadu + metros): deepest coverage (hackathon at IIT-M).
  * - North America, Europe, East/SE Asia, Middle East, Africa, Oceania,
  *   Latin America: top-tier trauma/teaching hospitals per major metro.
- * - 249 facilities across all 196 countries — every country with an
+ * - 315 facilities across all 196 countries — every country with an
  *   emergency-numbers entry has at least one bundled hospital fallback.
  *
  * Data quality policy:
