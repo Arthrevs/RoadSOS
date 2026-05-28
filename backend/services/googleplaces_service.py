@@ -33,12 +33,8 @@ FINDPLACE_URL = "https://maps.googleapis.com/maps/api/place/findplacefromtext/js
 # Set Mapsplatformkey as a comma-separated list of keys on Render to
 # distribute load across multiple billing accounts.
 def _load_keys() -> list[str]:
-    multi = os.getenv("Mapsplatformkey", "")
-    keys = [k.strip() for k in multi.split(",") if k.strip()]
-    if not keys:
-        single = os.getenv("Mapsplatformkey", "")
-        keys = [single] if single else []
-    return keys
+    raw = os.getenv("Mapsplatformkey", "")
+    return [k.strip() for k in raw.split(",") if k.strip()]
 
 
 _KEY_POOL: list[str] = _load_keys()
@@ -58,6 +54,11 @@ SEARCH_QUERIES: list[tuple[str | None, str | None, str]] = [
     ("police", None, "police"),
     ("car_repair", None, "repair"),
     ("fire_station", None, "ambulance"),
+    # Google has no native "ambulance" type — fire_station is the closest
+    # native match but misses dedicated ambulance stations (common in India,
+    # where 108 dispatch stations are rarely co-located with fire stations).
+    # Keyword query fills the gap.
+    (None, "ambulance station", "ambulance"),
     # Showroom — keyword search gives better precision than the loose
     # car_dealer / automobile_dealer types, which return tours, HVAC, etc.
     (None, "car showroom dealership", "showroom"),

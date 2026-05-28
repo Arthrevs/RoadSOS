@@ -423,8 +423,11 @@ export default function App() {
         onTutorialStart={() => setTutorialStep(1)}
       />
 
-      {/* ── Offline banner (self-contained, uses useNetwork internally) ── */}
-      <OfflineBanner />
+      {/* ── Offline banner — also fires when fallback data is in use ── */}
+      <OfflineBanner
+        usingBundled={!!searchData?._bundled}
+        usingMock={!!searchData?._mock}
+      />
 
       {/* ── GPS error strip ── */}
       {gpsError && demoIdx === 0 && !activeLocation && (
@@ -438,7 +441,7 @@ export default function App() {
         <span className="sec-title">{t('header.emergency_numbers')}</span>
         <span className="sec-note">{t('header.always_offline')}</span>
       </div>
-      <CountryEmergency numbers={numbers} />
+      <CountryEmergency numbers={numbers} contacts={searchData?.contacts} />
 
       {/* ── Nearby Services ── */}
       <div id="nearby-services" className="sec-head" style={{ paddingTop: 22 }}>
