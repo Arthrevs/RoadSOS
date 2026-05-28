@@ -560,7 +560,7 @@ export default function App() {
         triageReason={dispatchContext.reason}
         scenePhoto={scenePhoto}
       />
-      <PermissionDisclaimer />
+      {!langPickerOpen && <PermissionDisclaimer />}
     </div>
   );
 }
