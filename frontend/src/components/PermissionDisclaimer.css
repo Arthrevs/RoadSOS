@@ -38,25 +38,23 @@
   color: var(--text-1);
 }
 
-.pd-close {
-  background: transparent;
+.pd-button {
+  background: var(--primary, #3b82f6);
   border: none;
-  color: var(--text-3);
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 6px;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
+  transition: background 0.2s;
   flex-shrink: 0;
-  margin-right: -4px;
-  margin-top: -2px;
+  white-space: nowrap;
+  align-self: center;
 }
 
-.pd-close:hover {
-  color: var(--text-1);
-  background: var(--surface-3);
+.pd-button:hover {
+  background: var(--primary-dark, #2563eb);
 }
 
 @keyframes slideUp {

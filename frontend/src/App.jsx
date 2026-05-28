@@ -178,16 +178,7 @@ export default function App() {
   // a Temporal Dead Zone crash because those consts hadn't been
   // initialised yet when this effect's dependency array was evaluated.
 
-  // ─── Request permissions globally on FIRST user interaction ────────────
-  useEffect(() => {
-    const onFirstAnyClick = () => {
-      requestMotionPermission();
-      import('./utils/sosAlert').then(m => m.requestCameraPermission());
-      document.removeEventListener('click', onFirstAnyClick, true);
-    };
-    document.addEventListener('click', onFirstAnyClick, true);
-    return () => document.removeEventListener('click', onFirstAnyClick, true);
-  }, []);
+  // (Permissions are now requested via the PermissionDisclaimer banner)
 
   // Listen for SOS dispatch events to open the dispatch screen
   useEffect(() => {
