@@ -23,6 +23,7 @@ import MapHero from './components/MapHero';
 import DispatchScreen from './components/DispatchScreen';
 import LanguagePicker from './components/LanguagePicker';
 import TutorialOverlay from './components/TutorialOverlay';
+import PermissionDisclaimer from './components/PermissionDisclaimer';
 import { hasUserChosenLanguage } from './i18n';
 import { requestMotionPermission } from './hooks/useLocation';
 import { DEMO_MODE } from './utils/demoMode';
@@ -559,6 +560,7 @@ export default function App() {
         triageReason={dispatchContext.reason}
         scenePhoto={scenePhoto}
       />
+      <PermissionDisclaimer />
     </div>
   );
 }
