@@ -551,7 +551,13 @@ export default function App() {
         triageReason={dispatchContext.reason}
         scenePhoto={scenePhoto}
       />
-      {!langPickerOpen && <PermissionDisclaimer />}
+      {!langPickerOpen &&
+        !medicalOpen &&
+        tutorialStep === 0 &&
+        !crashOpen &&
+        !dispatchOpen &&
+        !routePlannerOpen &&
+        !triageOpen && <PermissionDisclaimer />}
     </div>
   );
 }
