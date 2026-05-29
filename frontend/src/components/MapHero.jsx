@@ -6,6 +6,7 @@ import SOSButton from './SOSButton';
 import ManualLocationModal from './ManualLocationModal';
 import { subscribeBackendStatus } from '../utils/backendWarmup';
 import { setManualLocation, refreshGpsLocation } from '../hooks/useLocation';
+import { getIsMedicalIdComplete } from '../utils/medicalId';
 
 const CAT_ICONS = {
   hospital: Hospital,
@@ -115,9 +116,55 @@ export default function MapHero({
   onTutorialStart,
 }) {
   const { t } = useTranslation();
-  // Pick up to 6 nearest contacts for markers on real map
-  const markerContacts = (contacts || []).slice(0, 6);
-  const dockContacts = (contacts || []).slice(0, 3);
+  
+  const dockMatches = [
+    ['hospital'],
+    ['towing'],
+    ['tyre', 'puncture'],
+    ['showroom']
+  ];
+  
+  const dockContacts = [];
+  if (contacts && Array.isArray(contacts)) {
+    for (const match of dockMatches) {
+      for (const c of contacts) {
+        if (!c?.phone) continue;
+        const cat = (c.category || '').toLowerCase();
+        if (match.includes(cat)) {
+          if (!dockContacts.some(existing => existing.id === c.id)) {
+            dockContacts.push(c);
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  // Map markers: prioritize the 4 specific categories (even if they lack a phone number),
+  // then fill the remaining spots up to 6 with nearest random contacts
+  const markerContacts = [];
+  const addedContacts = new Set();
+  
+  if (contacts && Array.isArray(contacts)) {
+    for (const match of dockMatches) {
+      for (const c of contacts) {
+        const cat = (c.category || '').toLowerCase();
+        if (match.includes(cat) && !addedContacts.has(c)) {
+          markerContacts.push(c);
+          addedContacts.add(c);
+          break;
+        }
+      }
+    }
+    
+    for (const c of contacts) {
+      if (markerContacts.length >= 6) break;
+      if (!addedContacts.has(c)) {
+        markerContacts.push(c);
+        addedContacts.add(c);
+      }
+    }
+  }
 
   // Backend readiness — drives the warming-up state of the status pill.
   // 'warming' / 'cold' downgrade the green online indicator to amber so
@@ -295,7 +342,7 @@ export default function MapHero({
             <div className="sep"></div>
 
             {onMedicalId && (() => {
-              const isMedicalIdComplete = medicalIdCompletion >= 63;
+              const isMedicalIdComplete = getIsMedicalIdComplete();
               const hasMedicalId = medicalIdCompletion > 0;
               return (
                 <button

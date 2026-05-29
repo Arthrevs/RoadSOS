@@ -1,0 +1,319 @@
+/* triage-modal.css */
+
+.triage-sheet {
+  width: 312px;
+  border-radius: 26px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+/* Theme overrides */
+.app.theme-dark .triage-sheet {
+  background: #0c0e16;
+  border: 1px solid rgba(255, 255, 255, .08);
+  box-shadow: 0 20px 56px rgba(0, 0, 0, .6);
+}
+
+.app.theme-light .triage-sheet {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, .08);
+  box-shadow: 0 20px 56px rgba(0, 0, 0, .1);
+}
+
+.triage-handle {
+  display: flex;
+  justify-content: center;
+  padding: 11px 0 0;
+}
+
+.triage-handle-bar {
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.app.theme-dark .triage-handle-bar { background: rgba(255, 255, 255, .1); }
+.app.theme-light .triage-handle-bar { background: rgba(0, 0, 0, .1); }
+
+/* HEADER */
+.triage-hd {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px 20px 16px;
+}
+
+.triage-hd-l {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.triage-hd-tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.app.theme-dark .triage-hd-tag { color: rgba(255, 255, 255, .28); }
+.app.theme-dark .triage-hd-tag svg { stroke: rgba(255, 255, 255, .28); }
+.app.theme-light .triage-hd-tag { color: rgba(0, 0, 0, .3); }
+.app.theme-light .triage-hd-tag svg { stroke: rgba(0, 0, 0, .3); }
+
+.triage-hd-title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.1;
+}
+
+.app.theme-dark .triage-hd-title { color: #eef0f8; }
+.app.theme-light .triage-hd-title { color: #0d0f16; }
+
+.triage-hd-sub {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  max-width: 190px;
+  margin-top: 3px;
+}
+
+.app.theme-dark .triage-hd-sub { color: rgba(255, 255, 255, .35); }
+.app.theme-light .triage-hd-sub { color: rgba(0, 0, 0, .42); }
+
+.triage-sos {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 9px;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  color: #ef4444;
+  cursor: pointer;
+  outline: none;
+  letter-spacing: .05em;
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 2px;
+  transition: background .1s;
+}
+
+.app.theme-dark .triage-sos { background: rgba(239, 68, 68, .1); border: 1px solid rgba(239, 68, 68, .22); }
+.app.theme-light .triage-sos { background: rgba(220, 38, 38, .07); border: 1px solid rgba(220, 38, 38, .2); color: #dc2626; }
+
+.triage-rule { height: 1px; }
+.app.theme-dark .triage-rule { background: rgba(255, 255, 255, .06); }
+.app.theme-light .triage-rule { background: rgba(0, 0, 0, .06); }
+
+/* QUESTIONS */
+.triage-qs {
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.triage-qb {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.triage-qrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.triage-qico {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.app.theme-dark .triage-qico { background: rgba(255, 255, 255, .06); }
+.app.theme-light .triage-qico { background: rgba(0, 0, 0, .05); }
+.app.theme-dark .triage-qico svg { stroke: rgba(255, 255, 255, .5); }
+.app.theme-light .triage-qico svg { stroke: rgba(0, 0, 0, .45); }
+
+.triage-qtxt {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+
+.app.theme-dark .triage-qtxt { color: rgba(255, 255, 255, .85); }
+.app.theme-light .triage-qtxt { color: #111; }
+
+/* OPTION BUTTONS */
+.triage-pair {
+  display: flex;
+  gap: 7px;
+}
+
+.triage-opt {
+  flex: 1;
+  height: 46px;
+  border-radius: 12px;
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 9px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: all .13s ease;
+  text-align: left;
+  letter-spacing: -.005em;
+}
+
+.triage-opt:active { transform: scale(.97); }
+
+/* radio circle */
+.triage-rc {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .13s;
+}
+
+.triage-rc-inner {
+  width: 7px;
+  height: 13px;
+  border-bottom: 3px solid transparent;
+  border-right: 3px solid transparent;
+  transform: translate(2px, -3px) rotate(45deg);
+  transition: all .13s;
+}
+
+/* IDLE */
+.app.theme-dark .triage-opt { background: rgba(255, 255, 255, .055); border: 1.5px solid rgba(255, 255, 255, .09); color: rgba(255, 255, 255, .4); }
+.app.theme-dark .triage-opt .triage-rc { border: 1.5px solid rgba(255, 255, 255, .2); }
+.app.theme-dark .triage-opt .triage-rc-inner { opacity: 0; }
+.app.theme-light .triage-opt { background: rgba(0, 0, 0, .04); border: 1.5px solid rgba(0, 0, 0, .08); color: rgba(0, 0, 0, .4); }
+.app.theme-light .triage-opt .triage-rc { border: 1.5px solid rgba(0, 0, 0, .2); }
+.app.theme-light .triage-opt .triage-rc-inner { opacity: 0; }
+
+/* SELECTED YES = red */
+.triage-opt.py { border-color: rgba(220, 38, 38, .55); }
+.app.theme-dark .triage-opt.py { background: rgba(239, 68, 68, .11); color: #fca5a5; }
+.app.theme-light .triage-opt.py { background: rgba(220, 38, 38, .07); color: #dc2626; }
+.triage-opt.py .triage-rc { border-color: #ef4444; background: transparent; }
+.app.theme-light .triage-opt.py .triage-rc { border-color: #dc2626; }
+.app.theme-dark .triage-opt.py .triage-rc-inner { opacity: 1; border-color: #ef4444; background: transparent !important; }
+.app.theme-light .triage-opt.py .triage-rc-inner { opacity: 1; border-color: #dc2626; background: transparent !important; }
+
+/* SELECTED NO = green */
+.triage-opt.pn { border-color: rgba(34, 197, 94, .45); }
+.app.theme-dark .triage-opt.pn { background: rgba(34, 197, 94, .1); color: #86efac; }
+.app.theme-light .triage-opt.pn { background: rgba(22, 163, 74, .07); color: #16a34a; }
+.triage-opt.pn .triage-rc { border-color: #22c55e; background: transparent; }
+.app.theme-light .triage-opt.pn .triage-rc { border-color: #16a34a; }
+.app.theme-dark .triage-opt.pn .triage-rc-inner { opacity: 1; border-color: #22c55e; background: transparent !important; }
+.app.theme-light .triage-opt.pn .triage-rc-inner { opacity: 1; border-color: #16a34a; background: transparent !important; }
+
+/* RESULT BOX */
+.triage-res {
+  margin: 0 20px;
+  border-radius: 13px;
+  padding: 13px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.55;
+  transition: all .18s ease;
+}
+
+.triage-res svg { flex-shrink: 0; margin-top: 1px; }
+.triage-res span { flex: 1; }
+
+/* wait */
+.app.theme-dark .triage-res.w { background: rgba(255, 255, 255, .04); border: 1px solid rgba(255, 255, 255, .07); color: rgba(255, 255, 255, .3); }
+.app.theme-dark .triage-res.w svg { stroke: rgba(255, 255, 255, .25); }
+.app.theme-light .triage-res.w { background: rgba(0, 0, 0, .03); border: 1px solid rgba(0, 0, 0, .07); color: rgba(0, 0, 0, .38); }
+.app.theme-light .triage-res.w svg { stroke: rgba(0, 0, 0, .25); }
+
+/* ambulance = red */
+.app.theme-dark .triage-res.ra { background: rgba(239, 68, 68, .12); border: 1px solid rgba(239, 68, 68, .32); color: #fca5a5; }
+.app.theme-dark .triage-res.ra svg { stroke: #fca5a5; }
+.app.theme-light .triage-res.ra { background: rgba(220, 38, 38, .07); border: 1px solid rgba(220, 38, 38, .28); color: #b91c1c; }
+.app.theme-light .triage-res.ra svg { stroke: #b91c1c; }
+
+/* police = blue */
+.app.theme-dark .triage-res.rb { background: rgba(59, 130, 246, .12); border: 1px solid rgba(59, 130, 246, .32); color: #93c5fd; }
+.app.theme-dark .triage-res.rb svg { stroke: #93c5fd; }
+.app.theme-light .triage-res.rb { background: rgba(37, 99, 235, .07); border: 1px solid rgba(37, 99, 235, .28); color: #1d4ed8; }
+.app.theme-light .triage-res.rb svg { stroke: #1d4ed8; }
+
+/* clear = green */
+.app.theme-dark .triage-res.rc2 { background: rgba(34, 197, 94, .11); border: 1px solid rgba(34, 197, 94, .3); color: #86efac; }
+.app.theme-dark .triage-res.rc2 svg { stroke: #86efac; }
+.app.theme-light .triage-res.rc2 { background: rgba(22, 163, 74, .07); border: 1px solid rgba(22, 163, 74, .28); color: #15803d; }
+.app.theme-light .triage-res.rc2 svg { stroke: #15803d; }
+
+/* FOOTER */
+.triage-fbtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 12px 20px 8px; /* Reduced bottom margin to accommodate skip button */
+  height: 50px;
+  border-radius: 14px;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  letter-spacing: .01em;
+  transition: all .16s ease;
+}
+
+.triage-fbtn:active { transform: scale(.98); }
+
+.app.theme-dark .triage-fbtn.off { background: rgba(255, 255, 255, .05); color: rgba(255, 255, 255, .2); border: 1px solid rgba(255, 255, 255, .06); cursor: default; }
+.app.theme-light .triage-fbtn.off { background: rgba(0, 0, 0, .04); color: rgba(0, 0, 0, .22); border: 1px solid rgba(0, 0, 0, .06); cursor: default; }
+
+.app.theme-dark .triage-fbtn.on { background: #fff; color: #0c0e16; }
+.app.theme-light .triage-fbtn.on { background: #111; color: #fff; }
+
+.triage-skip-btn {
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.2s;
+}
+
+.app.theme-dark .triage-skip-btn { color: rgba(255, 255, 255, 0.5); }
+.app.theme-light .triage-skip-btn { color: rgba(0, 0, 0, 0.5); }
+
+.app.theme-dark .triage-skip-btn:hover { color: rgba(255, 255, 255, 0.8); }
+.app.theme-light .triage-skip-btn:hover { color: rgba(0, 0, 0, 0.8); }

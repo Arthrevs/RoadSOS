@@ -5701,6 +5701,24 @@
   z-index: 20;
 }
 
+/* Scroll up arrow */
+.scroll-up-arrow {
+  position: fixed;
+  bottom: 24px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  cursor: pointer;
+  z-index: 50;
+  animation: fadeUp 0.3s ease-out forwards;
+}
+.scroll-up-arrow .scroll-arrow-pill {
+  pointer-events: auto;
+}
+
 .scroll-arrow-pill {
   height: 32px;
   padding: 0 16px;

@@ -515,6 +515,7 @@ export default function App() {
         onSubmit={handleTriage}
         onSkip={() => setTriageOpen(false)}
         location={activeLocation}
+        countryCode={countryCode}
         landmark={searchData?.landmark}
         topContact={topContact}
       />
@@ -551,6 +552,7 @@ export default function App() {
         open={dispatchOpen}
         onClose={() => { setDispatchOpen(false); setScenePhoto(null); }}
         location={activeLocation}
+        countryCode={countryCode}
         landmark={searchData?.landmark}
         contacts={searchData?.contacts || []}
         topContact={topContact}

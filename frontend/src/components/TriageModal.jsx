@@ -1,61 +1,50 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Activity, AlertTriangle, CheckCircle, XCircle, ArrowRight, Stethoscope, Car, Signal } from "lucide-react";
+import { AlertTriangle, CheckCircle, Info, Activity, ArrowRight, Truck } from "lucide-react";
 import { buildSosSmsBody } from '../utils/medicalId';
 import { encodePlusCode } from '../utils/plusCodes';
+import { getEmergencyNumbers } from '../utils/emergencyNumbers';
+import '../triage-modal.css';
 
-const QUESTIONS = [
-  {
-    id: "injured",
-    textKey: "triage.injured_q",
-    defaultText: "Is anyone injured?",
-    Icon: Stethoscope,
-    iconColor: "#DC2626",
-    yesKey: "triage.yes_injured",
-    defaultYes: "Yes, injured",
-    noKey: "triage.no_injured",
-    defaultNo: "No injuries",
-  },
-  {
-    id: "blocking",
-    textKey: "triage.blocking_q",
-    defaultText: "Is the vehicle blocking the road?",
-    Icon: Car,
-    iconColor: "#1D4ED8",
-    yesKey: "triage.yes_blocking",
-    defaultYes: "Yes, blocking",
-    noKey: "triage.no_blocking",
-    defaultNo: "Road is clear",
-  },
-];
-
-function getSummary(ans, t) {
-  const { injured, blocking } = ans;
-  if (injured === undefined || blocking === undefined) return { msg: t("triage.summary_idle", "Answer both questions to get a priority recommendation."), type: "idle" };
-  if (injured === true)
-    return { msg: t("triage.summary_injured", "Injury reported — Ambulance (108) will be prioritised first."), type: "urgent" };
-  if (blocking === true)
-    return { msg: t("triage.summary_blocked", "Road blocked — Police (100) and Towing recommended."), type: "clear" };
-  return { msg: t("triage.summary_clear", "No injury, road clear — Repair or Towing services suggested."), type: "clear" };
-}
-
-/**
- * TriageModal — appears on load, collects injury + blocking answers,
- * calls onSubmit({ injured, blocking }) and shows loading state.
- */
-export default function TriageModal({ open, loading, onSubmit, onSkip, location, landmark, topContact }) {
+export default function TriageModal({ open, loading, onSubmit, onSkip, location, landmark, topContact, countryCode }) {
   const { t } = useTranslation();
   const [ans, setAns] = useState({});
 
   if (!open) return null;
 
   const toggle = (qid, val) => {
-    if (loading) return; // prevent toggling while submitting
+    if (loading) return;
     setAns(prev => ({ ...prev, [qid]: prev[qid] === val ? undefined : val }));
   };
 
   const allAnswered = ans.injured !== undefined && ans.blocking !== undefined;
-  const { msg, type } = getSummary(ans, t);
+
+  const resolvedCountryCode = countryCode || location?.country_code || 'IN';
+  const numbers = getEmergencyNumbers(resolvedCountryCode) || { ambulance: '108', police: '100' };
+
+  // Determine Result state
+  let result = null;
+  if (allAnswered) {
+    if (ans.injured) {
+      result = {
+        cls: 'ra',
+        Icon: AlertTriangle,
+        txt: t("triage.summary_injured_dyn", { defaultValue: `Injury reported — Ambulance (${numbers.ambulance}) will be prioritised first.`, num: numbers.ambulance })
+      };
+    } else if (ans.blocking) {
+      result = {
+        cls: 'rb',
+        Icon: Info,
+        txt: t("triage.summary_blocked_dyn", { defaultValue: `Road blocked — Police (${numbers.police}) and Towing recommended.`, num: numbers.police })
+      };
+    } else {
+      result = {
+        cls: 'rc2',
+        Icon: CheckCircle,
+        txt: t("triage.summary_clear", "No injury, road clear — Repair or Towing services suggested.")
+      };
+    }
+  }
 
   const handleSubmit = () => {
     if (!allAnswered || loading) return;
@@ -80,106 +69,95 @@ export default function TriageModal({ open, loading, onSubmit, onSkip, location,
 
   return (
     <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label="Quick triage">
-      <div className="sheet">
-
-        {/* Handle */}
-        <div className="handle-bar"><div className="handle" /></div>
-
-        {/* Header */}
-        <div className="sheet-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <div>
-            <div className="sheet-label">
-              <Activity size={13} strokeWidth={2.5} />
+      <div className="triage-sheet">
+        <div className="triage-handle"><div className="triage-handle-bar"></div></div>
+        
+        <div className="triage-hd">
+          <div className="triage-hd-l">
+            <div className="triage-hd-tag">
+              <Activity size={12} strokeWidth={2.5} />
               {t("triage.label", "Quick Triage")}
             </div>
-            <div className="sheet-title">{t("triage.title", "What happened?")}</div>
-            <div className="sheet-sub">
-              {t("triage.subtitle", "Two questions — we will prioritise the right help for your situation.")}
+            <div className="triage-hd-title">{t("triage.title", "What happened?")}</div>
+            <div className="triage-hd-sub">{t("triage.subtitle", "Two questions — we'll prioritise the right help for you.")}</div>
+          </div>
+          <button className="triage-sos" onClick={handleMiniSOS}>{t("triage.sos_btn", "SOS")}</button>
+        </div>
+        
+        <div className="triage-rule"></div>
+        
+        <div className="triage-qs">
+          <div className="triage-qb">
+            <div className="triage-qrow">
+              <div className="triage-qico">
+                <Activity size={14} strokeWidth={2.2} />
+              </div>
+              <span className="triage-qtxt">{t("triage.injured_q", "Is anyone injured?")}</span>
+            </div>
+            <div className="triage-pair">
+              <button className={`triage-opt ${ans.injured === true ? 'py' : ''}`} onClick={() => toggle('injured', true)}>
+                <div className="triage-rc"><div className="triage-rc-inner"></div></div>
+                {t("triage.yes_injured", "Yes, injured")}
+              </button>
+              <button className={`triage-opt ${ans.injured === false ? 'pn' : ''}`} onClick={() => toggle('injured', false)}>
+                <div className="triage-rc"><div className="triage-rc-inner"></div></div>
+                {t("triage.no_injured", "No injuries")}
+              </button>
             </div>
           </div>
           
-          <button 
-            onClick={handleMiniSOS}
-            className="triage-sos-btn"
-            title={t('tooltip.send_immediate_sos', 'Send immediate SOS')}
-          >
-            {t("triage.sos_btn", "SOS")}
-          </button>
-        </div>
-
-        {/* Questions */}
-        <div className="questions">
-          {QUESTIONS.map(({ id, textKey, defaultText, Icon, iconColor, yesKey, defaultYes, noKey, defaultNo }) => (
-            <div className="question-block" key={id}>
-              <div className="question-text">
-                <div className="q-icon">
-                  <Icon size={14} color={iconColor} strokeWidth={2.2} />
-                </div>
-                {t(textKey, defaultText)}
+          <div className="triage-qb">
+            <div className="triage-qrow">
+              <div className="triage-qico">
+                <Truck size={14} strokeWidth={2.2} />
               </div>
-              <div className="choice-row">
-                <button
-                  className={`choice-btn ${ans[id] === true ? "yes-active" : "idle"}`}
-                  onClick={() => toggle(id, true)}
-                  disabled={loading}
-                  aria-pressed={ans[id] === true}
-                >
-                  {ans[id] === true
-                    ? <XCircle size={16} strokeWidth={2.2} />
-                    : <span style={{ width: 16, height: 16, border: "2px solid #CBD5E1", borderRadius: "50%", display: "inline-block" }} />
-                  }
-                  {t(yesKey, defaultYes)}
-                </button>
-                <button
-                  className={`choice-btn ${ans[id] === false ? "no-active" : "idle"}`}
-                  onClick={() => toggle(id, false)}
-                  disabled={loading}
-                  aria-pressed={ans[id] === false}
-                >
-                  {ans[id] === false
-                    ? <CheckCircle size={16} strokeWidth={2.2} />
-                    : <span style={{ width: 16, height: 16, border: "2px solid #CBD5E1", borderRadius: "50%", display: "inline-block" }} />
-                  }
-                  {t(noKey, defaultNo)}
-                </button>
-              </div>
+              <span className="triage-qtxt">{t("triage.blocking_q", "Is the vehicle blocking the road?")}</span>
             </div>
-          ))}
+            <div className="triage-pair">
+              <button className={`triage-opt ${ans.blocking === true ? 'py' : ''}`} onClick={() => toggle('blocking', true)}>
+                <div className="triage-rc"><div className="triage-rc-inner"></div></div>
+                {t("triage.yes_blocking", "Yes, blocking")}
+              </button>
+              <button className={`triage-opt ${ans.blocking === false ? 'pn' : ''}`} onClick={() => toggle('blocking', false)}>
+                <div className="triage-rc"><div className="triage-rc-inner"></div></div>
+                {t("triage.no_blocking", "Road is clear")}
+              </button>
+            </div>
+          </div>
         </div>
+        
+        {result ? (
+          <div className={`triage-res ${result.cls}`}>
+            <result.Icon size={15} strokeWidth={2} />
+            <span>{result.txt}</span>
+          </div>
+        ) : (
+          <div className="triage-res w">
+            <Info size={15} strokeWidth={2} />
+            <span>{t("triage.summary_idle", "Answer both questions to get a priority recommendation.")}</span>
+          </div>
+        )}
+        
+        <button 
+          className={`triage-fbtn ${allAnswered ? 'on' : 'off'}`} 
+          onClick={handleSubmit}
+          disabled={!allAnswered || loading}
+        >
+          {loading ? (
+            t("triage.prioritising", "⏳ Prioritising...")
+          ) : allAnswered ? (
+            <>
+              <ArrowRight size={14} strokeWidth={2.2} />
+              {t("triage.get_help", "Get priority help")}
+            </>
+          ) : (
+            t("triage.answer_both", "Answer both questions")
+          )}
+        </button>
 
-        {/* Summary bar */}
-        <div className="sheet-divider" />
-        <div className={`summary-bar ${type === "idle" ? "" : type}`}>
-          {type === "urgent" && <AlertTriangle size={15} strokeWidth={2} style={{ flexShrink: 0 }} />}
-          {type === "clear"  && <CheckCircle  size={15} strokeWidth={2} style={{ flexShrink: 0 }} />}
-          {msg}
-        </div>
-
-        {/* Actions */}
-        <div className="actions">
-          <button 
-            className="get-help-btn" 
-            disabled={!allAnswered || loading}
-            onClick={handleSubmit}
-          >
-            {loading ? (
-              t("triage.prioritising", "⏳ Prioritising...")
-            ) : (
-              <>
-                <ArrowRight size={18} strokeWidth={2.5} />
-                {allAnswered ? t("triage.get_help", "Get Prioritised Help") : t("triage.answer_both", "Answer both questions")}
-              </>
-            )}
-          </button>
-          <button 
-            className="skip-btn"
-            onClick={onSkip}
-            disabled={loading}
-          >
-            {t("triage.skip", "Skip — show all contacts")}
-          </button>
-        </div>
-
+        <button className="triage-skip-btn" onClick={onSkip} disabled={loading}>
+          {t("triage.skip", "Skip — show all contacts")}
+        </button>
       </div>
     </div>
   );

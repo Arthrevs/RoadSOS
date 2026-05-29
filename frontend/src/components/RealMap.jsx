@@ -92,14 +92,26 @@ function buildServiceIcon(contact) {
   });
 }
 
-/** Re-centers map when location prop changes (e.g., user moves or demo location switches). */
-function MapRecenter({ lat, lon, zoom }) {
+function MapRecenter({ lat, lon, zoom, markers = [] }) {
   const map = useMap();
   useEffect(() => {
     if (lat != null && lon != null) {
-      map.setView([lat, lon], zoom, { animate: true, duration: 0.6 });
+      if (markers.length > 0) {
+        const bounds = L.latLngBounds([[lat, lon]]);
+        markers.forEach(m => bounds.extend([m.lat, m.lon]));
+        // Add asymmetric padding to account for the top toolbar and the large bottom dock
+        map.fitBounds(bounds, {
+          paddingTopLeft: [40, 120],
+          paddingBottomRight: [40, 350],
+          maxZoom: zoom,
+          animate: true,
+          duration: 0.6
+        });
+      } else {
+        map.setView([lat, lon], zoom, { animate: true, duration: 0.6 });
+      }
     }
-  }, [lat, lon, zoom, map]);
+  }, [lat, lon, zoom, markers, map]);
   return null;
 }
 
@@ -266,7 +278,7 @@ const RealMap = React.forwardRef(function RealMap(
         <TileLoadSignal onLoad={() => setTilesLoaded(true)} />
 
         <MapResizer />
-        <MapRecenter lat={lat} lon={lon} zoom={hasGps ? zoom : 4} />
+        <MapRecenter lat={lat} lon={lon} zoom={hasGps ? zoom : 4} markers={serviceMarkers} />
         <MapClickHandler onMapClick={clearActiveMarker} />
 
         {hasGps && (

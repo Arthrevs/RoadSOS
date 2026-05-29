@@ -92,6 +92,20 @@ export function getMedicalIdCompletion(data = null) {
   return Math.round((count / keys.length) * 100);
 }
 
+export function getIsMedicalIdComplete(data = null) {
+  const m = data || getMedicalId();
+  const hasName = Boolean((m.name || "").toString().trim());
+  const hasAge = Boolean((m.age || "").toString().trim());
+  const hasBlood = Boolean((m.bloodType || "").toString().trim());
+  const hasPhone = Boolean(
+    (m.primaryContactPhone || "").toString().trim() || 
+    (m.secondaryContactPhone || "").toString().trim() || 
+    (m.tertiaryContactPhone || "").toString().trim()
+  );
+  
+  return hasName && hasAge && hasBlood && hasPhone && getMedicalIdCompletion(m) >= 63;
+}
+
 /**
  * Compose an SMS body for SOS-by-SMS, using the Medical ID + coordinates.
  *
