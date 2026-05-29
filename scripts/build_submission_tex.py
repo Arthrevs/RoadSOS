@@ -430,7 +430,7 @@ International coverage &
   200 countries pre-loaded. ISO-3166 code from Nominatim. Emergency numbers switch
   automatically at borders. \\
 Six mandatory service categories &
-  \code{hospital} · \code{police} · \code{ambulance} · \code{towing} · \code{tyre} ·
+  \code{hospital}, \code{police}, \code{ambulance}, \code{towing}, \code{tyre},
   \code{showroom} --- all mapped to OSM tags and Google keyword queries. \\
 \bottomrule
 \end{tabularx}
