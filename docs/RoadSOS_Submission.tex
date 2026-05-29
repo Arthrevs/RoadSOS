@@ -114,7 +114,7 @@
 2. Assumptions         & 27 explicit design constraints \\
 3. Software packages   & Backend pip + frontend npm + external APIs \\
 4. Architecture        & Request flow, offline strategy, crash detection \\
-5. Source code         & All 146 source files, verbatim \\
+5. Key source code     & Plus Code encoder + AI triage (full repo on GitHub) \\
 \bottomrule
 \end{tabular}
 \end{titlepage}
@@ -370,16 +370,323 @@ The summary below captures the request flow and the four-tier offline strategy.}
 
 
 %% ============================================================
-\section{Entire source code}
+\section{Key source code}
 %% ============================================================
 
-\textit{Every file is rendered verbatim and grouped by directory.
-Paths are relative to the repository root.
-The full Git history is at \url{https://github.com/Arthrevs/RoadSOS}.}
+\textit{The two algorithmic centrepieces are included verbatim below: the
+fully-offline Plus Code (Open Location Code) encoder and the AI triage logic.
+The complete 146-file source tree and full Git history are on GitHub:
+\url{https://github.com/Arthrevs/RoadSOS}.}
+
+\subsection{Offline Plus Code encoder}
+\subsubsection{\file{frontend/src/utils/plusCodes.js}  [JavaScript, 3,825 chars]}
+\begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+/**
+ * Open Location Code (Plus Codes) [U+2014] encode GPS coordinates to a short,
+ * speakable, dispatcher-friendly string. Algorithm by Google. Spec:
+ *   https://github.com/google/open-location-code/blob/main/docs/specification.md
+ *
+ * Why we ship this:
+ * - Indian emergency dispatchers (esp. 112 ERSS) accept Plus Codes.
+ * - "7M5237MC+37" is far easier to communicate by voice in a panicked
+ *   moment than "thirteen point zero eight two seven, eighty point two
+ *   seven zero seven".
+ * - **Fully offline** [U+2014] pure deterministic algorithm. No network, no
+ *   API key, no library.
+ *
+ * Implementation note:
+ * - Uses the reference INTEGER algorithm (multiply to a fixed precision,
+ *   then divide). Float-accumulation approaches drift on the final grid
+ *   digits, so we deliberately avoid them. Verified character-for-character
+ *   against Google's canonical encoder across 1000+ coordinates.
+ *
+ * Precision: length 10 (default) [U+2248] 14 m [U+00D7] 14 m square [U+2014] fine for a crash site.
+ *
+ * Exports `encodePlusCode(lat, lon)` [U+2192] 11-char code, e.g. "7M5237MC+37".
+ */
+
+const ALPHABET = '23456789CFGHJMPQRVWX'; // 20 chars, skips O/I/lookalikes
+const SEPARATOR = '+';
+const SEPARATOR_POSITION = 8;
+const ENCODING_BASE = 20;
+const LATITUDE_MAX = 90;
+const LONGITUDE_MAX = 180;
+const PAIR_CODE_LENGTH = 10;
+const GRID_CODE_LENGTH = 5;
+const GRID_COLUMNS = 4;
+const GRID_ROWS = 5;
+
+// Precision multipliers (integer algorithm).
+const PAIR_PRECISION = ENCODING_BASE ** 3;
+const FINAL_LAT_PRECISION = PAIR_PRECISION * GRID_ROWS ** GRID_CODE_LENGTH;
+const FINAL_LON_PRECISION = PAIR_PRECISION * GRID_COLUMNS ** GRID_CODE_LENGTH;
+
+function clipLatitude(lat) {
+  return Math.max(-90, Math.min(90, lat));
+}
+
+function normalizeLongitude(lon) {
+  let l = lon;
+  while (l < -180) l += 360;
+  while (l >= 180) l -= 360;
+  return l;
+}
+
+/**
+ * Encode (lat, lon) to a 10-digit Plus Code with the "+" separator.
+ *
+ * @param {number} lat [U+2014] degrees, -90 to 90 (clamped)
+ * @param {number} lon [U+2014] degrees, wrapped to [-180, 180)
+ * @returns {string} e.g. "7M5237MC+37", or "" for invalid input
+ */
+export function encodePlusCode(lat, lon) {
+  if (typeof lat !== 'number' || typeof lon !== 'number'
+      || !isFinite(lat) || !isFinite(lon)) {
+    return '';
+  }
+
+  let latitude = clipLatitude(lat);
+  const longitude = normalizeLongitude(lon);
+
+  // Latitude 90 would overflow the top cell [U+2014] pull it inward by one cell.
+  if (latitude === 90) {
+    latitude = latitude - (ENCODING_BASE ** -3 / GRID_ROWS ** GRID_CODE_LENGTH);
+  }
+
+  // Convert to positive integers at the final precision. Integer-only math
+  // from here avoids floating-point drift on the trailing grid digits.
+  let latVal = Math.floor(
+    Math.round((latitude + LATITUDE_MAX) * FINAL_LAT_PRECISION * 1e6) / 1e6,
+  );
+  let lonVal = Math.floor(
+    Math.round((longitude + LONGITUDE_MAX) * FINAL_LON_PRECISION * 1e6) / 1e6,
+  );
+
+  // A length-10 code uses only the pair section, so drop the grid digits.
+  latVal = Math.floor(latVal / GRID_ROWS ** GRID_CODE_LENGTH);
+  lonVal = Math.floor(lonVal / GRID_COLUMNS ** GRID_CODE_LENGTH);
+
+  // Build the 5 lat/lon pairs from least- to most-significant.
+  let code = '';
+  for (let i = 0; i < PAIR_CODE_LENGTH / 2; i++) {
+    code = ALPHABET.charAt(lonVal % ENCODING_BASE) + code;
+    code = ALPHABET.charAt(latVal % ENCODING_BASE) + code;
+    latVal = Math.floor(latVal / ENCODING_BASE);
+    lonVal = Math.floor(lonVal / ENCODING_BASE);
+  }
+
+  // Insert the "+" separator after position 8.
+  return code.slice(0, SEPARATOR_POSITION) + SEPARATOR + code.slice(SEPARATOR_POSITION);
+}
+
+/**
+ * Build a Google Maps shareable URL for given coordinates.
+ * Used by SOS-by-SMS so the recipient can tap-to-open the location.
+ */
+export function gMapsLink(lat, lon) {
+  return `https://maps.google.com/?q=${lat.toFixed(6)},${lon.toFixed(6)}`;
+}
+\end{lstlisting}
+
+\subsection{AI triage logic}
+\subsubsection{\file{backend/services/ai\_triage.py}  [Python, 7,451 chars]}
+\begin{lstlisting}[language=Python,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
+"""AI-driven contact prioritisation.
+
+Uses Google's Gemini 2.0 Flash for situation-aware reordering. Always falls
+back to a deterministic rule-based ordering if the API is unreachable, errors,
+or returns malformed output. The fallback produces the same response shape so
+the frontend never sees a difference.
+
+Why fallback matters: emergency software cannot have its core feature dependent
+on a 3rd-party API.
+
+Why Gemini Flash: free tier (60 RPM, 1500 RPD on 2.0-flash, 15 RPM on 1.5-flash),
+low latency, JSON-mode supported, no billing required to start.
+"""
+
+from __future__ import annotations
+
+import json
+import logging
+import os
+import re
+
+import httpx
+
+from services.gemini_quota import gemini_quota
+from services.gemini_utils import extract_gemini_text
+
+logger = logging.getLogger(__name__)
+
+# Gemini 2.0 Flash [U+2014] current free-tier default with the highest free quota.
+MODEL = "gemini-2.0-flash"
+MAX_TOKENS = 2048
+TIMEOUT_S = 15.0
+
+# REST endpoint (no SDK dependency [U+2014] keeps requirements lean and matches our
+# existing httpx-everywhere style).
+GEMINI_URL = (
+    "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+)
+
+SYSTEM_PROMPT = """You are RoadSOS Triage [U+2014] an emergency dispatcher AI for road accidents.
+
+Your only job: take a crash situation and a list of nearby emergency services,
+return a JSON object that reorders the services by priority for that specific
+situation.
+
+OUTPUT REQUIREMENTS (strict):
+- Return ONLY a JSON object. No prose. No markdown fences. No commentary.
+- The object MUST have exactly two keys: "contacts" and "reason".
+- "contacts" MUST be the same array of objects you were given, with all fields
+  preserved verbatim, just reordered. Never invent contacts. Never drop them.
+- "reason" MUST be a single sentence, maximum 18 words, plain English,
+  explaining why the top contact was chosen for this situation.
+
+PRIORITY RULES (in strict order):
+1. Injured + vehicle blocking road  [U+2192] ambulance [U+2192] hospital [U+2192] police [U+2192] towing [U+2192] repair
+2. Injured + no road block          [U+2192] ambulance [U+2192] hospital [U+2192] police [U+2192] repair
+3. Not injured + blocking road      [U+2192] police [U+2192] towing [U+2192] repair [U+2192] tyre
+4. Not injured + no block           [U+2192] repair [U+2192] tyre [U+2192] police [U+2192] towing
+
+Within a priority tier, the closer service wins."""
+
+
+_FENCE_RE = re.compile(r"^```(?:json)?\s*|\s*```$", re.MULTILINE)
+
+
+def rule_based_triage(injured: bool, blocking: bool, contacts: list[dict]) -> dict:
+    """Deterministic ordering used as fallback and as a baseline for tests."""
+    if injured and blocking:
+        order = ["ambulance", "hospital", "police", "towing", "repair", "tyre", "showroom"]
+        reason = "Trauma care plus blocked road [U+00B7] ambulance, hospital, police listed first"
+    elif injured:
+        order = ["ambulance", "hospital", "police", "repair", "towing", "tyre", "showroom"]
+        reason = "Trauma care prioritised [U+00B7] ambulance and hospital listed first"
+    elif blocking:
+        order = ["police", "towing", "repair", "tyre", "hospital", "ambulance", "showroom"]
+        reason = "Vehicle blocking traffic [U+00B7] police and towing listed first"
+    else:
+        order = ["repair", "tyre", "showroom", "police", "towing", "hospital", "ambulance"]
+        reason = "No injuries reported [U+00B7] roadside repair services listed first"
+
+    def priority(c: dict) -> tuple:
+        cat = c.get("category", "")
+        idx = order.index(cat) if cat in order else 99
+        return (idx, c.get("distance", 9999))
+
+    return {
+        "contacts": sorted(contacts, key=priority),
+        "reason": reason,
+    }
+
+
+def _validate_ai_result(result: object, original_count: int) -> dict | None:
+    """Return the result if it matches the contract, else None."""
+    if not isinstance(result, dict):
+        return None
+    if "contacts" not in result or "reason" not in result:
+        return None
+    if not isinstance(result["contacts"], list):
+        return None
+    if not isinstance(result["reason"], str) or not result["reason"].strip():
+        return None
+    if len(result["contacts"]) != original_count:
+        return None
+    return result
+
+
+async def prioritize_contacts(injured: bool, blocking: bool, contacts: list[dict]) -> dict:
+    if not contacts:
+        return {"contacts": [], "reason": "No nearby services found"}
+
+    api_key = os.getenv("GEMINI_API_KEY", "")
+    if not api_key:
+        logger.info("GEMINI_API_KEY not set [U+2014] using rule-based triage")
+        return rule_based_triage(injured, blocking, contacts)
+
+    if not gemini_quota.can_call():
+        logger.info("Gemini quota guard triggered [U+2014] using rule-based triage")
+        return rule_based_triage(injured, blocking, contacts)
+
+    try:
+        situation = []
+        if injured:
+            situation.append("PEOPLE ARE INJURED and need medical attention")
+        if blocking:
+            situation.append("THE VEHICLE IS BLOCKING THE ROAD")
+        if not situation:
+            situation.append("no injuries, vehicle may need roadside assistance")
+        situation_text = "; ".join(situation)
+
+        summary = [
+            {
+                "name": c.get("name", "?"),
+                "category": c.get("category", "?"),
+                "distance_km": c.get("distance", "?"),
+            }
+            for c in contacts
+        ]
+
+        user_message = (
+            f"SITUATION: {situation_text}.\n\n"
+            f"Services found nearby (currently sorted by distance only):\n"
+            f"{json.dumps(summary, indent=2)}\n\n"
+            f"Full contact data to reorder (return ALL of these, "
+            f"just in the priority order you decide):\n"
+            f"{json.dumps(contacts, indent=2)}"
+        )
+
+        # Gemini puts the system prompt in `systemInstruction`, not in messages.
+        # JSON mode is opt-in via responseMimeType.
+        payload = {
+            "systemInstruction": {"parts": [{"text": SYSTEM_PROMPT}]},
+            "contents": [
+                {"role": "user", "parts": [{"text": user_message}]},
+            ],
+            "generationConfig": {
+                "temperature": 0.2,
+                "maxOutputTokens": MAX_TOKENS,
+                "responseMimeType": "application/json",
+            },
+        }
+
+        url = GEMINI_URL.format(model=MODEL, key=api_key)
+        async with httpx.AsyncClient(timeout=TIMEOUT_S) as client:
+            r = await client.post(url, json=payload)
+            r.raise_for_status()
+            response_json = r.json()
+        await gemini_quota.record_call()
+
+        raw = extract_gemini_text(response_json)
+        if not raw:
+            logger.warning("AI returned empty response [U+00B7] using rule-based fallback")
+            return rule_based_triage(injured, blocking, contacts)
+
+        cleaned = _FENCE_RE.sub("", raw).strip()
+
+        try:
+            parsed = json.loads(cleaned)
+        except json.JSONDecodeError:
+            logger.warning("AI returned non-JSON [U+00B7] using rule-based fallback")
+            return rule_based_triage(injured, blocking, contacts)
+
+        validated = _validate_ai_result(parsed, len(contacts))
+        if validated is None:
+            logger.warning("AI returned malformed response [U+00B7] using rule-based fallback")
+            return rule_based_triage(injured, blocking, contacts)
+
+        return validated
+
+    except Exception as exc:
+        logger.warning(f"AI triage call failed ({type(exc).__name__}) [U+00B7] using rule-based fallback")
+        return rule_based_triage(injured, blocking, contacts)
+\end{lstlisting}
 
 \clearpage
 \subsection{Source index}
-Files included verbatim: \textbf{0}.
+Files included verbatim: \textbf{2}.
 
 \vspace{1cm}
 \hrule

@@ -388,7 +388,7 @@ def build_tex() -> str:
 2. Assumptions         & 27 explicit design constraints \\
 3. Software packages   & Backend pip + frontend npm + external APIs \\
 4. Architecture        & Request flow, offline strategy, crash detection \\
-5. Source code         & All 146 source files, verbatim \\
+5. Key source code     & Plus Code encoder + AI triage (full repo on GitHub) \\
 \bottomrule
 \end{tabular}
 \end{titlepage}
@@ -574,18 +574,23 @@ The summary below captures the request flow and the four-tier offline strategy.}
     # ── Section 5: Source code ────────────────────────────────────────────
     w(r"""
 %% ============================================================
-\section{Entire source code}
+\section{Key source code}
 %% ============================================================
 
-\textit{Every file is rendered verbatim and grouped by directory.
-Paths are relative to the repository root.
-The full Git history is at \url{https://github.com/Arthrevs/RoadSOS}.}
+\textit{The two algorithmic centrepieces are included verbatim below: the
+fully-offline Plus Code (Open Location Code) encoder and the AI triage logic.
+The complete 146-file source tree and full Git history are on GitHub:
+\url{https://github.com/Arthrevs/RoadSOS}.}
 """)
 
     files_ok = 0
     files_missing: list[str] = []
 
-    for group_title, files in []: #CODE_GROUPS:
+    _CURATED = [
+        ("Offline Plus Code encoder", ["frontend/src/utils/plusCodes.js"]),
+        ("AI triage logic", ["backend/services/ai_triage.py"]),
+    ]
+    for group_title, files in _CURATED:
         w(f"\\subsection{{{esc(group_title)}}}")
         for rel in files:
             path = ROOT / rel
