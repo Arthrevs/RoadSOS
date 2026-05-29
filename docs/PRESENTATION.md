@@ -73,7 +73,7 @@ Emergency services exist. **Finding them quickly enough is the problem.**
                          │
         ┌────────────────┼────────────────┐
         ▼                ▼                ▼
-   useLocation     Service Worker   Bundled 196-Country DB
+   useLocation     Service Worker   Bundled 200-Country DB
    GPS→IP fb       NetworkFirst     Always offline · 0 network
    velocity        + CacheFirst     calls
         │                │

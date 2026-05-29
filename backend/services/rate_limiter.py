@@ -28,7 +28,7 @@ class Bucket:
 
 
 class RateLimiter:
-    """Token-bucket per client IP. Default: 30 requests/minute, burst of 10."""
+    """Token-bucket per client IP. Deployed limits: 120/min (search), 80/min (triage)."""
 
     def __init__(self, rate_per_minute: int = 30, burst: int = 10) -> None:
         self.rate_per_sec = rate_per_minute / 60.0

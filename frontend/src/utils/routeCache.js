@@ -16,7 +16,7 @@
  * - OSRM falls back to great-circle interpolation if the routing call
  *   fails — better degraded coverage than no coverage.
  * - Concurrency capped at 3 in-flight `/search` calls so we don't trip
- *   the backend's per-IP rate limiter (30/min) or burn API quota.
+ *   the backend's per-IP rate limiter (120/min) or burn API quota.
  * - Progress callbacks fire after every waypoint so the UI can render
  *   a smooth bar.
  */

@@ -12,7 +12,7 @@ RoadSOS is a **PWA-first emergency-services discovery app**. A user opens it, th
 │                                                                     │
 │  React 18 + Vite + Workbox SW                                       │
 │  ├─ Leaflet (real OSM map)                                          │
-│  ├─ i18next (43 languages)                                          │
+│  ├─ i18next (48 languages)                                          │
 │  ├─ IndexedDB-style localStorage cache                              │
 │  └─ Bundled facilities JSON (818 entries, 200 countries)            │
 └────────────────────────────┬────────────────────────────────────────┘
@@ -223,7 +223,7 @@ Bundle cost: +150 KB minified (+44 KB gzipped) over the prior fake SVG. Trade-of
 
 ### 3.4 i18n
 
-- **43 languages:** all 22 Indian Schedule-VIII languages + English + 20 global (Spanish, French, Portuguese, German, Italian, Dutch, Polish, Russian, Ukrainian, Romanian, Greek, Turkish, Arabic, Persian, Hebrew, Swahili, Amharic, Indonesian, Malay, Thai, Vietnamese, Chinese, Japanese, Korean, Filipino)
+- **48 languages:** all 22 Indian Schedule-VIII languages + English + 25 global (Spanish, French, Portuguese, German, Italian, Dutch, Polish, Russian, Ukrainian, Romanian, Greek, Turkish, Arabic, Persian, Hebrew, Swahili, Amharic, Indonesian, Malay, Thai, Vietnamese, Chinese, Japanese, Korean, Filipino). Hindi, Tamil, Bengali, Telugu and the major global languages are fully localised; Bodo, Kashmiri and Manipuri are partially localised.
 - **RTL support:** Urdu, Arabic, Kashmiri, Sindhi, Persian, Hebrew (`dir='rtl'` on `<html>`)
 - **First-launch picker:** Manual selection only (no GPS-based auto-suggestion)
 - **Persistence:** `localStorage['roadsos:lang']`
@@ -233,7 +233,7 @@ Bundle cost: +150 KB minified (+44 KB gzipped) over the prior fake SVG. Trade-of
 
 Two-signal verification to reduce false positives:
 
-1. **GPS velocity collapse:** ≥25 km/h followed by ≤5 km/h within 2-second window
+1. **GPS velocity collapse:** sustained ≥40 km/h followed by ≤5 km/h within ~2.5 s (rejects ordinary braking)
 2. **Accelerometer spike:** ≥3.5G within 4 seconds of velocity collapse
 
 Both must agree → `autoFireSos()` fires with crash flag, opens DispatchScreen, 12s cooldown before next alert. iOS 13+ requires explicit motion permission gesture, requested on first user tap.
@@ -358,7 +358,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 7. **Smart dedup.** Phone-equality dedup wins over name-match — handles OSM/Google transliteration mismatches (e.g., "GS Custom" vs "gs sustom" with same phone).
 8. **Country-aware SOS routing.** WhatsApp vs SMS dispatch chosen per country; no false assumption that everyone uses SMS or WhatsApp.
 9. **Two-signal crash detection.** GPS velocity drop + accelerometer spike must agree → meaningfully reduces false positives vs single-sensor designs.
-10. **43-language i18n with RTL.** Cover all 22 Indian Schedule-VIII languages plus 20 global. RTL for Urdu/Arabic/Persian/Hebrew/Kashmiri/Sindhi is rendered correctly.
+10. **48-language i18n with RTL.** Cover all 22 Indian Schedule-VIII languages plus 25 global + English. RTL for Urdu/Arabic/Persian/Hebrew/Kashmiri/Sindhi is rendered correctly.
 11. **CI with lint + format + tests + conflict detection** is wired for both frontend and backend before any code lands on main.
 
 ---
@@ -427,3 +427,4 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 The architecture is **purpose-fit for an emergency-services demo with hackathon constraints**: every dollar saved (Overpass first, Google capped), every failure mode handled (4-tier offline fallback, 3-layer triage fallback, never-raises orchestration), every byte cached (3-tier coordinate-grid TTL caches). The codebase shows consistent reliability discipline — `try/except` wrappers around every I/O, deterministic fallbacks for AI, graceful degradation everywhere.
 
 Tech debt is **predominantly testing depth and observability**, not structural — there is nothing fundamental to redesign before shipping. Recommendations are additive, not corrective.
+*, not structural — there is nothing fundamental to redesign before shipping. Recommendations are additive, not corrective.

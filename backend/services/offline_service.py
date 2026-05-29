@@ -1,4 +1,4 @@
-"""GET /offline-pack · serves the bundled 59-country emergency number database.
+"""GET /offline-pack · serves the bundled 200-country emergency number database.
 
 Sets a long cache header so the Service Worker stores it for a week.
 """
@@ -38,7 +38,7 @@ def validate_seed_on_startup() -> int:
     return len(data)
 
 
-@offline_router.get("/offline-pack", summary="Bundled 59-country emergency numbers")
+@offline_router.get("/offline-pack", summary="Bundled 200-country emergency numbers")
 async def get_offline_pack():
     data = _load_seed()
     return JSONResponse(

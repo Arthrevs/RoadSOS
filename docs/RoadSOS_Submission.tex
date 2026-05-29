@@ -199,7 +199,7 @@ whenever any single assumption is violated at runtime.}
 \begin{itemize}
   \item Users grant geolocation permission on first launch; otherwise the app shows a Set-Location-Manually affordance.
   \item Medical ID data stored in localStorage is included in outgoing SOS payloads only after the user sets it up. It is never uploaded to RoadSOS servers.
-  \item On auto-detected crash (velocity collapse ≥ 25 km/h → ≤ 5 km/h in 2 s confirmed by ≥ 3.5 G accelerometer spike), a 10 s cancellation window lets the user abort false positives.
+  \item On auto-detected crash (sustained ≥ 40 km/h collapsing to ≤ 5 km/h within \textasciitilde{}2.5 s, optionally confirmed by a ≥ 3.5 G accelerometer spike), a cancellation window lets the user abort false positives.
 \end{itemize}
 
 \subsection{Communications channels}
@@ -347,10 +347,10 @@ The summary below captures the request flow and the four-tier offline strategy.}
 \subsection{Crash detection}
 
 \begin{itemize}
-  \item \textbf{Signal 1} --- GPS velocity collapse: $\geq$25\,km/h $\to$
-        $\leq$5\,km/h within 2\,s.
-  \item \textbf{Signal 2} --- Accelerometer spike: peak magnitude $\geq$3.5\,G.
-  \item \textbf{Confirmation}: both signals must occur within a 4\,s alignment window.
+  \item \textbf{Signal 1 (primary)} --- GPS velocity collapse: sustained $\geq$40\,km/h $\to$
+        $\leq$5\,km/h within ~2.5\,s. Tuned to reject ordinary braking and stop-and-go traffic.
+  \item \textbf{Signal 2 (optional)} --- Accelerometer spike: peak magnitude $\geq$3.5\,G.
+  \item \textbf{Confirmation}: the accelerometer spike, when motion permission is granted, must align within a 4\,s window; a sustained-speed sudden stop alone still triggers.
   \item \textbf{Cooldown}: 12\,s after confirmed event.
   \item \textbf{User override}: 10\,s PIN-cancel window before auto-dispatch.
 \end{itemize}
@@ -378,7 +378,7 @@ Paths are relative to the repository root.
 The full Git history is at \url{https://github.com/Arthrevs/RoadSOS}.}
 
 \subsection{Root configuration}
-\subsubsection{\file{README.md}  [Markdown, 31,742 chars]}
+\subsubsection{\file{README.md}  [Markdown, 31,743 chars]}
 \begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 <div align="center">
 
@@ -471,7 +471,7 @@ Service Worker + localStorage (24h TTL, ~1.1km grid) + **bundled directory: 818 
 Stores blood type, allergies, conditions, medications, and an emergency contact entirely on-device (localStorage [U+2014] **nothing ever leaves the phone**). A first responder arriving at a crash scene can tap the persistent **[U+1F194] Medical ID** button on the home screen to see this in a high-contrast paramedic-friendly card.
 
 ### [U+1F4CD] Plus Codes (Open Location Code)
-Every crash alert encodes the GPS into a **dispatcher-friendly Plus Code** like `7M5CC9R6+VV` [U+2014] recognized by Indian 112 ERSS, far easier to communicate by voice than `13.0827, 80.2707`. Encoder is hand-written in pure JS (~80 LOC, **fully offline, zero deps**) [U+2014] the algorithm lives in `frontend/src/utils/plusCodes.js`.
+Every crash alert encodes the GPS into a **dispatcher-friendly Plus Code** like `7M5237MC+37` [U+2014] recognized by Indian 112 ERSS, far easier to communicate by voice than `13.0827, 80.2707`. Encoder is hand-written in pure JS (~80 LOC, **fully offline, zero deps**) [U+2014] the algorithm lives in `frontend/src/utils/plusCodes.js`.
 
 ### [U+1F4F1] SOS-by-SMS
 When voice fails but SMS still works (very common in cellular dead zones), the crash alert shows a one-tap **SOS-by-SMS** button that pre-composes a message to your emergency contact containing: blood type, allergies, Plus Code, GPS coordinates, and a tap-to-open Google Maps link. Uses the native `sms:` URL scheme [U+2014] works on iOS and Android.
@@ -878,7 +878,7 @@ System health check [U+2014] useful for uptime monitors and the Render health-ch
 
 ### `GET /offline-pack`
 
-Returns the bundled 59-country emergency number database.
+Returns the bundled 200-country emergency number database.
 
 ---
 
@@ -3142,9 +3142,9 @@ def _parse_time(s: str) -> time:
     return time(int(h), int(m) if m else 0)
 \end{lstlisting}
 
-\subsubsection{\file{backend/services/offline\_service.py}  [Python, 1,393 chars]}
+\subsubsection{\file{backend/services/offline\_service.py}  [Python, 1,395 chars]}
 \begin{lstlisting}[language=Python,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
-"""GET /offline-pack [U+00B7] serves the bundled 59-country emergency number database.
+"""GET /offline-pack [U+00B7] serves the bundled 200-country emergency number database.
 
 Sets a long cache header so the Service Worker stores it for a week.
 """
@@ -3184,7 +3184,7 @@ def validate_seed_on_startup() -> int:
     return len(data)
 
 
-@offline_router.get("/offline-pack", summary="Bundled 59-country emergency numbers")
+@offline_router.get("/offline-pack", summary="Bundled 200-country emergency numbers")
 async def get_offline_pack():
     data = _load_seed()
     return JSONResponse(
@@ -3562,7 +3562,7 @@ def phones_match(a: str | None, b: str | None) -> bool:
     return da[-10:] == db[-10:]
 \end{lstlisting}
 
-\subsubsection{\file{backend/services/rate\_limiter.py}  [Python, 2,911 chars]}
+\subsubsection{\file{backend/services/rate\_limiter.py}  [Python, 2,921 chars]}
 \begin{lstlisting}[language=Python,breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 """Per-IP in-memory token-bucket rate limiter.
 
@@ -3594,7 +3594,7 @@ class Bucket:
 
 
 class RateLimiter:
-    """Token-bucket per client IP. Default: 30 requests/minute, burst of 10."""
+    """Token-bucket per client IP. Deployed limits: 120/min (search), 80/min (triage)."""
 
     def __init__(self, rate_per_minute: int = 30, burst: int = 10) -> None:
         self.rate_per_sec = rate_per_minute / 60.0
@@ -12848,7 +12848,7 @@ export function gMapsLink(lat, lon) {
 }
 \end{lstlisting}
 
-\subsubsection{\file{frontend/src/utils/routeCache.js}  [JavaScript, 4,880 chars]}
+\subsubsection{\file{frontend/src/utils/routeCache.js}  [JavaScript, 4,881 chars]}
 \begin{lstlisting}[breaklines=true,postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$\space}}]
 /**
  * Route pre-cache for offline-by-design road trips.
@@ -12868,7 +12868,7 @@ export function gMapsLink(lat, lon) {
  * - OSRM falls back to great-circle interpolation if the routing call
  *   fails [U+2014] better degraded coverage than no coverage.
  * - Concurrency capped at 3 in-flight `/search` calls so we don't trip
- *   the backend's per-IP rate limiter (30/min) or burn API quota.
+ *   the backend's per-IP rate limiter (120/min) or burn API quota.
  * - Progress callbacks fire after every waypoint so the UI can render
  *   a smooth bar.
  */
@@ -45098,11 +45098,11 @@ describe('buildSosSmsBody', () => {
     const body = buildSosSmsBody({
       lat: 13.0827,
       lon: 80.2707,
-      plusCode: '7J5CC9R6+VV',
+      plusCode: '7M5237MC+37',
       landmark: 'Anna Salai, Chennai',
     });
     expect(body).toMatch(/EMERGENCY/);
-    expect(body).toMatch(/7J5CC9R6\+VV/);
+    expect(body).toMatch(/7M5237MC\+37/);
     expect(body).toMatch(/Anna Salai, Chennai/);
     expect(body).toMatch(/13\.08270/);
     expect(body).toMatch(/maps\.google\.com/);

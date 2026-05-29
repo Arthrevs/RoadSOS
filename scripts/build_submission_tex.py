@@ -240,7 +240,7 @@ ASSUMPTIONS: list[tuple[str, list[str]]] = [
     ("User behaviour and consent", [
         "Users grant geolocation permission on first launch; otherwise the app shows a Set-Location-Manually affordance.",
         "Medical ID data stored in localStorage is included in outgoing SOS payloads only after the user sets it up. It is never uploaded to RoadSOS servers.",
-        "On auto-detected crash (velocity collapse ≥ 25 km/h → ≤ 5 km/h in 2 s confirmed by ≥ 3.5 G accelerometer spike), a 10 s cancellation window lets the user abort false positives.",
+        "On auto-detected crash (sustained ≥ 40 km/h collapsing to ≤ 5 km/h within ~2.5 s, optionally confirmed by a ≥ 3.5 G accelerometer spike), a cancellation window lets the user abort false positives.",
     ]),
     ("Communications channels", [
         "Country code from Nominatim determines the primary dispatch channel: WhatsApp-dominant countries (India, Brazil, Indonesia, Nigeria, etc.) use wa.me links; elsewhere native SMS deep-links are used.",
@@ -549,10 +549,10 @@ The summary below captures the request flow and the four-tier offline strategy.}
 \subsection{Crash detection}
 
 \begin{itemize}
-  \item \textbf{Signal 1} --- GPS velocity collapse: $\geq$25\,km/h $\to$
-        $\leq$5\,km/h within 2\,s.
-  \item \textbf{Signal 2} --- Accelerometer spike: peak magnitude $\geq$3.5\,G.
-  \item \textbf{Confirmation}: both signals must occur within a 4\,s alignment window.
+  \item \textbf{Signal 1 (primary)} --- GPS velocity collapse: sustained $\geq$40\,km/h $\to$
+        $\leq$5\,km/h within ~2.5\,s. Tuned to reject ordinary braking and stop-and-go traffic.
+  \item \textbf{Signal 2 (optional)} --- Accelerometer spike: peak magnitude $\geq$3.5\,G.
+  \item \textbf{Confirmation}: the accelerometer spike, when motion permission is granted, must align within a 4\,s window; a sustained-speed sudden stop alone still triggers.
   \item \textbf{Cooldown}: 12\,s after confirmed event.
   \item \textbf{User override}: 10\,s PIN-cancel window before auto-dispatch.
 \end{itemize}

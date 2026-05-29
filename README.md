@@ -89,7 +89,7 @@ Service Worker + localStorage (24h TTL, ~1.1km grid) + **bundled directory: 818 
 Stores blood type, allergies, conditions, medications, and an emergency contact entirely on-device (localStorage — **nothing ever leaves the phone**). A first responder arriving at a crash scene can tap the persistent **🆔 Medical ID** button on the home screen to see this in a high-contrast paramedic-friendly card.
 
 ### 📍 Plus Codes (Open Location Code)
-Every crash alert encodes the GPS into a **dispatcher-friendly Plus Code** like `7M5CC9R6+VV` — recognized by Indian 112 ERSS, far easier to communicate by voice than `13.0827, 80.2707`. Encoder is hand-written in pure JS (~80 LOC, **fully offline, zero deps**) — the algorithm lives in `frontend/src/utils/plusCodes.js`.
+Every crash alert encodes the GPS into a **dispatcher-friendly Plus Code** like `7M5237MC+37` — recognized by Indian 112 ERSS, far easier to communicate by voice than `13.0827, 80.2707`. Encoder is hand-written in pure JS (~80 LOC, **fully offline, zero deps**) — the algorithm lives in `frontend/src/utils/plusCodes.js`.
 
 ### 📱 SOS-by-SMS
 When voice fails but SMS still works (very common in cellular dead zones), the crash alert shows a one-tap **SOS-by-SMS** button that pre-composes a message to your emergency contact containing: blood type, allergies, Plus Code, GPS coordinates, and a tap-to-open Google Maps link. Uses the native `sms:` URL scheme — works on iOS and Android.
@@ -496,7 +496,7 @@ System health check — useful for uptime monitors and the Render health-check p
 
 ### `GET /offline-pack`
 
-Returns the bundled 59-country emergency number database.
+Returns the bundled 200-country emergency number database.
 
 ---
 

@@ -69,11 +69,11 @@ describe('buildSosSmsBody', () => {
     const body = buildSosSmsBody({
       lat: 13.0827,
       lon: 80.2707,
-      plusCode: '7J5CC9R6+VV',
+      plusCode: '7M5237MC+37',
       landmark: 'Anna Salai, Chennai',
     });
     expect(body).toMatch(/EMERGENCY/);
-    expect(body).toMatch(/7J5CC9R6\+VV/);
+    expect(body).toMatch(/7M5237MC\+37/);
     expect(body).toMatch(/Anna Salai, Chennai/);
     expect(body).toMatch(/13\.08270/);
     expect(body).toMatch(/maps\.google\.com/);
