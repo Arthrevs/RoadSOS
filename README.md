@@ -14,7 +14,7 @@
 [![Offline](https://img.shields.io/badge/Works-Offline-27ae60?style=for-the-badge&logo=serviceworker&logoColor=white)](#-offline-architecture)
 
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=white)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-8.0-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
+[![Vite](https://img.shields.io/badge/Vite-7.3.3-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![Gemini](https://img.shields.io/badge/Google-Gemini%202.0%20Flash-4285F4?logo=google&logoColor=white)](https://ai.google.dev/gemini-api)
@@ -92,7 +92,7 @@ Stores blood type, allergies, conditions, medications, and an emergency contact 
 Every crash alert encodes the GPS into a **dispatcher-friendly Plus Code** like `7M5237MC+37` — recognized by Indian 112 ERSS, far easier to communicate by voice than `13.0827, 80.2707`. Encoder is hand-written in pure JS (~80 LOC, **fully offline, zero deps**) — the algorithm lives in `frontend/src/utils/plusCodes.js`.
 
 ### 📱 SOS-by-SMS
-When voice fails but SMS still works (very common in cellular dead zones), the crash alert shows a one-tap **SOS-by-SMS** button that pre-composes a message to your emergency contact containing: blood type, allergies, Plus Code, GPS coordinates, and a tap-to-open Google Maps link. Uses the native `sms:` URL scheme — works on iOS and Android.
+When voice fails but SMS still works (very common in cellular dead zones), the crash alert shows a one-tap **SOS-by-SMS** button that pre-composes a message to your emergency contact containing: blood type, allergies, Plus Code, GPS coordinates, and a tap-to-open Google Maps link. Uses the native `sms:` URL scheme — reliable single-recipient on iOS and Android, multi-recipient support varies by OS.
 
 </td>
 <td>
@@ -247,7 +247,7 @@ GET /search ─────► Service Worker         Tier 1: Backend /search
 
 | Layer | Technology | Why |
 |---|---|---|
-| **Frontend** | React 18.3 + Vite 8 + vite-plugin-pwa 1.3 | Fast HMR, native PWA support, mobile-first |
+| **Frontend** | React 18.3 + Vite 7.3.3 + vite-plugin-pwa 1.3 | Fast HMR, native PWA support, mobile-first |
 | **Map** | Leaflet 1.9 + react-leaflet 4.2 + CartoDB Dark tiles | Real OSM map, no API key, dark theme matches UI |
 | **i18n** | i18next 26 + react-i18next 17 | 48 languages, RTL support, browser-detect fallback |
 | **Backend** | FastAPI 0.115 + httpx 0.27 (async) | Async I/O for parallel upstream calls, type-safe |
@@ -292,7 +292,7 @@ RoadSOS/
 │       └── offline_service.py        # GET /offline-pack router
 │   └── tests/                        # 10 test files, pytest discoverable
 │
-├── frontend/                         # React 18 + Vite 8 PWA
+├── frontend/                         # React 18 + Vite 7.3 PWA
 │   ├── index.html
 │   ├── vite.config.js                # React + vite-plugin-pwa (injectManifest)
 │   ├── vitest.config.js              # test runner config
@@ -306,7 +306,7 @@ RoadSOS/
 │       │   ├── MapHero.jsx           # Hero section: map + dock + SOS overlay
 │       │   ├── RealMap.jsx           # Leaflet + CartoDB Dark + custom divIcon markers
 │       │   ├── SOSButton.jsx         # WhatsApp/SMS country-aware dispatch
-│       │   ├── LanguagePicker.jsx    # First-launch 43-language modal (no auto-select)
+│       │   ├── LanguagePicker.jsx    # First-launch 48-language modal (no auto-select)
 │       │   ├── MedicalIdModal.jsx    # Blood type, allergies, emergency contacts
 │       │   ├── CrashAlert.jsx        # PIN-cancel safety layer
 │       │   ├── DispatchScreen.jsx    # Post-SOS confirmation UI
@@ -342,8 +342,6 @@ RoadSOS/
 │
 ├── scripts/
 │   └── build_submission_tex.py       # Regenerates RoadSOS_Submission.tex + .pdf from source
-│
-├── resolve_i18n_conflicts.mjs        # Utility: resolves Git merge conflicts in i18n JSON files
 │
 ├── .github/workflows/                # 3 CI workflows
 │   ├── frontend-ci.yml               # Build + Vitest on Node 20 & 22
@@ -523,13 +521,13 @@ The complete database is in `backend/data/emergency_seed.json`. The file is the 
 
 ## 🎤 Three-Minute Walkthrough
 
-A reproducible demo path that exercises every major capability:
+A reproducible demo path that exercises every major capability (*Note: When the `demoMode` flag is active, tapping a contact number will require an extra confirmation tap to prevent accidental real-world emergency calls during grading*):
 
 | Time | Action | What you should see |
 |---|---|---|
 | 0:00 | Open Google Maps in another tab, search *"hospital near me"* | Baseline: 2–3 minutes of scrolling before a useful number appears |
 | 0:30 | Open RoadSOS | National emergency numbers banner renders instantly from bundled data |
-| 0:40 | Pick a language from the 43-language modal | UI re-renders in the chosen language; RTL languages flip layout |
+| 0:40 | Pick a language from the 48-language modal | UI re-renders in the chosen language; RTL languages flip layout |
 | 0:55 | Real Leaflet map centres on your GPS position | Up to 6 nearest contacts pinned at their real lat/lon |
 | 1:10 | Answer triage questions (injured? blocking?) | Top card carries a one-sentence AI reason explaining its priority |
 | 1:40 | **Turn off WiFi live.** Reload | Cached results still render; banner stays online; map markers persist |
@@ -567,7 +565,6 @@ Our production roadmap includes compiling this React codebase using **Capacitor*
 - [ ] Government API integration (108 in India, 112 EU dispatcher tie-ins)
 - [ ] Live ambulance tracking via dispatch partnerships
 - [ ] Dedicated hardware crash detection module (Bluetooth dongle option)
-- [ ] Multi-language UI (Hindi, Tamil, Telugu, Bengali)
 - [ ] Verified-source overlay (data from regional 108 services, government trauma center directories)
 - [ ] Push-based crowd-sourced incident reports
 

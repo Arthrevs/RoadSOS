@@ -30,10 +30,10 @@ FINDPLACE_URL = "https://maps.googleapis.com/maps/api/place/findplacefromtext/js
 
 
 # ─── Key rotation ────────────────────────────────────────────────────────────
-# Set Mapsplatformkey as a comma-separated list of keys on Render to
+# Set GOOGLE_PLACES_API_KEY as a comma-separated list of keys on Render to
 # distribute load across multiple billing accounts.
 def _load_keys() -> list[str]:
-    raw = os.getenv("Mapsplatformkey", "")
+    raw = os.getenv("GOOGLE_PLACES_API_KEY", "")
     return [k.strip() for k in raw.split(",") if k.strip()]
 
 

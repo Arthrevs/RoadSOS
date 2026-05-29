@@ -1,7 +1,7 @@
 """In-process Gemini API quota tracker.
 
 Tracks per-minute (RPM) and per-day (RPD) usage against the free-tier limits
-(60 RPM / 1500 RPD for gemini-2.0-flash as of 2026) so the backend can skip
+(15 RPM / 1500 RPD for gemini-2.5-flash as of 2026) so the backend can skip
 the API call and fall through to rule-based / template fallback instead of
 hitting a 429 mid-demo.
 
@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 # Thresholds — stay 5 requests below the hard limits so transient bursts
 # don't flip us over before the window resets.
-_RPM_LIMIT = 60
+_RPM_LIMIT = 15
 _RPD_LIMIT = 1500
 _RPM_HEADROOM = 5
 _RPD_HEADROOM = 20

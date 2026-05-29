@@ -274,14 +274,14 @@ if len(phoned_osm) < 3:
 
 \subsubsection{Multi-Key Rotation}
 
-The \code{Mapsplatformkey} environment variable is parsed as a comma-separated list of API keys. Round-robin rotation distributes load across multiple billing accounts:
+The \code{GOOGLE\_PLACES\_API\_KEY} environment variable is parsed as a comma-separated list of API keys. Round-robin rotation distributes load across multiple billing accounts:
 
 \begin{lstlisting}[language=Python,caption={googleplaces\_service.py:30--36}]
 def _load_keys() -> list[str]:
-    multi = os.getenv("Mapsplatformkey", "")
+    multi = os.getenv("GOOGLE_PLACES_API_KEY", "")
     keys = [k.strip() for k in multi.split(",") if k.strip()]
     if not keys:
-        single = os.getenv("Mapsplatformkey", "")
+        single = os.getenv("GOOGLE_PLACES_API_KEY", "")
         keys = [single] if single else []
     return keys
 \end{lstlisting}
@@ -397,7 +397,7 @@ Buckets are stored in a plain Python dictionary protected by \code{asyncio.Lock}
 \section{Backend: AI Triage}
 % ──────────────────────────────────────────────────────────────────────
 
-\file{backend/services/ai\_triage.py} reorders a contact list to match the user's situation. The model is \texttt{gemini-2.0-flash}, called via direct REST against \url{https://generativelanguage.googleapis.com/v1beta/models/} (no SDK dependency --- uses the same \code{httpx} client as the rest of the backend). The free tier allows 60 requests per minute and 1500 requests per day with no billing requirement. Two boolean situational flags are accepted: \code{injured} and \code{blocking\_traffic}. JSON mode is opt-in via \code{generationConfig.responseMimeType = "application/json"}.
+\file{backend/services/ai\_triage.py} reorders a contact list to match the user's situation. The model is \texttt{gemini-2.5-flash}, called via direct REST against \url{https://generativelanguage.googleapis.com/v1beta/models/} (no SDK dependency --- uses the same \code{httpx} client as the rest of the backend). The free tier allows 15 requests per minute and 1500 requests per day with no billing requirement. Two boolean situational flags are accepted: \code{injured} and \code{blocking\_traffic}. JSON mode is opt-in via \code{generationConfig.responseMimeType = "application/json"}.
 
 \subsection{Prompt Contract}
 
@@ -757,7 +757,7 @@ Three GitHub Actions workflows are defined in \file{.github/workflows/}.
 Three jobs run sequentially:
 
 \begin{enumerate}[leftmargin=*, itemsep=2pt, topsep=2pt]
-  \item \textbf{lint.} \code{ruff check} (rule set: E, W, F, I, UP, B, C4, SIM) followed by \code{ruff format --check}. Five rules are explicitly ignored: E501 (line length), E402 (intentional \code{load\_dotenv()} ordering), B008 (FastAPI \code{Depends()}), SIM108 (ternary readability), and SIM112 (the \code{Mapsplatformkey} environment variable name is fixed by Render configuration).
+  \item \textbf{lint.} \code{ruff check} (rule set: E, W, F, I, UP, B, C4, SIM) followed by \code{ruff format --check}. Four rules are explicitly ignored: E501 (line length), E402 (intentional \code{load\_dotenv()} ordering), B008 (FastAPI \code{Depends()}), and SIM108 (ternary readability).
   \item \textbf{startup-check.} Single-step verification that \code{python -c "import main"} succeeds against \code{requirements.txt} with dummy API keys --- catches dependency-chain breakage before tests run.
   \item \textbf{test.} \code{pytest} on Python 3.11 and 3.12 in parallel. Depends on \code{lint} and \code{startup-check} passing.
 \end{enumerate}
@@ -823,7 +823,7 @@ services:
     envVars:
       - key: GEMINI_API_KEY        # required, free at aistudio.google.com
         sync: false
-      - key: Mapsplatformkey       # optional, comma-separated for multi-key
+      - key: GOOGLE_PLACES_API_KEY       # optional, comma-separated for multi-key
         sync: false
       - key: PYTHON_VERSION
         value: 3.11.9
@@ -1022,7 +1022,7 @@ Crash detection --- velocity collapse threshold & sustained $\ge$40 km/h $\right
 Crash detection --- accelerometer threshold & $\ge$3.5 G \\
 Crash detection --- signal alignment window & 4 s \\
 Crash detection --- post-alert cooldown & 12 s \\
-AI model & \code{gemini-2.0-flash} (free tier: 60 RPM / 1500 RPD) \\
+AI model & \code{gemini-2.5-flash} (free tier: 15 RPM / 1500 RPD) \\
 Frontend bundle (gzip) & 181 KiB JS + 18 KiB CSS \\
 Service worker precache entries & 6 ($\sim$210 KiB) \\
 \bottomrule

@@ -56,11 +56,12 @@ def deduplicate(contacts: list[dict]) -> list[dict]:
         name_key = name.lower().strip()
         if not name_key:
             continue
-        if name_key in seen_names:
+        if name_key in seen_names and not name_key.startswith("unnamed "):
             continue
         if any(phones_match(c.get("phone"), existing.get("phone")) for existing in out):
             continue
-        seen_names.add(name_key)
+        if not name_key.startswith("unnamed "):
+            seen_names.add(name_key)
         out.append(c)
     return out
 

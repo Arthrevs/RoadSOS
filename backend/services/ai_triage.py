@@ -27,7 +27,7 @@ from services.gemini_utils import extract_gemini_text
 logger = logging.getLogger(__name__)
 
 # Gemini 2.0 Flash — current free-tier default with the highest free quota.
-MODEL = "gemini-2.0-flash"
+MODEL = "gemini-2.5-flash"
 MAX_TOKENS = 2048
 TIMEOUT_S = 15.0
 
@@ -156,6 +156,7 @@ async def prioritize_contacts(injured: bool, blocking: bool, contacts: list[dict
                 "temperature": 0.2,
                 "maxOutputTokens": MAX_TOKENS,
                 "responseMimeType": "application/json",
+                "thinkingConfig": {"thoughts": False},
             },
         }
 

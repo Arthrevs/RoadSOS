@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 dispatch_router = APIRouter()
 
-MODEL = "gemini-2.0-flash"
+MODEL = "gemini-2.5-flash"
 MAX_TOKENS = 300
 TIMEOUT_S = 12.0
 
@@ -96,6 +96,7 @@ async def dispatch_summary(req: DispatchRequest):
             "generationConfig": {
                 "temperature": 0.2,
                 "maxOutputTokens": MAX_TOKENS,
+                "thinkingConfig": {"thoughts": False},
             },
         }
 

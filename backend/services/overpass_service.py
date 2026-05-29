@@ -192,7 +192,7 @@ def _dedupe_smart(items: list[dict]) -> list[dict]:
         for kept in out:
             same_name = kept["name"].lower().strip() == item_name
             near = haversine(item["lat"], item["lon"], kept["lat"], kept["lon"]) <= radius_km
-            if same_name or near:
+            if same_name and near:
                 is_dup = True
                 break
         if not is_dup:
