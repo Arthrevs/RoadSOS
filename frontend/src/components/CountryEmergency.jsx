@@ -16,8 +16,9 @@ export default function CountryEmergency({ numbers, contacts }) {
   const { t } = useTranslation();
   if (!numbers) return null;
 
-  const { police, ambulance, fire, general } = numbers;
+  const { police, ambulance, fire, general, highway } = numbers;
   const vals = { police, ambulance, fire, general };
+
 
   return (
     <>

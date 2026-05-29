@@ -17,13 +17,13 @@ This document describes every persistent data structure used by RoadSOS, its sch
 
 | Metric | Value |
 |---|---|
-| Total countries | **196** |
+| Total countries & territories | **200** |
 | UN-recognised states covered | 100% |
 | Asia | 49 |
-| Europe | 50 |
-| Africa | 54 |
+| Europe | 45 |
+| Africa | 55 |
 | Americas | 35 |
-| Oceania | 14 |
+| Oceania | 16 |
 | File size (raw JSON) | ~28 KB |
 | File size (gzipped) | ~9 KB |
 
@@ -303,7 +303,7 @@ Coordinates are rounded to 4 decimal places (~11 m grid) so sub-meter GPS jitter
 
 | # | Artifact | Type | Size | Update cadence |
 |---|---|---|---|---|
-| 1 | Emergency numbers DB | Static JSON | 196 entries | ~once per decade |
+| 1 | Emergency numbers DB | Static JSON | 200 entries | ~once per decade |
 | 2 | OSM category map | Source code | 18 mappings | When OSM tags evolve |
 | 3 | Contact object | Runtime schema | Per query | Live |
 | 4 | Triage I/O | Runtime schema | Per query | Live |

@@ -125,7 +125,7 @@ RoadSOS is a Progressive Web Application that locates emergency-services contact
 |   |- Leaflet 1.9.4    (real OSM map, dark tiles)              |
 |   |- i18next 26       (43 languages, RTL support)             |
 |   |- localStorage     (24h search-result cache)               |
-|   `- bundled JSON     (249 facilities x 196 countries)        |
+|   `- bundled JSON     (818 entries x 200 countries)          |
 +----------------------------+----------------------------------+
                              |  HTTPS  (CORS-allowlisted)
                              v
@@ -511,7 +511,7 @@ The grid is 1.1 km square at the equator. A user who searched yesterday from any
 
 \subsection{Tier 3 --- Bundled Facilities}
 
-When network requests fail and no cache entry exists, \file{src/utils/bundledFacilities.js} computes the nearest entries from a JSON file shipped in the build bundle: \file{src/data/bundled\_facilities.json} (249 records, 196 countries).
+When network requests fail and no cache entry exists, \file{src/utils/bundledFacilities.js} computes the nearest entries from a JSON file shipped in the build bundle: \file{src/data/bundled\_facilities.json} (818 entries, 200 countries).
 
 \begin{tabularx}{\textwidth}{l c X}
 \toprule
@@ -975,7 +975,7 @@ Roadproj/
 |     |  |- countryLanguage.js   # ISO country -> language code
 |     |  `- *.json               # 43 translation bundles
 |     `- data/
-|        `- bundled_facilities.json # 249 facilities, 196 countries
+|        `- bundled_facilities.json # 818 entries, 200 countries
 |
 |- docs/
 |  |- ARCHITECTURE.md            # architecture review + ADRs
@@ -1000,8 +1000,8 @@ Roadproj/
 \toprule
 \textbf{Metric} & \textbf{Value} \\
 \midrule
-Countries with at least one bundled facility & 196 \\
-Bundled facilities total & 249 \\
+Countries with at least one bundled facility & 200 \\
+Bundled facilities total & 818 \\
 Languages shipped & 43 \\
 Indian Schedule-VIII languages covered & 22 of 22 \\
 RTL languages supported & 6 (Arabic, Persian, Hebrew, Urdu, Kashmiri, Sindhi) \\

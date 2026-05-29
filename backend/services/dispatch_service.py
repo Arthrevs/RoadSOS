@@ -17,6 +17,7 @@ import httpx
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
 
+from services.gemini_quota import gemini_quota
 from services.gemini_utils import extract_gemini_text
 
 logger = logging.getLogger(__name__)
@@ -72,6 +73,10 @@ async def dispatch_summary(req: DispatchRequest):
     if not api_key:
         return {"summary": fallback, "source": "template"}
 
+    if not gemini_quota.can_call():
+        logger.info("Gemini quota guard triggered — using template dispatch summary")
+        return {"summary": fallback, "source": "template"}
+
     try:
         payload_data = {
             "landmark": req.landmark or f"{req.lat:.5f}, {req.lon:.5f}",
@@ -99,6 +104,7 @@ async def dispatch_summary(req: DispatchRequest):
             r = await client.post(url, json=payload)
             r.raise_for_status()
             response_json = r.json()
+        await gemini_quota.record_call()
 
         summary = extract_gemini_text(response_json)
         if not summary:

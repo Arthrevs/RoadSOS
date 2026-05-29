@@ -7,7 +7,7 @@
  *
  *   Tier 1 — backend /search (live network)
  *   Tier 2 — localStorage cache (24h TTL, ~1.1 km grid)
- *   Tier 3 — bundled_facilities.json (249 records, 196 countries)
+ *   Tier 3 — bundled_facilities.json (818 entries, 200 countries)
  *   Tier 4 — hardcoded mock data (final visual placeholder)
  *
  * Each tier is exercised here in isolation: tier 2 with the localStorage
@@ -106,8 +106,8 @@ describe('Tier 2 — localStorage cache (network-out, recently visited)', () => 
 
 // ─── Tier 3: bundled facilities (truly offline, no localStorage) ────────
 describe('Tier 3 — bundled facility directory (fresh install, no network)', () => {
-  it('ships >= 196 facilities (one per country minimum)', () => {
-    expect(BUNDLED_FACILITY_COUNT).toBeGreaterThanOrEqual(196);
+  it('ships >= 200 facilities (one per country minimum)', () => {
+    expect(BUNDLED_FACILITY_COUNT).toBeGreaterThanOrEqual(200);
   });
 
   it('returns nearest facilities for a major Indian city', () => {
@@ -176,7 +176,7 @@ describe('Country emergency numbers (always offline)', () => {
     const facilityCountries = new Set(
       Object.keys(emergencyNumbersMap),  // we already test integrity; reuse
     );
-    expect(facilityCountries.size).toBeGreaterThanOrEqual(196);
+    expect(facilityCountries.size).toBeGreaterThanOrEqual(200);
   });
 
   it('returns valid numbers for major countries', () => {

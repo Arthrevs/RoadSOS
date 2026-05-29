@@ -21,6 +21,7 @@ import re
 
 import httpx
 
+from services.gemini_quota import gemini_quota
 from services.gemini_utils import extract_gemini_text
 
 logger = logging.getLogger(__name__)
@@ -112,6 +113,10 @@ async def prioritize_contacts(injured: bool, blocking: bool, contacts: list[dict
         logger.info("GEMINI_API_KEY not set — using rule-based triage")
         return rule_based_triage(injured, blocking, contacts)
 
+    if not gemini_quota.can_call():
+        logger.info("Gemini quota guard triggered — using rule-based triage")
+        return rule_based_triage(injured, blocking, contacts)
+
     try:
         situation = []
         if injured:
@@ -159,6 +164,7 @@ async def prioritize_contacts(injured: bool, blocking: bool, contacts: list[dict
             r = await client.post(url, json=payload)
             r.raise_for_status()
             response_json = r.json()
+        await gemini_quota.record_call()
 
         raw = extract_gemini_text(response_json)
         if not raw:

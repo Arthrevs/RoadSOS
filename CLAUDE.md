@@ -81,11 +81,11 @@ The rulebook specifies these exact criteria — every code decision must serve a
 3. **Offline functionality** — 4-tier fallback:
    - Tier 1: FastAPI backend `/search`
    - Tier 2: Service Worker + localStorage cache (24h TTL, ~110m grid)
-   - Tier 3: Bundled JSON (249 facilities across 196 countries)
+   - Tier 3: Bundled JSON (818 entries: hospitals + national emergency contacts, 200 countries)
    - Tier 4: Hardcoded mock as final placeholder
    Country emergency numbers (police/ambulance/fire) always render from bundled data — zero network dependency.
 
-4. **Information integration across countries** — 196 countries pre-loaded. ISO-3166 country code from Nominatim reverse-geocode. Emergency numbers switch automatically when crossing borders (e.g. India→Nepal: 108/100 → 102/100). Demo location picker tests London, Tokyo, Berlin.
+4. **Information integration across countries** — 200 countries pre-loaded. ISO-3166 country code from Nominatim reverse-geocode. Emergency numbers switch automatically when crossing borders (e.g. India→Nepal: 108/100 → 102/100). Demo location picker tests London, Tokyo, Berlin.
 
 5. **Six mandatory service categories** (from rulebook "Key Aspects for Coders to Include"):
    - `hospital` — OSM `amenity=hospital/clinic/doctors`, `healthcare=hospital/clinic`

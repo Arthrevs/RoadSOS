@@ -63,7 +63,9 @@ async def lifespan(app: FastAPI):
 
 # ─── CORS ────────────────────────────────────────────────────────────────
 # Default to the production frontend; override via CORS_ALLOW_ORIGINS env
-# (comma-separated) for staging or to widen to "*".
+# (comma-separated) for staging or to widen to "*". The regex covers every
+# Vercel preview deployment (roadsos-frontend-<hash>-<team>.vercel.app) so
+# a judge given a preview URL by mistake still gets a working backend.
 _DEFAULT_ORIGINS = (
     "https://roadsos-frontend.vercel.app,https://roadsos.vercel.app,http://localhost:5173"
 )
@@ -71,6 +73,8 @@ cors_origins_env = os.getenv("CORS_ALLOW_ORIGINS", _DEFAULT_ORIGINS)
 cors_origins = (
     [o.strip() for o in cors_origins_env.split(",")] if cors_origins_env != "*" else ["*"]
 )
+_DEFAULT_ORIGIN_REGEX = r"^https://roadsos(-[a-z0-9-]+)?\.vercel\.app$"
+cors_origin_regex = os.getenv("CORS_ALLOW_ORIGIN_REGEX", _DEFAULT_ORIGIN_REGEX)
 
 
 app = FastAPI(
@@ -80,7 +84,7 @@ app = FastAPI(
         "Combines OpenStreetMap Overpass + Google Places + AI triage. "
         "Built for the National Road Safety Hackathon 2026 (CoERS × IIT Madras).\n\n"
         "**Reliability features:**\n"
-        "- Per-IP rate limiting on `/search` (60 req/min, burst 30) and `/triage` (40 req/min, burst 15)\n"
+        "- Per-IP rate limiting on `/search` (120 req/min, burst 80) and `/triage` (80 req/min, burst 40)\n"
         "- Request-ID tracing via `x-request-id` response header\n"
         "- Overpass mirror fallback (3 mirrors, fast-fail 4s/attempt, 13s phase budget)\n"
         "- Graceful degradation: AI failures fall back to deterministic rules\n"
@@ -96,6 +100,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=cors_origins,
+    allow_origin_regex=cors_origin_regex if cors_origins != ["*"] else None,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

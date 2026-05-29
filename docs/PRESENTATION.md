@@ -58,7 +58,7 @@ Emergency services exist. **Finding them quickly enough is the problem.**
 
 **Plus:**
 - 🤖 AI-prioritised by *injured?* and *blocking traffic?*
-- 🌍 **196 countries** of bundled emergency numbers — offline
+- 🌍 **200 countries and territories** of bundled emergency numbers — offline
 - 📱 Installable PWA — works on any phone, no app store
 - 📶 GPS velocity crash detection with PIN-cancel
 
@@ -86,7 +86,7 @@ Emergency services exist. **Finding them quickly enough is the problem.**
 │  POST /triage          → Gemini 2.0 Flash + rule fallback│
 │  POST /dispatch-summary → AI-generated dispatch text     │
 │  GET  /health          → uptime · API status · cache    │
-│  GET  /offline-pack    → 196-country JSON               │
+│  GET  /offline-pack    → 200-country JSON               │
 └─────────────────────────────────────────────────────────┘
 
 Open & free APIs preferred:
@@ -105,9 +105,9 @@ Open & free APIs preferred:
 |---|---|
 | **Reliability & data accuracy** | In-memory TTL cache · rule-based AI fallback · `_validate_ai_result()` strict schema check · phone E.164 normalization via `phonenumbers` · 59 unit tests · CI on every push (Python 3.11 + 3.12) |
 | **Number of contacts fetched** | 8 contact categories (rulebook asks for 6) · Overpass expanded to include ways for clinic, healthcare=*, fire_station, car_repair · auto-radius expansion 5 km → 10 km if < 3 results · Google Places fallback |
-| **Offline functionality** | Workbox Service Worker · NetworkFirst for `/search` + `/triage` · CacheFirst for `/offline-pack` · localStorage 24h cache (1 km grid) · **196-country emergency numbers bundled in JS — zero network calls** |
-| **Innovation & additional features** | AI triage with reason text · GPS velocity crash detection with PIN-cancel · WhatsApp-deeplink SOS broadcast · dispatch summary endpoint · demo location picker for judges · 196-country detection · structured `/health` endpoint |
-| **Information integration across countries** | 196 countries (full UN coverage) · ISO 3166-1 country detection via reverse geocoding · automatic switch of police/ambulance/fire numbers based on detected country · cross-border behaviour: drive India→Nepal and numbers update from 108→102 instantly |
+| **Offline functionality** | Workbox Service Worker · NetworkFirst for `/search` + `/triage` · CacheFirst for `/offline-pack` · localStorage 24h cache (1 km grid) · **200-country emergency numbers bundled in JS — zero network calls** |
+| **Innovation & additional features** | AI triage with reason text · GPS velocity crash detection with PIN-cancel · WhatsApp-deeplink SOS broadcast · dispatch summary endpoint · demo location picker for judges · 200-country detection · structured `/health` endpoint |
+| **Information integration across countries** | 200 countries and territories · ISO 3166-1 country detection via reverse geocoding · automatic switch of police/ambulance/fire numbers based on detected country · cross-border behaviour: drive India→Nepal and numbers update from 108→102 instantly |
 
 ---
 
@@ -133,7 +133,7 @@ Open & free APIs preferred:
 | Works offline | ❌ | ✅ (voice) | ✅ (visual list) |
 | Trauma units specifically | ❌ | Indirect | ✅ (tagged) |
 | Context-aware prioritisation | ❌ | Manual | ✅ (AI) |
-| Global without re-learning | Partial | Numbers change | ✅ (196 countries) |
+| Global without re-learning | Partial | Numbers change | ✅ (200 countries) |
 | Location broadcast | Manual | Voice only | ✅ (WhatsApp) |
 
 > *RoadSOS does not replace 112. It runs **in parallel.** Parallel response saves minutes.*
