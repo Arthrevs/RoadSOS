@@ -275,10 +275,9 @@ def build_tex() -> str:
     w(r"""\documentclass[11pt, a4paper]{article}
 
 % ─── Packages ─────────────────────────────────────────────────────────
-% Compiled with LuaLaTeX for native UTF-8 / Unicode support
-\usepackage{fontspec}
-\setmainfont{Latin Modern Roman}
-\setmonofont[Scale=0.85]{Latin Modern Mono}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage[margin=1in]{geometry}
 \usepackage{hyperref}
 \usepackage{xcolor}
@@ -293,6 +292,7 @@ def build_tex() -> str:
 \usepackage{microtype}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{amsmath}
 
 % ─── Colours ──────────────────────────────────────────────────────────
 \definecolor{rsnavy}{HTML}{0B1424}

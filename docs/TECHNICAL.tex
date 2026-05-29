@@ -18,6 +18,7 @@
 \usepackage{microtype}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{amsmath}
 
 % ─── Colours ──────────────────────────────────────────────────────────
 \definecolor{rsnavy}{HTML}{0B1424}
@@ -313,7 +314,7 @@ For the top six closest results without a phone number, the system performs a Fi
 
 \subsection{Response Shape}
 
-\begin{lstlisting}[language=json,caption={Sample /search response}]
+\begin{lstlisting}[caption={Sample /search response}]
 {
   "contacts": [
     {
@@ -461,7 +462,7 @@ Every external call is wrapped in a \code{\_safe\_*} helper that catches all exc
 
 If every upstream is unavailable simultaneously:
 
-\begin{lstlisting}[language=json,numbers=none,caption={Response when all upstreams fail}]
+\begin{lstlisting}[numbers=none,caption={Response when all upstreams fail}]
 {
   "contacts": [],
   "source": "none (upstreams unavailable)",
@@ -498,7 +499,7 @@ The frontend implements a four-tier fallback chain. Each tier is queried only if
 
 \file{src/utils/offlineDB.js} stores responses in \code{window.localStorage} keyed by a coarsened coordinate grid:
 
-\begin{lstlisting}[language=JavaScript,caption={offlineDB.js: 24-hour client-side cache}]
+\begin{lstlisting}[caption={offlineDB.js: 24-hour client-side cache}]
 const TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 function locationKey(lat, lon) {
@@ -622,7 +623,7 @@ Spanish, French, Portuguese, German, Italian, Dutch, Polish, Russian, Ukrainian,
 
 Six languages set the document direction to RTL on selection (Arabic, Hebrew, Persian, Urdu, Kashmiri, Sindhi). The handler in \file{src/i18n/index.js}:
 
-\begin{lstlisting}[language=JavaScript,caption={i18n/index.js --- applyDir}]
+\begin{lstlisting}[caption={i18n/index.js --- applyDir}]
 function applyDir(code) {
   const loc = getLocale(code);
   document.documentElement.lang = loc.bcp47 || code;
@@ -714,7 +715,7 @@ Returns a JSON object with the shape given in Section~2.5. Rate limit: 30 req/mi
 
 \subsection{\texttt{POST /triage}}
 
-\begin{lstlisting}[language=json,numbers=none,caption={Request body}]
+\begin{lstlisting}[numbers=none,caption={Request body}]
 {
   "contacts": [<list of contact objects from /search>],
   "injured": true,
@@ -842,7 +843,7 @@ Free-tier specifics:
 
 \file{vercel.json}:
 
-\begin{lstlisting}[language=json,caption={vercel.json}]
+\begin{lstlisting}[caption={vercel.json}]
 {
   "version": 2,
   "buildCommand": "cd frontend && npm install && npm run build",
