@@ -376,7 +376,7 @@ def build_tex() -> str:
 \vspace{0.4cm}\hrule\vspace{1.5cm}
 {\normalsize\color{rsgrey}
   \textbf{Submission deadline:} 31 May 2026 \quad
-  \textbf{Repository:} \url{https://github.com/Arthrevs/Roadproj}\\[0.4cm]
+  \textbf{Repository:} \url{https://github.com/Arthrevs/RoadSOS}\\[0.4cm]
   \textbf{Live app:} \url{https://roadsos.vercel.app}
 }
 \vfill
@@ -579,7 +579,7 @@ The summary below captures the request flow and the four-tier offline strategy.}
 
 \textit{Every file is rendered verbatim and grouped by directory.
 Paths are relative to the repository root.
-The full Git history is at \url{https://github.com/Arthrevs/Roadproj}.}
+The full Git history is at \url{https://github.com/Arthrevs/RoadSOS}.}
 """)
 
     files_ok = 0

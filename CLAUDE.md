@@ -64,7 +64,7 @@ Rulebook: https://coers.iitm.ac.in/events/Hackathon/2026/rule_book/
 ### Team
 
 - **Sarma** — Lead (Prajnadeep Sarma · prajnadeepsarma@gmail.com)
-- **Rookie 1 / Rookie 2** — collaborators (GitHub: Arthrevs/Roadproj)
+- **Rookie 1 / Rookie 2** — collaborators (GitHub: Arthrevs/RoadSOS)
 
 ### The Problem We're Solving
 

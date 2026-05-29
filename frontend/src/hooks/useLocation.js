@@ -12,9 +12,11 @@ const POOR_ACCURACY_M         = 1500;     // tolerate up to 1.5 km accuracy (rur
 const ACCURACY_WARN_M         = 500;      // flag fixes worse than 500 m as 'gps_low'
 
 // ─── GPS velocity crash detection ───────────────────────────────────────────
-const VELOCITY_WINDOW_MS = 2_000;
-const CRASH_SPEED_FROM_KMH = 25;   // was travelling at ≥ this speed
-const CRASH_SPEED_TO_KMH   = 5;    // came to ≤ this speed
+const VELOCITY_WINDOW_MS    = 6_000; // look back far enough to see sustained speed + the drop
+const CRASH_SPEED_FROM_KMH  = 40;    // must have been at sustained highway speed...
+const CRASH_SPEED_TO_KMH    = 5;     // ...then collapse to a near-standstill
+const CRASH_DROP_MAX_MS     = 2_500; // the high→low collapse must happen this fast (rules out normal braking)
+const MIN_SUSTAINED_SAMPLES = 2;     // ≥this many high-speed fixes (rules out single GPS glitches)
 
 // ─── Accelerometer crash detection ──────────────────────────────────────────
 // Accelerometer is a CONFIRMATION signal only — it never fires alone.
@@ -316,19 +318,27 @@ export function useLocation({ onCrashDetected } = {}) {
     const recent = speedHistoryRef.current;
     if (recent.length < 2) return;
 
-    const oldest = recent[0];
     const newest = recent[recent.length - 1];
-    if (oldest.speedKmh >= CRASH_SPEED_FROM_KMH && newest.speedKmh <= CRASH_SPEED_TO_KMH) {
-      speedHistoryRef.current = [];
-      gpsCollapseTimeRef.current = Date.now();
+    if (newest.speedKmh > CRASH_SPEED_TO_KMH) return; // not at a standstill yet
 
-      // Check if accelerometer already spiked within the confirmation window
-      const accelTime = accelSpikeTimeRef.current;
-      if (accelTime && (Date.now() - accelTime) <= ACCEL_CONFIRM_MS) {
-        fireCrash('gps+accel');   // both signals agree → high confidence
-      } else {
-        fireCrash('gps_velocity'); // GPS alone → still trigger (original behaviour)
-      }
+    // Must have been at sustained highway speed (rules out city crawl + GPS glitches).
+    const fast = recent.filter(e => e.speedKmh >= CRASH_SPEED_FROM_KMH);
+    if (fast.length < MIN_SUSTAINED_SAMPLES) return;
+
+    // The drop from highway speed to standstill must be SUDDEN. A normal stop
+    // (gentle deceleration over several seconds) is rejected here.
+    const lastFast = fast[fast.length - 1];
+    if (newest.timestamp - lastFast.timestamp > CRASH_DROP_MAX_MS) return;
+
+    // Sudden collapse from sustained highway speed → likely crash.
+    speedHistoryRef.current = [];
+    gpsCollapseTimeRef.current = Date.now();
+
+    const accelTime = accelSpikeTimeRef.current;
+    if (accelTime && (Date.now() - accelTime) <= ACCEL_CONFIRM_MS) {
+      fireCrash('gps+accel');   // both signals agree → high confidence
+    } else {
+      fireCrash('gps_velocity'); // sustained-speed sudden stop, no accel → still alert
     }
   }, [fireCrash]);
 

@@ -92,7 +92,7 @@ app = FastAPI(
         "- All errors return clean JSON, never leak stack traces"
     ),
     version=VERSION,
-    contact={"name": "RoadSOS Team", "url": "https://github.com/Arthrevs/Roadproj"},
+    contact={"name": "RoadSOS Team", "url": "https://github.com/Arthrevs/RoadSOS"},
     license_info={"name": "MIT"},
     lifespan=lifespan,
 )

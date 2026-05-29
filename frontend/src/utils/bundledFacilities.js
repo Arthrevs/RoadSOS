@@ -3,8 +3,8 @@
  *
  * Last-resort offline data source: when the network is unreachable AND
  * the localStorage cache has no entry for the user's coordinates, we
- * search this in-bundle list of verified major hospitals and trauma
- * centres covering 39 countries across 6 continents.
+ * search this in-bundle list of verified major hospitals, trauma
+ * centres and national emergency contacts covering 200 countries.
  *
  * Why bundle:
  * - SIM removed, no WiFi, fresh install → user still gets a real list,
@@ -17,8 +17,9 @@
  * - India (Tamil Nadu + metros): deepest coverage (hackathon at IIT-M).
  * - North America, Europe, East/SE Asia, Middle East, Africa, Oceania,
  *   Latin America: top-tier trauma/teaching hospitals per major metro.
- * - 818 entries (349 hospitals + 469 national emergency contacts) across all 200 countries — every country with an
- *   emergency-numbers entry has at least one bundled hospital fallback.
+ * - 818 entries (318 hospitals/clinics + 500 national emergency & service
+ *   contacts) across all 200 countries — every country with an emergency-numbers
+ *   entry has at least one bundled fallback.
  *
  * Data quality policy:
  * - Every entry has verified coordinates and a publicly listed name.

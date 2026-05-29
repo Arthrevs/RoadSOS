@@ -20,7 +20,7 @@
 [![Gemini](https://img.shields.io/badge/Google-Gemini%202.0%20Flash-4285F4?logo=google&logoColor=white)](https://ai.google.dev/gemini-api)
 [![OSM](https://img.shields.io/badge/Data-OpenStreetMap-7EBC6F?logo=openstreetmap&logoColor=white)](https://www.openstreetmap.org/)
 
-[![Backend Tests](https://github.com/Arthrevs/Roadproj/actions/workflows/backend-tests.yml/badge.svg)](https://github.com/Arthrevs/Roadproj/actions/workflows/backend-tests.yml)
+[![Backend Tests](https://github.com/Arthrevs/RoadSOS/actions/workflows/backend-tests.yml/badge.svg)](https://github.com/Arthrevs/RoadSOS/actions/workflows/backend-tests.yml)
 [![Countries](https://img.shields.io/badge/Coverage-200%20Countries-3498db?style=flat-square)](#-international-coverage)
 [![Categories](https://img.shields.io/badge/Service%20Types-8-9b59b6?style=flat-square)](#-features)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
@@ -100,8 +100,8 @@ When voice fails but SMS still works (very common in cellular dead zones), the c
 ### 🌍 Globally Aware
 Reverse-geocode-based country detection. Drive across the India–Nepal border and the emergency numbers switch from `108/100/101` to `102/100/101` automatically.
 
-### 🌐 43 Languages, 6 RTL
-All 22 official Indian languages (Schedule VIII) plus 21 global languages covering every UN region. RTL layout for Arabic, Persian, Hebrew, Urdu, Kashmiri, and Sindhi. First-launch picker requires manual selection — no surveillance-style auto-detection from GPS.
+### 🌐 48 Languages, 6 RTL
+All 22 official Indian languages (Schedule VIII) plus 26 global languages covering every UN region. RTL layout for Arabic, Persian, Hebrew, Urdu, Kashmiri, and Sindhi. First-launch picker requires manual selection — no surveillance-style auto-detection from GPS.
 
 ### 🗺 Real GPS-Anchored Map
 Leaflet + OpenStreetMap (CartoDB Dark Matter tiles, no API key, free). Your actual surroundings — not a stock illustration. Up to six nearest contacts pinned at their real lat/lon with category-coloured markers (red = medical, blue = police, teal = mechanical).
@@ -118,7 +118,7 @@ One tap composes a pre-filled WhatsApp message: GPS coordinates, nearest landmar
 <td>
 
 ### 🛡 GPS Velocity Crash Detection
-Detects a collapse from highway speed (>25 km/h) to standstill (<5 km/h) within two seconds. **PIN-cancel** safety layer prevents accidental dismissal by an unconscious hand on a screen.
+Detects a sudden collapse from sustained highway speed (≥40 km/h) to a standstill (≤5 km/h) within ~2.5 seconds — optionally confirmed by an accelerometer spike (≥3.5 G) when motion permission is granted. Tuned to ignore ordinary braking and stop-and-go traffic. **PIN-cancel** safety layer prevents accidental dismissal by an unconscious hand on a screen.
 
 </td>
 </tr>
@@ -249,7 +249,7 @@ GET /search ─────► Service Worker         Tier 1: Backend /search
 |---|---|---|
 | **Frontend** | React 18.3 + Vite 8 + vite-plugin-pwa 1.3 | Fast HMR, native PWA support, mobile-first |
 | **Map** | Leaflet 1.9 + react-leaflet 4.2 + CartoDB Dark tiles | Real OSM map, no API key, dark theme matches UI |
-| **i18n** | i18next 26 + react-i18next 17 | 43 languages, RTL support, browser-detect fallback |
+| **i18n** | i18next 26 + react-i18next 17 | 48 languages, RTL support, browser-detect fallback |
 | **Backend** | FastAPI 0.115 + httpx 0.27 (async) | Async I/O for parallel upstream calls, type-safe |
 | **AI Triage** | Google Gemini 2.0 Flash (REST, no SDK) | Free tier — 60 RPM / 1500 RPD, no billing required; deterministic rule-based fallback |
 | **Location Data** | OpenStreetMap Overpass + Google Places | OSM is free + global; Places fills sparse regions and enriches phones |
@@ -266,7 +266,7 @@ GET /search ─────► Service Worker         Tier 1: Backend /search
 ## 📦 Project Structure
 
 ```
-Roadproj/
+RoadSOS/
 ├── backend/                          # FastAPI service
 │   ├── main.py                       # App entry, middleware stack, CORS
 │   ├── middleware.py                 # RequestID, RequestLog, ErrorHandling
@@ -326,10 +326,10 @@ Roadproj/
 │       │   ├── medicalId.js          # On-device emergency-contact storage
 │       │   ├── plusCodes.js          # Open Location Code encoder (pure JS)
 │       │   └── backendWarmup.js      # Render cold-start mitigation
-│       ├── i18n/                     # 43 locales + RTL handler
+│       ├── i18n/                     # 48 locales + RTL handler
 │       │   ├── index.js              # i18next init
 │       │   ├── locales.js            # Metadata: native, English, dir, region
-│       │   └── *.json                # 43 translation bundles
+│       │   └── *.json                # 48 translation bundles
 │       └── data/
 │           └── bundled_facilities.json # 818 entries (hospitals + national emergency contacts) × 200 countries
 │
@@ -545,7 +545,6 @@ Every item here was considered, prototyped on paper, and rejected for a specific
 
 | Feature | Why We Dropped It |
 |---|---|
-| **Accelerometer crash detection** | Phone-drop forces (~40 m/s²) overlap with serious crash forces (20–80 m/s²) and large potholes (15–30 m/s²). Apple still gets false positives on roller coasters with dedicated hardware. Indian highways have continuous pothole jerks — false positive rate would make the app unusable. |
 | **Vehicle ECU / Smartcar integration** | India's connected-car API coverage is near zero. Any demo would be a simulated mock. Out of scope for a phone-only PWA. |
 | **Background passive monitoring** | Mobile operating systems (iOS and Android) sandboxes strictly block background browser execution and motion sensor polling to protect user privacy and save battery. A PWA cannot run accelerometer tracking when the phone is locked or the browser is closed. |
 | **Real-time ambulance tracking** | Requires formal API agreements with dispatch services and live telemetry from ambulance vehicles. Not achievable in three weeks. |
@@ -611,11 +610,11 @@ Our production roadmap includes compiling this React codebase using **Capacitor*
 | **Contact volume per query** | 9 OSM categories + 4 Google categories queried in parallel. Auto-expand from 5 km → 10 km radius when sparse. Top-6 phoneless results get Google Place Details lookups capped at 6 calls/search. Typical urban result: 10–15 contacts. |
 | **Offline operation** | 4-tier fallback chain in `App.jsx`: (1) backend `/search` with 8-second Workbox `NetworkFirst`, (2) `localStorage` cache keyed by ~1.1 km grid with 24-hour TTL, (3) `bundled_facilities.json` — 818 entries: 318 trauma centres/hospitals + 500 national emergency & service contacts covering all 200 countries and territories, with 80 km → 600 km radius expansion, (4) hardcoded mock as final placeholder. Country emergency-number banner renders entirely from bundled data with zero network dependency. |
 | **AI integration** | Gemini 2.0 Flash triage with explicit reasoning visible on the top card. Three-layer fallback: model response → JSON validation → rule-based 4-quadrant priority table → original ordering. Free-tier API (60 RPM, 1500 RPD), no SDK — direct REST via httpx. |
-| **Crash detection** | Two-signal fusion: GPS velocity collapse (≥25 km/h → ≤5 km/h within 2 s) AND accelerometer spike (≥3.5 G) within a 4-second alignment window. PIN-cancel safety layer. 12-second post-alert cooldown. |
+| **Crash detection** | GPS velocity collapse — sustained ≥40 km/h dropping to ≤5 km/h within ~2.5 s — optionally confirmed by an accelerometer spike (≥3.5 G) within a 4 s window. Tuned to reject ordinary braking and stop-and-go traffic. PIN-cancel safety layer. 12 s post-alert cooldown. |
 | **International coverage** | 200 countries pre-loaded with national emergency numbers. ISO-3166 country code derived from Nominatim reverse-geocoding. Demo-location picker switches across cities (BLR / LON / TYO / BER) to verify cross-border behaviour. |
-| **Languages** | 43 locales — all 22 Indian Schedule-VIII languages + 21 global. RTL layout for Arabic, Persian, Hebrew, Urdu, Kashmiri, Sindhi. |
+| **Languages** | 48 locales — all 22 Indian Schedule-VIII languages + 26 global. Hindi, Tamil, Bengali, Telugu and the major global languages are fully localised; Bodo, Kashmiri and Manipuri are partially localised (all UI keys present, translation in progress). RTL layout for Arabic, Persian, Hebrew, Urdu, Kashmiri, Sindhi. |
 | **Real map** | Leaflet 1.9 + CartoDB Dark Matter OSM tiles. No API key. Up to 6 nearest contacts plotted at their actual coordinates. Map re-centres smoothly when the location changes. |
-| **Reliability hardening** | Every upstream call wrapped in `_safe_*` helper. API never returns 5xx for upstream failure — degrades to empty contacts with transparent `source`. Three-mirror Overpass with exponential backoff (overpass-api.de → kumi.systems → openstreetmap.fr). Multi-key Google Places rotation. Per-IP rate limiting (30/min `/search`, 20/min `/triage`). |
+| **Reliability hardening** | Every upstream call wrapped in `_safe_*` helper. API never returns 5xx for upstream failure — degrades to empty contacts with transparent `source`. Three-mirror Overpass with exponential backoff (overpass-api.de → kumi.systems → openstreetmap.fr). Multi-key Google Places rotation. Per-IP rate limiting (120/min `/search`, 80/min `/triage`). |
 
 ---
 

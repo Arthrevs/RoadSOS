@@ -16,7 +16,7 @@ A location-aware Progressive Web App that connects road accident victims and bys
 
 **Team:** Sarma (Lead) · Rookie 1 · Rookie 2
 **Submitted to:** CoERS × IIT Madras — National Road Safety Hackathon 2026
-**Repository:** github.com/Arthrevs/Roadproj
+**Repository:** github.com/Arthrevs/RoadSOS
 
 ---
 
@@ -153,7 +153,7 @@ Open & free APIs preferred:
 - ✅ Live demo at deployment URL
 - ✅ Open & free APIs preferred — OSM, Nominatim ✅
 
-**Repository:** github.com/Arthrevs/Roadproj
+**Repository:** github.com/Arthrevs/RoadSOS
 **Live demo:** [Deployment URL]
 **Contact:** [Team contact email]
 

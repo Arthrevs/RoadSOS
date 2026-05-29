@@ -66,16 +66,16 @@ _FENCE_RE = re.compile(r"^```(?:json)?\s*|\s*```$", re.MULTILINE)
 def rule_based_triage(injured: bool, blocking: bool, contacts: list[dict]) -> dict:
     """Deterministic ordering used as fallback and as a baseline for tests."""
     if injured and blocking:
-        order = ["ambulance", "hospital", "police", "towing", "repair", "tyre"]
+        order = ["ambulance", "hospital", "police", "towing", "repair", "tyre", "showroom"]
         reason = "Trauma care plus blocked road · ambulance, hospital, police listed first"
     elif injured:
-        order = ["ambulance", "hospital", "police", "repair", "towing", "tyre"]
+        order = ["ambulance", "hospital", "police", "repair", "towing", "tyre", "showroom"]
         reason = "Trauma care prioritised · ambulance and hospital listed first"
     elif blocking:
-        order = ["police", "towing", "ambulance", "hospital", "repair", "tyre"]
+        order = ["police", "towing", "repair", "tyre", "hospital", "ambulance", "showroom"]
         reason = "Vehicle blocking traffic · police and towing listed first"
     else:
-        order = ["repair", "tyre", "police", "towing", "hospital", "ambulance"]
+        order = ["repair", "tyre", "showroom", "police", "towing", "hospital", "ambulance"]
         reason = "No injuries reported · roadside repair services listed first"
 
     def priority(c: dict) -> tuple:
