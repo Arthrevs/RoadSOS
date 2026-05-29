@@ -3,7 +3,7 @@
 When the user is on a call with 112, instead of fumbling through a description,
 they read this short, factual, dispatcher-friendly summary.
 
-AI-generated via Gemini 2.0 Flash when API is configured, deterministic template
+AI-generated via Gemini 2.5 Flash when API is configured, deterministic template
 otherwise. Either path returns the same response shape so the UI never branches.
 """
 
@@ -96,7 +96,7 @@ async def dispatch_summary(req: DispatchRequest):
             "generationConfig": {
                 "temperature": 0.2,
                 "maxOutputTokens": MAX_TOKENS,
-                "thinkingConfig": {"thoughts": False},
+                "thinkingConfig": {"thinkingBudget": 0},
             },
         }
 

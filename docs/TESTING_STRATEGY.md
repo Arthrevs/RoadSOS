@@ -52,7 +52,7 @@ Every component of the orchestrator is unit-tested in isolation, but no test exe
 
 The entire Google Places integration is untested. Concretely missing:
 
-- Multi-key rotation (`Mapsplatformkey` comma-split)
+- Multi-key rotation (`GOOGLE_PLACES_API_KEY` comma-split)
 - Place Details enrichment loop respecting the 6-call cap
 - Find-Place-from-Text → Nearby-Search fallback path
 - "No key configured" silent disable

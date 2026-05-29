@@ -275,7 +275,7 @@ RoadSOS/
 │   ├── requirements-dev.txt          # pytest, pytest-asyncio, ruff
 │   ├── pytest.ini
 │   ├── ruff.toml                     # Lint rule set: E, W, F, I, UP, B, C4, SIM
-│   ├── .env.example                  # GEMINI_API_KEY, Mapsplatformkey
+│   ├── .env.example                  # GEMINI_API_KEY, GOOGLE_PLACES_API_KEY
 │   └── services/
 │       ├── search_service.py         # GET /search 4-phase orchestrator
 │       ├── overpass_service.py       # OSM Overpass QL + 3-mirror retry + haversine

@@ -28,7 +28,7 @@ import httpx
 from services.cache import location_key, overpass_cache
 from services.geo_utils import haversine
 from services.hours_parser import parse_is_open
-from services.phone_utils import is_dialable, normalize_phone
+from services.phone_utils import is_dialable, normalize_phone, phones_match
 
 logger = logging.getLogger(__name__)
 
@@ -185,14 +185,17 @@ def _dedupe_smart(items: list[dict]) -> list[dict]:
     surfacing them twice looks sloppy.
     """
     radius_km = DEDUP_RADIUS_M / 1000.0
+    very_near_km = 25.0 / 1000.0
     out: list[dict] = []
     for item in items:
         is_dup = False
         item_name = item["name"].lower().strip()
         for kept in out:
             same_name = kept["name"].lower().strip() == item_name
-            near = haversine(item["lat"], item["lon"], kept["lat"], kept["lon"]) <= radius_km
-            if same_name and near:
+            dist = haversine(item["lat"], item["lon"], kept["lat"], kept["lon"])
+            near = dist <= radius_km
+            very_near = dist <= very_near_km
+            if (same_name and near) or very_near or phones_match(item.get("phone"), kept.get("phone")):
                 is_dup = True
                 break
         if not is_dup:

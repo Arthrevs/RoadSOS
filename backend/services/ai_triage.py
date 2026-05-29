@@ -1,6 +1,6 @@
 """AI-driven contact prioritisation.
 
-Uses Google's Gemini 2.0 Flash for situation-aware reordering. Always falls
+Uses Google's Gemini 2.5 Flash for situation-aware reordering. Always falls
 back to a deterministic rule-based ordering if the API is unreachable, errors,
 or returns malformed output. The fallback produces the same response shape so
 the frontend never sees a difference.
@@ -8,7 +8,7 @@ the frontend never sees a difference.
 Why fallback matters: emergency software cannot have its core feature dependent
 on a 3rd-party API.
 
-Why Gemini Flash: free tier (60 RPM, 1500 RPD on 2.0-flash, 15 RPM on 1.5-flash),
+Why Gemini Flash: free tier (15 RPM, 1500 RPD on 2.5-flash, 15 RPM on 1.5-flash),
 low latency, JSON-mode supported, no billing required to start.
 """
 
@@ -26,7 +26,7 @@ from services.gemini_utils import extract_gemini_text
 
 logger = logging.getLogger(__name__)
 
-# Gemini 2.0 Flash — current free-tier default with the highest free quota.
+# Gemini 2.5 Flash — current free-tier default with the highest free quota.
 MODEL = "gemini-2.5-flash"
 MAX_TOKENS = 2048
 TIMEOUT_S = 15.0
@@ -41,7 +41,7 @@ SYSTEM_PROMPT = """You are RoadSOS Triage — an emergency dispatcher AI for roa
 
 Your only job: take a crash situation and a list of nearby emergency services,
 return a JSON object that reorders the services by priority for that specific
-situation.
+situation. Uses Gemini 2.5 Flash to reorder the contacts for the specific situation.
 
 OUTPUT REQUIREMENTS (strict):
 - Return ONLY a JSON object. No prose. No markdown fences. No commentary.
@@ -156,7 +156,7 @@ async def prioritize_contacts(injured: bool, blocking: bool, contacts: list[dict
                 "temperature": 0.2,
                 "maxOutputTokens": MAX_TOKENS,
                 "responseMimeType": "application/json",
-                "thinkingConfig": {"thoughts": False},
+                "thinkingConfig": {"thinkingBudget": 0},
             },
         }
 
