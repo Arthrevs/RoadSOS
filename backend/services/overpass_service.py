@@ -195,7 +195,11 @@ def _dedupe_smart(items: list[dict]) -> list[dict]:
             dist = haversine(item["lat"], item["lon"], kept["lat"], kept["lon"])
             near = dist <= radius_km
             very_near = dist <= very_near_km
-            if (same_name and near) or very_near or phones_match(item.get("phone"), kept.get("phone")):
+            if (
+                (same_name and near)
+                or very_near
+                or phones_match(item.get("phone"), kept.get("phone"))
+            ):
                 is_dup = True
                 break
         if not is_dup:
