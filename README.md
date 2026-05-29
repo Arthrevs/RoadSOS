@@ -21,7 +21,7 @@
 [![OSM](https://img.shields.io/badge/Data-OpenStreetMap-7EBC6F?logo=openstreetmap&logoColor=white)](https://www.openstreetmap.org/)
 
 [![Backend Tests](https://github.com/Arthrevs/Roadproj/actions/workflows/backend-tests.yml/badge.svg)](https://github.com/Arthrevs/Roadproj/actions/workflows/backend-tests.yml)
-[![Countries](https://img.shields.io/badge/Coverage-196%20Countries-3498db?style=flat-square)](#-international-coverage)
+[![Countries](https://img.shields.io/badge/Coverage-200%20Countries-3498db?style=flat-square)](#-international-coverage)
 [![Categories](https://img.shields.io/badge/Service%20Types-8-9b59b6?style=flat-square)](#-features)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
@@ -83,7 +83,7 @@ Two simple questions — *injured? blocking traffic?* — and an LLM reorders th
 <td>
 
 ### 📶 Genuinely Offline (4-tier)
-Service Worker + localStorage (24h TTL, ~1.1km grid) + **bundled directory: 349 hospitals/clinics + 469 national emergency contacts across all 200 countries** + bundled 200-country national emergency numbers. Pre-fetch hospitals along Chennai→Bengaluru before you leave, then crash anywhere on NH-44 — the right number is still there.
+Service Worker + localStorage (24h TTL, ~1.1km grid) + **bundled directory: 818 entries — 318 hospitals/clinics + 500 national emergency & service contacts across all 200 countries and territories** + bundled 200-country national emergency numbers. Pre-fetch hospitals along Chennai→Bengaluru before you leave, then crash anywhere on NH-44 — the right number is still there.
 
 ### 🆔 Emergency Medical ID
 Stores blood type, allergies, conditions, medications, and an emergency contact entirely on-device (localStorage — **nothing ever leaves the phone**). A first responder arriving at a crash scene can tap the persistent **🆔 Medical ID** button on the home screen to see this in a high-contrast paramedic-friendly card.
@@ -134,7 +134,7 @@ Detects a collapse from highway speed (>25 km/h) to standstill (<5 km/h) within 
 | Works without internet | ❌ | ✅ (voice only) | ✅ **(visual list + cached results)** |
 | Surfaces trauma units specifically | ❌ (lists all hospitals) | Indirect (dispatcher decides) | ✅ **(category-tagged)** |
 | Prioritises by injury / traffic context | ❌ | Manual via dispatcher | ✅ **(AI triage)** |
-| Works internationally without re-learning | Partial | Numbers change per country | ✅ **(196 countries pre-loaded)** |
+| Works internationally without re-learning | Partial | Numbers change per country | ✅ **(200 countries pre-loaded)** |
 | Broadcasts location to a contact | Manual | Voice only | ✅ **(WhatsApp deep link)** |
 
 > RoadSOS does not replace 112. It runs **in parallel** with it. Call 112 while a bystander uses RoadSOS to alert the specific trauma centre directly. **Parallel response saves minutes.**
@@ -155,7 +155,7 @@ Detects a collapse from highway speed (>25 km/h) to standstill (<5 km/h) within 
 │ useLocation  │      │  Service     │      │ Bundled Static │
 │              │      │  Worker      │      │ Emergency DB   │
 │ GPS → IP fb  │      │              │      │                │
-│ velocity     │      │ NetworkFirst │      │ 196 countries   │
+│ velocity     │      │ NetworkFirst │      │ 200 countries   │
 │ tracking     │      │ + CacheFirst │      │ always offline │
 └──────┬───────┘      └──────┬───────┘      └────────────────┘
        │                     │
@@ -185,7 +185,7 @@ Detects a collapse from highway speed (>25 km/h) to standstill (<5 km/h) within 
 │   └─ Uptime · API key status · cache hit-rate stats           │
 │                                                               │
 │  GET /offline-pack                                            │
-│   └─ Serves 196-country emergency numbers JSON                 │
+│   └─ Serves 200-country emergency numbers JSON                 │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -502,18 +502,18 @@ Returns the bundled 59-country emergency number database.
 
 ## 🌍 International Coverage
 
-**196 countries pre-loaded — full global coverage.** GPS or IP-based country detection switches the visible national emergency numbers automatically. Every UN-recognised country has police, ambulance, fire, and general emergency numbers bundled in the app — no network required.
+**200 countries and territories pre-loaded — full global coverage.** GPS or IP-based country detection switches the visible national emergency numbers automatically. Every entry has police, ambulance, fire, and general emergency numbers bundled in the app — no network required.
 
 | Region | Countries Covered |
 |---|---|
 | **Asia** | 49 (India, China, Japan, all SAARC, all ASEAN, Middle East, Central Asia) |
-| **Europe** | 50 (all EU + EFTA + UK + Balkans + post-Soviet) |
-| **Africa** | 54 (all African Union members) |
+| **Europe** | 45 (all EU + EFTA + UK + Balkans + post-Soviet) |
+| **Africa** | 55 (all African Union members) |
 | **Americas** | 35 (North, Central, South + Caribbean) |
-| **Oceania** | 14 (Australia, NZ, all Pacific island nations) |
+| **Oceania** | 16 (Australia, NZ, all Pacific island nations) |
 
 <details>
-<summary><strong>View full country list</strong> (click to expand — 196 entries)</summary>
+<summary><strong>View full country list</strong> (click to expand — 200 entries)</summary>
 
 The complete database is in `backend/data/emergency_seed.json`. The file is the authoritative source — both the backend `/offline-pack` endpoint and the frontend bundle (`frontend/src/utils/emergencyNumbers.js`) are generated from it.
 
@@ -562,7 +562,7 @@ Our production roadmap includes compiling this React codebase using **Capacitor*
 
 ## 🗺 Roadmap
 
-**Phase 1 — Hackathon submission (current):** PWA shipped, AI triage live, offline mode functional, 196 countries covered.
+**Phase 1 — Hackathon submission (current):** PWA shipped, AI triage live, offline mode functional, 200 countries and territories covered.
 
 **Phase 2 — Production hardening:**
 - [ ] Government API integration (108 in India, 112 EU dispatcher tie-ins)
@@ -609,7 +609,7 @@ Our production roadmap includes compiling this React codebase using **Capacitor*
 |---|---|
 | **Dual-source contact discovery** | OSM Overpass and Google Places fired in **parallel** via `asyncio.gather`. Each result carries a `source` provenance tag (`OpenStreetMap`, `Google Places`, `OSM + Google`, `Bundled directory`). `tel:` links use phone numbers normalised by the `phonenumbers` library. |
 | **Contact volume per query** | 9 OSM categories + 4 Google categories queried in parallel. Auto-expand from 5 km → 10 km radius when sparse. Top-6 phoneless results get Google Place Details lookups capped at 6 calls/search. Typical urban result: 10–15 contacts. |
-| **Offline operation** | 4-tier fallback chain in `App.jsx`: (1) backend `/search` with 8-second Workbox `NetworkFirst`, (2) `localStorage` cache keyed by ~1.1 km grid with 24-hour TTL, (3) `bundled_facilities.json` — 818 entries: 349 trauma centres/hospitals + 469 national ambulance/police/fire contacts covering all 200 countries, with 80 km → 600 km radius expansion, (4) hardcoded mock as final placeholder. Country emergency-number banner renders entirely from bundled data with zero network dependency. |
+| **Offline operation** | 4-tier fallback chain in `App.jsx`: (1) backend `/search` with 8-second Workbox `NetworkFirst`, (2) `localStorage` cache keyed by ~1.1 km grid with 24-hour TTL, (3) `bundled_facilities.json` — 818 entries: 318 trauma centres/hospitals + 500 national emergency & service contacts covering all 200 countries and territories, with 80 km → 600 km radius expansion, (4) hardcoded mock as final placeholder. Country emergency-number banner renders entirely from bundled data with zero network dependency. |
 | **AI integration** | Gemini 2.0 Flash triage with explicit reasoning visible on the top card. Three-layer fallback: model response → JSON validation → rule-based 4-quadrant priority table → original ordering. Free-tier API (60 RPM, 1500 RPD), no SDK — direct REST via httpx. |
 | **Crash detection** | Two-signal fusion: GPS velocity collapse (≥25 km/h → ≤5 km/h within 2 s) AND accelerometer spike (≥3.5 G) within a 4-second alignment window. PIN-cancel safety layer. 12-second post-alert cooldown. |
 | **International coverage** | 200 countries pre-loaded with national emergency numbers. ISO-3166 country code derived from Nominatim reverse-geocoding. Demo-location picker switches across cities (BLR / LON / TYO / BER) to verify cross-border behaviour. |

@@ -36,11 +36,19 @@ export default function CountryEmergency({ numbers, contacts }) {
   const { t } = useTranslation();
   if (!numbers) return null;
 
-  const { police, ambulance, fire, general } = numbers;
+  const { police, ambulance, fire, general, highway } = numbers;
   const vals = { police, ambulance, fire, general };
 
   const nearbyCards = NEARBY_CONFIG
-    .map((cfg) => ({ cfg, contact: pickPhoneForCategory(contacts, cfg.match) }))
+    .map((cfg) => {
+      let contact = pickPhoneForCategory(contacts, cfg.match);
+      // No live towing contact (e.g. fully offline): fall back to the national
+      // highway assistance helpline so towing stays covered with zero network.
+      if (!contact && cfg.key === 'towing' && highway) {
+        contact = { phone: highway };
+      }
+      return { cfg, contact };
+    })
     .filter((row) => row.contact);
 
   return (

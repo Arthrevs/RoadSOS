@@ -1,7 +1,9 @@
 // Bundled offline — country code → emergency numbers. Always available, no network needed.
-// Auto-synced with backend/data/emergency_seed.json — 196 countries.
+// Auto-synced with backend/data/emergency_seed.json — 200 countries and territories.
+// Optional `highway` field carries a national road-assistance helpline (surfaced
+// as the towing card when no live towing contact is available).
 export const emergencyNumbersMap = {
-  IN: { country: "India", police: "100", ambulance: "108", fire: "101", general: "112" },
+  IN: { country: "India", police: "100", ambulance: "108", fire: "101", general: "112", highway: "1033" },
   US: { country: "United States", police: "911", ambulance: "911", fire: "911", general: "911" },
   GB: { country: "United Kingdom", police: "999", ambulance: "999", fire: "999", general: "999" },
   DE: { country: "Germany", police: "110", ambulance: "112", fire: "112", general: "112" },

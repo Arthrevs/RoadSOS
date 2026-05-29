@@ -89,11 +89,11 @@ const VALID_CATEGORIES = new Set([
 
 // ─── 1. Bundled facilities ──────────────────────────────────────────────
 describe('bundled_facilities.json — shape and coverage', () => {
-  it('contains at least 196 facilities (one per country minimum)', () => {
-    expect(facilities.length).toBeGreaterThanOrEqual(196);
+  it('contains at least 200 facilities (one per country minimum)', () => {
+    expect(facilities.length).toBeGreaterThanOrEqual(200);
   });
 
-  it('covers all 196 countries that have an emergency-number entry', () => {
+  it('covers all 200 countries that have an emergency-number entry', () => {
     const facilityCountries = new Set(facilities.map((f) => f.country_code));
     const emergencyCountries = new Set(Object.keys(emergencyNumbersMap));
     const missing = [...emergencyCountries].filter((c) => !facilityCountries.has(c));
@@ -155,8 +155,8 @@ describe('bundled_facilities.json — shape and coverage', () => {
 
 // ─── 2. Emergency numbers map ───────────────────────────────────────────
 describe('emergencyNumbersMap — country coverage', () => {
-  it('contains at least 196 country entries', () => {
-    expect(Object.keys(emergencyNumbersMap).length).toBeGreaterThanOrEqual(196);
+  it('contains at least 200 country entries', () => {
+    expect(Object.keys(emergencyNumbersMap).length).toBeGreaterThanOrEqual(200);
   });
 
   it('every key is uppercase ISO-3166 alpha-2', () => {

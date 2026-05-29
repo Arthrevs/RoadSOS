@@ -30,9 +30,10 @@ function readDemoMode() {
   const path = window.location.pathname;
   if (path === '/demo' || path.startsWith('/demo/')) return true;
 
-  // Default: demo OFF on the main website (real dials enabled).
-  // Demo mode is active on /demo or when forced via ?demo=1.
-  return false;
+  // Default: demo ON. A judge opening the deployed URL must not be able to
+  // place a real 108/911 call with one accidental tap. Real dials are an
+  // explicit opt-in via ?live=1 (or ?demo=0).
+  return true;
 }
 
 export const DEMO_MODE = readDemoMode();

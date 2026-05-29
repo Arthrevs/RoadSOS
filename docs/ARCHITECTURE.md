@@ -393,7 +393,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 | All 3 Overpass mirrors down | Low | Medium | Yes — falls through to Google + bundled |
 | Google API key exhausted | Medium | Low | Yes — multi-key rotation + free Overpass primary |
 | Gemini API outage / quota exhaustion | Low | Low | Yes — rule-based triage fallback |
-| User in zero-network region | High | High | Yes — bundled facilities cover 196 countries |
+| User in zero-network region | High | High | Yes — bundled facilities cover 200 countries and territories |
 | GPS unavailable (indoors) | Medium | Medium | Partial — IP geolocation fallback in `useLocation.js` |
 | Browser blocks motion permission | High | Low (crash detection only) | Yes — manual SOS button always works |
 | Tile CDN (CartoDB) down | Low | Low | None — markers still render, basemap blank |
