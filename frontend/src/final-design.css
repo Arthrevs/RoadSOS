@@ -1486,14 +1486,14 @@
 }
 
 .mh-dist-pill {
-  font-size: 10px;
+  font-size: 12px; /* made inside content larger */
   font-weight: 700;
   letter-spacing: 0.03em;
   color: #22c55e;
   background: rgba(34,197,94,0.1);
   border: 1px solid rgba(34,197,94,0.2);
-  padding: 2px 7px;
-  border-radius: 20px;
+  padding: 4px 14px; /* vertically 50% more than original 2px, keeping horizontal wide */
+  border-radius: 20px; /* keeps edges fully rounded like a pill */
   white-space: nowrap;
   flex-shrink: 0;
   margin-top: 1px;
@@ -1527,13 +1527,14 @@
 .mh-call-chip {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
-  height: 28px;
-  padding: 0 10px;
-  border-radius: 8px;
+  height: 35px; /* vertically 25% larger than original 28px */
+  padding: 0 25px; /* horizontally even wider */
+  border-radius: 30px; /* fully rounded pill edges */
   border: none;
   font-family: 'Outfit', sans-serif;
-  font-size: 11px;
+  font-size: 13px; /* slight bump for the larger button */
   font-weight: 600;
   cursor: pointer;
   outline: none;

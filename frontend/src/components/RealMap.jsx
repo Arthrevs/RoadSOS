@@ -50,6 +50,84 @@ const CAT_EMOJI = {
   tyre: '🛞',
 };
 
+const CAT_SVG = {
+  towing: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <rect width="100%" height="100%" fill="#fafafa" rx="100" ry="100" />
+  <g>
+    <line x1="191" y1="305" x2="111" y2="130" stroke="black" stroke-width="34" stroke-linecap="round" />
+    <circle cx="111" cy="130" r="5" fill="#fafafa" />
+    <rect x="141" y="300" width="75" height="20" rx="6" ry="6" fill="black" />
+    <line x1="111" y1="130" x2="111" y2="230" stroke="black" stroke-width="3" />
+    <path d="M 111 230 L 111 254.8 A 15 15 0 1 1 100 250" stroke="black" stroke-width="6" stroke-linecap="round" fill="none" />
+  </g>
+  <path d="M 121 370 L 121 320 L 286 320 L 286 180 L 336 180 L 391 255 L 391 370 Z" fill="black" />
+  <path d="M 301 195 L 301 275 L 371 275 L 326 195 Z" fill="#fafafa" />
+  <circle cx="181" cy="370" r="38" fill="#fafafa" />
+  <circle cx="326" cy="370" r="38" fill="#fafafa" />
+  <circle cx="181" cy="370" r="28" fill="black" />
+  <circle cx="326" cy="370" r="32" fill="black" />
+</svg>`,
+  police: `<svg width="100%" viewBox="0 0 680 680" role="img" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <radialGradient id="bgCircle" cx="45%" cy="38%" r="60%">
+    <stop offset="0%" stop-color="#6db3d8"/>
+    <stop offset="100%" stop-color="#2e6a90"/>
+  </radialGradient>
+  <radialGradient id="shieldFill" cx="40%" cy="28%" r="70%">
+    <stop offset="0%" stop-color="#253f7a"/>
+    <stop offset="100%" stop-color="#0e1c45"/>
+  </radialGradient>
+  <radialGradient id="starFill" cx="35%" cy="28%" r="65%">
+    <stop offset="0%" stop-color="#f0c84a"/>
+    <stop offset="100%" stop-color="#b07e10"/>
+  </radialGradient>
+  <radialGradient id="rimFill" cx="45%" cy="25%" r="65%">
+    <stop offset="0%" stop-color="#b8d4e8"/>
+    <stop offset="100%" stop-color="#2a5570"/>
+  </radialGradient>
+</defs>
+
+<!-- Outer rim -->
+<circle cx="340" cy="340" r="315" fill="url(#rimFill)"/>
+<circle cx="340" cy="340" r="315" fill="none" stroke="#1a3a52" stroke-width="5"/>
+
+<!-- Blue circle background -->
+<circle cx="340" cy="340" r="298" fill="url(#bgCircle)"/>
+<circle cx="340" cy="340" r="298" fill="none" stroke="#1e4a66" stroke-width="4"/>
+<circle cx="340" cy="340" r="292" fill="none" stroke="#7ec0de" stroke-width="1.5" opacity="0.4"/>
+
+<!-- Shield shape -->
+<path d="M340,105 C390,105 460,128 492,152 L510,275 C510,385 428,455 340,500 C252,455 170,385 170,275 L188,152 C220,128 290,105 340,105 Z"
+      fill="#0a1428"/>
+<path d="M340,112 C388,112 456,134 487,157 L504,275 C504,382 424,450 340,494 C256,450 176,382 176,275 L193,157 C224,134 292,112 340,112 Z"
+      fill="url(#shieldFill)"/>
+
+<!-- Shield inner bevel line -->
+<path d="M340,124 C383,124 446,144 474,165 L490,275 C490,372 416,435 340,477 C264,435 190,372 190,275 L206,165 C234,144 297,124 340,124 Z"
+      fill="none" stroke="#3a5899" stroke-width="2" opacity="0.5"/>
+
+<!-- POLICE DEPT label bar -->
+<rect x="228" y="162" width="224" height="30" rx="4" fill="#0e1e50"/>
+<rect x="228" y="162" width="224" height="30" rx="4" fill="none" stroke="#3a60a0" stroke-width="1"/>
+<text x="340" y="183" font-family="Georgia, serif" font-size="13" font-weight="700" fill="#a0c0e8" text-anchor="middle" letter-spacing="3">POLICE DEPT</text>
+
+<!-- Star outer shadow -->
+<polygon points="340,218 364,292 442,292 380,336 404,410 340,366 276,410 300,336 238,292 316,292"
+         fill="#6a4800"/>
+
+<!-- Star main gold -->
+<polygon points="340,222 362,292 438,292 377,334 400,406 340,363 280,406 303,334 242,292 318,292"
+         fill="url(#starFill)"/>
+
+<!-- Star inner raised polygon -->
+<polygon points="340,238 358,294 412,294 369,322 385,376 340,348 295,376 311,322 268,294 322,294"
+         fill="#c89020"/>
+
+<!-- Star highlight top -->
+<polygon points="340,222 362,292 340,272 318,292" fill="#f8e888" opacity="0.3"/>
+</svg>`
+};
+
 /** Custom user-location divIcon — pulsing green dot with halo. */
 function buildUserIcon(gpsLost) {
   const color = gpsLost ? '#94A3B8' : '#22C55E';
@@ -70,9 +148,15 @@ function buildServiceIcon(contact) {
   const cat = (contact.category || 'repair').toLowerCase();
   const tone = CAT_TONES[cat] || 'teal';
   const color = TONES[tone];
-  const emoji = CAT_EMOJI[cat] || '📍';
   const shortName = (contact.name || '').split(/[,·\-]/)[0].trim().substring(0, 16);
   const km = typeof contact.distance === 'number' ? contact.distance.toFixed(1) : '?';
+
+  const svgContent = CAT_SVG[cat];
+  const emoji = CAT_EMOJI[cat] || '📍';
+  
+  const innerHtml = svgContent 
+    ? `<div style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; overflow: hidden;">${svgContent}</div>` 
+    : `<span>${emoji}</span>`;
 
   return L.divIcon({
     className: 'rs-service-marker',
@@ -82,7 +166,7 @@ function buildServiceIcon(contact) {
         <span class="rs-svc-km">${km}km</span>
       </div>
       <div class="rs-svc-pin" style="background: ${color}; box-shadow: 0 4px 14px ${color}aa;">
-        <span>${emoji}</span>
+        ${innerHtml}
       </div>
       <div class="rs-svc-point"></div>
     `,
@@ -94,15 +178,42 @@ function buildServiceIcon(contact) {
 
 function MapRecenter({ lat, lon, zoom, markers = [] }) {
   const map = useMap();
+  const lastLocation = useRef({ lat: null, lon: null });
+  const lastMarkersSignature = useRef("");
+
   useEffect(() => {
-    if (lat != null && lon != null) {
+    if (lat == null || lon == null) return;
+    
+    const distLat = Math.abs(lat - (lastLocation.current.lat || 0));
+    const distLon = Math.abs(lon - (lastLocation.current.lon || 0));
+    const isBigJump = lastLocation.current.lat === null || (distLat > 0.005 || distLon > 0.005);
+    
+    const markersSig = markers.map(m => m.id || `${m.lat},${m.lon}`).join(',');
+    const markersChanged = markersSig !== lastMarkersSignature.current;
+
+    if (isBigJump || markersChanged) {
+      lastLocation.current = { lat, lon };
+      lastMarkersSignature.current = markersSig;
+
       if (markers.length > 0) {
-        const bounds = L.latLngBounds([[lat, lon]]);
-        markers.forEach(m => bounds.extend([m.lat, m.lon]));
-        // Add asymmetric padding to account for the top toolbar and the large bottom dock
+        let maxDeltaLat = 0;
+        let maxDeltaLon = 0;
+        markers.forEach(m => {
+          maxDeltaLat = Math.max(maxDeltaLat, Math.abs(m.lat - lat));
+          maxDeltaLon = Math.max(maxDeltaLon, Math.abs(m.lon - lon));
+        });
+        
+        // Ensure some minimum delta so it doesn't zoom infinitely if a marker is exactly at user location
+        maxDeltaLat = Math.max(maxDeltaLat, 0.002);
+        maxDeltaLon = Math.max(maxDeltaLon, 0.002);
+        
+        const bounds = L.latLngBounds(
+          [lat - maxDeltaLat, lon - maxDeltaLon],
+          [lat + maxDeltaLat, lon + maxDeltaLon]
+        );
+        
         map.fitBounds(bounds, {
-          paddingTopLeft: [40, 120],
-          paddingBottomRight: [40, 350],
+          padding: [50, 50],
           maxZoom: zoom,
           animate: true,
           duration: 0.6
@@ -112,6 +223,7 @@ function MapRecenter({ lat, lon, zoom, markers = [] }) {
       }
     }
   }, [lat, lon, zoom, markers, map]);
+
   return null;
 }
 

@@ -156,8 +156,6 @@ export default function App() {
 
   // Tutorial state
   const [tutorialStep, setTutorialStep] = useState(0);
-  const [tutorialForceSidebar, setTutorialForceSidebar] = useState(false);
-  const [tutorialForceInfo, setTutorialForceInfo] = useState(false);
 
   const {
     location: gpsLocation,
@@ -372,19 +370,8 @@ export default function App() {
       {tutorialStep > 0 && (
         <TutorialOverlay
           theme={mapTheme}
-          triggerSidebar={setTutorialForceSidebar}
-          triggerInfo={setTutorialForceInfo}
-          onStepChange={setTutorialStep}
           onComplete={() => {
             setTutorialStep(0);
-            setTutorialForceSidebar(false);
-            setTutorialForceInfo(false);
-            if (isFirstLaunch()) setMedicalOpen(true);
-          }}
-          onSkip={() => {
-            setTutorialStep(0);
-            setTutorialForceSidebar(false);
-            setTutorialForceInfo(false);
             if (isFirstLaunch()) setMedicalOpen(true);
           }}
         />
@@ -396,6 +383,7 @@ export default function App() {
         landmark={searchData?.landmark}
         countryCode={countryCode}
         contacts={searchData?.contacts || []}
+        cat={cat}
         topContact={topContact}
         isOnline={isOnline}
         gpsLost={gpsLost}
@@ -410,8 +398,6 @@ export default function App() {
         usingFallbackData={!!searchData && !searchHasRealData}
         mapTheme={mapTheme}
         onToggleTheme={() => setMapTheme(prev => prev === 'dark' ? 'light' : 'dark')}
-        forceSidebarOpen={tutorialForceSidebar}
-        forceInfoOpen={tutorialForceInfo}
         onTutorialStart={() => setTutorialStep(1)}
       />
 

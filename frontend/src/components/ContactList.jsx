@@ -40,7 +40,12 @@ export default function ContactList({ contacts, loading, error, cachedAt, cat, s
     }
     
     // 25% threshold, e.g., 19 * 0.25 = 4.75 -> 5th card -> index 4
-    const thresholdIndex = Math.ceil(filtered.length * 0.25) - 1;
+    let thresholdIndex = Math.ceil(filtered.length * 0.25) - 1;
+
+    // Cap at the 30th card for large lists (> 120 cards)
+    if (filtered.length > 120) {
+      thresholdIndex = 29;
+    }
 
     const handleScroll = () => {
       // Find the card element at the threshold index

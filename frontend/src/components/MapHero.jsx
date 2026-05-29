@@ -38,6 +38,7 @@ const CAT_BG = {
 
 function MiniContact({ contact, last }) {
   const { t } = useTranslation();
+  const [copied, setCopied] = useState(false);
   const cat = (contact.category || 'repair').toLowerCase();
   // Backend's "tyre" category maps to the user-facing "puncture" label key
   // (CAT_ICONS/TONES still keyed by raw category name)
@@ -68,7 +69,20 @@ function MiniContact({ contact, last }) {
         </div>
         <div className="mh-row-type">{typeLabel}</div>
         <div className="mh-row-num-line">
-          <span className="mh-row-num">{contact.phone || t('actions.no_phone')}</span>
+          <span 
+            className="mh-row-num"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (contact.phone) {
+                navigator.clipboard.writeText(contact.phone);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+              }
+            }}
+            style={{ cursor: contact.phone ? 'pointer' : 'default' }}
+          >
+            {copied ? t('actions.copied', 'Copied!') : (contact.phone || t('actions.no_phone'))}
+          </span>
           <button
             className="mh-call-chip"
             onClick={(e) => { e.stopPropagation(); if (callHref) window.location.href = callHref; }}
@@ -93,6 +107,7 @@ export default function MapHero({
   landmark,
   countryCode,
   contacts,
+  cat,
   topContact,
   isOnline,
   gpsLost,
@@ -111,8 +126,6 @@ export default function MapHero({
   onLanguagePicker,
   mapTheme = 'dark',
   onToggleTheme,
-  forceSidebarOpen,
-  forceInfoOpen,
   onTutorialStart,
 }) {
   const { t } = useTranslation();
@@ -140,28 +153,23 @@ export default function MapHero({
     }
   }
 
-  // Map markers: prioritize the 4 specific categories (even if they lack a phone number),
-  // then fill the remaining spots up to 6 with nearest random contacts
+  // Map markers: filter by the currently selected category in the ContactList
   const markerContacts = [];
-  const addedContacts = new Set();
   
   if (contacts && Array.isArray(contacts)) {
-    for (const match of dockMatches) {
+    if (!cat || cat === 'All') {
       for (const c of contacts) {
-        const cat = (c.category || '').toLowerCase();
-        if (match.includes(cat) && !addedContacts.has(c)) {
-          markerContacts.push(c);
-          addedContacts.add(c);
-          break;
-        }
-      }
-    }
-    
-    for (const c of contacts) {
-      if (markerContacts.length >= 6) break;
-      if (!addedContacts.has(c)) {
+        if (markerContacts.length >= 6) break;
         markerContacts.push(c);
-        addedContacts.add(c);
+      }
+    } else {
+      const filterCat = cat === "Puncture" ? "tyre" : cat.toLowerCase();
+      for (const c of contacts) {
+        const cCat = (c.category || 'repair').toLowerCase();
+        if (cCat === filterCat) {
+          if (markerContacts.length >= 6) break;
+          markerContacts.push(c);
+        }
       }
     }
   }
@@ -192,19 +200,6 @@ export default function MapHero({
     return () => observer.disconnect();
   }, [dockContacts.length]);
 
-  // Sync with tutorial props
-  useEffect(() => {
-    if (forceSidebarOpen !== undefined) {
-      setSidebarOpen(forceSidebarOpen);
-    }
-  }, [forceSidebarOpen]);
-
-  useEffect(() => {
-    if (forceInfoOpen !== undefined) {
-      setInfoModalOpen(forceInfoOpen);
-    }
-  }, [forceInfoOpen]);
-
   // Prevent background scrolling when sidebar is open
   useEffect(() => {
     if (sidebarOpen) {
@@ -228,10 +223,13 @@ export default function MapHero({
     setRefreshing(true);
     try {
       await refreshGpsLocation();
+      if (mapRef.current && location?.lat) {
+        mapRef.current.setView([location.lat, location.lon], 15, { animate: true, duration: 0.5 });
+      }
     } finally {
       setRefreshing(false);
     }
-  }, []);
+  }, [location]);
 
   // ── Handle manual location set ──
   // setManualLocation() dispatches roadsos:manual-location which the running
@@ -240,6 +238,9 @@ export default function MapHero({
   const handleSetManualLocation = useCallback((locData) => {
     setManualLocation(locData.lat, locData.lon, locData.landmark);
     setManualLocationOpen(false);
+    if (mapRef.current) {
+      mapRef.current.setView([locData.lat, locData.lon], 15, { animate: true, duration: 0.5 });
+    }
   }, []);
 
   const formatCoords = (loc) => {
@@ -570,9 +571,16 @@ export default function MapHero({
           style={{ position: 'fixed', inset: 0, zIndex: 10001, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }} 
           onClick={() => setInfoModalOpen(false)}
         >
-          <div className="modal" style={{ maxWidth: '340px', padding: '24px', textAlign: 'center', margin: 'auto' }} onClick={e => e.stopPropagation()}>
-            <h3 style={{ margin: '0 0 16px 0', color: mapTheme === 'light' ? '#0F172A' : '#fff', fontFamily: 'var(--rs-font-display)', fontSize: '20px' }}>App Information</h3>
-            <p style={{ margin: '0 0 24px 0', color: mapTheme === 'light' ? '#475569' : '#94A3B8', fontSize: '14px', lineHeight: 1.5 }}>This contains information on all available features and switches of our app.</p>
+          <div className="modal" style={{ maxWidth: '400px', padding: '24px', textAlign: 'left', margin: 'auto', maxHeight: '80vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
+            <h3 style={{ margin: '0 0 16px 0', color: mapTheme === 'light' ? '#0F172A' : '#fff', fontFamily: 'var(--rs-font-display)', fontSize: '20px', textAlign: 'center' }}>App Features</h3>
+            <ul style={{ margin: '0 0 24px 0', paddingLeft: '20px', color: mapTheme === 'light' ? '#475569' : '#94A3B8', fontSize: '14px', lineHeight: 1.6 }}>
+              <li style={{ marginBottom: '10px' }}><strong>Medical ID</strong>: Used to store your critical health information for first responders during emergencies.</li>
+              <li style={{ marginBottom: '10px' }}><strong>SOS Button</strong>: Instantly alerts local emergency services with your exact location.</li>
+              <li style={{ marginBottom: '10px' }}><strong>Save Offline</strong>: Caches emergency contacts and facilities along your route to ensure they work without internet.</li>
+              <li style={{ marginBottom: '10px' }}><strong>Target / Crosshair</strong>: Lets you auto-refresh your GPS location or manually pinpoint your exact location on the map.</li>
+              <li style={{ marginBottom: '10px' }}><strong>Language & Theme</strong>: Switches between light/dark mode and changes the app's language for better accessibility.</li>
+              <li style={{ marginBottom: '0' }}><strong>Demo Crash</strong>: Simulates a crash detection event to test the dispatch screen and emergency flow safely.</li>
+            </ul>
             <button className="btn-primary" onClick={() => setInfoModalOpen(false)} style={{ width: '100%', height: '44px', borderRadius: '12px' }}>Close</button>
           </div>
         </div>
