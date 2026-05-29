@@ -585,7 +585,7 @@ The full Git history is at \url{https://github.com/Arthrevs/RoadSOS}.}
     files_ok = 0
     files_missing: list[str] = []
 
-    for group_title, files in CODE_GROUPS:
+    for group_title, files in []: #CODE_GROUPS:
         w(f"\\subsection{{{esc(group_title)}}}")
         for rel in files:
             path = ROOT / rel
