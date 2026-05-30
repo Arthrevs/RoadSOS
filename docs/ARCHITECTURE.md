@@ -312,7 +312,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 
 **Context:** Emergency app must work in every failure mode.
 
-**Decision:** Backend `/search` → localStorage cache (24h) → bundled JSON → mock data. Each tier explicitly tagged in the response so the UI can show source.
+**Decision:** Backend `/search` → localStorage cache (7-day TTL) → bundled JSON → empty list (national numbers always render). Each tier explicitly tagged in the response so the UI can show source.
 
 ### ADR-05: Leaflet + CartoDB tiles (not Google Maps)
 
@@ -331,7 +331,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 
 **Decision:** Leaflet + CartoDB Dark Matter. No API key burden, matches existing dark theme, ships in any environment.
 
-**Consequences:** OSM tile attribution is legally required (rendered bottom-right). Tile imagery is not yet cached for offline — a future improvement.
+**Consequences:** OSM tile attribution is legally required (rendered bottom-right). Tile imagery is cached via Workbox `CacheFirst` (250-tile LRU, 30-day TTL) — previously-viewed areas render fully offline.
 
 ### ADR-06: AI triage with deterministic fallback
 
@@ -351,7 +351,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 
 1. **Reliability-first orchestration.** Every external call has a `_safe_*` wrapper. The API never 5xxs on upstream failure — it degrades to empty contacts with a transparent `source` field.
 2. **Cost-aware fallback.** Google Places is paid; the design only invokes it when free Overpass is insufficient (< 3 phoned results), and caps enrichment at 6 Place Details calls/search.
-3. **Offline-first frontend.** 4-tier fallback (backend → localStorage → bundled JSON → mock) means the app produces useful output even in a Faraday cage.
+3. **Offline-first frontend.** 4-tier fallback (backend → localStorage → bundled JSON → empty list with national numbers) means the app produces useful output even in a Faraday cage.
 4. **Parallelism where it matters.** Geocode and Overpass run concurrently via `asyncio.gather`; clients see max-of-two latency instead of sum.
 5. **Multi-mirror Overpass.** Three independent Overpass endpoints with exponential backoff. Single-mirror downtime invisible to users.
 6. **Coordinate-grid caching.** 4-decimal rounding (~11m) means a busy demo location (judge hammering the same coords) gets sub-50ms repeat responses.
@@ -376,7 +376,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 | 7 | `negative caching gap` — phoneless Overpass results don't cache, repeated hits on sparse regions | Low | Cache with shorter TTL (15min) instead of skipping |
 | 8 | No structured logging — request_id present but not in log lines per service | Low | Add contextvar with request_id; format logs with it |
 | 9 | Bundle size 610KB JS (181 KB gzipped) — Leaflet is heavy | Low | Dynamic import RealMap; render the dock immediately, lazy-load the map |
-| 10 | `MOCK_DATA` in `App.jsx` (7 entries, Bengaluru) ships in production bundle | Low | Tree-shake under `if (DEMO_MODE)` |
+| 10 | ~~`MOCK_DATA` in `App.jsx`~~ | ~~Low~~ | **Resolved** — mock data removed; final fallback is now an empty contacts list with national emergency numbers banner |
 | 11 | No P99 latency or SLO metrics | Medium | Add `Server-Timing` headers per phase; emit to a stats endpoint |
 | 12 | Three Gemini bypasses in tests but no test for actual prompt format | Low | Snapshot test on system prompt + golden output for fixed input |
 | 13 | Branch protection rules not yet applied (require owner access) | High | Set via Settings → Branches as owner |
@@ -406,7 +406,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 ### P0 — Before judging
 - [ ] Apply branch protection from owner account
 - [ ] Lazy-load `RealMap` to cut initial bundle by ~150KB
-- [ ] Add Workbox runtime cache for CartoDB tiles (offline basemap)
+- [x] ~~Add Workbox runtime cache for CartoDB tiles~~ — done (`CacheFirst`, 250-tile LRU, 30-day TTL)
 
 ### P1 — Quality
 - [ ] Integration test for `/search` (mock Overpass + Google)

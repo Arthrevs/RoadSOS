@@ -103,7 +103,7 @@ Open & free APIs preferred:
 
 | Criterion (from rulebook) | How RoadSOS Delivers |
 |---|---|
-| **Reliability & data accuracy** | In-memory TTL cache · rule-based AI fallback · `_validate_ai_result()` strict schema check · phone E.164 normalization via `phonenumbers` · 271 unit tests (128 backend [U+00B7] 143 frontend) · CI on every push (Python 3.11 + 3.12) |
+| **Reliability & data accuracy** | In-memory TTL cache · rule-based AI fallback · `_validate_ai_result()` strict schema check · phone E.164 normalization via `phonenumbers` · 288 unit tests (128 backend · 160 frontend) · CI on every push (Python 3.11 + 3.12) |
 | **Number of contacts fetched** | 8 contact categories (rulebook asks for 6) · Overpass expanded to include ways for clinic, healthcare=*, fire_station, car_repair · auto-radius expansion 5 km → 10 km if < 3 results · Google Places fallback |
 | **Offline functionality** | Workbox Service Worker · NetworkFirst for `/search` + `/triage` · CacheFirst for `/offline-pack` · localStorage 7-day TTL (1 km grid) · **200-country emergency numbers bundled in JS — zero network calls** |
 | **Innovation & additional features** | AI triage with reason text · GPS velocity crash detection with PIN-cancel · WhatsApp-deeplink SOS broadcast · dispatch summary endpoint · demo location picker for judges · 200-country detection · structured `/health` endpoint |
