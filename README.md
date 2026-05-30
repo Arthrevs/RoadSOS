@@ -68,7 +68,7 @@ RoadSOS is built for exactly the gap that ruling identifies — the seconds betw
 | --- | --- |
 | 📍 **Location-Aware, Instantly** | GPS detection with a 10-second timeout and automatic fallback to IP-based geolocation. The search starts the moment the app opens — no buttons, no menus. |
 | 🤖 **AI-Prioritised Contacts** | Two questions — *injured? blocking traffic?* — and Gemini 2.5 Flash reorders the entire contact list for the situation. The top card states **why** it was prioritised. Deterministic rule-based fallback if the API is down. |
-| 📶 **Genuinely Offline (4-tier)** | Service Worker + localStorage (24 h TTL, ~1.1 km grid) + a **bundled 818-facility directory across 200 countries** + **bundled national emergency numbers for 200 countries**. Pre-fetch hospitals along Chennai → Bengaluru before you leave, then crash anywhere on NH-44 — the right number is still there. |
+| 📶 **Genuinely Offline (4-tier)** | Service Worker + localStorage (7-day TTL, ~1.1 km grid) + a **bundled 818-facility directory across 200 countries** + **bundled national emergency numbers for 200 countries**. Pre-fetch hospitals along Chennai → Bengaluru before you leave, then crash anywhere on NH-44 — the right number is still there. |
 | 🆔 **Emergency Medical ID** | Blood type, allergies, conditions, medications, and an emergency contact stored entirely on-device (localStorage — **nothing ever leaves the phone**). A first responder taps the persistent **🆔 Medical ID** button to see a high-contrast paramedic-friendly card. |
 | 📍 **Plus Codes (Open Location Code)** | Every crash alert encodes the GPS into a dispatcher-friendly Plus Code like `7M5CC9R6+VV` — far easier to read aloud than `13.0827, 80.2707`. Encoder is hand-written in pure JS (~80 LOC, **fully offline, zero deps**) in `frontend/src/utils/plusCodes.js`. |
 | 📱 **SOS-by-SMS** | When voice fails but SMS still works (common in dead zones), one tap pre-composes an SMS to your emergency contact with blood type, allergies, Plus Code, GPS, and a Google Maps link. Uses the native `sms:` scheme — works on iOS and Android. |
@@ -88,7 +88,7 @@ The 2026 problem statement scores five things. Here is exactly where each is imp
 | --- | --- | --- |
 | **Reliability & data accuracy** | Every upstream call is wrapped so `/search` **never returns 5xx** — it degrades to an empty list with an honest `source` tag. Three-mirror Overpass retry with exponential backoff. National emergency numbers for all 200 countries verified clean: **0 blank fields, 0 placeholders, 0 duplicate country codes.** India (112/100/108/101 + highway 1033) and demo countries (UK 999, Japan 110/119, Germany 110/112) confirmed against authoritative sources. | `backend/services/search_service.py`, `backend/data/emergency_seed.json` |
 | **Number of contacts fetched** | OSM Overpass + Google Places fired in **parallel**; 7 service categories across ~13 OSM tag pairs. Auto-expand 5 km → 10 km when sparse. Top-6 phoneless results enriched via Google Place Details (capped at 6 calls/search). Typical urban result: **10–15 categorised, dialable contacts.** | `backend/services/overpass_service.py`, `googleplaces_service.py` |
-| **Offline functionality** | 4-tier fallback (below). National emergency numbers render with **zero network** (they only need the country). Route results pre-fetched while online are cached 24 h. 818 bundled facilities give a last-resort nearest hospital with honest distance labels. | `frontend/src/App.jsx`, `utils/offlineDB.js`, `utils/bundledFacilities.js` |
+| **Offline functionality** | 4-tier fallback (below). National emergency numbers render with **zero network** (they only need the country). Route results pre-fetched while online are cached 7 days. 818 bundled facilities give a last-resort nearest hospital with honest distance labels. | `frontend/src/App.jsx`, `utils/offlineDB.js`, `utils/bundledFacilities.js` |
 | **Innovation & additional features** | AI triage with visible reasoning · offline Plus Codes · on-device Medical ID · SOS-by-SMS with medical payload · GPS-velocity crash detection with PIN-cancel · 48-language i18n with RTL. | `frontend/src/utils/`, `frontend/src/components/` |
 | **Information integration across countries** | ISO-3166 country code from Nominatim reverse-geocoding switches the visible national numbers automatically. 200 countries pre-loaded. Demo-location picker (BLR / LON / TYO / BER) verifies cross-border behaviour live. | `frontend/src/utils/emergencyNumbers.js`, `utils/demoMode.js` |
 
@@ -154,7 +154,7 @@ GET /search ─────► Service Worker         Tier 1: Backend /search
                    ├─ Cache (NetworkFirst,
                    │  8 s timeout, 24 h TTL) Tier 2: Service Worker
                    │                              + localStorage cache
-                   └─ Forward to backend          (24 h TTL, ~1.1 km grid)
+                   └─ Forward to backend          (7-day TTL, ~1.1 km grid)
                                                   └─ no entry for this grid
 
                                           Tier 3: Bundled JSON
