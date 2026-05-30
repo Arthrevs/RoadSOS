@@ -99,9 +99,9 @@ async def _safe_overpass(lat: float, lon: float, radius: int = 8000) -> list[dic
     Expand to a wider radius ONLY if the first query *succeeded* but returned
     few results (a genuinely sparse / rural area). The old version fired up to
     three sequential full queries (5/10/20 km) even when the first one timed
-    out [U+2014] which, combined with the 4 s per-mirror timeout, blew the wall-clock
+    out — which, combined with the 4 s per-mirror timeout, blew the wall-clock
     budget and returned []. Now: at most two RACED queries, and we never waste
-    the budget re-querying after a hard failure. Never raises [U+2014] returns [] so
+    the budget re-querying after a hard failure. Never raises — returns [] so
     Google Places / the bundled directory can take over.
     """
     try:
@@ -190,7 +190,7 @@ async def search_facilities(
     # Budget-capped: partial enrichment is better than blowing the timeout.
     # Reduced from 6 to 3 to speed up: 3 lookups × find-place + details is fast enough.
     merged = await _with_budget(
-        enrich_missing_phones(merged, region=geo.get("country_code"), max_lookups=3),
+        enrich_missing_phones(merged, region=geo.get("country_code"), max_lookups=6),
         ENRICH_BUDGET_S,
         "phone-enrichment",
         merged,  # if enrichment times out, return unenriched contacts

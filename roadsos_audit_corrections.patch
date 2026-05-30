@@ -1,0 +1,194 @@
+diff --git a/backend/services/search_service.py b/backend/services/search_service.py
+index 644e006..3951618 100644
+--- a/backend/services/search_service.py
++++ b/backend/services/search_service.py
+@@ -190,7 +190,7 @@ async def search_facilities(
+     # Budget-capped: partial enrichment is better than blowing the timeout.
+     # Reduced from 6 to 3 to speed up: 3 lookups × find-place + details is fast enough.
+     merged = await _with_budget(
+-        enrich_missing_phones(merged, region=geo.get("country_code"), max_lookups=3),
++        enrich_missing_phones(merged, region=geo.get("country_code"), max_lookups=6),
+         ENRICH_BUDGET_S,
+         "phone-enrichment",
+         merged,  # if enrichment times out, return unenriched contacts
+diff --git a/frontend/src/App.jsx b/frontend/src/App.jsx
+index c6898e6..3bfe300 100644
+--- a/frontend/src/App.jsx
++++ b/frontend/src/App.jsx
+@@ -40,87 +40,6 @@ const DEMO_LOCATIONS = [
+   { label: 'BER', lat: 52.5200, lon: 13.4050, country: 'DE' },
+ ];
+ 
+-// ─── Mock contacts (used as fallback when backend is unreachable) ─────────────
+-const MOCK_CONTACTS = [
+-  {
+-    id: 'mock-1',
+-    name: 'Apollo Hospitals, Bannerghatta',
+-    category: 'hospital',
+-    phone: '080-26793000',
+-    distance: 1.4,
+-    source: 'Google Places',
+-    isOpen: true,
+-    aiReason: 'Trauma unit available · nearest to crash location',
+-  },
+-  {
+-    id: 'mock-2',
+-    name: 'Jayanagar Police Station',
+-    category: 'police',
+-    phone: '080-22942000',
+-    distance: 2.1,
+-    source: 'OpenStreetMap',
+-    isOpen: true,
+-    aiReason: null,
+-  },
+-  {
+-    id: 'mock-3',
+-    name: 'CATS Ambulance Service',
+-    category: 'ambulance',
+-    phone: '108',
+-    distance: 3.0,
+-    source: 'OpenStreetMap',
+-    isOpen: null,
+-    aiReason: null,
+-  },
+-  {
+-    id: 'mock-4',
+-    name: 'Rapid Towing Services',
+-    category: 'towing',
+-    phone: '9845012345',
+-    distance: 3.8,
+-    source: 'Google Places',
+-    isOpen: true,
+-    aiReason: null,
+-  },
+-  {
+-    id: 'mock-5',
+-    name: 'Sri Auto Repairs',
+-    category: 'repair',
+-    phone: '9900887766',
+-    distance: 4.5,
+-    source: 'OpenStreetMap',
+-    isOpen: false,
+-    aiReason: null,
+-  },
+-  {
+-    id: 'mock-6',
+-    name: 'City Motors Showroom',
+-    category: 'showroom',
+-    phone: '9876543210',
+-    distance: 2.1,
+-    source: 'Google Places',
+-    isOpen: true,
+-    aiReason: null,
+-  },
+-  {
+-    id: 'mock-7',
+-    name: 'QuickFix Puncture Shop',
+-    category: 'tyre',
+-    phone: '9988776655',
+-    distance: 0.8,
+-    source: 'OpenStreetMap',
+-    isOpen: true,
+-    aiReason: null,
+-  },
+-];
+-
+-const MOCK_DATA = {
+-  contacts: MOCK_CONTACTS,
+-  landmark: 'Bannerghatta Road, BTM Layout, Bengaluru, Karnataka (MOCK)',
+-  country_code: 'IN',
+-  source: 'Mock data',
+-  count: MOCK_CONTACTS.length,
+-};
+ 
+ // CATS moved to ./constants.js to break the App ↔ ContactList circular
+ // import that caused a production TDZ crash. Re-export here so any
+@@ -210,7 +129,7 @@ export default function App() {
+   // searchRetry increments when the backend warms up after a failed attempt,
+   // triggering a fresh search automatically without the user having to reload.
+   const [searchRetry, setSearchRetry] = useState(0);
+-  const searchHasRealData = !!(searchData && !searchData._bundled && !searchData._mock);
++  const searchHasRealData = !!(searchData && !searchData._bundled && !searchData._fallback);
+ 
+   const [triageOpen, setTriageOpen] = useState(false);
+   const [triageLoading, setTriageLoading] = useState(false);
+@@ -268,7 +187,7 @@ export default function App() {
+ 
+     (async () => {
+       try {
+-        const data = await searchNearby(searchLat, searchLon, controller.signal, activeLocation?.accuracy);
++        const data = await searchNearby(searchLat, searchLon, controller.signal);
+         if (cancelled) return;
+         setSearchData(data);
+         saveSearchResult(searchLat, searchLon, data);
+@@ -290,18 +209,25 @@ export default function App() {
+                 : 'You are offline — showing pre-loaded directory.'
+             );
+           } else {
+-            console.warn('[RoadSOS] Backend + cache + bundle all empty — using mock data:', err.message);
+-            // Don't overwrite the user's real-location landmark / country with mock ones.
++            // The bundled directory returns a result whenever the bundle is
++            // non-empty (it is — 818 facilities), so this branch is
++            // effectively unreachable. If it ever fires (e.g. the bundle
++            // failed to load), show NO contacts rather than fabricated demo
++            // data. The national emergency-numbers banner still renders from
++            // the country code, so the user always has a number to call.
++            console.warn('[RoadSOS] Backend + cache + bundle all unavailable:', err.message);
+             setSearchData({
+-              ...MOCK_DATA,
++              contacts: [],
+               landmark: null,
+-              country_code: activeLocation?.country_code || MOCK_DATA.country_code,
+-              _mock: true,
++              country_code: activeLocation?.country_code || null,
++              source: 'none',
++              count: 0,
++              _fallback: true,
+             });
+             setSearchError(
+               isOnline
+-                ? 'Could not reach server — showing demo data.'
+-                : 'You are offline and far from any pre-loaded facility — showing demo data.'
++                ? 'Could not reach the server. Use the national emergency numbers above to call directly.'
++                : 'You are offline. Use the national emergency numbers above to call directly.'
+             );
+           }
+         }
+@@ -418,7 +344,7 @@ export default function App() {
+       {/* ── Offline banner — also fires when fallback data is in use ── */}
+       <OfflineBanner
+         usingBundled={!!searchData?._bundled}
+-        usingMock={!!searchData?._mock}
++        usingMock={!!searchData?._fallback}
+       />
+ 
+       {/* ── GPS error strip ── */}
+diff --git a/frontend/src/components/OfflineBanner.jsx b/frontend/src/components/OfflineBanner.jsx
+index 3b3872b..acfce93 100644
+--- a/frontend/src/components/OfflineBanner.jsx
++++ b/frontend/src/components/OfflineBanner.jsx
+@@ -25,7 +25,7 @@ export default function OfflineBanner({ usingBundled = false, usingMock = false
+     message = (
+       <>
+         <strong>Server unreachable.</strong>{' '}
+-        Showing demo contacts — national emergency numbers above are accurate.
++        Use the national emergency numbers above to call directly.
+       </>
+     );
+   } else {
+diff --git a/frontend/src/utils/overpass.js b/frontend/src/utils/overpass.js
+index 8a4aeba..e87a9e2 100644
+--- a/frontend/src/utils/overpass.js
++++ b/frontend/src/utils/overpass.js
+@@ -8,10 +8,8 @@
+ const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/^/, '')
+   || (import.meta.env.PROD ? 'https://roadsos-pl3k.onrender.com' : '');
+ 
+-export async function searchNearby(lat, lon, signal, accuracy = null) {
+-  // Pass accuracy to backend so it can dynamically choose search radius
++export async function searchNearby(lat, lon, signal) {
+   const params = new URLSearchParams({ lat, lon });
+-  if (accuracy != null) params.append('accuracy', accuracy);
+   const res = await fetch(`${API_BASE}/search?${params}`, { signal });
+   if (!res.ok) throw new Error(`Search failed: ${res.status}`);
+   return res.json();

@@ -40,87 +40,6 @@ const DEMO_LOCATIONS = [
   { label: 'BER', lat: 52.5200, lon: 13.4050, country: 'DE' },
 ];
 
-// ─── Mock contacts (used as fallback when backend is unreachable) ─────────────
-const MOCK_CONTACTS = [
-  {
-    id: 'mock-1',
-    name: 'Apollo Hospitals, Bannerghatta',
-    category: 'hospital',
-    phone: '080-26793000',
-    distance: 1.4,
-    source: 'Google Places',
-    isOpen: true,
-    aiReason: 'Trauma unit available · nearest to crash location',
-  },
-  {
-    id: 'mock-2',
-    name: 'Jayanagar Police Station',
-    category: 'police',
-    phone: '080-22942000',
-    distance: 2.1,
-    source: 'OpenStreetMap',
-    isOpen: true,
-    aiReason: null,
-  },
-  {
-    id: 'mock-3',
-    name: 'CATS Ambulance Service',
-    category: 'ambulance',
-    phone: '108',
-    distance: 3.0,
-    source: 'OpenStreetMap',
-    isOpen: null,
-    aiReason: null,
-  },
-  {
-    id: 'mock-4',
-    name: 'Rapid Towing Services',
-    category: 'towing',
-    phone: '9845012345',
-    distance: 3.8,
-    source: 'Google Places',
-    isOpen: true,
-    aiReason: null,
-  },
-  {
-    id: 'mock-5',
-    name: 'Sri Auto Repairs',
-    category: 'repair',
-    phone: '9900887766',
-    distance: 4.5,
-    source: 'OpenStreetMap',
-    isOpen: false,
-    aiReason: null,
-  },
-  {
-    id: 'mock-6',
-    name: 'City Motors Showroom',
-    category: 'showroom',
-    phone: '9876543210',
-    distance: 2.1,
-    source: 'Google Places',
-    isOpen: true,
-    aiReason: null,
-  },
-  {
-    id: 'mock-7',
-    name: 'QuickFix Puncture Shop',
-    category: 'tyre',
-    phone: '9988776655',
-    distance: 0.8,
-    source: 'OpenStreetMap',
-    isOpen: true,
-    aiReason: null,
-  },
-];
-
-const MOCK_DATA = {
-  contacts: MOCK_CONTACTS,
-  landmark: 'Bannerghatta Road, BTM Layout, Bengaluru, Karnataka (MOCK)',
-  country_code: 'IN',
-  source: 'Mock data',
-  count: MOCK_CONTACTS.length,
-};
 
 // CATS moved to ./constants.js to break the App ↔ ContactList circular
 // import that caused a production TDZ crash. Re-export here so any
@@ -210,7 +129,7 @@ export default function App() {
   // searchRetry increments when the backend warms up after a failed attempt,
   // triggering a fresh search automatically without the user having to reload.
   const [searchRetry, setSearchRetry] = useState(0);
-  const searchHasRealData = !!(searchData && !searchData._bundled && !searchData._mock);
+  const searchHasRealData = !!(searchData && !searchData._bundled && !searchData._fallback);
 
   const [triageOpen, setTriageOpen] = useState(false);
   const [triageLoading, setTriageLoading] = useState(false);
@@ -268,7 +187,7 @@ export default function App() {
 
     (async () => {
       try {
-        const data = await searchNearby(searchLat, searchLon, controller.signal, activeLocation?.accuracy);
+        const data = await searchNearby(searchLat, searchLon, controller.signal);
         if (cancelled) return;
         setSearchData(data);
         saveSearchResult(searchLat, searchLon, data);
@@ -290,18 +209,25 @@ export default function App() {
                 : 'You are offline — showing pre-loaded directory.'
             );
           } else {
-            console.warn('[RoadSOS] Backend + cache + bundle all empty — using mock data:', err.message);
-            // Don't overwrite the user's real-location landmark / country with mock ones.
+            // The bundled directory returns a result whenever the bundle is
+            // non-empty (it is — 818 facilities), so this branch is
+            // effectively unreachable. If it ever fires (e.g. the bundle
+            // failed to load), show NO contacts rather than fabricated demo
+            // data. The national emergency-numbers banner still renders from
+            // the country code, so the user always has a number to call.
+            console.warn('[RoadSOS] Backend + cache + bundle all unavailable:', err.message);
             setSearchData({
-              ...MOCK_DATA,
+              contacts: [],
               landmark: null,
-              country_code: activeLocation?.country_code || MOCK_DATA.country_code,
-              _mock: true,
+              country_code: activeLocation?.country_code || null,
+              source: 'none',
+              count: 0,
+              _fallback: true,
             });
             setSearchError(
               isOnline
-                ? 'Could not reach server — showing demo data.'
-                : 'You are offline and far from any pre-loaded facility — showing demo data.'
+                ? 'Could not reach the server. Use the national emergency numbers above to call directly.'
+                : 'You are offline. Use the national emergency numbers above to call directly.'
             );
           }
         }
@@ -418,7 +344,7 @@ export default function App() {
       {/* ── Offline banner — also fires when fallback data is in use ── */}
       <OfflineBanner
         usingBundled={!!searchData?._bundled}
-        usingMock={!!searchData?._mock}
+        usingMock={!!searchData?._fallback}
       />
 
       {/* ── GPS error strip ── */}
