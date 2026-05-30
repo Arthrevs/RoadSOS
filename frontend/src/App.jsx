@@ -5,7 +5,7 @@ import { useLocation } from './hooks/useLocation';
 import { useNetwork } from './hooks/useNetwork';
 import { searchNearby } from './utils/overpass';
 import { triageContacts } from './utils/googlePlaces';
-import { saveSearchResult, loadSearchResult } from './utils/offlineDB';
+import { saveSearchResult, loadSearchResult, loadNearestCached } from './utils/offlineDB';
 import { getEmergencyNumbers } from './utils/emergencyNumbers';
 import { hasMedicalId, getMedicalIdCompletion } from './utils/medicalId';
 import { autoFireSos } from './utils/sosDispatch';
@@ -194,10 +194,15 @@ export default function App() {
       } catch (err) {
         if (cancelled) return;
 
-        const cached = loadSearchResult(searchLat, searchLon);
+        const cached =
+          loadSearchResult(searchLat, searchLon) ||
+          loadNearestCached(searchLat, searchLon, 5);
         if (cached) {
           setSearchData(cached);
           setCachedAt(cached.cachedAt);
+          if (cached._nearestKm) {
+            setSearchError(`Offline [U+2014] showing cached results from ~${cached._nearestKm} km away.`);
+          }
         } else {
           const bundled = buildBundledSearchResult(searchLat, searchLon, { maxKm: 80, limit: 8 });
           if (bundled) {

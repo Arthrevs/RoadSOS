@@ -6,6 +6,7 @@ import SOSButton from './SOSButton';
 import ManualLocationModal from './ManualLocationModal';
 import { subscribeBackendStatus } from '../utils/backendWarmup';
 import { setManualLocation, refreshGpsLocation } from '../hooks/useLocation';
+import { prefetchArea } from '../utils/routeCache';
 
 const CAT_ICONS = {
   hospital: Hospital,
@@ -128,6 +129,7 @@ export default function MapHero({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [showScrollArrow, setShowScrollArrow] = useState(true);
+  const [savingArea, setSavingArea] = useState(null); // { done, total } | null
   const mapRef = useRef(null);
   const dockCardRef = useRef(null);
 
@@ -185,6 +187,18 @@ export default function MapHero({
       setRefreshing(false);
     }
   }, []);
+
+  // ── Handle save area for offline ──
+  const handleSaveArea = useCallback(async () => {
+    if (!location?.lat) return;
+    setSavingArea({ done: 0, total: 0 });
+    const res = await prefetchArea(location.lat, location.lon, {
+      radiusKm: 8,
+      onProgress: setSavingArea,
+    });
+    setSavingArea(null);
+    alert(`Saved ${res.cached}/${res.total} nearby zones for offline use.`);
+  }, [location]);
 
   // ── Handle manual location set ──
   // setManualLocation() dispatches roadsos:manual-location which the running
@@ -487,9 +501,17 @@ export default function MapHero({
                   </div>)}
               <button className="menu-item" onClick={() => { setSidebarOpen(false); if (mapRef.current) mapRef.current.recenter(); }}>
                 <span className="m-num">6</span>
-                <div className="m-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></div>
-                <span className="m-label">{t('sidebar.recenter')}</span>
+                <div className="m-icon"><Crosshair size={17} strokeWidth={1.8} /></div>
+                <span className="m-label">{t('sidebar.recenter', 'Recenter Map')}</span>
                 <div className="m-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+              </button>
+              
+              <button className="menu-item" onClick={handleSaveArea} disabled={!!savingArea}>
+                <span className="m-num">7</span>
+                <div className="m-icon"><Map size={17} strokeWidth={1.8} /></div>
+                <span className="m-label">
+                  {savingArea ? `Saving… ${savingArea.done}/${savingArea.total}` : t('sidebar.save_area', 'Save Area for Offline')}
+                </span>
               </button>
 
               <button className="menu-item" onClick={() => { setSidebarOpen(false); if(onTutorialStart) onTutorialStart(); }}>
