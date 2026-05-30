@@ -14,7 +14,7 @@
 
 A location-aware Progressive Web App that connects road accident victims and bystanders to the right help in under 10 seconds — globally, offline, and intelligently.
 
-**Team:** Sarma (Lead) · Rookie 1 · Rookie 2
+**Team:** Prajnadeep Sarma (Lead)
 **Submitted to:** CoERS × IIT Madras — National Road Safety Hackathon 2026
 **Repository:** github.com/Arthrevs/RoadSOS
 
@@ -103,9 +103,9 @@ Open & free APIs preferred:
 
 | Criterion (from rulebook) | How RoadSOS Delivers |
 |---|---|
-| **Reliability & data accuracy** | In-memory TTL cache · rule-based AI fallback · `_validate_ai_result()` strict schema check · phone E.164 normalization via `phonenumbers` · 59 unit tests · CI on every push (Python 3.11 + 3.12) |
+| **Reliability & data accuracy** | In-memory TTL cache · rule-based AI fallback · `_validate_ai_result()` strict schema check · phone E.164 normalization via `phonenumbers` · 271 unit tests (128 backend [U+00B7] 143 frontend) · CI on every push (Python 3.11 + 3.12) |
 | **Number of contacts fetched** | 8 contact categories (rulebook asks for 6) · Overpass expanded to include ways for clinic, healthcare=*, fire_station, car_repair · auto-radius expansion 5 km → 10 km if < 3 results · Google Places fallback |
-| **Offline functionality** | Workbox Service Worker · NetworkFirst for `/search` + `/triage` · CacheFirst for `/offline-pack` · localStorage 24h cache (1 km grid) · **200-country emergency numbers bundled in JS — zero network calls** |
+| **Offline functionality** | Workbox Service Worker · NetworkFirst for `/search` + `/triage` · CacheFirst for `/offline-pack` · localStorage 7-day TTL (1 km grid) · **200-country emergency numbers bundled in JS — zero network calls** |
 | **Innovation & additional features** | AI triage with reason text · GPS velocity crash detection with PIN-cancel · WhatsApp-deeplink SOS broadcast · dispatch summary endpoint · demo location picker for judges · 200-country detection · structured `/health` endpoint |
 | **Information integration across countries** | 200 countries and territories · ISO 3166-1 country detection via reverse geocoding · automatic switch of police/ambulance/fire numbers based on detected country · cross-border behaviour: drive India→Nepal and numbers update from 108→102 instantly |
 
@@ -154,8 +154,8 @@ Open & free APIs preferred:
 - ✅ Open & free APIs preferred — OSM, Nominatim ✅
 
 **Repository:** github.com/Arthrevs/RoadSOS
-**Live demo:** [Deployment URL]
-**Contact:** [Team contact email]
+**Live demo:** https://roadsos-frontend.vercel.app
+**Contact:** prajnadeepsarma@gmail.com
 
 **Every minute saved is a life saved.**
 

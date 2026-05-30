@@ -179,11 +179,11 @@ mount
         ┌──── 4-TIER FALLBACK CHAIN ────────────────┐
         │  1. searchNearby() → backend /search       │
         │  2. loadSearchResult() → localStorage      │
-        │     (24h TTL, ~1.1km grid key)             │
+        │     (7-day TTL, ~1.1km grid key)             │
         │  3. buildBundledSearchResult() →           │
         │     bundled_facilities.json (818 entries,  │
         │     80km → 600km fallback)                 │
-        │  4. MOCK_DATA (7 hardcoded contacts)       │
+        │  4. Empty contacts list [U+2014] national numbers banner always renders       │
         └────────────────────────────────────────────┘
               ↓
         MapHero (RealMap + SOSButton + dock)
@@ -195,7 +195,7 @@ mount
 |---|---|---|---|
 | Workbox SW (`public/sw.js`) | App shell (JS/CSS/HTML) via `__WB_MANIFEST` | until next deploy | `skipWaiting()` on install |
 | Workbox runtime cache | `/search` responses (NetworkFirst, 8s timeout) | 24h | LRU at 50 entries |
-| `offlineDB.js` (localStorage) | Search results keyed by ~1.1km grid | 24h | manual `clearCache()` |
+| `offlineDB.js` (localStorage) | Search results keyed by ~1.1km grid | 7-day | manual `clearCache()` |
 | `bundled_facilities.json` | 818 entries × 200 countries | build-time | new build |
 | `emergencyNumbers.js` | Country code → emergency dial codes (108, 911, 112…) | build-time | new build |
 
@@ -205,7 +205,7 @@ mount
 - If user never searched at this location before, falls back to bundled regional facilities
 - WhatsApp/SMS deeplinks work offline (OS-level, not network-dependent)
 
-**Offline gap:** OSM tile imagery is **not** cached — the basemap goes blank when offline, but markers + UI still render.
+**Map tiles:** CartoDB Dark Matter tiles are cached at runtime via Workbox `CacheFirst` (250-tile LRU, 30-day TTL). Previously-viewed map areas render fully offline. First visit to a new area while offline shows a blank basemap, but all contact markers and the UI render normally.
 
 ### 3.3 Map Layer (`RealMap.jsx`)
 
@@ -371,7 +371,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 | 2 | No tests for Google Places module (`googleplaces_service.py`) | Medium | Mock Google REST responses; test enrichment loop, key rotation |
 | 3 | No tests for Nominatim reverse-geocode | Low | Mock httpx; verify country code validation regex |
 | 4 | Rate limiter buckets reset on Render cold start | Low | Acceptable for free tier; for prod move to Redis |
-| 5 | OSM tiles not cached for offline use | Medium | Add Workbox runtime caching rule for `cartocdn.com/dark_all` pattern |
+| 5 | ~~OSM tiles not cached for offline use~~ | ~~Medium~~ | **Resolved** [U+2014] Workbox `CacheFirst` route added in `public/sw.js` for `cartocdn.com/dark_all` (250-tile LRU, 30-day TTL) |
 | 6 | `Mapsplatformkey` env var name (mixed case) — confusing | Low | Already pinned because Render config locks the name. Documented in ruff.toml ignore |
 | 7 | `negative caching gap` — phoneless Overpass results don't cache, repeated hits on sparse regions | Low | Cache with shorter TTL (15min) instead of skipping |
 | 8 | No structured logging — request_id present but not in log lines per service | Low | Add contextvar with request_id; format logs with it |
