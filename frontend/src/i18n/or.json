@@ -292,5 +292,11 @@
   "crash_choosing.false_alarm": "ଭୁଲ୍ ଆଲାର୍ମ? ନୀରବ କରିବାକୁ PIN ଦିଅନ୍ତୁ:",
   "crash_choosing.stop_alarm": "ଆଲାର୍ମ ବନ୍ଦ କରନ୍ତୁ",
   "crash_choosing.incorrect_pin": "ଭୁଲ୍ PIN",
-  "crash_choosing.send_sos_now": "ଏବେ SOS ପଠାନ୍ତୁ"
+  "crash_choosing.send_sos_now": "ଏବେ SOS ପଠାନ୍ତୁ",
+  "permissions.privacy_first": "Privacy first:",
+  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
+  "permissions.your_data_is": "Your data is",
+  "permissions.never": "never",
+  "permissions.shared": "shared.",
+  "permissions.got_it": "Got it"
 }

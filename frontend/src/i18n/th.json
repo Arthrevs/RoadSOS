@@ -292,5 +292,11 @@
   "crash_choosing.false_alarm": "สัญญาณเตือนผิด? ใส่ PIN เพื่อปิดเสียง:",
   "crash_choosing.stop_alarm": "หยุดสัญญาณเตือน",
   "crash_choosing.incorrect_pin": "PIN ไม่ถูกต้อง",
-  "crash_choosing.send_sos_now": "ส่ง SOS เดี๋ยวนี้"
+  "crash_choosing.send_sos_now": "ส่ง SOS เดี๋ยวนี้",
+  "permissions.privacy_first": "Privacy first:",
+  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
+  "permissions.your_data_is": "Your data is",
+  "permissions.never": "never",
+  "permissions.shared": "shared.",
+  "permissions.got_it": "Got it"
 }

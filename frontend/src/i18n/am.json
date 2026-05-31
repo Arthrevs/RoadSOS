@@ -292,5 +292,11 @@
   "crash_choosing.false_alarm": "የተሳሳተ ማንቂያ? ለማጥፋት PIN ያስገቡ:",
   "crash_choosing.stop_alarm": "ማንቂያ አቁም",
   "crash_choosing.incorrect_pin": "ትክክል ያልሆነ PIN",
-  "crash_choosing.send_sos_now": "አሁን SOS ላክ"
+  "crash_choosing.send_sos_now": "አሁን SOS ላክ",
+  "permissions.privacy_first": "Privacy first:",
+  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
+  "permissions.your_data_is": "Your data is",
+  "permissions.never": "never",
+  "permissions.shared": "shared.",
+  "permissions.got_it": "Got it"
 }

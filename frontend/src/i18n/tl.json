@@ -292,5 +292,11 @@
   "crash_choosing.false_alarm": "Maling alarm? Ilagay ang PIN para patayin:",
   "crash_choosing.stop_alarm": "Itigil ang alarm",
   "crash_choosing.incorrect_pin": "Maling PIN",
-  "crash_choosing.send_sos_now": "Ipadala ang SOS ngayon"
+  "crash_choosing.send_sos_now": "Ipadala ang SOS ngayon",
+  "permissions.privacy_first": "Privacy first:",
+  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
+  "permissions.your_data_is": "Your data is",
+  "permissions.never": "never",
+  "permissions.shared": "shared.",
+  "permissions.got_it": "Got it"
 }

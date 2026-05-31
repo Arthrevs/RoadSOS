@@ -292,5 +292,11 @@
   "crash_choosing.false_alarm": "Alarmă falsă? Introduceți PIN pentru a opri:",
   "crash_choosing.stop_alarm": "Oprește alarma",
   "crash_choosing.incorrect_pin": "PIN incorect",
-  "crash_choosing.send_sos_now": "Trimite SOS acum"
+  "crash_choosing.send_sos_now": "Trimite SOS acum",
+  "permissions.privacy_first": "Privacy first:",
+  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
+  "permissions.your_data_is": "Your data is",
+  "permissions.never": "never",
+  "permissions.shared": "shared.",
+  "permissions.got_it": "Got it"
 }

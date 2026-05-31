@@ -292,5 +292,11 @@
   "crash_choosing.false_alarm": "Alarm palsu? Masukkan PIN untuk membisukan:",
   "crash_choosing.stop_alarm": "Hentikan alarm",
   "crash_choosing.incorrect_pin": "PIN salah",
-  "crash_choosing.send_sos_now": "Kirim SOS sekarang"
+  "crash_choosing.send_sos_now": "Kirim SOS sekarang",
+  "permissions.privacy_first": "Privacy first:",
+  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
+  "permissions.your_data_is": "Your data is",
+  "permissions.never": "never",
+  "permissions.shared": "shared.",
+  "permissions.got_it": "Got it"
 }
