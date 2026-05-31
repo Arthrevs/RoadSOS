@@ -34,8 +34,7 @@ jobs:
       - name: Convert Data Schema MD to TEX
         run: |
           cd docs
-          pandoc DATA_SCHEMA.md -o DATA_SCHEMA.tex
-          cat DATA_SCHEMA.tex
+          pandoc DATA_SCHEMA.md --no-highlight -o DATA_SCHEMA.tex
 
       - name: Build Submission TEX and PDF
         run: python3 scripts/build_submission_tex.py
