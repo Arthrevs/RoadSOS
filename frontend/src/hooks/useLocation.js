@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 // drops are frequent.  The original 10 s timeout meant every rural user
 // silently fell back to IP geolocation, which returns the mobile carrier's
 // gateway location — often hundreds of km from the actual user.
-const FIRST_FIX_WALL_CLOCK_MS = 45_000;   // give GPS up to 45 s to get a first fix
+const FIRST_FIX_WALL_CLOCK_MS = 10_000;   // give GPS up to 10 s to get a first fix
 const PER_ATTEMPT_TIMEOUT_MS  = 30_000;   // browser internal per-attempt timeout
 const POOR_ACCURACY_M         = 1500;     // tolerate up to 1.5 km accuracy (rural cell-tower)
 const ACCURACY_WARN_M         = 500;      // flag fixes worse than 500 m as 'gps_low'

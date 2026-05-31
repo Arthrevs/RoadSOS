@@ -11,8 +11,8 @@ Category coverage is aligned with the IIT Madras Road Safety Hackathon 2026
 ambulance services, towing services, puncture shops (tyre), and showrooms.
 
 Reliability hardening:
-- 3-mirror failover (kumi.systems → de → fr) with 4 s per-attempt timeout,
-  sized to fit inside the 13 s wall-clock budget in search_service.py
+- 3-mirror failover (kumi.systems → de → fr) with 10 s per-attempt timeout,
+  sized to fit inside the 20 s wall-clock budget in search_service.py
 - Proximity-based deduplication (50 m radius) so the same hospital tagged
   by both `amenity=hospital` and `healthcare=hospital` appears once
 - Entries that have neither a useful name NOR a dialable phone are dropped

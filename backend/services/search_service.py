@@ -78,7 +78,7 @@ OVERPASS_BUDGET_S = (
     # the frontend waits 25 s, so this leaves headroom for geocode + enrichment.
 )
 GOOGLE_BUDGET_S = 12.0
-ENRICH_BUDGET_S = 5.0  # reduced from 10.0: 3 lookups typically finish in <2 s
+ENRICH_BUDGET_S = 5.0  # capped at 6 lookups, typically finish in <2 s
 
 
 async def _with_budget(coro, budget_s: float, label: str, fallback):
@@ -99,7 +99,7 @@ async def _safe_overpass(lat: float, lon: float, radius: int = 8000) -> list[dic
     Expand to a wider radius ONLY if the first query *succeeded* but returned
     few results (a genuinely sparse / rural area). The old version fired up to
     three sequential full queries (5/10/20 km) even when the first one timed
-    out — which, combined with the 4 s per-mirror timeout, blew the wall-clock
+    out — which, combined with the 10 s per-mirror timeout, blew the wall-clock
     budget and returned []. Now: at most two RACED queries, and we never waste
     the budget re-querying after a hard failure. Never raises — returns [] so
     Google Places / the bundled directory can take over.
@@ -125,7 +125,7 @@ async def _safe_overpass(lat: float, lon: float, radius: int = 8000) -> list[dic
 async def _safe_google(lat: float, lon: float, region: str | None) -> list[dict]:
     """Google Places nearby search. Never raises."""
     try:
-        return await search_nearby_places(lat, lon, radius=10000, region=region)
+        return await search_nearby_places(lat, lon, region=region)
     except Exception as exc:
         logger.warning("Google Places query failed: %s", exc)
         return []
@@ -150,7 +150,7 @@ async def _check_rate_limit(request: Request) -> None:
     description=(
         "Searches OpenStreetMap (Overpass) and Google Places in **parallel** "
         "for hospitals, police, ambulance, towing, repair, tyre, and showroom "
-        "establishments within 5-10 km of the supplied coordinate. Reverse-"
+        "establishments within 8-25 km of the supplied coordinate. Reverse-"
         "geocodes the location for a human-readable landmark and ISO 3166-1 "
         "alpha-2 country code.\n\n"
         "Always returns a 200 with a valid response shape — empty arrays "
@@ -188,7 +188,6 @@ async def search_facilities(
 
     # ─── Phase 3: phone enrichment for top closest phoneless contacts ────
     # Budget-capped: partial enrichment is better than blowing the timeout.
-    # Reduced from 6 to 3 to speed up: 3 lookups × find-place + details is fast enough.
     merged = await _with_budget(
         enrich_missing_phones(merged, region=geo.get("country_code"), max_lookups=6),
         ENRICH_BUDGET_S,

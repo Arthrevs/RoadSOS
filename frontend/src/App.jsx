@@ -281,7 +281,7 @@ export default function App() {
   }, []);
 
   // GPS lost detection — use cached location flag when no live GPS
-  const gpsLost = !activeLocation?.lat && !!gpsError;
+  const gpsLost = activeLocation?.lat == null && !!gpsError;
 
   return (
     <div className={`app has-map-hero theme-${mapTheme} ${tutorialStep > 0 ? `tutorial-step-${tutorialStep}` : ''}`}>
@@ -421,7 +421,7 @@ export default function App() {
       />
 
       {/* 💡 Footer Note 💡 */}
-      {(searchError || searchData?.source === 'Mock data') && (
+      {searchError && (
         <div className="footer-error-note">
           <WifiOff size={12} strokeWidth={1.8} className="footer-error-icon" style={{ flexShrink: 0, marginTop: 1 }} />
           <span className="footer-error-text">

@@ -126,7 +126,7 @@ RoadSOS is a Progressive Web Application that locates emergency-services contact
 |   |- Leaflet 1.9.4    (real OSM map, dark tiles)              |
 |   |- i18next 26       (48 languages, RTL support)             |
 |   |- localStorage     (24h search-result cache)               |
-|   `- bundled JSON     (818 entries x 200 countries)          |
+|   `- bundled JSON     (938 entries x 200 countries)          |
 +----------------------------+----------------------------------+
                              |  HTTPS  (CORS-allowlisted)
                              v
@@ -266,7 +266,7 @@ Phase 2 fires only if Phase 1 produced fewer than three contacts with a dialable
 \begin{lstlisting}[language=Python,caption={search\_service.py --- Phase 2 trigger (lines 135--138)}]
 phoned_osm = [c for c in osm_contacts if c.get("phone")]
 google_contacts: list[dict] = []
-if len(phoned_osm) < 3:
+Parallel Google Nearby Search
     google_contacts = await _safe_google(lat, lon, geo.get("country_code"))
 \end{lstlisting}
 
@@ -512,7 +512,7 @@ The grid is 1.1 km square at the equator. A user who searched yesterday from any
 
 \subsection{Tier 3 --- Bundled Facilities}
 
-When network requests fail and no cache entry exists, \file{src/utils/bundledFacilities.js} computes the nearest entries from a JSON file shipped in the build bundle: \file{src/data/bundled\_facilities.json} (818 entries, 200 countries).
+When network requests fail and no cache entry exists, \file{src/utils/bundledFacilities.js} computes the nearest entries from a JSON file shipped in the build bundle: \file{src/data/bundled\_facilities.json} (938 entries, 200 countries).
 
 \begin{tabularx}{\textwidth}{l c X}
 \toprule
@@ -976,7 +976,7 @@ RoadSOS/
 |     |  |- countryLanguage.js   # ISO country -> language code
 |     |  `- *.json               # 43 translation bundles
 |     `- data/
-|        `- bundled_facilities.json # 818 entries, 200 countries
+|        `- bundled_facilities.json # 938 entries, 200 countries
 |
 |- docs/
 |  |- ARCHITECTURE.md            # architecture review + ADRs
@@ -1002,7 +1002,7 @@ RoadSOS/
 \textbf{Metric} & \textbf{Value} \\
 \midrule
 Countries with at least one bundled facility & 200 \\
-Bundled facilities total & 818 \\
+Bundled facilities total & 938 \\
 Languages shipped & 43 \\
 Indian Schedule-VIII languages covered & 22 of 22 \\
 RTL languages supported & 6 (Arabic, Persian, Hebrew, Urdu, Kashmiri, Sindhi) \\

@@ -411,7 +411,7 @@ export default function MapHero({
             }
           }}>
             <div className="scroll-arrow-pill">
-              <span>Take down</span>
+              <span>Scroll down</span>
               <ChevronDown size={16} strokeWidth={2.5} />
             </div>
           </div>
@@ -489,7 +489,7 @@ export default function MapHero({
                 <div className="m-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
               </button>
               {onToggleTheme && (
-                  <div className="menu-item" role="button" tabIndex="0" onClick={onToggleTheme}>
+                  <button className="menu-item" onClick={onToggleTheme}>
                     <span className="m-num">5</span>
                     <div className="m-icon">
                       {mapTheme === 'light' ? <Sun size={18} strokeWidth={1.8} /> : <Moon size={18} strokeWidth={1.8} />}
@@ -498,7 +498,7 @@ export default function MapHero({
                     <div className="theme-toggle">
                       <div className={`theme-toggle-knob ${mapTheme === 'dark' ? 'dark' : 'light'}`} />
                     </div>
-                  </div>)}
+                  </button>)}
               <button className="menu-item" onClick={() => { setSidebarOpen(false); if (mapRef.current) mapRef.current.recenter(); }}>
                 <span className="m-num">6</span>
                 <div className="m-icon"><Crosshair size={17} strokeWidth={1.8} /></div>

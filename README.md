@@ -68,12 +68,13 @@ RoadSOS is built for exactly the gap that ruling identifies — the seconds betw
 | --- | --- |
 | 📍 **Location-Aware, Instantly** | GPS detection with a 10-second timeout and automatic fallback to IP-based geolocation. The search starts the moment the app opens — no buttons, no menus. |
 | 🤖 **AI-Prioritised Contacts** | Two questions — *injured? blocking traffic?* — and Gemini 2.5 Flash reorders the entire contact list for the situation. The top card states **why** it was prioritised. Deterministic rule-based fallback if the API is down. |
-| 📶 **Genuinely Offline (4-tier)** | Service Worker + localStorage (7-day TTL, ~1.1 km grid) + a **bundled 818-facility directory across 200 countries** + **bundled national emergency numbers for 200 countries**. Pre-fetch hospitals along Chennai → Bengaluru before you leave, then crash anywhere on NH-44 — the right number is still there. |
+| 📶 **Genuinely Offline (4-tier)** | Service Worker + localStorage (7-day TTL, ~1.1 km grid) + a **bundled 938-facility directory across 200 countries** + **bundled national emergency numbers for 200 countries**. Pre-fetch hospitals along Chennai → Bengaluru before you leave, then crash anywhere on NH-44 — the right number is still there. |
 | 🆔 **Emergency Medical ID** | Blood type, allergies, conditions, medications, and an emergency contact stored entirely on-device (localStorage — **nothing ever leaves the phone**). A first responder taps the persistent **🆔 Medical ID** button to see a high-contrast paramedic-friendly card. |
-| 📍 **Plus Codes (Open Location Code)** | Every crash alert encodes the GPS into a dispatcher-friendly Plus Code like `7M5CC9R6+VV` — far easier to read aloud than `13.0827, 80.2707`. Encoder is hand-written in pure JS (~80 LOC, **fully offline, zero deps**) in `frontend/src/utils/plusCodes.js`. |
+| 📍 **Plus Codes (Open Location Code)** | Every crash alert encodes the GPS into a dispatcher-friendly Plus Code like `7M5237MC+37` — far easier to read aloud than `13.0827, 80.2707`. Encoder is hand-written in pure JS (~80 LOC, **fully offline, zero deps**) in `frontend/src/utils/plusCodes.js`. |
 | 📱 **SOS-by-SMS** | When voice fails but SMS still works (common in dead zones), one tap pre-composes an SMS to your emergency contact with blood type, allergies, Plus Code, GPS, and a Google Maps link. Uses the native `sms:` scheme — works on iOS and Android. |
 | 🚨 **SOS Broadcast** | One tap composes a pre-filled WhatsApp message: GPS, nearest landmark, recommended contact. SMS fallback if WhatsApp is unavailable. Copy-coordinates button for verbal handoff. |
 | 🛡 **GPS-Velocity Crash Detection** | Detects a collapse from sustained highway speed (≥40 km/h) to a standstill (≤5 km/h) within 2.5 s. An accelerometer spike (≥3.5 G) is used **only to confirm** what GPS already suspects — it never fires alone. **PIN-cancel** safety layer prevents accidental dismissal. |
+| 📡 **Live GPS Tracking** | Visit `/track` to view active incident response routes. Three demo routes are available demonstrating real-time map plotting for emergency dispatch. |
 | 🌍 **Globally Aware** | Reverse-geocode country detection. Cross the India–Nepal border and the emergency numbers switch from `108 / 100 / 101` to `102 / 100 / 101` automatically. |
 | 🌐 **48 Languages, 6 RTL** | All 22 official Indian (Schedule VIII) languages plus 26 international languages. Full RTL layout for Arabic, Persian, Hebrew, Urdu, Kashmiri, and Sindhi. First-launch picker requires manual selection — no surveillance-style GPS auto-detection. |
 | 🗺 **Real GPS-Anchored Map** | Leaflet + OpenStreetMap (CartoDB Dark Matter tiles, no API key). Your actual surroundings, not a stock illustration. Up to six nearest contacts pinned at real lat/lon with category-coloured markers (red = medical, blue = police, teal = mechanical). |
@@ -87,10 +88,10 @@ The 2026 problem statement scores five things. Here is exactly where each is imp
 | Criterion | How RoadSOS delivers it | Where to look |
 | --- | --- | --- |
 | **Reliability & data accuracy** | Every upstream call is wrapped so `/search` **never returns 5xx** — it degrades to an empty list with an honest `source` tag. Three-mirror Overpass retry with exponential backoff. National emergency numbers for all 200 countries verified clean: **0 blank fields, 0 placeholders, 0 duplicate country codes.** India (112/100/108/101 + highway 1033) and demo countries (UK 999, Japan 110/119, Germany 110/112) confirmed against authoritative sources. | `backend/services/search_service.py`, `backend/data/emergency_seed.json` |
-| **Number of contacts fetched** | OSM Overpass + Google Places fired in **parallel**; 7 service categories across ~13 OSM tag pairs. Auto-expand 5 km → 10 km when sparse. Top-6 phoneless results enriched via Google Place Details (capped at 6 calls/search). Typical urban result: **10–15 categorised, dialable contacts.** | `backend/services/overpass_service.py`, `googleplaces_service.py` |
-| **Offline functionality** | 4-tier fallback (below). National emergency numbers render with **zero network** (they only need the country). Route results pre-fetched while online are cached 7 days. 818 bundled facilities give a last-resort nearest hospital with honest distance labels. | `frontend/src/App.jsx`, `utils/offlineDB.js`, `utils/bundledFacilities.js` |
+| **Number of contacts fetched** | OSM Overpass + Google Places fired in **parallel**; 7 service categories across ~13 OSM tag pairs. Auto-expand 8 km → 25 km when sparse. Top-6 phoneless results enriched via Google Place Details (capped at 6 calls/search). Typical urban result: **10–15 categorised, dialable contacts.** | `backend/services/overpass_service.py`, `googleplaces_service.py` |
+| **Offline functionality** | 4-tier fallback (below). National emergency numbers render with **zero network** (they only need the country). Route results pre-fetched while online are cached 7 days. 938 bundled facilities give a last-resort nearest hospital with honest distance labels. | `frontend/src/App.jsx`, `utils/offlineDB.js`, `utils/bundledFacilities.js` |
 | **Innovation & additional features** | AI triage with visible reasoning · offline Plus Codes · on-device Medical ID · SOS-by-SMS with medical payload · GPS-velocity crash detection with PIN-cancel · 48-language i18n with RTL. | `frontend/src/utils/`, `frontend/src/components/` |
-| **Information integration across countries** | ISO-3166 country code from Nominatim reverse-geocoding switches the visible national numbers automatically. 200 countries pre-loaded. Demo-location picker (BLR / LON / TYO / BER) verifies cross-border behaviour live. | `frontend/src/utils/emergencyNumbers.js`, `utils/demoMode.js` |
+| **Information integration across countries** | ISO-3166 country code from Nominatim reverse-geocoding switches the visible national numbers automatically. 200 countries pre-loaded. Demo-location picker (BLR / LON / TYO / BER / etc.) verifies cross-border behaviour live. | `frontend/src/utils/emergencyNumbers.js`, `frontend/src/App.jsx` |
 
 ---
 
@@ -131,8 +132,8 @@ The 2026 problem statement scores five things. Here is exactly where each is imp
 │                                                               │
 │  GET /search                                                  │
 │   ├─ Overpass (OSM) + Google Places ── fired in PARALLEL      │
-│   │   ├─ Overpass: 5 km, auto-expand to 10 km                 │
-│   │   └─ Google: only if OSM yields < 3 phoned contacts       │
+│   │   ├─ Overpass: 8 km, auto-expand to 25 km                 │
+│   │   └─ Google Places fires unconditionally in parallel      │
 │   ├─ Nominatim geocode ── parallel · landmark + ISO code      │
 │   ├─ Merge + deduplicate ── by phone digits, then name        │
 │   └─ Phone enrichment ── top-6 phoneless via Place Details    │
@@ -158,7 +159,7 @@ GET /search ─────► Service Worker         Tier 1: Backend /search
                                                   └─ no entry for this grid
 
                                           Tier 3: Bundled JSON
-                                                  (818 facilities across
+                                                  (938 facilities across
                                                   200 countries, haversine
                                                   search, 80 → 600 km, then
                                                   globally-nearest, labelled)

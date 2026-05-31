@@ -86,7 +86,7 @@ app = FastAPI(
         "**Reliability features:**\n"
         "- Per-IP rate limiting on `/search` (120 req/min, burst 80) and `/triage` (80 req/min, burst 40)\n"
         "- Request-ID tracing via `x-request-id` response header\n"
-        "- Overpass mirror fallback (3 mirrors, fast-fail 4s/attempt, 13s phase budget)\n"
+        "- Overpass mirror fallback (3 mirrors, fast-fail 10s/attempt, 20s phase budget)\n"
         "- Graceful degradation: AI failures fall back to deterministic rules\n"
         "- Cached results (1h Overpass / 24h geocode) prevent upstream abuse\n"
         "- All errors return clean JSON, never leak stack traces"

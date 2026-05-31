@@ -14,7 +14,7 @@ RoadSOS is a **PWA-first emergency-services discovery app**. A user opens it, th
 │  ├─ Leaflet (real OSM map)                                          │
 │  ├─ i18next (48 languages)                                          │
 │  ├─ IndexedDB-style localStorage cache                              │
-│  └─ Bundled facilities JSON (818 entries, 200 countries)            │
+│  └─ Bundled facilities JSON (938 entries, 200 countries)            │
 └────────────────────────────┬────────────────────────────────────────┘
                              │ HTTPS
                              ▼
@@ -74,7 +74,6 @@ Request → middleware stack (outermost first)
   rate_limiter.check(IP)   ← 429 + Retry-After if exceeded
        ↓
   ┌──── PHASE 1 (PARALLEL via asyncio.gather) ──────────────┐
-  │  ├── .env.example                  # GEMINI_API_KEY, GOOGLE_PLACES_API_KEY                                                          │
   │  _safe_geocode()        _safe_overpass()                 │
   │  ├─ cache lookup        ├─ cache lookup                  │
   │  ├─ Nominatim GET       ├─ Build Overpass QL             │
@@ -87,7 +86,7 @@ Request → middleware stack (outermost first)
   └──────────────────────────────────────────────────────────┘
        ↓
   ┌──── PHASE 2 (CONDITIONAL) ──────────────────────────────┐
-  │  if phoned_osm < 3:                                      │
+  │  Google Nearby Search + Place Details (in parallel)      │
   │    _safe_google(lat, lon, country_code from Phase 1)     │
   │      ├─ Nearby Search per category                       │
   │      ├─ Place Details for phone field                    │
@@ -181,7 +180,7 @@ mount
         │  2. loadSearchResult() → localStorage      │
         │     (7-day TTL, ~1.1km grid key)             │
         │  3. buildBundledSearchResult() →           │
-        │     bundled_facilities.json (818 entries,  │
+        │     bundled_facilities.json (938 entries,  │
         │     80km → 600km fallback)                 │
         │  4. Empty contacts list [U+2014] national numbers banner always renders       │
         └────────────────────────────────────────────┘
@@ -196,7 +195,7 @@ mount
 | Workbox SW (`public/sw.js`) | App shell (JS/CSS/HTML) via `__WB_MANIFEST` | until next deploy | `skipWaiting()` on install |
 | Workbox runtime cache | `/search` responses (NetworkFirst, 8s timeout) | 24h | LRU at 50 entries |
 | `offlineDB.js` (localStorage) | Search results keyed by ~1.1km grid | 7-day | manual `clearCache()` |
-| `bundled_facilities.json` | 818 entries × 200 countries | build-time | new build |
+| `bundled_facilities.json` | 938 entries × 200 countries | build-time | new build |
 | `emergencyNumbers.js` | Country code → emergency dial codes (108, 911, 112…) | build-time | new build |
 
 **Offline-first guarantees:**
@@ -274,7 +273,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 
 **Context:** Need global emergency-facility coverage. Two viable options: Google Places (paid, complete metadata, $17 per 1k Nearby Search calls + $17 per 1k Place Details) vs OSM Overpass (free, variable quality, public servers).
 
-**Decision:** Overpass primary, Google fallback only when phoned OSM results < 3.
+**Decision:** Overpass and Google Places queried in parallel.
 
 | Dimension | Overpass | Google Places |
 |---|---|---|
@@ -294,7 +293,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 
 **Context:** First-time users in low-connectivity regions can't reach backend or use cached results.
 
-**Decision:** Ship 818-entry facility catalog with the app (`bundled_facilities.json`, ~120KB gzipped).
+**Decision:** Ship 938-entry facility catalog with the app (`bundled_facilities.json`, ~120KB gzipped).
 
 **Trade-off:** +50KB bundle vs zero-network usefulness. Critical for hackathon demo offline criterion. Falls back from 80km → 600km radius when sparse.
 
@@ -350,7 +349,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 ## 6. Strengths
 
 1. **Reliability-first orchestration.** Every external call has a `_safe_*` wrapper. The API never 5xxs on upstream failure — it degrades to empty contacts with a transparent `source` field.
-2. **Cost-aware fallback.** Google Places is paid; the design only invokes it when free Overpass is insufficient (< 3 phoned results), and caps enrichment at 6 Place Details calls/search.
+2. **Parallel execution.** Google Places is fired in parallel with Overpass to ensure maximum results within the 10-second window, capping phone enrichment at 6 Place Details calls/search.
 3. **Offline-first frontend.** 4-tier fallback (backend → localStorage → bundled JSON → empty list with national numbers) means the app produces useful output even in a Faraday cage.
 4. **Parallelism where it matters.** Geocode and Overpass run concurrently via `asyncio.gather`; clients see max-of-two latency instead of sum.
 5. **Multi-mirror Overpass.** Three independent Overpass endpoints with exponential backoff. Single-mirror downtime invisible to users.
@@ -427,4 +426,3 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 The architecture is **purpose-fit for an emergency-services demo with hackathon constraints**: every dollar saved (Overpass first, Google capped), every failure mode handled (4-tier offline fallback, 3-layer triage fallback, never-raises orchestration), every byte cached (3-tier coordinate-grid TTL caches). The codebase shows consistent reliability discipline — `try/except` wrappers around every I/O, deterministic fallbacks for AI, graceful degradation everywhere.
 
 Tech debt is **predominantly testing depth and observability**, not structural — there is nothing fundamental to redesign before shipping. Recommendations are additive, not corrective.
-*, not structural — there is nothing fundamental to redesign before shipping. Recommendations are additive, not corrective.

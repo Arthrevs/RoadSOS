@@ -104,13 +104,16 @@ export async function prefetchRoute(origin, destination, opts = {}) {
     const [lon, lat] = samples[idx];
     inflight += 1;
     onProgress?.({ done: cached, total, lastPoint: { lat, lon }, status: 'fetching' });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
     try {
-      const data = await searchNearby(lat, lon);
+      const data = await searchNearby(lat, lon, controller.signal);
       saveSearchResult(lat, lon, data);
       cached += 1;
     } catch {
       // Single waypoint failure shouldn't abort the whole trip cache.
     } finally {
+      clearTimeout(timeout);
       inflight -= 1;
       onProgress?.({ done: cached, total, lastPoint: { lat, lon }, status: 'waypoint_done' });
     }
@@ -158,16 +161,20 @@ export async function prefetchArea(lat, lon, opts = {}) {
   }
 
   const total = points.length;
-  let done = 0, inflight = 0, cursor = 0;
+  let done = 0, cached = 0, inflight = 0, cursor = 0;
 
   const fireOne = async (idx) => {
     inflight += 1;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
     try {
-      const data = await searchNearby(points[idx].lat, points[idx].lon);
+      const data = await searchNearby(points[idx].lat, points[idx].lon, controller.signal);
       saveSearchResult(points[idx].lat, points[idx].lon, data);
+      cached += 1;
     } catch {
       // one point failing must not abort the whole area cache
     } finally {
+      clearTimeout(timeout);
       done += 1;
       inflight -= 1;
       onProgress?.({ done, total });
@@ -184,5 +191,5 @@ export async function prefetchArea(lat, lon, opts = {}) {
     tick();
   });
 
-  return { cached: done, total };
+  return { cached, total };
 }

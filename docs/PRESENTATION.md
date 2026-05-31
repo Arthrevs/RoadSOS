@@ -104,7 +104,7 @@ Open & free APIs preferred:
 | Criterion (from rulebook) | How RoadSOS Delivers |
 |---|---|
 | **Reliability & data accuracy** | In-memory TTL cache · rule-based AI fallback · `_validate_ai_result()` strict schema check · phone E.164 normalization via `phonenumbers` · 288 unit tests (128 backend · 160 frontend) · CI on every push (Python 3.11 + 3.12) |
-| **Number of contacts fetched** | 8 contact categories (rulebook asks for 6) · Overpass expanded to include ways for clinic, healthcare=*, fire_station, car_repair · auto-radius expansion 5 km → 10 km if < 3 results · Google Places fallback |
+| **Number of contacts fetched** | 8 contact categories (rulebook asks for 6) · Overpass expanded to include ways for clinic, healthcare=*, fire_station, car_repair · auto-radius expansion 8 km → 25 km · Google Places parallel fallback |
 | **Offline functionality** | Workbox Service Worker · NetworkFirst for `/search` + `/triage` · CacheFirst for `/offline-pack` · localStorage 7-day TTL (1 km grid) · **200-country emergency numbers bundled in JS — zero network calls** |
 | **Innovation & additional features** | AI triage with reason text · GPS velocity crash detection with PIN-cancel · WhatsApp-deeplink SOS broadcast · dispatch summary endpoint · demo location picker for judges · 200-country detection · structured `/health` endpoint |
 | **Information integration across countries** | 200 countries and territories · ISO 3166-1 country detection via reverse geocoding · automatic switch of police/ambulance/fire numbers based on detected country · cross-border behaviour: drive India→Nepal and numbers update from 108→102 instantly |

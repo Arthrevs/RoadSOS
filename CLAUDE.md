@@ -74,15 +74,15 @@ India records 1.5 lakh road accident deaths per year. The "golden hour" (first 6
 
 The rulebook specifies these exact criteria — every code decision must serve at least one of them:
 
-1. **Number of emergency contacts found** — judges will test how many contacts appear for a given location. More = better. OSM Overpass + Google Places run in parallel. Auto-expands from 5 km → 10 km → 20 km in sparse areas. Google fires regardless of OSM result count (parallel, not conditional).
+1. **Number of emergency contacts found** — judges will test how many contacts appear for a given location. More = better. OSM Overpass + Google Places run in parallel. Auto-expands from 8 km → 25 km in sparse areas. Google fires regardless of OSM result count (parallel, not conditional).
 
 2. **Reliability** — searches must succeed even when upstreams fail. Every external call is wrapped in `_safe_*` helpers that never raise. 3-mirror Overpass with exponential backoff. API always returns HTTP 200 with a valid shape.
 
 3. **Offline functionality** — 4-tier fallback:
    - Tier 1: FastAPI backend `/search`
-   - Tier 2: Service Worker + localStorage cache (24h TTL, ~110m grid)
-   - Tier 3: Bundled JSON (818 entries: hospitals + national emergency contacts, 200 countries)
-   - Tier 4: Hardcoded mock as final placeholder
+   - Tier 2: Service Worker + localStorage cache (7-day TTL, ~1.1 km grid)
+   - Tier 3: Bundled JSON (938 entries: hospitals + national emergency contacts, 200 countries)
+   - Tier 4: Empty list + national emergency numbers banner
    Country emergency numbers (police/ambulance/fire) always render from bundled data — zero network dependency.
 
 4. **Information integration across countries** — 200 countries pre-loaded. ISO-3166 country code from Nominatim reverse-geocode. Emergency numbers switch automatically when crossing borders (e.g. India→Nepal: 108/100 → 102/100). Demo location picker tests London, Tokyo, Berlin.
@@ -142,11 +142,11 @@ Common CI failure causes:
 
 | Layer | Tech |
 |---|---|
-| Frontend | React 18.3, Vite 8, vite-plugin-pwa 1.3 |
+| Frontend | React 18.3, Vite 7.3.3, vite-plugin-pwa 1.3 |
 | Map | Leaflet 1.9, react-leaflet 4.2, CartoDB Dark tiles (no API key) |
 | i18n | i18next 26, react-i18next 17 |
 | Backend | FastAPI 0.115, httpx 0.27, Python 3.11+ |
-| AI Triage | Google Gemini 2.0 Flash (direct REST, no SDK) — free tier 60 RPM / 1500 RPD |
+| AI Triage | Google Gemini 2.5 Flash (direct REST, no SDK) — free tier 15 RPM / 1500 RPD |
 | Location data | OSM Overpass (primary) + Google Places (parallel fallback) |
 | Geocoding | Nominatim (free, no API key) |
 | Offline cache | Workbox 7 SW + localStorage + bundled JSON |
