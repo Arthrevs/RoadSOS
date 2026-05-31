@@ -293,6 +293,7 @@ def build_tex() -> str:
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{amsmath}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 % ─── Colours ──────────────────────────────────────────────────────────
 \definecolor{rsnavy}{HTML}{0B1424}
