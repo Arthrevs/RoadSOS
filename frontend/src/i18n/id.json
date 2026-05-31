@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "Hentikan alarm",
   "crash_choosing.incorrect_pin": "PIN salah",
   "crash_choosing.send_sos_now": "Kirim SOS sekarang",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "Privasi pertama:",
+  "permissions.need_access": "Kami membutuhkan lokasi untuk pengiriman dan kamera untuk foto kecelakaan.",
+  "permissions.your_data_is": "Data Anda adalah",
+  "permissions.never": "tidak pernah",
+  "permissions.shared": "dibagikan.",
+  "permissions.got_it": "Mengerti"
 }

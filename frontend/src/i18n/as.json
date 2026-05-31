@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "অলাৰ্ম বন্ধ কৰক",
   "crash_choosing.incorrect_pin": "ভুল PIN",
   "crash_choosing.send_sos_now": "এতিয়াই SOS পঠিয়াওক",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "গোপনীয়তা প্ৰথম:",
+  "permissions.need_access": "আমাক ডিচপেচৰ বাবে স্থান আৰু ক্ৰেচ ফটোৰ বাবে কেমেৰাৰ প্ৰয়োজন।",
+  "permissions.your_data_is": "আপোনাৰ ডাটা হৈছে",
+  "permissions.never": "কেতিয়াও নহয়",
+  "permissions.shared": "শ্বেয়াৰ কৰা হৈছে।",
+  "permissions.got_it": "এইটো পাইছো"
 }
