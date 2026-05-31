@@ -145,12 +145,13 @@ RoadSOS reduces that to under 10 seconds and works fully offline.
 \midrule
 Number of emergency contacts found &
   OSM Overpass (9 categories, parallel) + Google Places (parallel, not sequential).
-  Auto-expanding radius 8\,km $\to$ 25\,km. \\
+  Auto-expanding radius 5\,km $\to$ 10\,km $\to$ 20\,km. \\
 Reliability &
-  Every external call wrapped in \code{\_safe\_*} helpers. 3 Overpass mirrors raced concurrently (first healthy response wins). API always returns HTTP 200 with a valid shape. \\
+  Every external call wrapped in \code{\_safe\_*} helpers. 3-mirror Overpass with
+  exponential back-off. API always returns HTTP 200 with a valid shape. \\
 Offline functionality &
-  Four-tier fallback: live backend $\to$ 7-day localStorage cache $\to$ bundled JSON
-  (938 entries, 200 countries) $\to$ national emergency-numbers banner. Country emergency numbers
+  Four-tier fallback: live backend $\to$ 24\,h localStorage cache $\to$ bundled JSON
+  (818 entries, 200 countries) $\to$ hardcoded mock. Country emergency numbers
   always offline. \\
 International coverage &
   200 countries pre-loaded. ISO-3166 code from Nominatim. Emergency numbers switch
@@ -213,7 +214,7 @@ whenever any single assumption is violated at runtime.}
 
 \subsection{AI triage}
 \begin{itemize}
-  \item Google Gemini 2.5 Flash is used for situational triage via direct REST (no SDK). Free-tier limits (60 RPM / 1500 RPD) are sufficient for a demo.
+  \item Google Gemini 2.0 Flash is used for situational triage via direct REST (no SDK). Free-tier limits (60 RPM / 1500 RPD) are sufficient for a demo.
   \item If Gemini is unreachable or rate-limited the app falls back to deterministic rule-based prioritisation using the same two yes/no questions.
 \end{itemize}
 
@@ -302,10 +303,10 @@ ruff==0.11.13
 \toprule
 \textbf{Service / API} & \textbf{Role in RoadSOS} \\
 \midrule
-OpenStreetMap Overpass API & Public OSM data query. Three mirrors raced concurrently (first healthy response wins). \\
+OpenStreetMap Overpass API & Public OSM data query. Three mirrors with exponential-backoff retry. \\
 OpenStreetMap Nominatim & Reverse geocoding (lat/lon $\to$ country code, landmark). \\
 Google Places API (Nearby Search + Place Details) & Unconditional parallel fallback (if configured). \\
-Google Gemini 2.5 Flash & AI triage. Free tier: 60\,RPM / 1\,500\,RPD. \\
+Google Gemini 2.0 Flash & AI triage. Free tier: 60\,RPM / 1\,500\,RPD. \\
 CartoDB Dark Matter tiles & Map tile provider (no API key required). \\
 Web platform APIs & Geolocation, DeviceMotion, Battery Status, Web Speech, Service Worker. \\
 \bottomrule
@@ -324,7 +325,7 @@ The summary below captures the request flow and the four-tier offline strategy.}
 \begin{enumerate}
   \item Frontend issues \code{GET /search?lat=\ldots\&lon=\ldots\&radius=5000}.
   \item Phase 1: parallel fan-out --- Nominatim reverse geocode + Overpass query
-        (9 OSM categories, 3 mirrors, 10\,s per-mirror timeout).
+        (9 OSM categories, 3 mirrors, 12\,s timeout each).
   \item Phase 2: parallel Google Places Nearby Search if a key is configured
         (does \textbf{not} wait for OSM; \code{rankby=distance} for nearest-first).
   \item Phase 3: merge + proximity dedupe (50\,m radius), then phone enrichment
@@ -332,7 +333,7 @@ The summary below captures the request flow and the four-tier offline strategy.}
   \item Response: JSON with categorised contacts, country emergency numbers,
         landmark, ISO country code.
   \item Frontend: render on Leaflet map (CartoDB Dark Matter tiles), populate
-        Quick-Contacts dock, persist to 7-day localStorage cache.
+        Quick-Contacts dock, persist to 24\,h localStorage cache.
 \end{enumerate}
 
 \subsection{Four-tier offline strategy}
@@ -342,7 +343,7 @@ The summary below captures the request flow and the four-tier offline strategy.}
   \item \textbf{Tier 2} --- Service Worker + localStorage cache, 24\,h TTL,
         keyed at $\sim$1.1\,km grid.
   \item \textbf{Tier 3} --- Bundled JSON shipped with the PWA:
-        938 entries across 200 countries.
+        818 entries across 200 countries.
   \item \textbf{Tier 4} --- Hardcoded mock so the UI never shows an empty state.
 \end{enumerate}
 
