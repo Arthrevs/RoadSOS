@@ -14,8 +14,8 @@
 
 // Production fallback to deployed Render backend if env var is missing.
 // Strip any leading BOM that can appear when pasting into the Vercel dashboard.
-const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/^﻿/, '')
-  || (import.meta.env.PROD ? 'https://roadsos-pl3k.onrender.com' : '');
+const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/^\uFEFF/, '')
+  || 'https://roadsos-pl3k.onrender.com';
 
 /**
  * Create a tracking session on the backend.
@@ -41,7 +41,7 @@ export async function createTrackingSession(location, landmark) {
     const { token } = await res.json();
     // The tracking page is rendered by the backend
     const backendBase = import.meta.env.VITE_API_URL
-      || (import.meta.env.PROD ? 'https://roadsos-pl3k.onrender.com' : window.location.origin);
+      || 'https://roadsos-pl3k.onrender.com';
     return `${backendBase}/track/${token}`;
   } catch {
     return null;   // offline, cold start, or timeout

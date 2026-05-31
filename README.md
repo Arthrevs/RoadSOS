@@ -218,7 +218,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`. The Vite dev server proxies `/search`, `/triage`, and `/offline-pack` to the backend.
+Open `http://localhost:5173`. By default the frontend talks to the live backend at `https://roadsos-pl3k.onrender.com` (Google + Gemini keys loaded), so everything works with no API keys. To use a local backend, set `VITE_API_URL=\"http://localhost:8000\"` in `frontend/.env.local`.
 
 > **💡 Tip for Judges: Test full AI & Google features locally!**
 > If you want to experience the full Gemini AI Triage and Google Places parallelism locally without having to supply your own API keys, you can tell the local frontend to bypass your local backend and connect directly to our live production backend (which already has the keys securely loaded).
