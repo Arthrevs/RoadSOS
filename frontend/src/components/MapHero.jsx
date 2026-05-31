@@ -244,17 +244,7 @@ export default function MapHero({
     alert(`Saved ${res.cached}/${res.total} nearby zones for offline use.`);
   }, [location]);
 
-  // ── Handle save area for offline ──
-  const handleSaveArea = useCallback(async () => {
-    if (!location?.lat) return;
-    setSavingArea({ done: 0, total: 0 });
-    const res = await prefetchArea(location.lat, location.lon, {
-      radiusKm: 8,
-      onProgress: setSavingArea,
-    });
-    setSavingArea(null);
-    alert(`Saved ${res.cached}/${res.total} nearby zones for offline use.`);
-  }, [location]);
+
 
   // ── Handle manual location set ──
   // setManualLocation() dispatches roadsos:manual-location which the running
