@@ -377,7 +377,7 @@ def build_tex() -> str:
 {\normalsize\color{rsgrey}
   \textbf{Submission deadline:} 31 May 2026 \quad
   \textbf{Repository:} \url{https://github.com/Arthrevs/RoadSOS}\\[0.4cm]
-  \textbf{Live app:} \url{https://roadsos.vercel.app}
+  \textbf{Live app:} \url{https://roadsos-frontend.vercel.app}
 }
 \vfill
 \begin{tabular}{ll}

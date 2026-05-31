@@ -67,13 +67,13 @@ async def lifespan(app: FastAPI):
 # Vercel preview deployment (roadsos-frontend-<hash>-<team>.vercel.app) so
 # a judge given a preview URL by mistake still gets a working backend.
 _DEFAULT_ORIGINS = (
-    "https://roadsos-frontend.vercel.app,https://roadsos.vercel.app,http://localhost:5173"
+    "https://roadsos-frontend.vercel.app,http://localhost:5173"
 )
 cors_origins_env = os.getenv("CORS_ALLOW_ORIGINS", _DEFAULT_ORIGINS)
 cors_origins = (
     [o.strip() for o in cors_origins_env.split(",")] if cors_origins_env != "*" else ["*"]
 )
-_DEFAULT_ORIGIN_REGEX = r"^https://roadsos(-[a-z0-9-]+)?\.vercel\.app$"
+_DEFAULT_ORIGIN_REGEX = r"^https://roadsos-frontend(-[a-z0-9-]+)?\.vercel\.app$"
 cors_origin_regex = os.getenv("CORS_ALLOW_ORIGIN_REGEX", _DEFAULT_ORIGIN_REGEX)
 
 
