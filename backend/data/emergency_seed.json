@@ -707,7 +707,8 @@
         "police": "100",
         "ambulance": "108",
         "fire": "101",
-        "general": "112"
+        "general": "112",
+        "highway": "1033"
     },
     {
         "country": "Indonesia",

@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "Stop alarm",
   "crash_choosing.incorrect_pin": "Incorrect PIN",
   "crash_choosing.send_sos_now": "Send SOS now",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "La confidentialité avant tout :",
+  "permissions.need_access": "Nous avons besoin d'un emplacement pour l'expédition et d'un appareil photo pour les photos d'accident.",
+  "permissions.your_data_is": "Vos données sont",
+  "permissions.never": "jamais",
+  "permissions.shared": "commun.",
+  "permissions.got_it": "J'ai compris"
 }

@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "Simamisha kengele",
   "crash_choosing.incorrect_pin": "PIN isiyo sahihi",
   "crash_choosing.send_sos_now": "Tuma SOS sasa",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "Faragha kwanza:",
+  "permissions.need_access": "Tunahitaji mahali pa kutuma na kamera kwa picha za kuacha kufanya kazi.",
+  "permissions.your_data_is": "Data yako ni",
+  "permissions.never": "kamwe",
+  "permissions.shared": "pamoja.",
+  "permissions.got_it": "Nimeipata"
 }

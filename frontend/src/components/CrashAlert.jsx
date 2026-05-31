@@ -252,10 +252,7 @@ export default function CrashAlert({ open, onConfirm, onCancel, numbers, locatio
           </button>
         </div>
 
-        {/* Raised "I'M OK — CANCEL" button */}
-        <button className="cf-cancel-btn" onClick={handleCancelAuto}>
-          {t('crash_choosing.im_ok_cancel')}
-        </button>
+
 
         {/* PIN-gated false alarm cancel */}
         <div className="cf-pin-zone">

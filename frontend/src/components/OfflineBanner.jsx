@@ -25,7 +25,7 @@ export default function OfflineBanner({ usingBundled = false, usingMock = false 
     message = (
       <>
         <strong>Server unreachable.</strong>{' '}
-        Showing demo contacts — national emergency numbers above are accurate.
+        Use the national emergency numbers above to call directly.
       </>
     );
   } else {

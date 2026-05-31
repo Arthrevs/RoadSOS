@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "Διακοπή συναγερμού",
   "crash_choosing.incorrect_pin": "Λανθασμένο PIN",
   "crash_choosing.send_sos_now": "Αποστολή SOS τώρα",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "Πρώτα απόρρητο:",
+  "permissions.need_access": "Χρειαζόμαστε τοποθεσία για την αποστολή και κάμερα για φωτογραφίες σύγκρουσης.",
+  "permissions.your_data_is": "Τα δεδομένα σας είναι",
+  "permissions.never": "ποτέ",
+  "permissions.shared": "κοινόχρηστο.",
+  "permissions.got_it": "Κατάλαβα"
 }

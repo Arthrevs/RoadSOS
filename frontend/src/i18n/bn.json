@@ -376,12 +376,12 @@
   "crash_choosing.stop_alarm": "অ্যালার্ম বন্ধ করুন",
   "crash_choosing.incorrect_pin": "ভুল PIN",
   "crash_choosing.send_sos_now": "এখনই SOS পাঠান",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it",
+  "permissions.privacy_first": "গোপনীয়তা প্রথম:",
+  "permissions.need_access": "আমাদের প্রেরণের জন্য অবস্থান এবং ক্র্যাশ ফটোগুলির জন্য ক্যামেরা প্রয়োজন।",
+  "permissions.your_data_is": "আপনার তথ্য",
+  "permissions.never": "কখনই",
+  "permissions.shared": "ভাগ করা",
+  "permissions.got_it": "বুঝেছি",
   "tutorial.icon.offline": "অফলাইনে থাকা অবস্থায়ও আপনার এলাকা সম্পর্কে তথ্য সংরক্ষণ করুন",
   "sidebar.save_area": "অফলাইনের জন্য এলাকা সংরক্ষণ করুন"
 }

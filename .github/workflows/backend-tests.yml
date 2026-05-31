@@ -51,7 +51,7 @@ jobs:
 
     env:
       GEMINI_API_KEY: "dummy-for-import-check"
-      Mapsplatformkey: "dummy-for-import-check"
+      GOOGLE_PLACES_API_KEY: "dummy-for-import-check"
 
     steps:
       - name: Checkout

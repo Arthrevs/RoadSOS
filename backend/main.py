@@ -66,14 +66,12 @@ async def lifespan(app: FastAPI):
 # (comma-separated) for staging or to widen to "*". The regex covers every
 # Vercel preview deployment (roadsos-frontend-<hash>-<team>.vercel.app) so
 # a judge given a preview URL by mistake still gets a working backend.
-_DEFAULT_ORIGINS = (
-    "https://roadsos-frontend.vercel.app,https://roadsos.vercel.app,http://localhost:5173"
-)
+_DEFAULT_ORIGINS = "*"
 cors_origins_env = os.getenv("CORS_ALLOW_ORIGINS", _DEFAULT_ORIGINS)
 cors_origins = (
     [o.strip() for o in cors_origins_env.split(",")] if cors_origins_env != "*" else ["*"]
 )
-_DEFAULT_ORIGIN_REGEX = r"^https://roadsos(-[a-z0-9-]+)?\.vercel\.app$"
+_DEFAULT_ORIGIN_REGEX = r".*"
 cors_origin_regex = os.getenv("CORS_ALLOW_ORIGIN_REGEX", _DEFAULT_ORIGIN_REGEX)
 
 
@@ -86,13 +84,13 @@ app = FastAPI(
         "**Reliability features:**\n"
         "- Per-IP rate limiting on `/search` (120 req/min, burst 80) and `/triage` (80 req/min, burst 40)\n"
         "- Request-ID tracing via `x-request-id` response header\n"
-        "- Overpass mirror fallback (3 mirrors, fast-fail 4s/attempt, 13s phase budget)\n"
+        "- Overpass mirror fallback (3 mirrors, fast-fail 10s/attempt, 20s phase budget)\n"
         "- Graceful degradation: AI failures fall back to deterministic rules\n"
         "- Cached results (1h Overpass / 24h geocode) prevent upstream abuse\n"
         "- All errors return clean JSON, never leak stack traces"
     ),
     version=VERSION,
-    contact={"name": "RoadSOS Team", "url": "https://github.com/Arthrevs/Roadproj"},
+    contact={"name": "RoadSOS Team", "url": "https://github.com/Arthrevs/RoadSOS"},
     license_info={"name": "MIT"},
     lifespan=lifespan,
 )
