@@ -7,13 +7,9 @@ export default defineConfig({
     react(),
     VitePWA({
       strategies: 'injectManifest',
-      srcDir: 'public',
+      srcDir: 'src',
       filename: 'sw.js',
       registerType: 'autoUpdate',
-      injectManifest: {
-        swSrc: 'public/sw.js',
-        swDest: 'dist/sw.js',
-      },
       manifest: {
         name: 'RoadSOS',
         short_name: 'RoadSOS',
