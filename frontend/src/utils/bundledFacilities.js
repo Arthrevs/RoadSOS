@@ -17,8 +17,8 @@
  * - India (Tamil Nadu + metros): deepest coverage (hackathon at IIT-M).
  * - North America, Europe, East/SE Asia, Middle East, Africa, Oceania,
  *   Latin America: top-tier trauma/teaching hospitals per major metro.
- * - 938 entries (438 hospitals/clinics + 500 national emergency & service
- *   contacts) across all 200 countries — every country with an emergency-numbers
+ * - 938 entries (378 hospital / 212 police / 330 ambulance/fire / 18 towing+tyre+showroom)
+ *   across all 200 countries — every country with an emergency-numbers
  *   entry has at least one bundled fallback.
  *
  * Data quality policy:

@@ -200,7 +200,7 @@ export default function App() {
           setSearchData(cached);
           setCachedAt(cached.cachedAt);
           if (cached._nearestKm) {
-            setSearchError(`Offline [U+2014] showing cached results from ~${cached._nearestKm} km away.`);
+            setSearchError(`Offline — showing cached results from ~${cached._nearestKm} km away.`);
           }
         } else {
           const bundled = buildBundledSearchResult(searchLat, searchLon, { maxKm: 80, limit: 8 });
@@ -214,7 +214,7 @@ export default function App() {
             );
           } else {
             // The bundled directory returns a result whenever the bundle is
-            // non-empty (it is — 818 facilities), so this branch is
+            // non-empty (it is — 938 facilities), so this branch is
             // effectively unreachable. If it ever fires (e.g. the bundle
             // failed to load), show NO contacts rather than fabricated demo
             // data. The national emergency-numbers banner still renders from
