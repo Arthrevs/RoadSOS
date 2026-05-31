@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RotateCw, Sun, Globe, MapPin, AlertTriangle, Activity, Truck, ArrowRight } from 'lucide-react';
+import { RotateCw, Sun, Globe, MapPin, AlertTriangle, Activity, Truck, ArrowRight, DownloadCloud } from 'lucide-react';
 import { DEMO_MODE } from '../utils/demoMode';
 
 /* ── Inline icon helper — renders a lucide icon inline with text ── */
@@ -243,6 +243,7 @@ export default function TutorialOverlay({ onComplete, theme = 'dark' }) {
           <button className="btn-icon"><Sun size={19} strokeWidth={1.8} /></button>
           <button className="btn-icon"><Globe size={19} strokeWidth={1.8} /></button>
           <button className="btn-icon"><MapPin size={19} strokeWidth={1.8} /></button>
+          <button className="btn-icon"><DownloadCloud size={19} strokeWidth={1.8} /></button>
           <button className="btn-icon">
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" strokeWidth="1.8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
           </button>
@@ -263,6 +264,7 @@ export default function TutorialOverlay({ onComplete, theme = 'dark' }) {
         <I label={t('tutorial.icon.theme', 'Dark/Light mode')}><Sun size={iconSize} strokeWidth={iconStroke} /></I>
         <I label={t('tutorial.icon.lang', 'Language')}><Globe size={iconSize} strokeWidth={iconStroke} /></I>
         <I label={t('tutorial.icon.location', 'Sets yours location manually and searches')}><MapPin size={iconSize} strokeWidth={iconStroke} /></I>
+        <I label={t('tutorial.icon.offline', 'Save information about your area to be available even when offline')}><DownloadCloud size={iconSize} strokeWidth={iconStroke} /></I>
         {DEMO_MODE && (
           <I label={t('tutorial.icon.demo', 'Intialises a demo crash test reponse of app')}><AlertTriangle size={iconSize} strokeWidth={iconStroke} /></I>
         )}

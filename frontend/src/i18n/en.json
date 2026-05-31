@@ -336,7 +336,7 @@
   "sidebar.toggle_theme": "Dark / Light Mode",
   "sidebar.recenter": "Recenter My Location",
   "sidebar.tutorial": "Tutorial",
-  "sidebar.shortcut_info": "The shortcut to these buttons are given on the main screen with corresponding symbols as given here — features 1 to 5 exist on top bar and 6 on right side of your screen.",
+  "sidebar.shortcut_info": "The shortcut to these buttons are given on the main screen with corresponding symbols as given here — features 1 to 6 exist on top bar and 7 on right side of your screen.",
   "sidebar.crash_test_info": "To check our crash test demo you can go through this link:",
   "sidebar.open_crash_test": "Open Crash Test Demo",
   "dispatcher.call_dispatcher": "Call a Dispatcher",
@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Your data is",
   "permissions.never": "never",
   "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.got_it": "Got it",
+  "tutorial.icon.offline": "Save information about your area to be available even when offline",
+  "sidebar.save_area": "Save Area for Offline"
 }

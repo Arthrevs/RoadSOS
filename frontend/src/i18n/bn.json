@@ -336,7 +336,7 @@
   "sidebar.toggle_theme": "ডার্ক / লাইট মোড",
   "sidebar.recenter": "আমার অবস্থান কেন্দ্রে আনুন",
   "sidebar.tutorial": "টিউটোরিয়াল",
-  "sidebar.shortcut_info": "এই বোতামগুলোর শর্টকাট প্রধান স্ক্রিনে অনুরূপ চিহ্নসহ এখানে দেওয়া হয়েছে — বৈশিষ্ট্য ১ থেকে ৫ উপরের বারে এবং ৬ স্ক্রিনের ডানদিকে রয়েছে।",
+  "sidebar.shortcut_info": "এই বোতামগুলির শর্টকাটটি মূল স্ক্রিনে সংশ্লিষ্ট চিহ্নগুলির সাথে এখানে দেওয়া হয়েছে - বৈশিষ্ট্য 1 থেকে 6টি উপরের বারে এবং 7টি আপনার স্ক্রিনের ডানদিকে রয়েছে।",
   "sidebar.crash_test_info": "আমাদের ক্র্যাশ টেস্ট ডেমো চেক করতে আপনি এই লিঙ্কের মাধ্যমে যেতে পারেন:",
   "sidebar.open_crash_test": "ক্র্যাশ টেস্ট ডেমো খুলুন",
   "dispatcher.call_dispatcher": "ডিসপ্যাচারকে কল করুন",
@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Your data is",
   "permissions.never": "never",
   "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.got_it": "Got it",
+  "tutorial.icon.offline": "অফলাইনে থাকা অবস্থায়ও আপনার এলাকা সম্পর্কে তথ্য সংরক্ষণ করুন",
+  "sidebar.save_area": "অফলাইনের জন্য এলাকা সংরক্ষণ করুন"
 }

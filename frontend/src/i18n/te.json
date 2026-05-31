@@ -336,7 +336,7 @@
   "sidebar.toggle_theme": "డార్క్ / లైట్ మోడ్",
   "sidebar.recenter": "నా లొకేషన్ని రీసెంటర్ చేయి",
   "sidebar.tutorial": "ట్యుటోరియల్",
-  "sidebar.shortcut_info": "ఈ బటన్ల షార్ట్కట్లు ప్రధాన స్క్రీన్పై సంబంధిత ఐకాన్లతో ఇవ్వబడ్డాయి — ౧ నుండి ౫ ఫీచర్లు టాప్ బార్లో, ౬వది స్క్రీన్ కుడి వైపున ఉంటాయి.",
+  "sidebar.shortcut_info": "ఈ బటన్‌లకు సత్వరమార్గం ప్రధాన స్క్రీన్‌పై ఇక్కడ ఇచ్చినట్లుగా సంబంధిత చిహ్నాలతో అందించబడింది — 1 నుండి 6 ఫీచర్లు టాప్ బార్‌లో మరియు 7 మీ స్క్రీన్ కుడి వైపున ఉన్నాయి.",
   "sidebar.crash_test_info": "మా క్రాష్ టెస్ట్ డెమోని చూడటానికి ఈ లింక్ ద్వారా వెళ్లండి:",
   "sidebar.open_crash_test": "క్రాష్ టెస్ట్ డెమోని ఓపెన్ చేయి",
   "dispatcher.call_dispatcher": "డిస్పాచర్కు కాల్ చేయండి",
@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Your data is",
   "permissions.never": "never",
   "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.got_it": "Got it",
+  "tutorial.icon.offline": "ఆఫ్‌లైన్‌లో ఉన్నప్పుడు కూడా అందుబాటులో ఉండేలా మీ ప్రాంతం గురించిన సమాచారాన్ని సేవ్ చేయండి",
+  "sidebar.save_area": "ఆఫ్‌లైన్ కోసం ప్రాంతాన్ని సేవ్ చేయండి"
 }

@@ -336,7 +336,7 @@
   "sidebar.toggle_theme": "डार्क/लाइट मोड",
   "sidebar.recenter": "मेरा स्थान पुनः केन्द्रित करें",
   "sidebar.tutorial": "ट्यूटोरियल",
-  "sidebar.shortcut_info": "इन बटनों का शॉर्टकट मुख्य स्क्रीन पर संबंधित प्रतीकों के साथ दिया गया है — फ़ीचर १ से ५ ऊपरी बार पर और ६ आपकी स्क्रीन के दाईं ओर मौजूद है।",
+  "sidebar.shortcut_info": "इन बटनों का शॉर्टकट मुख्य स्क्रीन पर संबंधित प्रतीकों के साथ दिया गया है जैसा कि यहां दिया गया है - फ़ीचर 1 से 6 शीर्ष बार पर और 7 आपकी स्क्रीन के दाईं ओर मौजूद हैं।",
   "sidebar.crash_test_info": "हमारे क्रैश टेस्ट डेमो को जांचने के लिए आप इस लिंक पर जा सकते हैं:",
   "sidebar.open_crash_test": "क्रैश टेस्ट डेमो खोलें",
   "dispatcher.call_dispatcher": "डिस्पैचर को कॉल करें",
@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Your data is",
   "permissions.never": "never",
   "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.got_it": "Got it",
+  "tutorial.icon.offline": "ऑफ़लाइन होने पर भी उपलब्ध रहने के लिए अपने क्षेत्र के बारे में जानकारी सहेजें",
+  "sidebar.save_area": "ऑफ़लाइन के लिए क्षेत्र सहेजें"
 }

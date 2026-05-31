@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2, RotateCw, MapPin, Globe, Activity, Moon, Sun, X, Crosshair, ExternalLink, Info, ChevronDown } from 'lucide-react';
+import { Hospital, Shield, Ambulance, Truck, Car, PhoneCall, Siren, WifiOff, Map, AlertTriangle, Zap, Cog, Loader2, RotateCw, MapPin, Globe, Activity, Moon, Sun, X, Crosshair, ExternalLink, Info, ChevronDown, DownloadCloud } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import RealMap from './RealMap';
 import SOSButton from './SOSButton';
@@ -329,6 +329,21 @@ export default function MapHero({
               <MapPin size={19} strokeWidth={1.8} />
               <span className="tip">Location</span>
             </button>
+            <button
+              className="btn-icon"
+              onClick={handleSaveArea}
+              disabled={!!savingArea}
+              title={t('sidebar.save_area', 'Save Area for Offline')}
+              aria-label={t('sidebar.save_area', 'Save Area for Offline')}
+            >
+              {savingArea ? (
+                <Loader2 size={19} strokeWidth={1.8} className="mh-action-spin" />
+              ) : (
+                <DownloadCloud size={19} strokeWidth={1.8} />
+              )}
+              <span className="tip">Offline</span>
+            </button>
+
             {onPlanTrip && (
               <button
                 className="btn-icon"
@@ -544,8 +559,16 @@ export default function MapHero({
                       <div className={`theme-toggle-knob ${mapTheme === 'dark' ? 'dark' : 'light'}`} />
                     </div>
                   </button>)}
-              <button className="menu-item" onClick={() => { setSidebarOpen(false); if (mapRef.current) mapRef.current.recenter(); }}>
+              <button className="menu-item" onClick={handleSaveArea} disabled={!!savingArea}>
                 <span className="m-num">6</span>
+                <div className="m-icon"><DownloadCloud size={17} strokeWidth={1.8} /></div>
+                <span className="m-label">
+                  {savingArea ? `Saving… ${savingArea.done}/${savingArea.total}` : t('sidebar.save_area', 'Save Area for Offline')}
+                </span>
+              </button>
+
+              <button className="menu-item" onClick={() => { setSidebarOpen(false); if (mapRef.current) mapRef.current.recenter(); }}>
+                <span className="m-num">7</span>
                 <div className="m-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></div>
                 <span className="m-label">{t('sidebar.recenter', 'Recenter Map')}</span>
                 <div className="m-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
@@ -577,7 +600,7 @@ export default function MapHero({
 
               <div className="divider"></div>
               <div className="info-block">
-                <p className="info-shortcut">{t('sidebar.shortcut_info')}</p>
+                <p className="info-shortcut">{t('sidebar.shortcut_info', 'The shortcut to these buttons are given on the main screen with corresponding symbols as given here — features 1 to 6 exist on top bar and 7 on right side of your screen.')}</p>
                 <div className="info-sep"></div>
                 <p className="info-demo-text">{t('sidebar.crash_test_info')}</p>
                 <button 

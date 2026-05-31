@@ -494,6 +494,10 @@ export function useLocation({ onCrashDetected } = {}) {
         gotFirstFixRef.current  = true;
         clearTimeout(firstFixTimer);
         lastReportedRef.current = { lat: latitude, lon: longitude };
+        
+        // Prevent live GPS updates from snapping the user back if they pinned manually
+        if (locationRef.current?.source === 'manual') return;
+
         setLocation({
           lat: latitude,
           lon: longitude,

@@ -336,7 +336,7 @@
   "sidebar.toggle_theme": "ডাৰ্ক / লাইট মোড",
   "sidebar.recenter": "মোৰ অৱস্থান পুনৰ কেন্দ্ৰীভূত কৰক",
   "sidebar.tutorial": "টিউটৰিয়েল",
-  "sidebar.shortcut_info": "এই বুটামসমূহৰ চৰ্টকাট মূল পৰ্দাত সংশ্লিষ্ট চিহ্নৰ সৈতে দিয়া হৈছে — ১ ৰ পৰা ৫ লৈ বৈশিষ্ট্যসমূহ ওপৰৰ বাৰত আৰু ৬ আপোনাৰ পৰ্দাৰ সোঁফালে আছে।",
+  "sidebar.shortcut_info": "এই বুটামসমূহৰ চৰ্টকাট ইয়াত দিয়া ধৰণে সংশ্লিষ্ট চিহ্নসমূহৰ সৈতে মূল পৰ্দাত দিয়া হৈছে — বৈশিষ্ট্যসমূহ 1 ৰ পৰা 6 লৈ ওপৰৰ বাৰত আৰু 7 আপোনাৰ পৰ্দাৰ সোঁফালে আছে।",
   "sidebar.crash_test_info": "আমাৰ ক্ৰেচ টেষ্ট ডেমো পৰীক্ষা কৰিবলৈ আপুনি এই লিংকটোৰ জৰিয়তে যাব পাৰে:",
   "sidebar.open_crash_test": "ক্ৰেচ টেষ্ট ডেমো মুকলি কৰক",
   "dispatcher.call_dispatcher": "ডিচপেচাৰক কল কৰক",
@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Your data is",
   "permissions.never": "never",
   "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.got_it": "Got it",
+  "tutorial.icon.offline": "অফলাইন হ'লেও উপলব্ধ হ'বলৈ আপোনাৰ অঞ্চলৰ বিষয়ে তথ্য সংৰক্ষণ কৰক",
+  "sidebar.save_area": "অফলাইনৰ বাবে এৰিয়া সংৰক্ষণ কৰক"
 }

@@ -336,7 +336,7 @@
   "sidebar.toggle_theme": "ಡಾರ್ಕ್ / ಲೈಟ್ ಮೋಡ್",
   "sidebar.recenter": "ನನ್ನ ಸ್ಥಳವನ್ನು ಕೇಂದ್ರೀಕರಿಸಿ",
   "sidebar.tutorial": "ಟ್ಯುಟೋರಿಯಲ್",
-  "sidebar.shortcut_info": "ಈ ಬಟನ್ಗಳ ಶಾರ್ಟ್ಕಟ್ಗಳನ್ನು ಮುಖ್ಯ ಪರದೆಯಲ್ಲಿ ನೀಡಲಾಗಿದೆ - ೧ ರಿಂದ ೫ ವೈಶಿಷ್ಟ್ಯಗಳು ಮೇಲಿನ ಬಾರ್ನಲ್ಲಿವೆ ಮತ್ತು ೬ ನಿಮ್ಮ ಪರದೆಯ ಬಲಭಾಗದಲ್ಲಿದೆ.",
+  "sidebar.shortcut_info": "ಈ ಬಟನ್‌ಗಳಿಗೆ ಶಾರ್ಟ್‌ಕಟ್ ಅನ್ನು ಮುಖ್ಯ ಪರದೆಯ ಮೇಲೆ ಇಲ್ಲಿ ನೀಡಿರುವಂತೆ ಅನುಗುಣವಾದ ಚಿಹ್ನೆಗಳೊಂದಿಗೆ ನೀಡಲಾಗಿದೆ - 1 ರಿಂದ 6 ವೈಶಿಷ್ಟ್ಯಗಳು ಮೇಲಿನ ಬಾರ್‌ನಲ್ಲಿ ಮತ್ತು 7 ನಿಮ್ಮ ಪರದೆಯ ಬಲಭಾಗದಲ್ಲಿ ಅಸ್ತಿತ್ವದಲ್ಲಿವೆ.",
   "sidebar.crash_test_info": "ನಮ್ಮ ಕ್ರ್ಯಾಶ್ ಟೆಸ್ಟ್ ಡೆಮೊವನ್ನು ಪರಿಶೀಲಿಸಲು ನೀವು ಈ ಲಿಂಕ್ ಬಳಸಬಹುದು:",
   "sidebar.open_crash_test": "ಕ್ರ್ಯಾಶ್ ಟೆಸ್ಟ್ ಡೆಮೊ ತೆರೆಯಿರಿ",
   "dispatcher.call_dispatcher": "ಡಿಸ್ಪ್ಯಾಚರ್ಗೆ ಕರೆ ಮಾಡಿ",
@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Your data is",
   "permissions.never": "never",
   "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.got_it": "Got it",
+  "tutorial.icon.offline": "ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿಯೂ ಸಹ ಲಭ್ಯವಾಗುವಂತೆ ನಿಮ್ಮ ಪ್ರದೇಶದ ಮಾಹಿತಿಯನ್ನು ಉಳಿಸಿ",
+  "sidebar.save_area": "ಆಫ್‌ಲೈನ್‌ಗಾಗಿ ಪ್ರದೇಶವನ್ನು ಉಳಿಸಿ"
 }
