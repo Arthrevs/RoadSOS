@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "Stop alarm",
   "crash_choosing.incorrect_pin": "Incorrect PIN",
   "crash_choosing.send_sos_now": "Send SOS now",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "Quyền riêng tư đầu tiên:",
+  "permissions.need_access": "Chúng tôi cần vị trí để điều phối và camera để chụp ảnh vụ tai nạn.",
+  "permissions.your_data_is": "Dữ liệu của bạn là",
+  "permissions.never": "không bao giờ",
+  "permissions.shared": "đã chia sẻ.",
+  "permissions.got_it": "Hiểu rồi"
 }

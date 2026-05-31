@@ -57,7 +57,7 @@ function cleanPhone(raw) {
  * @returns {{ contacts, body, perContact, groupSmsHref } | null}
  */
 export function buildSosLinks(location, landmark) {
-  if (!location?.lat || !location?.lon) return null;
+  if (location?.lat == null || location?.lon == null) return null;
   const contacts = getEmergencyContacts();
   if (contacts.length === 0) return null;
 

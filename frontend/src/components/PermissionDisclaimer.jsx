@@ -41,12 +41,12 @@ export default function PermissionDisclaimer() {
       </div>
       <div className="pd-content">
         <p className="pd-text">
-          <strong>Privacy first:</strong> We need location for dispatch and camera for crash photos. 
-          Your data is <em>never</em> shared.
+          <strong>{t('permissions.privacy_first', 'Privacy first:')}</strong> {t('permissions.need_access', 'We need location for dispatch and camera for crash photos.')} 
+          {' '}{t('permissions.your_data_is', 'Your data is')} <em>{t('permissions.never', 'never')}</em> {t('permissions.shared', 'shared.')}
         </p>
       </div>
       <button className="pd-button" onClick={handleUnderstand}>
-        Got it
+        {t('permissions.got_it', 'Got it')}
       </button>
     </div>
   );

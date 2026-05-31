@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "Stop alarm",
   "crash_choosing.incorrect_pin": "Incorrect PIN",
   "crash_choosing.send_sos_now": "Send SOS now",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "개인정보 보호 우선:",
+  "permissions.need_access": "파견을 위한 위치와 충돌 사진을 위한 카메라가 필요합니다.",
+  "permissions.your_data_is": "귀하의 데이터는",
+  "permissions.never": "절대",
+  "permissions.shared": "공유.",
+  "permissions.got_it": "알았어요"
 }

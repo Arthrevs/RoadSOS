@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "Stop alarm",
   "crash_choosing.incorrect_pin": "Incorrect PIN",
   "crash_choosing.send_sos_now": "Send SOS now",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "गोपनीयता प्रथम:",
+  "permissions.need_access": "आम्हाला डिस्पॅचसाठी स्थान आणि क्रॅश फोटोंसाठी कॅमेरा आवश्यक आहे.",
+  "permissions.your_data_is": "तुमचा डेटा आहे",
+  "permissions.never": "कधीही",
+  "permissions.shared": "शेअर केले.",
+  "permissions.got_it": "समजले"
 }

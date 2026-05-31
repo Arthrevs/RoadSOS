@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "Itigil ang alarm",
   "crash_choosing.incorrect_pin": "Maling PIN",
   "crash_choosing.send_sos_now": "Ipadala ang SOS ngayon",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "Privacy muna:",
+  "permissions.need_access": "Kailangan namin ng lokasyon para sa dispatch at camera para sa mga larawan ng pag-crash.",
+  "permissions.your_data_is": "Ang iyong data ay",
+  "permissions.never": "hindi kailanman",
+  "permissions.shared": "ibinahagi.",
+  "permissions.got_it": "Nakuha ko"
 }

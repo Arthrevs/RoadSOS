@@ -247,3 +247,9 @@ docs/*.out
 docs/*.fls
 docs/*.fdb_latexmk
 docs/*.synctex.gz
+
+# RoadSOS: never commit any env file except the examples
+.env
+.env.*
+!.env.example
+!**/.env.example

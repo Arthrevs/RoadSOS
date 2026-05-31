@@ -33,7 +33,7 @@ export default function SOSButton({ location, landmark, countryCode, onFirstTap 
   const [trackCopied,  setTrackCopied]  = useState(false);
   const tappedRef = useRef(false);
 
-  const hasLocation = !!(location?.lat && location?.lon);
+  const hasLocation = !!(location?.lat != null && location?.lon != null);
   const preferWA    = isWaCountry(countryCode);
 
   const contacts    = getEmergencyContacts();

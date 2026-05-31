@@ -233,14 +233,14 @@ ASSUMPTIONS: list[tuple[str, list[str]]] = [
         "Locations are cached at ~110 m grid resolution (3 decimal places) — coarse enough for high cache hit-rate, fine enough for emergency-contact relevance.",
     ]),
     ("Geography and data coverage", [
-        "OSM data quality is best in India, Europe, and dense urban areas. In sparse rural regions the Overpass radius expands 5 km → 10 km → 20 km and falls back on bundled facilities (818 entries across 200 countries).",
+        "OSM data quality is best in India, Europe, and dense urban areas. In sparse rural regions the Overpass radius expands 8 km → 25 km and falls back on bundled facilities (938 entries across 200 countries).",
         "Country emergency numbers are pre-bundled for all 200 countries and always render without a network call.",
         "ISO-3166 country code is resolved from Nominatim reverse-geocode; if Nominatim fails the app falls back to coarse bounding-box matching against the bundled country dataset.",
     ]),
     ("User behaviour and consent", [
         "Users grant geolocation permission on first launch; otherwise the app shows a Set-Location-Manually affordance.",
         "Medical ID data stored in localStorage is included in outgoing SOS payloads only after the user sets it up. It is never uploaded to RoadSOS servers.",
-        "On auto-detected crash (velocity collapse ≥ 25 km/h → ≤ 5 km/h in 2 s confirmed by ≥ 3.5 G accelerometer spike), a 10 s cancellation window lets the user abort false positives.",
+        "On auto-detected crash (sustained ≥ 40 km/h collapsing to ≤ 5 km/h within ~2.5 s, optionally confirmed by a ≥ 3.5 G accelerometer spike), a cancellation window lets the user abort false positives.",
     ]),
     ("Communications channels", [
         "Country code from Nominatim determines the primary dispatch channel: WhatsApp-dominant countries (India, Brazil, Indonesia, Nigeria, etc.) use wa.me links; elsewhere native SMS deep-links are used.",
@@ -275,10 +275,9 @@ def build_tex() -> str:
     w(r"""\documentclass[11pt, a4paper]{article}
 
 % ─── Packages ─────────────────────────────────────────────────────────
-% Compiled with LuaLaTeX for native UTF-8 / Unicode support
-\usepackage{fontspec}
-\setmainfont{Latin Modern Roman}
-\setmonofont[Scale=0.85]{Latin Modern Mono}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage[margin=1in]{geometry}
 \usepackage{hyperref}
 \usepackage{xcolor}
@@ -293,6 +292,7 @@ def build_tex() -> str:
 \usepackage{microtype}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{amsmath}
 
 % ─── Colours ──────────────────────────────────────────────────────────
 \definecolor{rsnavy}{HTML}{0B1424}
@@ -376,8 +376,8 @@ def build_tex() -> str:
 \vspace{0.4cm}\hrule\vspace{1.5cm}
 {\normalsize\color{rsgrey}
   \textbf{Submission deadline:} 31 May 2026 \quad
-  \textbf{Repository:} \url{https://github.com/Arthrevs/Roadproj}\\[0.4cm]
-  \textbf{Live app:} \url{https://roadsos.vercel.app}
+  \textbf{Repository:} \url{https://github.com/Arthrevs/RoadSOS}\\[0.4cm]
+  \textbf{Live app:} \url{https://roadsos-frontend.vercel.app}
 }
 \vfill
 \begin{tabular}{ll}
@@ -388,7 +388,7 @@ def build_tex() -> str:
 2. Assumptions         & 27 explicit design constraints \\
 3. Software packages   & Backend pip + frontend npm + external APIs \\
 4. Architecture        & Request flow, offline strategy, crash detection \\
-5. Source code         & All 146 source files, verbatim \\
+5. Key source code     & Plus Code encoder + AI triage (full repo on GitHub) \\
 \bottomrule
 \end{tabular}
 \end{titlepage}
@@ -430,7 +430,7 @@ International coverage &
   200 countries pre-loaded. ISO-3166 code from Nominatim. Emergency numbers switch
   automatically at borders. \\
 Six mandatory service categories &
-  \code{hospital} · \code{police} · \code{ambulance} · \code{towing} · \code{tyre} ·
+  \code{hospital}, \code{police}, \code{ambulance}, \code{towing}, \code{tyre},
   \code{showroom} --- all mapped to OSM tags and Google keyword queries. \\
 \bottomrule
 \end{tabularx}
@@ -502,7 +502,7 @@ whenever any single assumption is violated at runtime.}
 \midrule
 OpenStreetMap Overpass API & Public OSM data query. Three mirrors with exponential-backoff retry. \\
 OpenStreetMap Nominatim & Reverse geocoding (lat/lon $\to$ country code, landmark). \\
-Google Places API (Nearby Search + Place Details) & Optional parallel fallback for sparse OSM regions. \\
+Google Places API (Nearby Search + Place Details) & Unconditional parallel fallback (if configured). \\
 Google Gemini 2.0 Flash & AI triage. Free tier: 60\,RPM / 1\,500\,RPD. \\
 CartoDB Dark Matter tiles & Map tile provider (no API key required). \\
 Web platform APIs & Geolocation, DeviceMotion, Battery Status, Web Speech, Service Worker. \\
@@ -549,10 +549,10 @@ The summary below captures the request flow and the four-tier offline strategy.}
 \subsection{Crash detection}
 
 \begin{itemize}
-  \item \textbf{Signal 1} --- GPS velocity collapse: $\geq$25\,km/h $\to$
-        $\leq$5\,km/h within 2\,s.
-  \item \textbf{Signal 2} --- Accelerometer spike: peak magnitude $\geq$3.5\,G.
-  \item \textbf{Confirmation}: both signals must occur within a 4\,s alignment window.
+  \item \textbf{Signal 1 (primary)} --- GPS velocity collapse: sustained $\geq$40\,km/h $\to$
+        $\leq$5\,km/h within ~2.5\,s. Tuned to reject ordinary braking and stop-and-go traffic.
+  \item \textbf{Signal 2 (optional)} --- Accelerometer spike: peak magnitude $\geq$3.5\,G.
+  \item \textbf{Confirmation}: the accelerometer spike, when motion permission is granted, must align within a 4\,s window; a sustained-speed sudden stop alone still triggers.
   \item \textbf{Cooldown}: 12\,s after confirmed event.
   \item \textbf{User override}: 10\,s PIN-cancel window before auto-dispatch.
 \end{itemize}
@@ -574,18 +574,23 @@ The summary below captures the request flow and the four-tier offline strategy.}
     # ── Section 5: Source code ────────────────────────────────────────────
     w(r"""
 %% ============================================================
-\section{Entire source code}
+\section{Key source code}
 %% ============================================================
 
-\textit{Every file is rendered verbatim and grouped by directory.
-Paths are relative to the repository root.
-The full Git history is at \url{https://github.com/Arthrevs/Roadproj}.}
+\textit{The two algorithmic centrepieces are included verbatim below: the
+fully-offline Plus Code (Open Location Code) encoder and the AI triage logic.
+The complete 146-file source tree and full Git history are on GitHub:
+\url{https://github.com/Arthrevs/RoadSOS}.}
 """)
 
     files_ok = 0
     files_missing: list[str] = []
 
-    for group_title, files in CODE_GROUPS:
+    _CURATED = [
+        ("Offline Plus Code encoder", ["frontend/src/utils/plusCodes.js"]),
+        ("AI triage logic", ["backend/services/ai_triage.py"]),
+    ]
+    for group_title, files in _CURATED:
         w(f"\\subsection{{{esc(group_title)}}}")
         for rel in files:
             path = ROOT / rel

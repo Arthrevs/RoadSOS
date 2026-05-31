@@ -11,8 +11,8 @@ Category coverage is aligned with the IIT Madras Road Safety Hackathon 2026
 ambulance services, towing services, puncture shops (tyre), and showrooms.
 
 Reliability hardening:
-- 3-mirror failover (kumi.systems → de → fr) with 4 s per-attempt timeout,
-  sized to fit inside the 13 s wall-clock budget in search_service.py
+- 3-mirror failover (kumi.systems → de → fr) with 10 s per-attempt timeout,
+  sized to fit inside the 20 s wall-clock budget in search_service.py
 - Proximity-based deduplication (50 m radius) so the same hospital tagged
   by both `amenity=hospital` and `healthcare=hospital` appears once
 - Entries that have neither a useful name NOR a dialable phone are dropped
@@ -28,18 +28,20 @@ import httpx
 from services.cache import location_key, overpass_cache
 from services.geo_utils import haversine
 from services.hours_parser import parse_is_open
-from services.phone_utils import is_dialable, normalize_phone
+from services.phone_utils import is_dialable, normalize_phone, phones_match
 
 logger = logging.getLogger(__name__)
 
-OVERPASS_URL = "https://overpass-api.de/api/interpreter"
-OVERPASS_FALLBACK_URLS = [
-    "https://overpass.kumi.systems/api/interpreter",  # community mirror — 2-3× faster in India
+OVERPASS_MIRRORS = [
+    "https://overpass.kumi.systems/api/interpreter",  # community mirror — often fastest
     "https://overpass-api.de/api/interpreter",
     "https://overpass.openstreetmap.fr/api/interpreter",
 ]
-OVERPASS_TIMEOUT = 4.0  # per-attempt: must be << OVERPASS_BUDGET_S so mirror failover actually fits
-OVERPASS_RETRIES = 1  # one shot per mirror — wall-clock budget kills additional retries anyway
+# Per-mirror timeout. Mirrors are RACED concurrently (see _fetch_racing) so a
+# single radius query takes ~ the fastest healthy mirror, not the sum of
+# sequential failovers. The old 4 s was far too short for the ~30-subquery
+# emergency search and caused every Overpass call to time out -> empty results.
+OVERPASS_TIMEOUT = 10.0
 DEDUP_RADIUS_M = 50  # 50-metre clustering radius
 
 CATEGORY_MAP: list[tuple[tuple[str, str], str]] = [
@@ -185,14 +187,21 @@ def _dedupe_smart(items: list[dict]) -> list[dict]:
     surfacing them twice looks sloppy.
     """
     radius_km = DEDUP_RADIUS_M / 1000.0
+    very_near_km = 25.0 / 1000.0
     out: list[dict] = []
     for item in items:
         is_dup = False
         item_name = item["name"].lower().strip()
         for kept in out:
             same_name = kept["name"].lower().strip() == item_name
-            near = haversine(item["lat"], item["lon"], kept["lat"], kept["lon"]) <= radius_km
-            if same_name or near:
+            dist = haversine(item["lat"], item["lon"], kept["lat"], kept["lon"])
+            near = dist <= radius_km
+            very_near = dist <= very_near_km
+            if (
+                (same_name and near)
+                or very_near
+                or phones_match(item.get("phone"), kept.get("phone"))
+            ):
                 is_dup = True
                 break
         if not is_dup:
@@ -200,34 +209,40 @@ def _dedupe_smart(items: list[dict]) -> list[dict]:
     return out
 
 
-async def _fetch_with_retry(query: str) -> dict:
-    """POST to Overpass with retries + endpoint fallback.
+async def _fetch_racing(query: str) -> dict:
+    """Fire all Overpass mirrors CONCURRENTLY and return the first successful
+    JSON response, cancelling the rest.
 
-    Overpass main endpoint is flaky during peak hours. Fall back to mirrors.
-    Retries with exponential backoff (1s, 2s, 4s) before giving up.
+    The old implementation tried mirrors sequentially: mirror A (timeout) ->
+    mirror B (timeout) -> mirror C, so a single radius query could take
+    timeout x 3 + backoff and routinely blew the wall-clock budget. Racing
+    them means total latency ~= the fastest healthy mirror (typically 2-6 s),
+    while still failing over if the fastest mirror is down.
     """
+
+    async def _one(endpoint: str) -> dict:
+        async with httpx.AsyncClient(timeout=OVERPASS_TIMEOUT) as client:
+            resp = await client.post(endpoint, data={"data": query})
+            resp.raise_for_status()
+            return resp.json()
+
+    tasks = [asyncio.create_task(_one(url)) for url in OVERPASS_MIRRORS]
     last_exc: Exception | None = None
-    for endpoint in OVERPASS_FALLBACK_URLS:
-        for attempt in range(OVERPASS_RETRIES):
+    try:
+        for fut in asyncio.as_completed(tasks):
             try:
-                async with httpx.AsyncClient(timeout=OVERPASS_TIMEOUT) as client:
-                    resp = await client.post(endpoint, data={"data": query})
-                    resp.raise_for_status()
-                    return resp.json()
+                return await fut  # first mirror to return 200 wins
             except (httpx.HTTPError, ValueError) as exc:
                 last_exc = exc
-                wait = 2**attempt  # 1s, 2s, 4s
-                logger.warning(
-                    "Overpass attempt %d/%d at %s failed (%s); retrying in %ds",
-                    attempt + 1,
-                    OVERPASS_RETRIES,
-                    endpoint,
-                    type(exc).__name__,
-                    wait,
-                )
-                await asyncio.sleep(wait)
-        logger.warning("Overpass endpoint %s exhausted; trying next mirror", endpoint)
-    raise last_exc or RuntimeError("All Overpass endpoints failed")
+                logger.warning("Overpass mirror failed (%s); awaiting another", type(exc).__name__)
+        raise last_exc or RuntimeError("All Overpass mirrors failed")
+    finally:
+        for t in tasks:
+            if not t.done():
+                t.cancel()
+        # Drain cancelled tasks so they don't surface as 'Task exception was
+        # never retrieved' warnings.
+        await asyncio.gather(*tasks, return_exceptions=True)
 
 
 async def build_and_fetch_query(lat: float, lon: float, radius: int = 5000) -> list[dict]:
@@ -240,13 +255,13 @@ async def build_and_fetch_query(lat: float, lon: float, radius: int = 5000) -> l
     query = build_overpass_query(lat, lon, radius)
 
     try:
-        data = await _fetch_with_retry(query)
+        data = await _fetch_racing(query)
     except Exception as exc:
-        logger.warning(f"Overpass request failed after retries · {type(exc).__name__}: {exc}")
-        # Cache the failure briefly (60 s) so we don't hammer Overpass for a
-        # known-bad area, but not for the full 1 h default — otherwise one
-        # flaky first call poisons subsequent demo requests at the same spot.
-        await overpass_cache.set(cache_key, [], ttl=60)
+        logger.warning(f"Overpass request failed on all mirrors · {type(exc).__name__}: {exc}")
+        # Deliberately do NOT cache the failure. The old code cached an empty
+        # list for 60 s on failure, which meant a transient timeout poisoned
+        # every retry at the same spot for a full minute — fatal during a
+        # live demo where the judge just re-taps. Propagate instead.
         raise
 
     raw_results: list[dict] = []
@@ -265,11 +280,12 @@ async def build_and_fetch_query(lat: float, lon: float, radius: int = 5000) -> l
     #                                   without a fresh hit poisoning demos.
     #   - No-phone results            → don't cache; let Google enrichment
     #                                   fill phones on subsequent requests.
+    # Cache policy: cache ONLY non-empty results. Never cache empty/failed
+    # lookups [U+2014] that way a retry at the same coordinate during a demo actually
+    # re-queries Overpass instead of being served a stale empty list.
     phones_found = sum(1 for c in sorted_results if c.get("phone"))
-    if phones_found > 0:
+    if sorted_results:
         await overpass_cache.set(cache_key, sorted_results)
-    elif len(sorted_results) == 0:
-        await overpass_cache.set(cache_key, sorted_results, ttl=60)
     logger.info(
         f"Overpass fetched · {cache_key} · {len(sorted_results)} contacts · {phones_found} with phone"
     )

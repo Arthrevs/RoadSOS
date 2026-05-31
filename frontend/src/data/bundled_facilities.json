@@ -7965,5 +7965,1205 @@
     "phone": "193",
     "country_code": "XK",
     "notes": "National fire number for Kosovo"
+  },
+  {
+    "id": "osm_266877864",
+    "name": "উত্তরা আধুনিক মেডিকেল কলেজ ও হাসপাতাল",
+    "category": "hospital",
+    "lat": 23.8747993,
+    "lon": 90.396733,
+    "phone": "+88028911600",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_307401529",
+    "name": "Apollo Hospital",
+    "category": "hospital",
+    "lat": 12.9263714,
+    "lon": 77.6765455,
+    "phone": "+91-80-40222555",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_310910945",
+    "name": "BM Hospital",
+    "category": "hospital",
+    "lat": 12.9887616,
+    "lon": 80.1904116,
+    "phone": "044-22670277",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_330070077",
+    "name": "Dr. S. G. Rajarathinam Hospital",
+    "category": "hospital",
+    "lat": 11.0095256,
+    "lon": 76.9619316,
+    "phone": "+914222236730",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_343711683",
+    "name": "Thrikkakara Municipal Co-operative Hospital",
+    "category": "hospital",
+    "lat": 10.01816,
+    "lon": 76.34672,
+    "phone": "+91 9400904730;0484 2955310",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_364425541",
+    "name": "Gonoshastha Nagar Hospital",
+    "category": "hospital",
+    "lat": 23.7434833,
+    "lon": 90.3825849,
+    "phone": "+8801716-838078",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_364650995",
+    "name": "MIOT International",
+    "category": "hospital",
+    "lat": 13.0211808,
+    "lon": 80.1858412,
+    "phone": "044 4200 2288",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_459464857",
+    "name": "Ramakrishna Hospital",
+    "category": "hospital",
+    "lat": 12.8500655,
+    "lon": 77.6624706,
+    "phone": "+918040800300",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_519549595",
+    "name": "Chord Road Hospital Pvt Ltd",
+    "category": "hospital",
+    "lat": 12.9981215,
+    "lon": 77.5404836,
+    "phone": "+91-80-23225858;+91-80-23225868;+91-80-23225878",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_530353033",
+    "name": "Pristline Hospital",
+    "category": "hospital",
+    "lat": 12.9978931,
+    "lon": 77.5436127,
+    "phone": "+91-80-41354444;+91-80-51270776",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_625856709",
+    "name": "Manipal Northside Hospital",
+    "category": "hospital",
+    "lat": 13.0011275,
+    "lon": 77.5639285,
+    "phone": "080 2222 1111",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_761878048",
+    "name": "Sri Charaka Ayurveda",
+    "category": "hospital",
+    "lat": 17.2519673,
+    "lon": 80.1577268,
+    "phone": "08742255082",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_766775275",
+    "name": "City Hospital",
+    "category": "hospital",
+    "lat": 17.2480698,
+    "lon": 80.1473508,
+    "phone": "08742234559",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_766781686",
+    "name": "SAI Maruthi",
+    "category": "hospital",
+    "lat": 17.2483483,
+    "lon": 80.1462684,
+    "phone": "9849999792",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_766788605",
+    "name": "Spandana Heart Care Centre",
+    "category": "hospital",
+    "lat": 17.2510535,
+    "lon": 80.14348,
+    "phone": "087422 29000",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_772640044",
+    "name": "Buggaveeti ENT",
+    "category": "hospital",
+    "lat": 17.2477468,
+    "lon": 80.1497409,
+    "phone": "08742223620",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_772727069",
+    "name": "Narayana Hospital",
+    "category": "hospital",
+    "lat": 17.2488031,
+    "lon": 80.1467813,
+    "phone": "08742653733",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_772740827",
+    "name": "Gangothri Hospital",
+    "category": "hospital",
+    "lat": 17.2489854,
+    "lon": 80.1466483,
+    "phone": "9396993474",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_773685620",
+    "name": "Newlife",
+    "category": "hospital",
+    "lat": 17.2521772,
+    "lon": 80.1440463,
+    "phone": "08742222777",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_773687253",
+    "name": "Cure Emergency Hospital",
+    "category": "hospital",
+    "lat": 17.2522634,
+    "lon": 80.1444034,
+    "phone": "0874222929",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_773692822",
+    "name": "Sriraksha",
+    "category": "hospital",
+    "lat": 17.2523413,
+    "lon": 80.1444172,
+    "phone": "9951905940",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_784422997",
+    "name": "Apollo",
+    "category": "hospital",
+    "lat": 17.2502091,
+    "lon": 80.145292,
+    "phone": "08742246872",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_894082495",
+    "name": "Star Hospital",
+    "category": "hospital",
+    "lat": 17.4156911,
+    "lon": 78.4454609,
+    "phone": "040-44 777 777",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_898965110",
+    "name": "Fernandez Hospital",
+    "category": "hospital",
+    "lat": 17.3921498,
+    "lon": 78.4793651,
+    "phone": "040 40222300",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_915724540",
+    "name": "Kailash Hospital & Heart Institute",
+    "category": "hospital",
+    "lat": 28.577404,
+    "lon": 77.3314139,
+    "phone": "0120 244 4444",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_932056198",
+    "name": "Partap Hospital Daba",
+    "category": "hospital",
+    "lat": 30.8673205,
+    "lon": 75.8856798,
+    "phone": "98883-98789",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_954623054",
+    "name": "Sri Vinayaka Poly Clinic",
+    "category": "hospital",
+    "lat": 12.939058,
+    "lon": 77.5510802,
+    "phone": "080 2672 8455",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1005544881",
+    "name": "Mallya Audikesh Diagnostics Center",
+    "category": "hospital",
+    "lat": 12.9815051,
+    "lon": 77.6011944,
+    "phone": "+918022868423",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1006462338",
+    "name": "Mallige Medical Centre",
+    "category": "hospital",
+    "lat": 12.985247,
+    "lon": 77.5803846,
+    "phone": "080 2220 3333",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1148496061",
+    "name": "Chavakachcheri Base Hospital",
+    "category": "hospital",
+    "lat": 9.6616371,
+    "lon": 80.1669594,
+    "phone": "+94213215429",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1152858038",
+    "name": "Rajan Eye Care Hospital",
+    "category": "hospital",
+    "lat": 13.0508335,
+    "lon": 80.2434416,
+    "phone": "2834 0500/0300",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1305481210",
+    "name": "Ram Lal Kundan Lal Orthopaedic Hospital",
+    "category": "hospital",
+    "lat": 28.6179569,
+    "lon": 77.2866841,
+    "phone": "+91 11 4318 9000;+91 11 4318 9099",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1356234984",
+    "name": "Dr Kasbekar Sterling Hospital",
+    "category": "hospital",
+    "lat": 19.0698454,
+    "lon": 72.9873953,
+    "phone": "02266804444",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1474819896",
+    "name": "Citi Hospital",
+    "category": "hospital",
+    "lat": 12.9956506,
+    "lon": 77.5510696,
+    "phone": "+(91)-80-23131778",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1496128734",
+    "name": "আমেরিকান সুপারস্পেসটিটি হাসপাতাল",
+    "category": "hospital",
+    "lat": 23.8704897,
+    "lon": 90.4035461,
+    "phone": "+880 2 8932345, +880 2 8918319, +880 2 8918349, +880 2 8918395, +8806662617496, +8801921346125, +8801733559050",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1598149460",
+    "name": "Omni Hospital",
+    "category": "hospital",
+    "lat": 17.3684777,
+    "lon": 78.5387483,
+    "phone": "040 49871690;040 67369999",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1617398469",
+    "name": "Sri Maruthi hospital, Sheshadripuram",
+    "category": "hospital",
+    "lat": 12.9926441,
+    "lon": 77.5742046,
+    "phone": "080 2344 9632",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1626529110",
+    "name": "RIMS",
+    "category": "hospital",
+    "lat": 8.6018701,
+    "lon": 76.992477,
+    "phone": "+91-4722801396",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1668719004",
+    "name": "Begam Jan Hospital",
+    "category": "hospital",
+    "lat": 33.6453694,
+    "lon": 73.1744526,
+    "phone": "+923235380006",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1685145232",
+    "name": "Pariyaram Medical College Hospital",
+    "category": "hospital",
+    "lat": 12.0712983,
+    "lon": 75.2935,
+    "phone": "+91 497 2808111",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1792049293",
+    "name": "Sahil Hospital",
+    "category": "hospital",
+    "lat": 30.8858752,
+    "lon": 75.8694319,
+    "phone": "01612531164",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1898593305",
+    "name": "आरोग्य आश्रम",
+    "category": "hospital",
+    "lat": 27.7177828,
+    "lon": 85.3304899,
+    "phone": "014412075",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1954307174",
+    "name": "Taluk Headquarters Hospital, vaikom",
+    "category": "hospital",
+    "lat": 9.7502732,
+    "lon": 76.3899657,
+    "phone": "+91-4829-231261",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_1985458243",
+    "name": "CIWEC Hospital",
+    "category": "hospital",
+    "lat": 27.7202714,
+    "lon": 85.3178811,
+    "phone": "977-1-4424111, 4435232",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2012808898",
+    "name": "Aruna Hospital",
+    "category": "hospital",
+    "lat": 16.9936982,
+    "lon": 81.77651,
+    "phone": "+91 8639915338",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2019362244",
+    "name": "Cloud Nine Hospital",
+    "category": "hospital",
+    "lat": 13.0078742,
+    "lon": 77.5625316,
+    "phone": "9972999729",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2165424708",
+    "name": "ब्लु क्रस अस्पताल",
+    "category": "hospital",
+    "lat": 27.6937147,
+    "lon": 85.3152583,
+    "phone": "014262027",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2192962541",
+    "name": "Hope Children's Hospital",
+    "category": "hospital",
+    "lat": 17.4064283,
+    "lon": 78.4738814,
+    "phone": "040 23223782;040 23223792;040 66069000",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2289294093",
+    "name": "Surya Sahyadri Hospital",
+    "category": "hospital",
+    "lat": 18.521259,
+    "lon": 73.8556767,
+    "phone": "02024574232",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2318172256",
+    "name": "Goyal MRI & Diagnostic Centre",
+    "category": "hospital",
+    "lat": 28.5647144,
+    "lon": 77.1893283,
+    "phone": "+91-11-40771234",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2332686514",
+    "name": "শহীদ তাজউদ্দীন আহমেদ মেডিকেল কলেজ হাসপাতাল",
+    "category": "hospital",
+    "lat": 23.9925472,
+    "lon": 90.4248042,
+    "phone": "+8802224423306",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2344024838",
+    "name": "Bhumi Nursing Home & Echo Doppler Clinic",
+    "category": "hospital",
+    "lat": 22.3036505,
+    "lon": 73.2047701,
+    "phone": "(0265) 2426318",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2344154059",
+    "name": "Bhedarganj Upazila Health Complex",
+    "category": "hospital",
+    "lat": 23.1988139,
+    "lon": 90.447782,
+    "phone": "01730324551",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2352095456",
+    "name": "Asian Institute of Gastroenterology",
+    "category": "hospital",
+    "lat": 17.4211366,
+    "lon": 78.4566557,
+    "phone": "040 23378888",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2365903278",
+    "name": "Subodh Mitra Cancer Hospital and Research Centre",
+    "category": "hospital",
+    "lat": 22.5728078,
+    "lon": 88.4134692,
+    "phone": "03323352515",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2418857836",
+    "name": "Aziz bhati Hospital",
+    "category": "hospital",
+    "lat": 32.5988327,
+    "lon": 74.0800958,
+    "phone": "0539260101",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2448144940",
+    "name": "حمزه روغتون",
+    "category": "hospital",
+    "lat": 31.5408282,
+    "lon": 74.3138838,
+    "phone": "+924237501597",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2478662597",
+    "name": "Nonamath Sub Center",
+    "category": "hospital",
+    "lat": 21.8764139,
+    "lon": 88.1853849,
+    "phone": "+9187 59 810923",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2564422081",
+    "name": "Ramakrishna Math and Ramakrishna Mission Sevashrama",
+    "category": "hospital",
+    "lat": 27.572907,
+    "lon": 77.693199,
+    "phone": "+91 9259271811",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2595496255",
+    "name": "St. Thomas Hospital, Chethipuzha",
+    "category": "hospital",
+    "lat": 9.4626186,
+    "lon": 76.5524968,
+    "phone": "+91 481 2723952;+91 481 2721797",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_459436210",
+    "name": "Electronics City Police Station",
+    "category": "police",
+    "lat": 12.839963,
+    "lon": 77.6631389,
+    "phone": "+918022943469",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_568542955",
+    "name": "Tourist Police Post",
+    "category": "police",
+    "lat": 28.2117305,
+    "lon": 83.9573545,
+    "phone": "061-462761, 100",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_801903654",
+    "name": "Police Station, Ramapuram",
+    "category": "police",
+    "lat": 9.7993343,
+    "lon": 76.6588351,
+    "phone": "+914822260252",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2004001910",
+    "name": "Police Station Malviya Nagar",
+    "category": "police",
+    "lat": 28.5306718,
+    "lon": 77.2045562,
+    "phone": "+91-11-2669-1861;+91-11-2669-1862",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2813667209",
+    "name": "New Market Police Station",
+    "category": "police",
+    "lat": 22.5627183,
+    "lon": 88.3541137,
+    "phone": "+913322177397",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2905467081",
+    "name": "जिल्ला प्रहरी कार्यालय",
+    "category": "police",
+    "lat": 27.6689442,
+    "lon": 86.0502118,
+    "phone": "+97749421199",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_2910501877",
+    "name": "ကြည့်မြင်တိုင်ရဲစခန်း Kyeemyindaing Police Station",
+    "category": "police",
+    "lat": 16.8046611,
+    "lon": 96.1256566,
+    "phone": "01 535 867",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3076402989",
+    "name": "I Town Law And Order Police Station",
+    "category": "police",
+    "lat": 17.0009146,
+    "lon": 81.77106,
+    "phone": "0883-2471033",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3076402991",
+    "name": "City Traffic Police Station & Circle Office",
+    "category": "police",
+    "lat": 17.0057103,
+    "lon": 81.7788238,
+    "phone": "0883-2442953, 2468050",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3076402992",
+    "name": "III Town Central Crime Station",
+    "category": "police",
+    "lat": 17.0057577,
+    "lon": 81.7785657,
+    "phone": "0883-2468050",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3141259553",
+    "name": "Gittikhadan Police Station",
+    "category": "police",
+    "lat": 21.173675,
+    "lon": 79.0609179,
+    "phone": "+91-712-2580127, +91-712-2566757",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3143194649",
+    "name": "Ambazari Police Station",
+    "category": "police",
+    "lat": 21.1485857,
+    "lon": 79.0553787,
+    "phone": "0712 256 1300",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3151963990",
+    "name": "Police Station-Ajni",
+    "category": "police",
+    "lat": 21.1233991,
+    "lon": 79.0854254,
+    "phone": "0712 264 6643",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3197950622",
+    "name": "RTO Office Mananthavady",
+    "category": "police",
+    "lat": 11.749318,
+    "lon": 76.0174875,
+    "phone": "+91-4935-227972",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3247356200",
+    "name": "Sardarnagar Police Station",
+    "category": "police",
+    "lat": 23.0804289,
+    "lon": 72.620522,
+    "phone": "+917922864345",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3247518115",
+    "name": "kalupur Police Station",
+    "category": "police",
+    "lat": 23.0280667,
+    "lon": 72.5938493,
+    "phone": "+917922167530",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3259492034",
+    "name": "Sonegao Police Station",
+    "category": "police",
+    "lat": 21.0905381,
+    "lon": 79.0643585,
+    "phone": "+91-712-2284110, +91-712-2566765",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3259548870",
+    "name": "Jaripatka Police Station",
+    "category": "police",
+    "lat": 21.1886888,
+    "lon": 79.0918769,
+    "phone": "+91-712-2640404",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3259551325",
+    "name": "Wadi Police Station",
+    "category": "police",
+    "lat": 21.1473628,
+    "lon": 78.9914947,
+    "phone": "+91-7104-220928, +91-7104-2566765",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3261284228",
+    "name": "RanaPratapnagar Police Station",
+    "category": "police",
+    "lat": 21.1155372,
+    "lon": 79.0398337,
+    "phone": "91-712-2222688, 2566826",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3261287758",
+    "name": "MIDC Police Station",
+    "category": "police",
+    "lat": 21.1247647,
+    "lon": 79.011034,
+    "phone": "+91-7104-237885, +91-7104-237935",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3261307992",
+    "name": "Yashodhara Nagar Police Station",
+    "category": "police",
+    "lat": 21.1813328,
+    "lon": 79.1255862,
+    "phone": "+91-712-2633575, +91-712-2633574",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3261311871",
+    "name": "Kalamana Police Station",
+    "category": "police",
+    "lat": 21.1627994,
+    "lon": 79.1455904,
+    "phone": "+91-712-2790021, +91-712-2790022",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3261314468",
+    "name": "Hudkeshwar Police Station",
+    "category": "police",
+    "lat": 21.105796,
+    "lon": 79.1171854,
+    "phone": "+91-712-2702306, +91-712-2702307",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3513988390",
+    "name": "Tourist Police Office",
+    "category": "police",
+    "lat": 16.7735101,
+    "lon": 96.1616847,
+    "phone": "01 378479",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3664322656",
+    "name": "Kadamtali Thana",
+    "category": "police",
+    "lat": 23.6973198,
+    "lon": 90.4576916,
+    "phone": "+88027419505 Ext.2406, 2407",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_3802231906",
+    "name": "Chombala Police Station , Kunjippalli",
+    "category": "police",
+    "lat": 11.6784684,
+    "lon": 75.5523936,
+    "phone": "+91-496 250 4600",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4126285089",
+    "name": "ရဲစခန်း သံတွဲ;မြန်မာနိုင်ငံ ရဲတပ်ဖွဲ့ (သံတွဲ)",
+    "category": "police",
+    "lat": 18.4695053,
+    "lon": 94.3668913,
+    "phone": "04365246",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4308319495",
+    "name": "R6 KUMARAN NAGAR POLICE STATION ",
+    "category": "police",
+    "lat": 13.0283677,
+    "lon": 80.2163105,
+    "phone": "044 2345 2629",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4356781089",
+    "name": "beniapukur police station",
+    "category": "police",
+    "lat": 22.547021,
+    "lon": 88.3680459,
+    "phone": "03322844770",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4358665991",
+    "name": "Armed police Force Gulma Gorkha",
+    "category": "police",
+    "lat": 27.9848624,
+    "lon": 84.6398623,
+    "phone": "064421366",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4393034589",
+    "name": "North Okkalapa Police Station / မြောက်ဥက္ကလာပ ရဲစခန်း",
+    "category": "police",
+    "lat": 16.9075082,
+    "lon": 96.1553849,
+    "phone": "+9599699384",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4397119393",
+    "name": "Samanabad Police Station",
+    "category": "police",
+    "lat": 31.5402578,
+    "lon": 74.2994103,
+    "phone": "+924237584310",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4402150675",
+    "name": "Chheda Nagar Police Station",
+    "category": "police",
+    "lat": 19.0672141,
+    "lon": 72.9031566,
+    "phone": "+912225259663",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4424542678",
+    "name": "chaitra cafe",
+    "category": "police",
+    "lat": 19.03502,
+    "lon": 73.1009651,
+    "phone": "+9190666227898",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4443656796",
+    "name": "Hulimavu Traffic Police Station",
+    "category": "police",
+    "lat": 12.8565752,
+    "lon": 77.5889783,
+    "phone": "080 2294 3030",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4444115045",
+    "name": "Chennamanakere Achukattu Police Station",
+    "category": "police",
+    "lat": 12.9301326,
+    "lon": 77.5606044,
+    "phone": "080 2294 3483",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4444954749",
+    "name": "G4 Vandavasi north police station",
+    "category": "police",
+    "lat": 12.5068712,
+    "lon": 79.6045373,
+    "phone": "+(91)4427272232",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445164494",
+    "name": "Ananthapur 3 Town Police Station",
+    "category": "police",
+    "lat": 14.6944081,
+    "lon": 77.5981275,
+    "phone": "8554-275877",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445183306",
+    "name": "Walajabad police station",
+    "category": "police",
+    "lat": 12.7937471,
+    "lon": 79.8162163,
+    "phone": "+(91)4427256044",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445204054",
+    "name": "c3 police station Manimangalam",
+    "category": "police",
+    "lat": 12.9163861,
+    "lon": 80.0398418,
+    "phone": "+(91)4427178131",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445288963",
+    "name": "Cheyur Police station",
+    "category": "police",
+    "lat": 12.3517152,
+    "lon": 79.9975084,
+    "phone": "+(91)4427531124",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445321697",
+    "name": "anna nagar police superitendent station",
+    "category": "police",
+    "lat": 12.8237772,
+    "lon": 79.6974277,
+    "phone": "+(91)9952495164",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445352945",
+    "name": "Chengalpatu AwPolice Station",
+    "category": "police",
+    "lat": 12.6971397,
+    "lon": 79.9771626,
+    "phone": "+91(044)– 27432101",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445363957",
+    "name": "Guduvancherry Police Station",
+    "category": "police",
+    "lat": 12.8439226,
+    "lon": 80.0615864,
+    "phone": "+91 (044 )– 27465331",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445409369",
+    "name": "Melmaruvathur Police Station",
+    "category": "police",
+    "lat": 12.4316923,
+    "lon": 79.831919,
+    "phone": "044 – 27529241",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445425089",
+    "name": "Mathur Police Station",
+    "category": "police",
+    "lat": 12.3828409,
+    "lon": 78.4125514,
+    "phone": "044 – 27537728",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445488162",
+    "name": "Otteri Police Station",
+    "category": "police",
+    "lat": 13.0874523,
+    "lon": 80.2458786,
+    "phone": "044 – 22750987",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445555334",
+    "name": "Tilakwadi Police Station",
+    "category": "police",
+    "lat": 15.8359392,
+    "lon": 74.5015214,
+    "phone": "080 2294 3346",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445594501",
+    "name": "Belgaum Rural Police Station",
+    "category": "police",
+    "lat": 15.8326557,
+    "lon": 74.5122929,
+    "phone": "0831 240 5252",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445609610",
+    "name": "Camp Police Station",
+    "category": "police",
+    "lat": 15.8548335,
+    "lon": 74.5042006,
+    "phone": "0831 240 5234",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445636770",
+    "name": "Athani Police Station",
+    "category": "police",
+    "lat": 16.7267221,
+    "lon": 75.0602213,
+    "phone": "082892 51133",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445649977",
+    "name": "Khade Bazar Police Station",
+    "category": "police",
+    "lat": 15.8574546,
+    "lon": 74.5137166,
+    "phone": "0831 240 5232",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445692144",
+    "name": "Udyambag Police Station",
+    "category": "police",
+    "lat": 15.8149752,
+    "lon": 74.4912244,
+    "phone": "0831 240 5238",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445742628",
+    "name": "DDU Nagar Police station",
+    "category": "police",
+    "lat": 21.2515488,
+    "lon": 81.5954033,
+    "phone": "+917712262501",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445756938",
+    "name": "Police Station",
+    "category": "police",
+    "lat": 15.8396242,
+    "lon": 74.5096425,
+    "phone": "(91)-831-2405244",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4445825097",
+    "name": "Palur Police station",
+    "category": "police",
+    "lat": 12.7676644,
+    "lon": 79.9034914,
+    "phone": "044-27437100",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4446242238",
+    "name": "Devaraja Police Station",
+    "category": "police",
+    "lat": 12.3129194,
+    "lon": 76.6494717,
+    "phone": "0821-2418306",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4446249554",
+    "name": "Police Station",
+    "category": "police",
+    "lat": 12.308414,
+    "lon": 76.667319,
+    "phone": "0821-2418308",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
+  },
+  {
+    "id": "osm_4446264859",
+    "name": "Udayagiri Police Station",
+    "category": "police",
+    "lat": 12.3266904,
+    "lon": 76.6809447,
+    "phone": "0821-2418309",
+    "country_code": "IN",
+    "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)"
   }
 ]

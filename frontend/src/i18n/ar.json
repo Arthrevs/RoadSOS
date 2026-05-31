@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "إيقاف الإنذار",
   "crash_choosing.incorrect_pin": "رقم PIN غير صحيح",
   "crash_choosing.send_sos_now": "إرسال SOS الآن",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "الخصوصية أولاً:",
+  "permissions.need_access": "نحتاج إلى موقع للإرسال وكاميرا لالتقاط صور التحطم.",
+  "permissions.your_data_is": "البيانات الخاصة بك هي",
+  "permissions.never": "أبداً",
+  "permissions.shared": "مشترك.",
+  "permissions.got_it": "فهمتها"
 }

@@ -26,7 +26,8 @@ class TestTTLCache:
         await cache.set("c", 3)  # should evict 'a'
         assert await cache.get("a") is None
         # b and c should both still be there
-        assert await cache.get("b") == 2 or await cache.get("c") == 3
+        assert await cache.get("b") == 2
+        assert await cache.get("c") == 3
 
     async def test_stats(self):
         cache = TTLCache(ttl_seconds=60)

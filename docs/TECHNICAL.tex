@@ -18,6 +18,7 @@
 \usepackage{microtype}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{amsmath}
 
 % ─── Colours ──────────────────────────────────────────────────────────
 \definecolor{rsnavy}{HTML}{0B1424}
@@ -85,7 +86,7 @@
   \normalsize\color{rsgrey} Architecture, Algorithms, and Implementation Reference
 }
 \author{
-  \small\color{rsgrey} \texttt{github.com/Arthrevs/Roadproj} \\
+  \small\color{rsgrey} \texttt{github.com/Arthrevs/RoadSOS} \\
   \small\color{rsgrey} Branch: \texttt{main} \quad Commit: \texttt{f94dc2a}
 }
 \date{\small\color{rsgrey} May 2026}
@@ -101,7 +102,7 @@
 
 \begin{center}
 \colorbox{rscode}{\parbox{0.85\textwidth}{\centering\small
-\textbf{Scope.} This document is the engineering reference for RoadSOS. It covers the request lifecycle, the OpenStreetMap Overpass query layer, the Google Places fallback strategy, the four-tier offline cache hierarchy, the AI triage model, internationalization across 43 languages, the real-time map renderer, crash detection signals, and the deployment topology. Every number cited is grounded in source. Every external dependency is named. No marketing.
+\textbf{Scope.} This document is the engineering reference for RoadSOS. It covers the request lifecycle, the OpenStreetMap Overpass query layer, the Google Places fallback strategy, the four-tier offline cache hierarchy, the AI triage model, internationalization across 48 languages, the real-time map renderer, crash detection signals, and the deployment topology. Every number cited is grounded in source. Every external dependency is named. No marketing.
 }}
 \end{center}
 
@@ -121,11 +122,11 @@ RoadSOS is a Progressive Web Application that locates emergency-services contact
 +---------------------------------------------------------------+
 |                   BROWSER  (PWA, installable)                 |
 |                                                               |
-|   React 18  +  Vite 8  +  Workbox 7 (Service Worker)          |
+|   React 18  +  Vite 7.3.3  +  Workbox 7 (Service Worker)          |
 |   |- Leaflet 1.9.4    (real OSM map, dark tiles)              |
-|   |- i18next 26       (43 languages, RTL support)             |
+|   |- i18next 26       (48 languages, RTL support)             |
 |   |- localStorage     (24h search-result cache)               |
-|   `- bundled JSON     (818 entries x 200 countries)          |
+|   `- bundled JSON     (938 entries x 200 countries)          |
 +----------------------------+----------------------------------+
                              |  HTTPS  (CORS-allowlisted)
                              v
@@ -134,7 +135,7 @@ RoadSOS is a Progressive Web Application that locates emergency-services contact
 |                                                               |
 |   uvicorn + asyncio + httpx                                   |
 |   |- /search    (4-phase orchestrator)                        |
-|   |- /triage    (Gemini 2.0 Flash + rule-based fallback)      |
+|   |- /triage    (Gemini 2.5 Flash + rule-based fallback)      |
 |   |- /dispatch  (telemetry sink for SOS events)               |
 |   |- /health    (liveness + version)                          |
 |   `- /offline-pack  (static facility bundle for warm cache)   |
@@ -155,14 +156,14 @@ RoadSOS is a Progressive Web Application that locates emergency-services contact
 \textbf{Layer} & \textbf{Components} \\
 \midrule
 Frontend runtime & React 18.3.1, React DOM 18.3.1, React Router 7.15.0 \\
-Build tool & Vite 8.0.12, vite-plugin-pwa 1.3.0 (\code{injectManifest}) \\
+Build tool & Vite 7.3.3, vite-plugin-pwa 1.3.0 (\code{injectManifest}) \\
 Service worker & Workbox 7.4.1 (precaching, expiration, routing, strategies) \\
 Map & Leaflet 1.9.4 + react-leaflet 4.2.1; CartoDB Dark Matter tiles \\
-i18n & i18next 26.2.0 + react-i18next 17.0.8; 43 locales \\
+i18n & i18next 26.2.0 + react-i18next 17.0.8; 48 locales \\
 Icons & lucide-react 1.16.0 \\
 Backend runtime & FastAPI 0.115.0 + uvicorn 0.30.6, Python 3.11.9 \\
 Async HTTP & httpx 0.27.2 \\
-AI & Google Gemini 2.0 Flash via REST (no SDK; uses httpx) \\
+AI & Google Gemini 2.5 Flash via REST (no SDK; uses httpx) \\
 Phone normalization & phonenumbers 8.13.46 \\
 Storage & SQLite via aiosqlite 0.20.0 (offline-pack only) \\
 Validation & pydantic 2.9.2 \\
@@ -265,7 +266,7 @@ Phase 2 fires only if Phase 1 produced fewer than three contacts with a dialable
 \begin{lstlisting}[language=Python,caption={search\_service.py --- Phase 2 trigger (lines 135--138)}]
 phoned_osm = [c for c in osm_contacts if c.get("phone")]
 google_contacts: list[dict] = []
-if len(phoned_osm) < 3:
+Parallel Google Nearby Search
     google_contacts = await _safe_google(lat, lon, geo.get("country_code"))
 \end{lstlisting}
 
@@ -273,14 +274,14 @@ if len(phoned_osm) < 3:
 
 \subsubsection{Multi-Key Rotation}
 
-The \code{Mapsplatformkey} environment variable is parsed as a comma-separated list of API keys. Round-robin rotation distributes load across multiple billing accounts:
+The \code{GOOGLE\_PLACES\_API\_KEY} environment variable is parsed as a comma-separated list of API keys. Round-robin rotation distributes load across multiple billing accounts:
 
 \begin{lstlisting}[language=Python,caption={googleplaces\_service.py:30--36}]
 def _load_keys() -> list[str]:
-    multi = os.getenv("Mapsplatformkey", "")
+    multi = os.getenv("GOOGLE_PLACES_API_KEY", "")
     keys = [k.strip() for k in multi.split(",") if k.strip()]
     if not keys:
-        single = os.getenv("Mapsplatformkey", "")
+        single = os.getenv("GOOGLE_PLACES_API_KEY", "")
         keys = [single] if single else []
     return keys
 \end{lstlisting}
@@ -313,7 +314,7 @@ For the top six closest results without a phone number, the system performs a Fi
 
 \subsection{Response Shape}
 
-\begin{lstlisting}[language=json,caption={Sample /search response}]
+\begin{lstlisting}[caption={Sample /search response}]
 {
   "contacts": [
     {
@@ -396,7 +397,7 @@ Buckets are stored in a plain Python dictionary protected by \code{asyncio.Lock}
 \section{Backend: AI Triage}
 % ──────────────────────────────────────────────────────────────────────
 
-\file{backend/services/ai\_triage.py} reorders a contact list to match the user's situation. The model is \texttt{gemini-2.0-flash}, called via direct REST against \url{https://generativelanguage.googleapis.com/v1beta/models/} (no SDK dependency --- uses the same \code{httpx} client as the rest of the backend). The free tier allows 60 requests per minute and 1500 requests per day with no billing requirement. Two boolean situational flags are accepted: \code{injured} and \code{blocking\_traffic}. JSON mode is opt-in via \code{generationConfig.responseMimeType = "application/json"}.
+\file{backend/services/ai\_triage.py} reorders a contact list to match the user's situation. The model is \texttt{gemini-2.5-flash}, called via direct REST against \url{https://generativelanguage.googleapis.com/v1beta/models/} (no SDK dependency --- uses the same \code{httpx} client as the rest of the backend). The free tier allows 15 requests per minute and 1500 requests per day with no billing requirement. Two boolean situational flags are accepted: \code{injured} and \code{blocking\_traffic}. JSON mode is opt-in via \code{generationConfig.responseMimeType = "application/json"}.
 
 \subsection{Prompt Contract}
 
@@ -461,7 +462,7 @@ Every external call is wrapped in a \code{\_safe\_*} helper that catches all exc
 
 If every upstream is unavailable simultaneously:
 
-\begin{lstlisting}[language=json,numbers=none,caption={Response when all upstreams fail}]
+\begin{lstlisting}[numbers=none,caption={Response when all upstreams fail}]
 {
   "contacts": [],
   "source": "none (upstreams unavailable)",
@@ -498,7 +499,7 @@ The frontend implements a four-tier fallback chain. Each tier is queried only if
 
 \file{src/utils/offlineDB.js} stores responses in \code{window.localStorage} keyed by a coarsened coordinate grid:
 
-\begin{lstlisting}[language=JavaScript,caption={offlineDB.js: 24-hour client-side cache}]
+\begin{lstlisting}[caption={offlineDB.js: 24-hour client-side cache}]
 const TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 function locationKey(lat, lon) {
@@ -511,7 +512,7 @@ The grid is 1.1 km square at the equator. A user who searched yesterday from any
 
 \subsection{Tier 3 --- Bundled Facilities}
 
-When network requests fail and no cache entry exists, \file{src/utils/bundledFacilities.js} computes the nearest entries from a JSON file shipped in the build bundle: \file{src/data/bundled\_facilities.json} (818 entries, 200 countries).
+When network requests fail and no cache entry exists, \file{src/utils/bundledFacilities.js} computes the nearest entries from a JSON file shipped in the build bundle: \file{src/data/bundled\_facilities.json} (938 entries, 200 countries).
 
 \begin{tabularx}{\textwidth}{l c X}
 \toprule
@@ -622,7 +623,7 @@ Spanish, French, Portuguese, German, Italian, Dutch, Polish, Russian, Ukrainian,
 
 Six languages set the document direction to RTL on selection (Arabic, Hebrew, Persian, Urdu, Kashmiri, Sindhi). The handler in \file{src/i18n/index.js}:
 
-\begin{lstlisting}[language=JavaScript,caption={i18n/index.js --- applyDir}]
+\begin{lstlisting}[caption={i18n/index.js --- applyDir}]
 function applyDir(code) {
   const loc = getLocale(code);
   document.documentElement.lang = loc.bcp47 || code;
@@ -632,7 +633,7 @@ function applyDir(code) {
 
 \subsection{Selection Logic}
 
-On first launch, the user sees a full-screen modal listing all 43 languages, grouped into ``India'' (22) and ``World'' (21) sections. There is no automatic pre-selection based on GPS country code; the user picks explicitly. The choice is persisted to \code{localStorage['roadsos:lang']} and never re-asked.
+On first launch, the user sees a full-screen modal listing all 48 languages, grouped into ``India'' (22) and ``World'' (26) sections. There is no automatic pre-selection based on GPS country code; the user picks explicitly. The choice is persisted to \code{localStorage['roadsos:lang']} and never re-asked.
 
 If the user dismisses the picker without choosing, the language defaults to:
 
@@ -654,7 +655,7 @@ Each bundle contains approximately 40 translation keys spanning SOS button state
 
 \subsection{Signal 1 --- GPS Velocity Collapse}
 
-The hook maintains a rolling buffer of GPS samples (each containing speed in m/s and a timestamp). A velocity collapse is registered when a sample at $\ge$ 25 km/h is followed within 2 seconds by a sample at $\le$ 5 km/h.
+The hook maintains a rolling buffer of GPS samples (each containing speed in m/s and a timestamp). A velocity collapse is registered when sustained samples at $\ge$ 40 km/h are followed within ~2.5 seconds by a sample at $\le$ 5 km/h (tuned to reject ordinary braking and stop-and-go traffic).
 
 \subsection{Signal 2 --- Accelerometer Spike}
 
@@ -714,7 +715,7 @@ Returns a JSON object with the shape given in Section~2.5. Rate limit: 30 req/mi
 
 \subsection{\texttt{POST /triage}}
 
-\begin{lstlisting}[language=json,numbers=none,caption={Request body}]
+\begin{lstlisting}[numbers=none,caption={Request body}]
 {
   "contacts": [<list of contact objects from /search>],
   "injured": true,
@@ -756,7 +757,7 @@ Three GitHub Actions workflows are defined in \file{.github/workflows/}.
 Three jobs run sequentially:
 
 \begin{enumerate}[leftmargin=*, itemsep=2pt, topsep=2pt]
-  \item \textbf{lint.} \code{ruff check} (rule set: E, W, F, I, UP, B, C4, SIM) followed by \code{ruff format --check}. Five rules are explicitly ignored: E501 (line length), E402 (intentional \code{load\_dotenv()} ordering), B008 (FastAPI \code{Depends()}), SIM108 (ternary readability), and SIM112 (the \code{Mapsplatformkey} environment variable name is fixed by Render configuration).
+  \item \textbf{lint.} \code{ruff check} (rule set: E, W, F, I, UP, B, C4, SIM) followed by \code{ruff format --check}. Four rules are explicitly ignored: E501 (line length), E402 (intentional \code{load\_dotenv()} ordering), B008 (FastAPI \code{Depends()}), and SIM108 (ternary readability).
   \item \textbf{startup-check.} Single-step verification that \code{python -c "import main"} succeeds against \code{requirements.txt} with dummy API keys --- catches dependency-chain breakage before tests run.
   \item \textbf{test.} \code{pytest} on Python 3.11 and 3.12 in parallel. Depends on \code{lint} and \code{startup-check} passing.
 \end{enumerate}
@@ -822,7 +823,7 @@ services:
     envVars:
       - key: GEMINI_API_KEY        # required, free at aistudio.google.com
         sync: false
-      - key: Mapsplatformkey       # optional, comma-separated for multi-key
+      - key: GOOGLE_PLACES_API_KEY       # optional, comma-separated for multi-key
         sync: false
       - key: PYTHON_VERSION
         value: 3.11.9
@@ -842,7 +843,7 @@ Free-tier specifics:
 
 \file{vercel.json}:
 
-\begin{lstlisting}[language=json,caption={vercel.json}]
+\begin{lstlisting}[caption={vercel.json}]
 {
   "version": 2,
   "buildCommand": "cd frontend && npm install && npm run build",
@@ -858,7 +859,7 @@ Free-tier specifics:
 The single rewrite ensures client-side routes resolve through \code{index.html} (SPA behaviour). Build environment variables:
 
 \begin{itemize}[leftmargin=*, itemsep=2pt, topsep=2pt]
-  \item \code{VITE\_API\_URL} --- e.g.\ \code{https://roadsos-api.onrender.com}
+  \item \code{VITE\_API\_URL} --- e.g.\ \code{https://roadsos-pl3k.onrender.com}
 \end{itemize}
 
 \subsection{Bundle Sizes}
@@ -912,7 +913,7 @@ Format: timestamp, level, logger, method, path, status, duration in milliseconds
 % ──────────────────────────────────────────────────────────────────────
 
 \begin{lstlisting}[language={},numbers=none,frame=none]
-Roadproj/
+RoadSOS/
 |- backend/
 |  |- main.py                    # FastAPI app entry, middleware wiring
 |  |- middleware.py              # RequestID, RequestLog, ErrorHandling
@@ -926,7 +927,7 @@ Roadproj/
 |  |  |- overpass_service.py     # OSM Overpass client + parser
 |  |  |- googleplaces_service.py # Google Places + multi-key rotation
 |  |  |- geocoder.py             # Nominatim reverse geocode
-|  |  |- ai_triage.py            # Gemini 2.0 Flash + rule fallback
+|  |  |- ai_triage.py            # Gemini 2.5 Flash + rule fallback
 |  |  |- triage_service.py       # /triage router
 |  |  |- cache.py                # async TTL/LRU cache
 |  |  |- rate_limiter.py         # per-IP token bucket
@@ -949,7 +950,7 @@ Roadproj/
 |     |  |- MapHero.jsx          # hero section (map + dock + SOS)
 |     |  |- RealMap.jsx          # Leaflet map + custom markers
 |     |  |- SOSButton.jsx        # SOS dispatch with WhatsApp/SMS routing
-|     |  |- LanguagePicker.jsx   # first-launch 43-language modal
+|     |  |- LanguagePicker.jsx   # first-launch 48-language modal
 |     |  |- MedicalIdModal.jsx   # blood type, allergies, contacts
 |     |  |- CrashAlert.jsx       # post-crash confirmation UI
 |     |  |- DispatchScreen.jsx   # post-SOS confirmation UI
@@ -975,7 +976,7 @@ Roadproj/
 |     |  |- countryLanguage.js   # ISO country -> language code
 |     |  `- *.json               # 43 translation bundles
 |     `- data/
-|        `- bundled_facilities.json # 818 entries, 200 countries
+|        `- bundled_facilities.json # 938 entries, 200 countries
 |
 |- docs/
 |  |- ARCHITECTURE.md            # architecture review + ADRs
@@ -1001,7 +1002,7 @@ Roadproj/
 \textbf{Metric} & \textbf{Value} \\
 \midrule
 Countries with at least one bundled facility & 200 \\
-Bundled facilities total & 818 \\
+Bundled facilities total & 938 \\
 Languages shipped & 43 \\
 Indian Schedule-VIII languages covered & 22 of 22 \\
 RTL languages supported & 6 (Arabic, Persian, Hebrew, Urdu, Kashmiri, Sindhi) \\
@@ -1017,11 +1018,11 @@ localStorage cache grid & $\sim$1.1 km \\
 Rate limit --- /search & 30 req/min/IP \\
 Rate limit --- /triage & 20 req/min/IP \\
 Phone enrichment cap & 6 Place Details calls per /search \\
-Crash detection --- velocity collapse threshold & $\ge$25 km/h $\rightarrow$ $\le$5 km/h within 2 s \\
+Crash detection --- velocity collapse threshold & sustained $\ge$40 km/h $\rightarrow$ $\le$5 km/h within ~2.5 s \\
 Crash detection --- accelerometer threshold & $\ge$3.5 G \\
 Crash detection --- signal alignment window & 4 s \\
 Crash detection --- post-alert cooldown & 12 s \\
-AI model & \code{gemini-2.0-flash} (free tier: 60 RPM / 1500 RPD) \\
+AI model & \code{gemini-2.5-flash} (free tier: 15 RPM / 1500 RPD) \\
 Frontend bundle (gzip) & 181 KiB JS + 18 KiB CSS \\
 Service worker precache entries & 6 ($\sim$210 KiB) \\
 \bottomrule

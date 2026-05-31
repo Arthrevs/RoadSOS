@@ -7,12 +7,10 @@ export default defineConfig({
     react(),
     VitePWA({
       strategies: 'injectManifest',
-      srcDir: 'public',
+      srcDir: 'src',
       filename: 'sw.js',
       registerType: 'autoUpdate',
       injectManifest: {
-        swSrc: 'public/sw.js',
-        swDest: 'dist/sw.js',
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
       },
       manifest: {
@@ -29,14 +27,4 @@ export default defineConfig({
       },
     }),
   ],
-  server: {
-    proxy: {
-      '/search'          : 'http://localhost:8000',
-      '/triage'          : 'http://localhost:8000',
-      '/dispatch-summary': 'http://localhost:8000',
-      '/health'          : 'http://localhost:8000',
-      '/offline-pack'    : 'http://localhost:8000',
-      '/track'           : 'http://localhost:8000',
-    },
-  },
 });
