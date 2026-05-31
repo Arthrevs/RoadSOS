@@ -190,6 +190,8 @@ GET /search ─────► Service Worker         Tier 1: Backend /search
 
 ## 🚀 Quick Start
 
+> **Note for Judges / Local Development:** We do not provide our Google API keys in the repository for security reasons. The application is specifically designed to work flawlessly without them! If you run the app locally without setting any API keys in the `.env` file, it will automatically fallback to fetching contacts via OpenStreetMap (which is completely free) and will use a deterministic rule-based system instead of Gemini AI for triage. 
+
 ### 1. Backend
 
 ```bash
@@ -213,6 +215,12 @@ npm run dev
 ```
 
 Open `http://localhost:5173`. The Vite dev server proxies `/search`, `/triage`, and `/offline-pack` to the backend.
+
+> **💡 Tip for Judges: Test full AI & Google features locally!**
+> If you want to experience the full Gemini AI Triage and Google Places parallelism locally without having to supply your own API keys, you can tell the local frontend to bypass your local backend and connect directly to our live production backend (which already has the keys securely loaded).
+> Just create a file called `.env.local` inside the `frontend/` folder and add this exact line:
+> `VITE_API_URL="https://roadsos-pl3k.onrender.com"`
+> Then restart the frontend server.
 
 ---
 
