@@ -16,7 +16,7 @@
  * - OSRM falls back to great-circle interpolation if the routing call
  *   fails — better degraded coverage than no coverage.
  * - Concurrency capped at 3 in-flight `/search` calls so we don't trip
- *   the backend's per-IP rate limiter (30/min) or burn API quota.
+ *   the backend's per-IP rate limiter (120/min) or burn API quota.
  * - Progress callbacks fire after every waypoint so the UI can render
  *   a smooth bar.
  */
@@ -104,13 +104,16 @@ export async function prefetchRoute(origin, destination, opts = {}) {
     const [lon, lat] = samples[idx];
     inflight += 1;
     onProgress?.({ done: cached, total, lastPoint: { lat, lon }, status: 'fetching' });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
     try {
-      const data = await searchNearby(lat, lon);
+      const data = await searchNearby(lat, lon, controller.signal);
       saveSearchResult(lat, lon, data);
       cached += 1;
     } catch {
       // Single waypoint failure shouldn't abort the whole trip cache.
     } finally {
+      clearTimeout(timeout);
       inflight -= 1;
       onProgress?.({ done: cached, total, lastPoint: { lat, lon }, status: 'waypoint_done' });
     }
@@ -133,3 +136,60 @@ export async function prefetchRoute(origin, destination, opts = {}) {
 
 // Quick-pick city presets moved to `geocode.js` (`QUICK_PICK_CITIES`)
 // alongside the free-text geocoder they back up.
+
+/**
+ * Pre-cache /search for a ring of points around a single location, so going
+ * offline anywhere within ~radiusKm of here hits real cached contacts.
+ * Complements prefetchRoute (which is for planned trips). Uses the same
+ * 3-in-flight worker pool so it stays under the backend rate limit.
+ */
+export async function prefetchArea(lat, lon, opts = {}) {
+  const { radiusKm = 8, rings = 1, perRing = 6, onProgress } = opts;
+
+  const points = [{ lat, lon }];
+  const kmPerDegLat = 111;
+  const kmPerDegLon = 111 * Math.cos((lat * Math.PI) / 180) || 1;
+  for (let r = 1; r <= rings; r++) {
+    const ringKm = (radiusKm * r) / rings;
+    for (let k = 0; k < perRing; k++) {
+      const ang = (2 * Math.PI * k) / perRing;
+      points.push({
+        lat: lat + (ringKm * Math.cos(ang)) / kmPerDegLat,
+        lon: lon + (ringKm * Math.sin(ang)) / kmPerDegLon,
+      });
+    }
+  }
+
+  const total = points.length;
+  let done = 0, cached = 0, inflight = 0, cursor = 0;
+
+  const fireOne = async (idx) => {
+    inflight += 1;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    try {
+      const data = await searchNearby(points[idx].lat, points[idx].lon, controller.signal);
+      saveSearchResult(points[idx].lat, points[idx].lon, data);
+      cached += 1;
+    } catch {
+      // one point failing must not abort the whole area cache
+    } finally {
+      clearTimeout(timeout);
+      done += 1;
+      inflight -= 1;
+      onProgress?.({ done, total });
+    }
+  };
+
+  await new Promise((resolve) => {
+    const tick = () => {
+      while (inflight < 3 && cursor < total) {
+        fireOne(cursor++).then(tick);
+      }
+      if (cursor >= total && inflight === 0) resolve();
+    };
+    tick();
+  });
+
+  return { cached, total };
+}

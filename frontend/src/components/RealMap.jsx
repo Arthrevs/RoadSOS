@@ -261,34 +261,7 @@ const CAT_SVG = {
            C 230,190 230,240 200,240 Z" 
         fill="#ffffff"/>
 </svg>`,
-  police: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
-  <!-- Pin outer shape -->
-  <path d="
-    M200,20
-    C100,20 30,90 30,190
-    C30,270 80,330 130,370
-    L200,480
-    L270,370
-    C320,330 370,270 370,190
-    C370,90 300,20 200,20
-    Z
-  " fill="#2563eb"/>
-  <!-- White circle cutout -->
-  <circle cx="200" cy="185" r="130" fill="#ffffff"/>
-  
-  <!-- Police Hat -->
-  <!-- Upper Hat -->
-  <polygon points="200,100 290,125 290,145 270,175 130,175 110,145 110,125" fill="#334155"/>
-  <!-- Hat Brim -->
-  <polygon points="115,185 285,185 240,240 160,240" fill="#334155"/>
-  <!-- Hat Band -->
-  <rect x="130" y="175" width="140" height="10" fill="#f8fafc"/>
-  
-  <!-- Badge Shield -->
-  <path d="M 170,125 L 200,110 L 230,125 Q 230,175 200,190 Q 170,175 170,125 Z" fill="#e2e8f0"/>
-  <!-- Badge Star -->
-  <polygon points="200,125 206,138 221,140 210,150 213,164 200,157 187,164 190,150 179,140 194,138" fill="#334155"/>
-</svg>`,
+
   tyre: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
   <!-- Pin outer shape -->
   <path d="M 200,480 L 75,258 A 145,145 0 1,1 325,258 Z" fill="#9333ea"/>

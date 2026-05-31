@@ -13,6 +13,7 @@ export default defineConfig({
       injectManifest: {
         swSrc: 'public/sw.js',
         swDest: 'dist/sw.js',
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
       },
       manifest: {
         name: 'RoadSOS',

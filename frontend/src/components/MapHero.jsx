@@ -182,7 +182,6 @@ export default function MapHero({
   const [refreshing, setRefreshing] = useState(false);
   const [manualLocationOpen, setManualLocationOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [showScrollArrow, setShowScrollArrow] = useState(true);
   const [savingArea, setSavingArea] = useState(null); // { done, total } | null
   const mapRef = useRef(null);
@@ -495,9 +494,6 @@ export default function MapHero({
             <div className="drawer-header">
               <span className="drawer-title">{t('sidebar.menu')}</span>
               <div style={{ display: 'flex', gap: '8px' }}>
-                <button className="close-btn" style={{ background: 'transparent' }} onClick={() => setInfoModalOpen(true)} title="Information">
-                  <Info size={16} strokeWidth={2.5} />
-                </button>
                 <button className="close-btn" onClick={() => setSidebarOpen(false)}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
@@ -550,17 +546,9 @@ export default function MapHero({
                   </button>)}
               <button className="menu-item" onClick={() => { setSidebarOpen(false); if (mapRef.current) mapRef.current.recenter(); }}>
                 <span className="m-num">6</span>
-                <div className="m-icon"><Crosshair size={17} strokeWidth={1.8} /></div>
+                <div className="m-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></div>
                 <span className="m-label">{t('sidebar.recenter', 'Recenter Map')}</span>
                 <div className="m-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-              </button>
-
-              <button className="menu-item" onClick={handleSaveArea} disabled={!!savingArea}>
-                <span className="m-num">7</span>
-                <div className="m-icon"><Map size={17} strokeWidth={1.8} /></div>
-                <span className="m-label">
-                  {savingArea ? `Saving… ${savingArea.done}/${savingArea.total}` : t('sidebar.save_area', 'Save Area for Offline')}
-                </span>
               </button>
 
               <button 
@@ -601,27 +589,6 @@ export default function MapHero({
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-      {/* Info Modal */}
-      {infoModalOpen && (
-        <div 
-          className="info-modal-overlay"
-          style={{ position: 'fixed', inset: 0, zIndex: 10001, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }} 
-          onClick={() => setInfoModalOpen(false)}
-        >
-          <div className="modal" style={{ maxWidth: '400px', padding: '24px', textAlign: 'left', margin: 'auto', maxHeight: '80vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
-            <h3 style={{ margin: '0 0 16px 0', color: mapTheme === 'light' ? '#0F172A' : '#fff', fontFamily: 'var(--rs-font-display)', fontSize: '20px', textAlign: 'center' }}>App Features</h3>
-            <ul style={{ margin: '0 0 24px 0', paddingLeft: '20px', color: mapTheme === 'light' ? '#475569' : '#94A3B8', fontSize: '14px', lineHeight: 1.6 }}>
-              <li style={{ marginBottom: '10px' }}><strong>Medical ID</strong>: Used to store your critical health information for first responders during emergencies.</li>
-              <li style={{ marginBottom: '10px' }}><strong>SOS Button</strong>: Instantly alerts local emergency services with your exact location.</li>
-              <li style={{ marginBottom: '10px' }}><strong>Save Offline</strong>: Caches emergency contacts and facilities along your route to ensure they work without internet.</li>
-              <li style={{ marginBottom: '10px' }}><strong>Target / Crosshair</strong>: Lets you auto-refresh your GPS location or manually pinpoint your exact location on the map.</li>
-              <li style={{ marginBottom: '10px' }}><strong>Language & Theme</strong>: Switches between light/dark mode and changes the app's language for better accessibility.</li>
-              <li style={{ marginBottom: '0' }}><strong>Demo Crash</strong>: Simulates a crash detection event to test the dispatch screen and emergency flow safely.</li>
-            </ul>
-            <button className="btn-primary" onClick={() => setInfoModalOpen(false)} style={{ width: '100%', height: '44px', borderRadius: '12px' }}>Close</button>
           </div>
         </div>
       )}
