@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Hospital, Shield, Ambulance, Truck, Wrench, Cog, Car, PhoneCall, Navigation, Zap } from 'lucide-react';
+import { Hospital, Shield, Ambulance, Truck, Wrench, Cog, Car, PhoneCall, Phone, Navigation, Zap } from 'lucide-react';
 import { guardedTelDial } from '../utils/demoMode';
 
 const CATEGORY_CONFIG = {
@@ -36,40 +36,38 @@ export default function ContactCard({ contact, isLast, variant }) {
   else if (typeof distance === 'number' && distance >= 4) statusAttr = 'far';
 
   if (variant === 'popup') {
+    let catClass = 'cat-neutral';
+    if (cat === 'hospital' || cat === 'ambulance') catClass = 'cat-medical';
+    else if (cat === 'police') catClass = 'cat-police';
+    else if (cat === 'fire') catClass = 'cat-fire';
+
     return (
-      <div className="popup-variant-card">
-        <div className="popup-name">{name}</div>
-        <div className="popup-phone-row">
-          {callHref ? (
-            <a
-              href={callHref}
-              className="call-btn"
-              id={`call-btn-${phoneClean}`}
-              onClick={(e) => guardedTelDial(e, phoneClean, name)}
-            >
-              <PhoneCall size={13} strokeWidth={2.4} fill="#fff" />
-              <span className="call-btn-num">{phone}</span>
-            </a>
-          ) : (
-            <div className="call-btn disabled" style={{ opacity: 0.5 }}>
-              <PhoneCall size={13} strokeWidth={2.4} />
-              <span className="call-btn-num">{t('actions.no_phone')}</span>
-            </div>
+      <div className={`rs-popup-card-v2 ${catClass}`}>
+        <div className="card-name">{name}</div>
+        <div className="card-rule"></div>
+        <div className="card-actions">
+          {callHref && (
+            <>
+              <button 
+                className="ic-btn btn-call" 
+                title="Call"
+                onClick={(e) => guardedTelDial(e, phoneClean, name)}
+              >
+                <svg className="rs-popup-svg" viewBox="0 0 24 24" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.91-.91a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7a2 2 0 0 1 1.72 2.01z"/></svg>
+              </button>
+              <div className="ic-sep"></div>
+            </>
           )}
-        </div>
-        <div className="popup-bottom-row">
-          <div className="popup-km-text">{kmValue} {t('card.km', 'KM')}</div>
-          {mapsHref && (
-            <a
-              href={mapsHref}
-              className="maps-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Navigation size={13} color="#1D4ED8" strokeWidth={2.4} />
-              {t('actions.directions')}
-            </a>
-          )}
+          
+          <button 
+            className="ic-btn" 
+            title="Directions"
+            onClick={() => {
+              if (mapsHref) window.open(mapsHref, '_blank');
+            }}
+          >
+            <svg className="rs-popup-svg" viewBox="0 0 24 24" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          </button>
         </div>
       </div>
     );

@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import ContactCard from './ContactCard';
+import { ChevronUp } from 'lucide-react';
 import { CATS } from '../constants';
 
 // Map filter chip keys to i18n keys. "All" + "Puncture" are filter-only;
@@ -29,6 +30,39 @@ export default function ContactList({ contacts, loading, error, cachedAt, cat, s
       return cCat === filterCat;
     });
   }, [contacts, cat]);
+
+  const [showTakeUp, setShowTakeUp] = useState(false);
+
+  useEffect(() => {
+    if (filtered.length <= 15) {
+      setShowTakeUp(false);
+      return;
+    }
+    
+    // 25% threshold, e.g., 19 * 0.25 = 4.75 -> 5th card -> index 4
+    let thresholdIndex = Math.ceil(filtered.length * 0.25) - 1;
+
+    // Cap at the 30th card for large lists (> 120 cards)
+    if (filtered.length > 120) {
+      thresholdIndex = 29;
+    }
+
+    const handleScroll = () => {
+      // Find the card element at the threshold index
+      const cardEl = document.querySelector(`.svc-list > *:nth-child(${thresholdIndex + 1})`);
+      if (cardEl) {
+        const rect = cardEl.getBoundingClientRect();
+        // Visible if the top of the card has come above the bottom of the viewport
+        setShowTakeUp(rect.top < window.innerHeight);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Check initially
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [filtered.length]);
 
   // ── Loading state ─────────────────────────────────────────────────────────
   if (loading) {
@@ -96,6 +130,23 @@ export default function ContactList({ contacts, loading, error, cachedAt, cat, s
           ))
         )}
       </div>
+
+      {/* Floating Take Up Button */}
+      {showTakeUp && (
+        <div className="scroll-up-arrow" onClick={() => {
+          const firstCard = document.querySelector('.svc-list > *:first-child');
+          if (firstCard) {
+            firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }}>
+          <div className="scroll-arrow-pill">
+            <ChevronUp size={16} strokeWidth={2.5} />
+            <span>Take up</span>
+          </div>
+        </div>
+      )}
     </>
   );
 }

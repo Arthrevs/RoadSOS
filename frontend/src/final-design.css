@@ -955,9 +955,9 @@
   width: 100%;
   /* Cap at ~85% of the viewport so the next section (Emergency Numbers)
      is always partially visible Ã¢â‚¬â€ discoverable scroll affordance. */
-  height: 110svh;
-  min-height: 727px;
-  max-height: 1012px;
+  height: 132svh;
+  min-height: 872px;
+  max-height: 1214px;
   overflow: hidden;
   background: var(--rs-navy);
   margin-bottom: 8px;
@@ -1150,9 +1150,9 @@
   width: 100%;
   /* Cap at ~85% of the viewport so the next section (Emergency Numbers)
      is always partially visible Ã¢â‚¬â€ discoverable scroll affordance. */
-  height: 110svh;
-  min-height: 727px;
-  max-height: 1012px;
+  height: 132svh;
+  min-height: 872px;
+  max-height: 1214px;
   overflow: hidden;
   background: var(--rs-navy);
   margin-bottom: 8px;
@@ -1486,14 +1486,14 @@
 }
 
 .mh-dist-pill {
-  font-size: 10px;
+  font-size: 12px; /* made inside content larger */
   font-weight: 700;
   letter-spacing: 0.03em;
   color: #22c55e;
   background: rgba(34,197,94,0.1);
   border: 1px solid rgba(34,197,94,0.2);
-  padding: 2px 7px;
-  border-radius: 20px;
+  padding: 4px 14px; /* vertically 50% more than original 2px, keeping horizontal wide */
+  border-radius: 20px; /* keeps edges fully rounded like a pill */
   white-space: nowrap;
   flex-shrink: 0;
   margin-top: 1px;
@@ -1527,13 +1527,14 @@
 .mh-call-chip {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
-  height: 28px;
-  padding: 0 10px;
-  border-radius: 8px;
+  height: 35px; /* vertically 25% larger than original 28px */
+  padding: 0 25px; /* horizontally even wider */
+  border-radius: 30px; /* fully rounded pill edges */
   border: none;
   font-family: 'Outfit', sans-serif;
-  font-size: 11px;
+  font-size: 13px; /* slight bump for the larger button */
   font-weight: 600;
   cursor: pointer;
   outline: none;
@@ -4137,6 +4138,15 @@
   background: #F4F4F4 !important;
 }
 
+/* Route loading pulse animation */
+@keyframes rs-route-pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+.rs-route-loading {
+  animation: rs-route-pulse 1s ease-in-out infinite;
+}
+
 /* Pop box size reduction (approx 45% smaller) */
 .rs-custom-popup .leaflet-popup-content {
   min-width: 170px !important;
@@ -4181,8 +4191,7 @@
 .app.theme-dark .svc-card,
 .app.theme-dark .mh-dock-card,
 .app.theme-dark .medical-card,
-.app.theme-dark .lang-card,
-.app.theme-dark .rs-popup-card {
+.app.theme-dark .lang-card {
   background: var(--rs-navy-soft) !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
@@ -4202,94 +4211,83 @@
   color: #94A3B8 !important;
 }
 
-/* Custom Popup Variant Layout */
-.popup-variant-card {
-  display: flex;
+/* -----------------------------------------------------------------------
+   Custom Popup Variant Layout (Native-Glass Transparent)
+   ----------------------------------------------------------------------- */
+.rs-popup-card-v2 {
+  display: inline-flex;
   flex-direction: column;
-  background: transparent;
-  color: #0F172A;
-  gap: 10px;
-  padding: 4px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid var(--cat, rgba(255,255,255,0.35));
+  background: rgba(10, 12, 20, 0.10);
+  max-width: 210px;
+}
+.app.theme-light .rs-popup-card-v2 {
+  background: rgba(255,255,255,0.10);
+  border: 2px solid var(--cat, rgba(0,0,0,0.2));
 }
 
-.app.theme-dark .popup-variant-card {
-  color: #FFFFFF;
-}
+.cat-medical  { --cat: rgba(34,197,94,0.75); --name-color: #22c55e; } /* Green */
+.cat-police   { --cat: rgba(59,130,246,0.75); --name-color: #3b82f6; } /* Blue */
+.cat-fire     { --cat: rgba(239,68,68,0.75); --name-color: #ef4444; } /* Red */
+.cat-neutral  { --cat: rgba(168,85,247,0.75); --name-color: #a855f7; } /* Purple */
+.app.theme-light .rs-popup-card-v2.cat-neutral { --cat: rgba(147,51,234,0.75); --name-color: #9333ea; }
 
-.popup-variant-card .popup-name {
-  font-family: var(--rs-font-display);
-  font-size: 13px;
+.rs-popup-card-v2 .card-name {
+  font-size: 12px;
   font-weight: 700;
+  letter-spacing: -0.01em;
   line-height: 1.3;
+  padding: 7px 10px 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--name-color, rgba(255,255,255,0.92));
+  background: #ffffff;
 }
+.app.theme-light .rs-popup-card-v2 .card-name { background: #ffffff; color: var(--name-color, rgba(0,0,0,0.88)); }
 
-.popup-variant-card .popup-phone-row {
+.rs-popup-card-v2 .card-rule { height: 1px; flex-shrink: 0; background: var(--cat, rgba(255,255,255,0.1)); }
+.app.theme-light .rs-popup-card-v2 .card-rule { background: var(--cat, rgba(0,0,0,0.1)); }
+
+.rs-popup-card-v2 .card-actions {
   display: flex;
-  justify-content: flex-start;
+  align-items: stretch;
+  width: 100%;
 }
 
-.popup-variant-card .call-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #2563EB;
-  color: #FFFFFF;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 13px;
-  text-decoration: none;
-}
-
-.popup-variant-card .popup-bottom-row {
+.rs-popup-card-v2 .ic-btn {
+  flex: 1;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-
-.popup-variant-card .popup-km-text {
-  font-family: var(--rs-font-display);
-  font-weight: 800;
-  font-size: 16px;
-  color: #0F172A;
-}
-
-.app.theme-dark .popup-variant-card .popup-km-text {
-  color: #FFFFFF;
-}
-
-.popup-variant-card .maps-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: #1D4ED8;
-  font-weight: 600;
-  font-size: 13px;
-  text-decoration: none;
+  justify-content: center;
+  min-height: 30px;
+  height: 100%;
+  border: none;
   background: transparent;
-  border: 1px solid #CBD5E1;
-  padding: 6px 12px;
-  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.1s, transform 0.1s;
 }
+.rs-popup-svg {
+  width: clamp(13px, 45%, 18px);
+  height: clamp(13px, 45%, 18px);
+  transition: all 0.2s ease;
+}
+.rs-popup-card-v2 .ic-btn:active { transform: scale(0.88); }
 
-.app.theme-dark .popup-variant-card .maps-link {
-  color: #60A5FA;
-  border-color: rgba(255, 255, 255, 0.2);
-}
+.rs-popup-card-v2 .ic-btn svg { stroke: none !important; fill: #ffffff; }
+.rs-popup-card-v2 .btn-call svg { stroke: none !important; fill: #3b82f6 !important; }
+.app.theme-light .rs-popup-card-v2 .ic-btn svg { stroke: none !important; fill: #000000; }
+.app.theme-light .rs-popup-card-v2 .btn-call svg { stroke: none !important; fill: #2563eb !important; }
 
-.rs-custom-popup .popup-variant-card {
-  background: #FFFFFF;
-  border-radius: 12px;
-  padding: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  border: 1px solid rgba(0,0,0,0.08);
-}
+.rs-popup-card-v2 .ic-btn:active { background: rgba(255,255,255,0.08); }
+.app.theme-light .rs-popup-card-v2 .ic-btn:active { background: rgba(0,0,0,0.06); }
 
-.app.theme-dark .rs-custom-popup .popup-variant-card {
-  background: var(--rs-navy-soft);
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-}
+.rs-popup-card-v2 .ic-sep { width: 1px; flex-shrink: 0; align-self: stretch; background: var(--cat, rgba(255,255,255,0.1)); }
+.app.theme-light .rs-popup-card-v2 .ic-sep { background: var(--cat, rgba(0,0,0,0.1)); }
 
 /* Ensure header buttons start from extreme left */
 .mh-top-row {
@@ -4638,6 +4636,45 @@
 .toolbar-light .btn-icon:hover { background: rgba(0,0,0,0.06); }
 .toolbar-light .btn-icon:hover svg { stroke: rgba(0,0,0,1); }
 .toolbar-light .btn-icon:active { transform: scale(0.88); }
+
+/* DEMO CRASH BUTTON */
+.btn-demo-crash {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 42px;
+  padding: 0 8px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.16s ease, transform 0.1s ease, border-color 0.16s ease;
+  flex-shrink: 0;
+}
+.btn-demo-crash .demo-crash-text {
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.toolbar-dark .btn-demo-crash {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+}
+.toolbar-dark .btn-demo-crash svg { stroke: rgba(255,255,255,0.9); }
+.toolbar-dark .btn-demo-crash:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.4); }
+.toolbar-dark .btn-demo-crash:active { transform: scale(0.95); }
+
+.toolbar-light .btn-demo-crash {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+.toolbar-light .btn-demo-crash svg { stroke: rgba(0,0,0,0.85); }
+.toolbar-light .btn-demo-crash:hover { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.5); }
+.toolbar-light .btn-demo-crash:active { transform: scale(0.95); }
 
 /* TOOLTIP */
 .tip {
@@ -5563,7 +5600,7 @@
 
 /* left: SOS label */
 .sos-label {
-  font-size: 13px;
+  font-size: 14.5px;
   font-weight: 800;
   color: #fff;
   letter-spacing: 0.06em;
@@ -5572,7 +5609,7 @@
 
 /* arrow */
 .arrow-sep {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   color: rgba(255,255,255,0.4);
   flex-shrink: 0;
@@ -5580,7 +5617,7 @@
 
 /* destination */
 .sos-dest {
-  font-size: 13px; /* matched to SOS */
+  font-size: 14.5px; /* matched to SOS */
   font-weight: 800; /* matched to SOS */
   color: #fff; /* matched to SOS */
   letter-spacing: 0.01em;
@@ -5655,19 +5692,39 @@
 
 /* Scroll down arrow */
 .scroll-down-arrow {
+  position: absolute;
+  top: 551px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
   pointer-events: auto;
-  margin-bottom: 24px;
   cursor: pointer;
-  z-index: 20;
+  z-index: 1000;
+}
+
+/* Scroll up arrow */
+.scroll-up-arrow {
+  position: fixed;
+  bottom: 24px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  cursor: pointer;
+  z-index: 50;
+  animation: fadeUp 0.3s ease-out forwards;
+}
+.scroll-up-arrow .scroll-arrow-pill {
+  pointer-events: auto;
 }
 
 .scroll-arrow-pill {
   height: 32px;
-  padding: 0 16px;
+  padding: 0 32px;
   border-radius: 16px;
   display: flex;
   justify-content: center;

@@ -6,6 +6,7 @@ import SOSButton from './SOSButton';
 import ManualLocationModal from './ManualLocationModal';
 import { subscribeBackendStatus } from '../utils/backendWarmup';
 import { setManualLocation, refreshGpsLocation } from '../hooks/useLocation';
+import { getIsMedicalIdComplete } from '../utils/medicalId';
 import { prefetchArea } from '../utils/routeCache';
 
 const CAT_ICONS = {
@@ -38,6 +39,7 @@ const CAT_BG = {
 
 function MiniContact({ contact, last }) {
   const { t } = useTranslation();
+  const [copied, setCopied] = useState(false);
   const cat = (contact.category || 'repair').toLowerCase();
   // Backend's "tyre" category maps to the user-facing "puncture" label key
   // (CAT_ICONS/TONES still keyed by raw category name)
@@ -68,7 +70,20 @@ function MiniContact({ contact, last }) {
         </div>
         <div className="mh-row-type">{typeLabel}</div>
         <div className="mh-row-num-line">
-          <span className="mh-row-num">{contact.phone || t('actions.no_phone')}</span>
+          <span 
+            className="mh-row-num"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (contact.phone) {
+                navigator.clipboard.writeText(contact.phone);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+              }
+            }}
+            style={{ cursor: contact.phone ? 'pointer' : 'default' }}
+          >
+            {copied ? t('actions.copied', 'Copied!') : (contact.phone || t('actions.no_phone'))}
+          </span>
           <button
             className="mh-call-chip"
             onClick={(e) => { e.stopPropagation(); if (callHref) window.location.href = callHref; }}
@@ -93,6 +108,7 @@ export default function MapHero({
   landmark,
   countryCode,
   contacts,
+  cat,
   topContact,
   isOnline,
   gpsLost,
@@ -111,14 +127,53 @@ export default function MapHero({
   onLanguagePicker,
   mapTheme = 'dark',
   onToggleTheme,
-  forceSidebarOpen,
-  forceInfoOpen,
   onTutorialStart,
 }) {
   const { t } = useTranslation();
-  // Pick up to 6 nearest contacts for markers on real map
-  const markerContacts = (contacts || []).slice(0, 6);
-  const dockContacts = (contacts || []).slice(0, 3);
+  
+  const dockMatches = [
+    ['hospital'],
+    ['towing'],
+    ['tyre', 'puncture'],
+    ['showroom']
+  ];
+  
+  const dockContacts = [];
+  if (contacts && Array.isArray(contacts)) {
+    for (const match of dockMatches) {
+      for (const c of contacts) {
+        if (!c?.phone) continue;
+        const cat = (c.category || '').toLowerCase();
+        if (match.includes(cat)) {
+          if (!dockContacts.some(existing => existing.id === c.id)) {
+            dockContacts.push(c);
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  // Map markers: filter by the currently selected category in the ContactList
+  const markerContacts = [];
+  
+  if (contacts && Array.isArray(contacts)) {
+    if (!cat || cat === 'All') {
+      for (const c of contacts) {
+        if (markerContacts.length >= 6) break;
+        markerContacts.push(c);
+      }
+    } else {
+      const filterCat = cat === "Puncture" ? "tyre" : cat.toLowerCase();
+      for (const c of contacts) {
+        const cCat = (c.category || 'repair').toLowerCase();
+        if (cCat === filterCat) {
+          if (markerContacts.length >= 6) break;
+          markerContacts.push(c);
+        }
+      }
+    }
+  }
 
   // Backend readiness — drives the warming-up state of the status pill.
   // 'warming' / 'cold' downgrade the green online indicator to amber so
@@ -127,7 +182,6 @@ export default function MapHero({
   const [refreshing, setRefreshing] = useState(false);
   const [manualLocationOpen, setManualLocationOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [showScrollArrow, setShowScrollArrow] = useState(true);
   const [savingArea, setSavingArea] = useState(null); // { done, total } | null
   const mapRef = useRef(null);
@@ -146,19 +200,6 @@ export default function MapHero({
     observer.observe(dockCardRef.current);
     return () => observer.disconnect();
   }, [dockContacts.length]);
-
-  // Sync with tutorial props
-  useEffect(() => {
-    if (forceSidebarOpen !== undefined) {
-      setSidebarOpen(forceSidebarOpen);
-    }
-  }, [forceSidebarOpen]);
-
-  useEffect(() => {
-    if (forceInfoOpen !== undefined) {
-      setInfoModalOpen(forceInfoOpen);
-    }
-  }, [forceInfoOpen]);
 
   // Prevent background scrolling when sidebar is open
   useEffect(() => {
@@ -183,10 +224,25 @@ export default function MapHero({
     setRefreshing(true);
     try {
       await refreshGpsLocation();
+      if (mapRef.current && location?.lat) {
+        mapRef.current.setView([location.lat, location.lon], 15, { animate: true, duration: 0.5 });
+      }
     } finally {
       setRefreshing(false);
     }
-  }, []);
+  }, [location]);
+
+  // ── Handle save area for offline ──
+  const handleSaveArea = useCallback(async () => {
+    if (!location?.lat) return;
+    setSavingArea({ done: 0, total: 0 });
+    const res = await prefetchArea(location.lat, location.lon, {
+      radiusKm: 8,
+      onProgress: setSavingArea,
+    });
+    setSavingArea(null);
+    alert(`Saved ${res.cached}/${res.total} nearby zones for offline use.`);
+  }, [location]);
 
   // ── Handle save area for offline ──
   const handleSaveArea = useCallback(async () => {
@@ -206,7 +262,9 @@ export default function MapHero({
   // triggering a fresh /search call for the new coords.
   const handleSetManualLocation = useCallback((locData) => {
     setManualLocation(locData.lat, locData.lon, locData.landmark);
-    setManualLocationOpen(false);
+    if (mapRef.current) {
+      mapRef.current.setView([locData.lat, locData.lon], 15, { animate: true, duration: 0.5 });
+    }
   }, []);
 
   const formatCoords = (loc) => {
@@ -296,20 +354,20 @@ export default function MapHero({
             )}
             {demoMode && onTestCrash && (
               <button
-                className="btn-icon"
+                className="btn-demo-crash"
                 onClick={onTestCrash}
                 title={t('tooltip.test_crash', 'Test crash alert')}
                 aria-label={t('actions.test_crash', 'Test crash')}
               >
-                <AlertTriangle size={19} strokeWidth={1.8} />
-                <span className="tip">Crash</span>
+                <AlertTriangle size={16} strokeWidth={2} />
+                <span className="demo-crash-text">Demo test crash</span>
               </button>
             )}
 
             <div className="sep"></div>
 
             {onMedicalId && (() => {
-              const isMedicalIdComplete = medicalIdCompletion >= 63;
+              const isMedicalIdComplete = getIsMedicalIdComplete();
               const hasMedicalId = medicalIdCompletion > 0;
               return (
                 <button
@@ -400,6 +458,21 @@ export default function MapHero({
         </div>
       </div>
 
+      {showScrollArrow && (
+        <div className="scroll-down-arrow" onClick={() => {
+          if (dockCardRef.current) {
+            dockCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else {
+            window.scrollTo({ top: window.innerHeight * 0.9, behavior: 'smooth' });
+          }
+        }}>
+          <div className="scroll-arrow-pill">
+            <span>Scroll down</span>
+            <ChevronDown size={16} strokeWidth={2.5} />
+          </div>
+        </div>
+      )}
+
       {/* Bottom dock gradient + SOS + Quick contacts */}
       <div className="map-hero-dock">
         {showScrollArrow && (
@@ -446,9 +519,6 @@ export default function MapHero({
             <div className="drawer-header">
               <span className="drawer-title">{t('sidebar.menu')}</span>
               <div style={{ display: 'flex', gap: '8px' }}>
-                <button className="close-btn" style={{ background: 'transparent' }} onClick={() => setInfoModalOpen(true)} title="Information">
-                  <Info size={16} strokeWidth={2.5} />
-                </button>
                 <button className="close-btn" onClick={() => setSidebarOpen(false)}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
@@ -494,7 +564,7 @@ export default function MapHero({
                     <div className="m-icon">
                       {mapTheme === 'light' ? <Sun size={18} strokeWidth={1.8} /> : <Moon size={18} strokeWidth={1.8} />}
                     </div>
-                    <span className="m-label" style={{ flex: 1 }}>{t('sidebar.toggle_theme')}</span>
+                    <span className="m-label" style={{ flex: 1 }}>{t('sidebar.toggle_theme', 'Dark / Light mode')}</span>
                     <div className="theme-toggle">
                       <div className={`theme-toggle-knob ${mapTheme === 'dark' ? 'dark' : 'light'}`} />
                     </div>
@@ -514,14 +584,31 @@ export default function MapHero({
                 </span>
               </button>
 
-              <button className="menu-item" onClick={() => { setSidebarOpen(false); if(onTutorialStart) onTutorialStart(); }}>
-                <span className="m-num"></span>
-                <div className="m-icon" style={{ opacity: 0 }}></div>
-                <span className="m-label" style={{ fontWeight: 700 }}>{t('sidebar.tutorial')}</span>
+              <button 
+                onClick={() => { setSidebarOpen(false); if(onTutorialStart) onTutorialStart(); }}
+                style={{
+                  width: 'calc(100% - 24px)',
+                  margin: '10px 12px 4px 12px',
+                  padding: '12px 16px',
+                  background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontWeight: '700',
+                  fontSize: '15px',
+                  cursor: 'pointer',
+                  textAlign: 'center',
+                  boxShadow: '0 4px 14px rgba(37,99,235,0.35)',
+                  transition: 'transform 0.1s, opacity 0.15s'
+                }}
+                onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.96)'}
+                onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                {t('sidebar.tutorial', 'Tutorial')}
               </button>
 
               <div className="divider"></div>
-
               <div className="info-block">
                 <p className="info-shortcut">{t('sidebar.shortcut_info')}</p>
                 <div className="info-sep"></div>
@@ -535,20 +622,6 @@ export default function MapHero({
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-      {/* Info Modal */}
-      {infoModalOpen && (
-        <div 
-          className="info-modal-overlay"
-          style={{ position: 'fixed', inset: 0, zIndex: 10001, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }} 
-          onClick={() => setInfoModalOpen(false)}
-        >
-          <div className="modal" style={{ maxWidth: '340px', padding: '24px', textAlign: 'center', margin: 'auto' }} onClick={e => e.stopPropagation()}>
-            <h3 style={{ margin: '0 0 16px 0', color: mapTheme === 'light' ? '#0F172A' : '#fff', fontFamily: 'var(--rs-font-display)', fontSize: '20px' }}>App Information</h3>
-            <p style={{ margin: '0 0 24px 0', color: mapTheme === 'light' ? '#475569' : '#94A3B8', fontSize: '14px', lineHeight: 1.5 }}>This contains information on all available features and switches of our app.</p>
-            <button className="btn-primary" onClick={() => setInfoModalOpen(false)} style={{ width: '100%', height: '44px', borderRadius: '12px' }}>Close</button>
           </div>
         </div>
       )}

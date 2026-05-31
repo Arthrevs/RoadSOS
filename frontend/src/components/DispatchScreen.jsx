@@ -2,17 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { Check, Ambulance, Navigation2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { DEMO_MODE } from '../utils/demoMode';
+import { getEmergencyNumbers } from '../utils/emergencyNumbers';
 
 /**
  * DispatchScreen — full-screen "Help is on the way" overlay.
  * Shown after SOS dispatched. Mirrors the FinalDispatch (Glass) design.
  */
-export default function DispatchScreen({ open, onClose, location, landmark, contacts = [], topContact, dispatchedAt, isCrash = false, triageReason = null, scenePhoto = null }) {
+export default function DispatchScreen({ open, onClose, location, landmark, contacts = [], topContact, dispatchedAt, isCrash = false, triageReason = null, scenePhoto = null, countryCode }) {
   const { t, i18n } = useTranslation();
   const isEnglish = i18n.language.startsWith('en');
   const [elapsed, setElapsed] = useState(0);
   const [batteryPct, setBatteryPct] = useState(null);
   const [batteryCharging, setBatteryCharging] = useState(false);
+
+  const numbers = getEmergencyNumbers(countryCode || location?.country_code || 'IN') || { general: '112' };
+  const emergencyNum = numbers.general || numbers.police || '112';
 
   useEffect(() => {
     if (!open) return;
@@ -264,7 +268,7 @@ export default function DispatchScreen({ open, onClose, location, landmark, cont
               </svg>
             </div>
             <div className="dx-circle-body">
-              <div className="dx-circle-name">112 Unified</div>
+              <div className="dx-circle-name">{emergencyNum} Unified</div>
               <div className="dx-circle-role">{t('dispatch.role_emergency', 'Emergency')}</div>
             </div>
             <div className="dx-circle-status">

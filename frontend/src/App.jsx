@@ -75,8 +75,6 @@ export default function App() {
 
   // Tutorial state
   const [tutorialStep, setTutorialStep] = useState(0);
-  const [tutorialForceSidebar, setTutorialForceSidebar] = useState(false);
-  const [tutorialForceInfo, setTutorialForceInfo] = useState(false);
 
   const {
     location: gpsLocation,
@@ -283,6 +281,20 @@ export default function App() {
   // GPS lost detection — use cached location flag when no live GPS
   const gpsLost = activeLocation?.lat == null && !!gpsError;
 
+  // Disable background scroll when any full-screen dialog/modal is open
+  const isAnyDialogOpen = langPickerOpen || tutorialStep > 0 || medicalOpen || routePlannerOpen || crashOpen || triageOpen || dispatchOpen;
+  
+  useEffect(() => {
+    if (isAnyDialogOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isAnyDialogOpen]);
+
   return (
     <div className={`app has-map-hero theme-${mapTheme} ${tutorialStep > 0 ? `tutorial-step-${tutorialStep}` : ''}`}>
       {/* ── Judge Tip Banner (Local Dev Only) ── */}
@@ -309,19 +321,8 @@ export default function App() {
       {tutorialStep > 0 && (
         <TutorialOverlay
           theme={mapTheme}
-          triggerSidebar={setTutorialForceSidebar}
-          triggerInfo={setTutorialForceInfo}
-          onStepChange={setTutorialStep}
           onComplete={() => {
             setTutorialStep(0);
-            setTutorialForceSidebar(false);
-            setTutorialForceInfo(false);
-            if (isFirstLaunch()) setMedicalOpen(true);
-          }}
-          onSkip={() => {
-            setTutorialStep(0);
-            setTutorialForceSidebar(false);
-            setTutorialForceInfo(false);
             if (isFirstLaunch()) setMedicalOpen(true);
           }}
         />
@@ -333,6 +334,7 @@ export default function App() {
         landmark={searchData?.landmark}
         countryCode={countryCode}
         contacts={searchData?.contacts || []}
+        cat={cat}
         topContact={topContact}
         isOnline={isOnline}
         gpsLost={gpsLost}
@@ -347,8 +349,6 @@ export default function App() {
         usingFallbackData={!!searchData && !searchHasRealData}
         mapTheme={mapTheme}
         onToggleTheme={() => setMapTheme(prev => prev === 'dark' ? 'light' : 'dark')}
-        forceSidebarOpen={tutorialForceSidebar}
-        forceInfoOpen={tutorialForceInfo}
         onTutorialStart={() => setTutorialStep(1)}
       />
 
@@ -444,6 +444,7 @@ export default function App() {
         onSubmit={handleTriage}
         onSkip={() => setTriageOpen(false)}
         location={activeLocation}
+        countryCode={countryCode}
         landmark={searchData?.landmark}
         topContact={topContact}
       />
@@ -480,6 +481,7 @@ export default function App() {
         open={dispatchOpen}
         onClose={() => { setDispatchOpen(false); setScenePhoto(null); }}
         location={activeLocation}
+        countryCode={countryCode}
         landmark={searchData?.landmark}
         contacts={searchData?.contacts || []}
         topContact={topContact}
