@@ -192,8 +192,10 @@ export default function MapHero({
     if (!dockCardRef.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // If the card is intersecting (visible), hide the arrow
-        setShowScrollArrow(!entry.isIntersecting);
+        // If the card is intersecting (visible), hide the arrow.
+        // Also hide it if we've scrolled past it (it's above the viewport).
+        const isBelowViewport = entry.boundingClientRect.top > 0;
+        setShowScrollArrow(!entry.isIntersecting && isBelowViewport);
       },
       { threshold: 0.1 }
     );
@@ -501,6 +503,11 @@ export default function MapHero({
           )}
         </div>
       </div>
+
+      {/* Invisible anchor at the absolute bottom of MapHero to trigger the scroll arrow hide exactly when content below it appears (only used when there's no dock card) */}
+      {dockContacts.length === 0 && (
+        <div ref={dockCardRef} style={{ position: 'absolute', bottom: 10, height: 1, width: '100%' }} />
+      )}
 
       {/* Sidebar Overlay */}
       {sidebarOpen && (
