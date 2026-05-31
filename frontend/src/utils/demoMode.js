@@ -30,10 +30,9 @@ function readDemoMode() {
   const path = window.location.pathname;
   if (path === '/demo' || path.startsWith('/demo/')) return true;
 
-  // Default: demo ON. A judge opening the deployed URL must not be able to
-  // place a real 108/911 call with one accidental tap. Real dials are an
-  // explicit opt-in via ?live=1 (or ?demo=0).
-  return true;
+  // Default: demo OFF in production.
+  // Judges should use the /demo path to avoid accidental real emergency calls.
+  return false;
 }
 
 export const DEMO_MODE = readDemoMode();
