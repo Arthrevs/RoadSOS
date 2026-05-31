@@ -388,7 +388,8 @@ def build_tex() -> str:
 2. Assumptions         & 27 explicit design constraints \\
 3. Software packages   & Backend pip + frontend npm + external APIs \\
 4. Architecture        & Request flow, offline strategy, crash detection \\
-5. Key source code     & Plus Code encoder + AI triage (full repo on GitHub) \\
+5. Database documentation & RoadSOS --- Structured Database Documentation \\
+6. Key source code     & Plus Code encoder + AI triage (full repo on GitHub) \\
 \bottomrule
 \end{tabular}
 \end{titlepage}
@@ -571,7 +572,23 @@ The summary below captures the request flow and the four-tier offline strategy.}
 \end{itemize}
 """)
 
-    # ── Section 5: Source code ────────────────────────────────────────────
+
+    # ── Section 5: Data Schema ────────────────────────────────────────────
+    w(r"""
+%% ============================================================
+\section{RoadSOS --- Structured Database Documentation}
+%% ============================================================
+
+\textit{The following is the structured database documentation required for the models.}
+""")
+    schema_path = ROOT / "docs" / "DATA_SCHEMA.md"
+    if schema_path.exists():
+        schema_text = schema_path.read_text(encoding="utf-8")
+        w(verbatim_block(schema_text, "Markdown"))
+    else:
+        w(r"\textit{\color{rsred} docs/DATA_SCHEMA.md --- not present in this revision.}\n")
+
+    # ── Section 6: Source code ────────────────────────────────────────────
     w(r"""
 %% ============================================================
 \section{Key source code}
