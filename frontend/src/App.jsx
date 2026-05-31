@@ -350,6 +350,20 @@ export default function App() {
   // GPS lost detection — use cached location flag when no live GPS
   const gpsLost = !activeLocation?.lat && !!gpsError;
 
+  // Disable background scroll when any full-screen dialog/modal is open
+  const isAnyDialogOpen = langPickerOpen || tutorialStep > 0 || medicalOpen || routePlannerOpen || crashOpen || triageOpen || dispatchOpen;
+  
+  useEffect(() => {
+    if (isAnyDialogOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isAnyDialogOpen]);
+
   return (
     <div className={`app has-map-hero theme-${mapTheme} ${tutorialStep > 0 ? `tutorial-step-${tutorialStep}` : ''}`}>
 

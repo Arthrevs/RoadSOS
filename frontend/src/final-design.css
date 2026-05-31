@@ -955,9 +955,9 @@
   width: 100%;
   /* Cap at ~85% of the viewport so the next section (Emergency Numbers)
      is always partially visible Ã¢â‚¬â€ discoverable scroll affordance. */
-  height: 110svh;
-  min-height: 727px;
-  max-height: 1012px;
+  height: 132svh;
+  min-height: 872px;
+  max-height: 1214px;
   overflow: hidden;
   background: var(--rs-navy);
   margin-bottom: 8px;
@@ -1150,9 +1150,9 @@
   width: 100%;
   /* Cap at ~85% of the viewport so the next section (Emergency Numbers)
      is always partially visible Ã¢â‚¬â€ discoverable scroll affordance. */
-  height: 110svh;
-  min-height: 727px;
-  max-height: 1012px;
+  height: 132svh;
+  min-height: 872px;
+  max-height: 1214px;
   overflow: hidden;
   background: var(--rs-navy);
   margin-bottom: 8px;
@@ -5692,14 +5692,16 @@
 
 /* Scroll down arrow */
 .scroll-down-arrow {
+  position: absolute;
+  top: 551px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
   pointer-events: auto;
-  margin-bottom: 24px;
   cursor: pointer;
-  z-index: 20;
+  z-index: 1000;
 }
 
 /* Scroll up arrow */
@@ -5722,7 +5724,7 @@
 
 .scroll-arrow-pill {
   height: 32px;
-  padding: 0 16px;
+  padding: 0 32px;
   border-radius: 16px;
   display: flex;
   justify-content: center;

@@ -10,6 +10,7 @@ export default function ManualLocationModal({ open, onClose, onSetLocation, mapR
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [searching, setSearching] = useState(false);
+  const [hasSelectedLocation, setHasSelectedLocation] = useState(false);
   const searchTimeoutRef = useRef(null);
 
   // ── Attach map click listener when in map mode ──
@@ -27,12 +28,12 @@ export default function ManualLocationModal({ open, onClose, onSetLocation, mapR
         source: 'manual',
         landmark: `${latlng.lat.toFixed(4)}°, ${latlng.lng.toFixed(4)}°`,
       });
-      onClose();
+      setHasSelectedLocation(true);
     };
 
     map.on('click', handleMapClick);
     return () => map.off('click', handleMapClick);
-  }, [mode, mapRef, onSetLocation, onClose]);
+  }, [mode, mapRef, onSetLocation]);
 
   if (!open) return null;
 
@@ -81,7 +82,11 @@ export default function ManualLocationModal({ open, onClose, onSetLocation, mapR
   return (
     <>
       {/* Overlay */}
-      <div className="manual-location-overlay" onClick={onClose} />
+      <div 
+        className="manual-location-overlay" 
+        onClick={mode !== 'map' ? onClose : undefined}
+        style={mode === 'map' ? { pointerEvents: 'none', background: 'transparent' } : {}}
+      />
 
       {/* Modal */}
       <div className="manual-location-modal">
@@ -97,7 +102,10 @@ export default function ManualLocationModal({ open, onClose, onSetLocation, mapR
             <div className="mlm-text">{t('manual_location.choose_method', 'How would you like to set your location?')}</div>
             <button
               className="mlm-option"
-              onClick={() => setMode('map')}
+              onClick={() => {
+                setMode('map');
+                setHasSelectedLocation(false);
+              }}
             >
               <MapPin size={16} />
               <span>{t('manual_location.tap_map', 'Tap on map')}</span>
@@ -153,13 +161,22 @@ export default function ManualLocationModal({ open, onClose, onSetLocation, mapR
         )}
 
         {mode === 'map' && (
-          <div className="mlm-body">
+          <div className="mlm-body" style={{ pointerEvents: 'auto' }}>
             <div className="mlm-back" onClick={() => setMode(null)}>
               ← {t('common.back', 'Back')}
             </div>
             <div className="mlm-map-hint">
               {t('manual_location.tap_hint', 'Tap anywhere on the map to set your location')}
             </div>
+            {hasSelectedLocation && (
+              <button 
+                className="mlm-option" 
+                style={{ justifyContent: 'center', marginTop: '4px', background: 'linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%)', border: 'none', fontWeight: 'bold' }}
+                onClick={onClose}
+              >
+                {t('common.ok', 'OK')}
+              </button>
+            )}
           </div>
         )}
       </div>

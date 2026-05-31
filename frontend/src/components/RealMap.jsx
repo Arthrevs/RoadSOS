@@ -26,6 +26,7 @@ const TONES = {
   red: '#EF4444',
   blue: '#3B82F6',
   teal: '#14B8A6',
+  purple: '#9333ea',
 };
 
 const CAT_TONES = {
@@ -33,10 +34,10 @@ const CAT_TONES = {
   ambulance: 'red',
   police: 'blue',
   fire: 'red',
-  towing: 'teal',
-  repair: 'teal',
-  showroom: 'teal',
-  tyre: 'teal',
+  towing: 'purple',
+  repair: 'purple',
+  showroom: 'purple',
+  tyre: 'purple',
 };
 
 const CAT_EMOJI = {
@@ -125,6 +126,191 @@ const CAT_SVG = {
 
 <!-- Star highlight top -->
 <polygon points="340,222 362,292 340,272 318,292" fill="#f8e888" opacity="0.3"/>
+</svg>`,
+  showroom: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
+
+  <!-- Pin outer shape -->
+  <path d="
+    M200,20
+    C100,20 30,90 30,190
+    C30,270 80,330 130,370
+    L200,480
+    L270,370
+    C320,330 370,270 370,190
+    C370,90 300,20 200,20
+    Z
+  " fill="#9333ea"/>
+
+  <!-- White circle cutout -->
+  <circle cx="200" cy="185" r="130" fill="#ffffff"/>
+
+  <!-- CART OUTLINES (Thin dark border) -->
+  <polygon points="105,95 245,95 220,185 130,185" fill="none" stroke="#0a1217" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M 245,95 L 280,95 L 280,120" fill="none" stroke="#0a1217" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 115,215 L 255,215 A 15,15 0 0 0 255,185 L 240,185" fill="none" stroke="#0a1217" stroke-width="15" stroke-linecap="round"/>
+  <circle cx="140" cy="255" r="18.5" fill="#0a1217"/>
+  <circle cx="230" cy="255" r="18.5" fill="#0a1217"/>
+
+  <!-- CART FILLS (Blue color) -->
+  <polygon points="105,95 245,95 220,185 130,185" fill="#1c628a"/>
+  <path d="M 245,95 L 280,95 L 280,120" fill="none" stroke="#1c628a" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 115,215 L 255,215 A 15,15 0 0 0 255,185 L 240,185" fill="none" stroke="#1c628a" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="140" cy="255" r="17" fill="#1c628a"/>
+  <circle cx="230" cy="255" r="17" fill="#1c628a"/>
+
+</svg>`,
+  hospital: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
+  <!-- Pin outer shape -->
+  <path d="
+    M200,20
+    C100,20 30,90 30,190
+    C30,270 80,330 130,370
+    L200,480
+    L270,370
+    C320,330 370,270 370,190
+    C370,90 300,20 200,20
+    Z
+  " fill="#16a34a"/>
+  <!-- White circle cutout -->
+  <circle cx="200" cy="185" r="130" fill="#ffffff"/>
+  <!-- Medical Cross -->
+  <rect x="165" y="100" width="70" height="170" fill="#16a34a"/>
+  <rect x="115" y="150" width="170" height="70" fill="#16a34a"/>
+</svg>`,
+  ambulance: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
+  <!-- Pin outer shape -->
+  <path d="
+    M200,20
+    C100,20 30,90 30,190
+    C30,270 80,330 130,370
+    L200,480
+    L270,370
+    C320,330 370,270 370,190
+    C370,90 300,20 200,20
+    Z
+  " fill="#c92a2a"/>
+  <!-- White circle cutout -->
+  <circle cx="200" cy="185" r="130" fill="#ffffff"/>
+  <!-- Medical Cross -->
+  <rect x="165" y="100" width="70" height="170" fill="#c92a2a"/>
+  <rect x="115" y="150" width="170" height="70" fill="#c92a2a"/>
+</svg>`,
+  repair: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
+  <!-- Pin outer shape -->
+  <path d="
+    M200,20
+    C100,20 30,90 30,190
+    C30,270 80,330 130,370
+    L200,480
+    L270,370
+    C320,330 370,270 370,190
+    C370,90 300,20 200,20
+    Z
+  " fill="#9333ea"/>
+  <!-- White circle cutout -->
+  <circle cx="200" cy="185" r="130" fill="#ffffff"/>
+  
+  <!-- Wrench -->
+  <g transform="translate(200, 185) rotate(45) scale(1.15) translate(-200, -185)">
+    <!-- Outer Outline (Dark Silver) -->
+    <circle cx="200" cy="115" r="39" fill="#475569"/>
+    <circle cx="200" cy="255" r="39" fill="#475569"/>
+    <rect x="178" y="115" width="44" height="140" fill="#475569"/>
+    
+    <!-- Main Wrench (Silver) -->
+    <circle cx="200" cy="115" r="35" fill="#94a3b8"/>
+    <circle cx="200" cy="255" r="35" fill="#94a3b8"/>
+    <rect x="182" y="115" width="36" height="140" fill="#94a3b8"/>
+    
+    <!-- Inner Outline (Dark Silver) -->
+    <circle cx="200" cy="115" r="20" fill="#475569"/>
+    <rect x="180" y="66" width="40" height="49" fill="#475569"/>
+    <circle cx="200" cy="255" r="20" fill="#475569"/>
+    
+    <!-- White Cutouts -->
+    <circle cx="200" cy="115" r="16" fill="#ffffff"/>
+    <rect x="184" y="70" width="32" height="45" fill="#ffffff"/>
+    <circle cx="200" cy="255" r="16" fill="#ffffff"/>
+  </g>
+</svg>`,
+  fire: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
+  <!-- Pin outer shape -->
+  <path d="
+    M200,20
+    C100,20 30,90 30,190
+    C30,270 80,330 130,370
+    L200,480
+    L270,370
+    C320,330 370,270 370,190
+    C370,90 300,20 200,20
+    Z
+  " fill="#c92a2a"/>
+  <!-- White circle cutout -->
+  <circle cx="200" cy="185" r="130" fill="#ffffff"/>
+  
+  <!-- Outer Flame -->
+  <path d="M 200,250 
+           C 130,250 140,150 190,90 
+           C 190,110 200,130 210,140 
+           C 215,135 220,125 230,120 
+           C 250,160 270,250 200,250 Z" 
+        fill="#c92a2a"/>
+  <!-- Inner Cutout -->
+  <path d="M 200,240 
+           C 170,240 170,190 200,150 
+           C 230,190 230,240 200,240 Z" 
+        fill="#ffffff"/>
+</svg>`,
+  police: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
+  <!-- Pin outer shape -->
+  <path d="
+    M200,20
+    C100,20 30,90 30,190
+    C30,270 80,330 130,370
+    L200,480
+    L270,370
+    C320,330 370,270 370,190
+    C370,90 300,20 200,20
+    Z
+  " fill="#2563eb"/>
+  <!-- White circle cutout -->
+  <circle cx="200" cy="185" r="130" fill="#ffffff"/>
+  
+  <!-- Police Hat -->
+  <!-- Upper Hat -->
+  <polygon points="200,100 290,125 290,145 270,175 130,175 110,145 110,125" fill="#334155"/>
+  <!-- Hat Brim -->
+  <polygon points="115,185 285,185 240,240 160,240" fill="#334155"/>
+  <!-- Hat Band -->
+  <rect x="130" y="175" width="140" height="10" fill="#f8fafc"/>
+  
+  <!-- Badge Shield -->
+  <path d="M 170,125 L 200,110 L 230,125 Q 230,175 200,190 Q 170,175 170,125 Z" fill="#e2e8f0"/>
+  <!-- Badge Star -->
+  <polygon points="200,125 206,138 221,140 210,150 213,164 200,157 187,164 190,150 179,140 194,138" fill="#334155"/>
+</svg>`,
+  tyre: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
+  <!-- Pin outer shape -->
+  <path d="M 200,480 L 75,258 A 145,145 0 1,1 325,258 Z" fill="#9333ea"/>
+  <!-- White circle cutout -->
+  <circle cx="200" cy="185" r="135" fill="#ffffff"/>
+  
+  <!-- Tire Outer Ring -->
+  <circle cx="200" cy="185" r="100" fill="#111827"/>
+  <circle cx="200" cy="185" r="105" fill="none" stroke="#111827" stroke-width="10" stroke-dasharray="14 10"/>
+  
+  <!-- Tire Inner White -->
+  <circle cx="200" cy="185" r="70" fill="#ffffff"/>
+  
+  <!-- 5 Spokes -->
+  <g stroke="#111827" stroke-width="10" stroke-linecap="round">
+    <line x1="200" y1="185" x2="200" y2="115" transform="rotate(0, 200, 185)"/>
+    <line x1="200" y1="185" x2="200" y2="115" transform="rotate(72, 200, 185)"/>
+    <line x1="200" y1="185" x2="200" y2="115" transform="rotate(144, 200, 185)"/>
+    <line x1="200" y1="185" x2="200" y2="115" transform="rotate(216, 200, 185)"/>
+    <line x1="200" y1="185" x2="200" y2="115" transform="rotate(288, 200, 185)"/>
+  </g>
+  <circle cx="200" cy="185" r="10" fill="#111827"/>
 </svg>`
 };
 
@@ -154,9 +340,22 @@ function buildServiceIcon(contact) {
   const svgContent = CAT_SVG[cat];
   const emoji = CAT_EMOJI[cat] || '📍';
   
-  const innerHtml = svgContent 
-    ? `<div style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; overflow: hidden;">${svgContent}</div>` 
-    : `<span>${emoji}</span>`;
+  let pinHtml;
+  if (cat === 'showroom' || cat === 'hospital' || cat === 'ambulance' || cat === 'repair' || cat === 'police' || cat === 'tyre' || cat === 'fire') {
+    // These categories have their own full pin shape SVGs, don't wrap them in the default colored circle
+    pinHtml = `<div style="width: 32px; height: 40px; margin: 0 auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">${svgContent}</div>`;
+  } else {
+    const innerHtml = svgContent 
+      ? `<div style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 50%; overflow: hidden;">${svgContent}</div>` 
+      : `<span>${emoji}</span>`;
+
+    pinHtml = `
+      <div class="rs-svc-pin" style="background: ${color}; box-shadow: 0 4px 14px ${color}aa;">
+        ${innerHtml}
+      </div>
+      <div class="rs-svc-point"></div>
+    `;
+  }
 
   return L.divIcon({
     className: 'rs-service-marker',
@@ -165,10 +364,7 @@ function buildServiceIcon(contact) {
         <span class="rs-svc-name">${shortName}</span>
         <span class="rs-svc-km">${km}km</span>
       </div>
-      <div class="rs-svc-pin" style="background: ${color}; box-shadow: 0 4px 14px ${color}aa;">
-        ${innerHtml}
-      </div>
-      <div class="rs-svc-point"></div>
+      ${pinHtml}
     `,
     iconSize: [60, 80],
     iconAnchor: [30, 80],

@@ -7,6 +7,7 @@ import ManualLocationModal from './ManualLocationModal';
 import { subscribeBackendStatus } from '../utils/backendWarmup';
 import { setManualLocation, refreshGpsLocation } from '../hooks/useLocation';
 import { getIsMedicalIdComplete } from '../utils/medicalId';
+import { prefetchArea } from '../utils/routeCache';
 
 const CAT_ICONS = {
   hospital: Hospital,
@@ -183,6 +184,7 @@ export default function MapHero({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [showScrollArrow, setShowScrollArrow] = useState(true);
+  const [savingArea, setSavingArea] = useState(null); // { done, total } | null
   const mapRef = useRef(null);
   const dockCardRef = useRef(null);
 
@@ -231,13 +233,24 @@ export default function MapHero({
     }
   }, [location]);
 
+  // ── Handle save area for offline ──
+  const handleSaveArea = useCallback(async () => {
+    if (!location?.lat) return;
+    setSavingArea({ done: 0, total: 0 });
+    const res = await prefetchArea(location.lat, location.lon, {
+      radiusKm: 8,
+      onProgress: setSavingArea,
+    });
+    setSavingArea(null);
+    alert(`Saved ${res.cached}/${res.total} nearby zones for offline use.`);
+  }, [location]);
+
   // ── Handle manual location set ──
   // setManualLocation() dispatches roadsos:manual-location which the running
   // useLocation() hook catches, updating App.jsx's activeLocation and
   // triggering a fresh /search call for the new coords.
   const handleSetManualLocation = useCallback((locData) => {
     setManualLocation(locData.lat, locData.lon, locData.landmark);
-    setManualLocationOpen(false);
     if (mapRef.current) {
       mapRef.current.setView([locData.lat, locData.lon], 15, { animate: true, duration: 0.5 });
     }
@@ -434,22 +447,24 @@ export default function MapHero({
         </div>
       </div>
 
+      {showScrollArrow && (
+        <div className="scroll-down-arrow" onClick={() => {
+          if (dockCardRef.current) {
+            dockCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else {
+            window.scrollTo({ top: window.innerHeight * 0.9, behavior: 'smooth' });
+          }
+        }}>
+          <div className="scroll-arrow-pill">
+            <span>Scroll down</span>
+            <ChevronDown size={16} strokeWidth={2.5} />
+          </div>
+        </div>
+      )}
+
       {/* Bottom dock gradient + SOS + Quick contacts */}
       <div className="map-hero-dock">
-        {showScrollArrow && (
-          <div className="scroll-down-arrow" onClick={() => {
-            if (dockCardRef.current) {
-              dockCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else {
-              window.scrollTo({ top: window.innerHeight * 0.9, behavior: 'smooth' });
-            }
-          }}>
-            <div className="scroll-arrow-pill">
-              <span>Take down</span>
-              <ChevronDown size={16} strokeWidth={2.5} />
-            </div>
-          </div>
-        )}
+
         <div className="dock-interactive-zone">
           <SOSButton
             location={location}
@@ -523,31 +538,56 @@ export default function MapHero({
                 <div className="m-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
               </button>
               {onToggleTheme && (
-                  <div className="menu-item" role="button" tabIndex="0" onClick={onToggleTheme}>
+                  <button className="menu-item" onClick={onToggleTheme}>
                     <span className="m-num">5</span>
                     <div className="m-icon">
                       {mapTheme === 'light' ? <Sun size={18} strokeWidth={1.8} /> : <Moon size={18} strokeWidth={1.8} />}
                     </div>
-                    <span className="m-label" style={{ flex: 1 }}>{t('sidebar.toggle_theme')}</span>
+                    <span className="m-label" style={{ flex: 1 }}>{t('sidebar.toggle_theme', 'Dark / Light mode')}</span>
                     <div className="theme-toggle">
                       <div className={`theme-toggle-knob ${mapTheme === 'dark' ? 'dark' : 'light'}`} />
                     </div>
-                  </div>)}
+                  </button>)}
               <button className="menu-item" onClick={() => { setSidebarOpen(false); if (mapRef.current) mapRef.current.recenter(); }}>
                 <span className="m-num">6</span>
-                <div className="m-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></div>
-                <span className="m-label">{t('sidebar.recenter')}</span>
+                <div className="m-icon"><Crosshair size={17} strokeWidth={1.8} /></div>
+                <span className="m-label">{t('sidebar.recenter', 'Recenter Map')}</span>
                 <div className="m-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
               </button>
 
-              <button className="menu-item" onClick={() => { setSidebarOpen(false); if(onTutorialStart) onTutorialStart(); }}>
-                <span className="m-num"></span>
-                <div className="m-icon" style={{ opacity: 0 }}></div>
-                <span className="m-label" style={{ fontWeight: 700 }}>{t('sidebar.tutorial')}</span>
+              <button className="menu-item" onClick={handleSaveArea} disabled={!!savingArea}>
+                <span className="m-num">7</span>
+                <div className="m-icon"><Map size={17} strokeWidth={1.8} /></div>
+                <span className="m-label">
+                  {savingArea ? `Saving… ${savingArea.done}/${savingArea.total}` : t('sidebar.save_area', 'Save Area for Offline')}
+                </span>
+              </button>
+
+              <button 
+                onClick={() => { setSidebarOpen(false); if(onTutorialStart) onTutorialStart(); }}
+                style={{
+                  width: 'calc(100% - 24px)',
+                  margin: '10px 12px 4px 12px',
+                  padding: '12px 16px',
+                  background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontWeight: '700',
+                  fontSize: '15px',
+                  cursor: 'pointer',
+                  textAlign: 'center',
+                  boxShadow: '0 4px 14px rgba(37,99,235,0.35)',
+                  transition: 'transform 0.1s, opacity 0.15s'
+                }}
+                onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.96)'}
+                onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                {t('sidebar.tutorial', 'Tutorial')}
               </button>
 
               <div className="divider"></div>
-
               <div className="info-block">
                 <p className="info-shortcut">{t('sidebar.shortcut_info')}</p>
                 <div className="info-sep"></div>

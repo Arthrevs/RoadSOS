@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RotateCw, Sun, Globe, MapPin, AlertTriangle } from 'lucide-react';
+import { RotateCw, Sun, Globe, MapPin, AlertTriangle, Activity, Truck, ArrowRight } from 'lucide-react';
+import { DEMO_MODE } from '../utils/demoMode';
 
 /* ── Inline icon helper — renders a lucide icon inline with text ── */
 function I({ children, label }) {
@@ -12,119 +13,205 @@ function I({ children, label }) {
   );
 }
 
-/* ── Step data ── */
-const QUICK_STEPS = [
-  {
-    emoji: '🔘',
-    titleFallback: 'These Buttons Help You',
-    bodyType: 'buttons-list',
-  },
-  {
-    emoji: '🆘',
-    titleFallback: 'Need Help? Do This',
-    bodyType: 'steps-list',
-    items: [
-      { num: '1', text: 'Tap the big blue SOS button' },
-      { num: '2', text: 'Your location is sent to your emergency contact' },
-      { num: '3', text: 'Tap Call on the nearest hospital below' },
-    ],
-    footer: "That's it. Help is on the way.",
-  },
-  {
-    emoji: '🛡️',
-    titleFallback: 'It Works Even If You Can\'t',
-    bodyType: 'steps-list',
-    items: [
-      { num: '⏱️', text: 'A 30-second countdown starts' },
-      { num: '📤', text: 'Your location is sent automatically' },
-      { num: '📱', text: 'Your emergency contact gets a message' },
-    ],
-    intro: "If your phone detects a crash and you can't respond:",
-    footer: "You don't need to do anything. The app handles it.",
-  },
-];
-
-const FULL_STEPS = [
-  {
-    emoji: '👀',
-    titleFallback: 'What You See On Screen',
-    bodyType: 'buttons-list',
-    footer: "The dot on the right shows if you're online. Even with zero signal, you'll always see emergency numbers like 108, 100, 101, 112.",
-  },
-  {
-    emoji: '📋',
-    titleFallback: 'Set This Up Once',
-    bodyType: 'two-sections',
-    sections: [
-      {
-        heading: '① Tap the ID button',
-        lines: [
-          'Fill in: blood type, allergies, emergency contact',
-          "Paramedics can read this if you're unconscious",
-          'It stays on your phone only — never uploaded',
-        ],
-      },
-      {
-        heading: '② Tap Plan Offline Trip',
-        lines: [
-          "If you're driving somewhere with bad signal",
-          'It saves hospitals and police along your route',
-          'So the data is ready before you lose signal',
-        ],
-      },
-    ],
-  },
-  {
-    emoji: '⚡',
-    titleFallback: 'When Something Happens',
-    bodyType: 'steps-list',
-    intro: "Here's exactly what to do:",
-    items: [
-      { num: '1', text: 'App finds your location automatically' },
-      { num: '2', text: 'Answer 2 quick questions (what happened?)' },
-      { num: '3', text: 'The app puts the best help at the top' },
-      { num: '4', text: 'Tap Call on the first result' },
-      { num: '5', text: 'Tap SOS to send your location' },
-    ],
-    footer: '⏱️ Total time: under 10 seconds',
-  },
-  {
-    emoji: '🛡️',
-    titleFallback: "If You Can't Respond",
-    bodyType: 'steps-list',
-    intro: 'Your phone watches for sudden stops. If it detects a crash:',
-    items: [
-      { num: '⏱️', text: 'A 30-second countdown starts' },
-      { num: '📤', text: 'If you don\'t cancel, it auto-sends your location, road name, and crash alert' },
-      { num: '📱', text: 'Sent via SMS and WhatsApp to your emergency contact' },
-    ],
-    footer: "You don't need to touch anything.",
-  },
-  {
-    emoji: '📡',
-    titleFallback: 'No Internet? Still Works',
-    bodyType: 'steps-list',
-    intro: 'The app has 4 backup layers:',
-    items: [
-      { num: '1', text: 'Live search (when online)' },
-      { num: '2', text: 'Saved results from last time' },
-      { num: '3', text: 'Your offline trip data' },
-      { num: '4', text: 'Emergency numbers built into the app' },
-    ],
-    footer: 'Even with zero internet, you\'ll always see: 📞 108 · 100 · 101 · 112. These work offline. Always.',
-  },
-  {
-    emoji: '🎬',
-    titleFallback: 'Want To See a Demo?',
-    bodyType: 'simple',
-    text: 'We have a short video that shows how crash detection works in real life.\n\nWant to watch it?',
-  },
-];
-
 export default function TutorialOverlay({ onComplete, theme = 'dark' }) {
   const { t } = useTranslation();
   const [mode, setMode] = useState(null);
   const [stepIdx, setStepIdx] = useState(0);
+
+  const QUICK_STEPS = [
+    {
+      titleFallback: t('tutorial.quick.title_1', 'The functional features'),
+      bodyType: 'buttons-list',
+    },
+    {
+      customHeader: (
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+          <button 
+            className="sos-bar"
+            style={{ pointerEvents: 'none', width: '100%', maxWidth: '300px', margin: '0' }}
+          >
+            <div className="signal">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <div className="vdiv"></div>
+            <span className="sos-label">SOS</span>
+            <span className="arrow-sep">→</span>
+            <span className="sos-dest">Send Location</span>
+          </button>
+        </div>
+      ),
+      titleFallback: t('tutorial.quick.title_2', 'When to use SOS'),
+      titleSmall: true,
+      bodyType: 'steps-list',
+      largeSteps: true,
+      items: [
+        { num: '1', text: t('tutorial.quick.step2_1', 'The blue button as given above is the SOS button') },
+        { num: '2', text: t('tutorial.quick.step2_2', 'If you press it your location is send\n   a) to your contacts saved in Medical ID\n   b) to emergency service near you') },
+        { num: '3', text: t('tutorial.quick.step2_3', 'Below SOS button there is nearest services and other contact for other services') },
+      ],
+      footer: t('tutorial.quick.footer_2', "That's it. Help is on the way."),
+    },
+    {
+      customHeader: (isDark) => (
+        <div className={isDark ? 'theme-dark' : 'theme-light'} style={{ pointerEvents: 'none', display: 'flex', justifyContent: 'center', height: '220px', overflow: 'hidden', marginBottom: '6px' }}>
+          <div style={{ transform: 'scale(0.5)', transformOrigin: 'top center', width: '312px' }}>
+            <div className="triage-sheet">
+              <div className="triage-handle"><div className="triage-handle-bar"></div></div>
+              <div className="triage-hd" style={{ padding: '12px 16px' }}>
+                <div className="triage-hd-l">
+                  <div className="triage-hd-tag" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <Activity size={10} strokeWidth={2.5} /> QUICK TRIAGE
+                  </div>
+                  <div className="triage-hd-title" style={{ fontSize: '18px' }}>{t('tutorial.triage.title', 'What happened?')}</div>
+                  <div className="triage-hd-sub" style={{ fontSize: '11px', maxWidth: '170px' }}>{t('tutorial.triage.sub', 'Two questions — we will prioritise the right help for your situation.')}</div>
+                </div>
+                <button className="triage-sos" style={{ height: '30px', fontSize: '12px', marginTop: '2px' }}>SOS</button>
+              </div>
+              <div className="triage-rule"></div>
+              <div className="triage-qs" style={{ padding: '12px 16px', gap: '10px' }}>
+                <div className="triage-qb">
+                  <div className="triage-qrow" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div className="triage-qico"><Activity size={12} strokeWidth={2.2} /></div>
+                    <span className="triage-qtxt" style={{ fontSize: '12px' }}>{t('tutorial.triage.q1', 'Is anyone injured?')}</span>
+                  </div>
+                  <div className="triage-pair">
+                    <button className="triage-opt py" style={{ height: '38px', fontSize: '11px' }}>
+                      <div className="triage-rc"><div className="triage-rc-inner"></div></div>{t('tutorial.triage.yes_injured', 'Yes, injured')}
+                    </button>
+                    <button className="triage-opt" style={{ height: '38px', fontSize: '11px' }}>
+                      <div className="triage-rc"><div className="triage-rc-inner"></div></div>{t('tutorial.triage.no_injuries', 'No injuries')}
+                    </button>
+                  </div>
+                </div>
+                <div className="triage-qb">
+                  <div className="triage-qrow" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div className="triage-qico"><Truck size={12} strokeWidth={2.2} /></div>
+                    <span className="triage-qtxt" style={{ fontSize: '12px' }}>{t('tutorial.triage.q2', 'Is the vehicle blocking the road?')}</span>
+                  </div>
+                  <div className="triage-pair">
+                    <button className="triage-opt" style={{ height: '38px', fontSize: '11px' }}>
+                      <div className="triage-rc"><div className="triage-rc-inner"></div></div>{t('tutorial.triage.yes_blocking', 'Yes, blocking')}
+                    </button>
+                    <button className="triage-opt pn" style={{ height: '38px', fontSize: '11px' }}>
+                      <div className="triage-rc"><div className="triage-rc-inner"></div></div>{t('tutorial.triage.road_clear', 'Road is clear')}
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="triage-res ra" style={{ margin: '0 16px', padding: '10px', fontSize: '11px' }}>
+                <AlertTriangle size={13} strokeWidth={2} style={{ flexShrink: 0 }} />
+                <span>{t('tutorial.triage.alert', 'Injury reported — Ambulance (108) will be prioritised first.')}</span>
+              </div>
+              <button className="triage-fbtn on" style={{ height: '42px', fontSize: '12px', margin: '10px 16px 6px' }}>
+                <ArrowRight size={12} strokeWidth={2.2} /> {t('tutorial.triage.get_help', 'Get Prioritised Help')}
+              </button>
+              <button className="triage-skip-btn" style={{ fontSize: '11px', marginBottom: '16px' }}>{t('tutorial.triage.skip', 'Skip — show all contacts')}</button>
+            </div>
+          </div>
+        </div>
+      ),
+      titleFallback: t('tutorial.quick.title_3', 'Prioritize your situation'),
+      titleSmall: true,
+      bodyType: 'steps-list',
+      largeSteps: true,
+      items: [
+        { num: '1', text: t('tutorial.quick.step3_1', 'It is the interface that appears of prioritize my situation button below call the nearest service area') },
+        { num: '2', text: t('tutorial.quick.step3_2', 'Answer a few quick questions about your situation, and the system will prioritize the help you need based on urgency and potential risk.') },
+      ],
+    },
+    {
+      titleFallback: t('tutorial.quick.title_4', 'It Works Even If You Can\'t'),
+      bodyType: 'steps-list',
+      noBubble: true,
+      items: [
+        { num: '•', text: t('tutorial.quick.step4_1', 'A 10-second countdown starts') },
+        { num: '•', text: t('tutorial.quick.step4_2', 'Your location is sent automatically') },
+        { num: '•', text: t('tutorial.quick.step4_3', 'Your emergency contact gets a message') },
+        { num: '•', text: t('tutorial.quick.step4_4', 'The emergency services are informed') },
+      ],
+      intro: t('tutorial.quick.intro_4', "If your phone detects a crash and you can't respond:"),
+      footer: t('tutorial.quick.footer_4', "You don't need to do anything. The app handles it."),
+    },
+  ];
+
+  const FULL_STEPS = [
+    {
+      titleFallback: t('tutorial.full.title_1', 'What You See On Screen'),
+      bodyType: 'buttons-list',
+      footer: t('tutorial.full.footer_1', "The dot on the right shows if you're online. Even with zero signal, you'll always see emergency numbers like 108, 100, 101, 112."),
+    },
+    {
+      emoji: '📋',
+      titleFallback: t('tutorial.full.title_2', 'Set This Up Once'),
+      bodyType: 'two-sections',
+      sections: [
+        {
+          heading: t('tutorial.full.heading_2_1', '① Tap the ID button'),
+          lines: [
+            t('tutorial.full.lines_2_1_1', 'Fill in: blood type, allergies, emergency contact'),
+            t('tutorial.full.lines_2_1_2', "Paramedics can read this if you're unconscious"),
+            t('tutorial.full.lines_2_1_3', 'It stays on your phone only — never uploaded'),
+          ],
+        },
+        {
+          heading: t('tutorial.full.heading_2_2', '② Tap Plan Offline Trip'),
+          lines: [
+            t('tutorial.full.lines_2_2_1', "If you're driving somewhere with bad signal"),
+            t('tutorial.full.lines_2_2_2', 'It saves hospitals and police along your route'),
+            t('tutorial.full.lines_2_2_3', 'So the data is ready before you lose signal'),
+          ],
+        },
+      ],
+    },
+    {
+      titleFallback: t('tutorial.full.title_3', 'When Something Happens'),
+      bodyType: 'steps-list',
+      intro: t('tutorial.full.intro_3', "Here's exactly what to do:"),
+      headerWidget: (
+        <button
+          className="btn-prioritise"
+          style={{ pointerEvents: 'none', width: '100%', margin: '8px 0 12px', padding: '0 16px' }}
+        >
+          {t('tutorial.full.prioritise_btn', 'Prioritise for my situation')}
+          <span className="arrow">
+            <ArrowRight size={14} strokeWidth={2.2} />
+          </span>
+        </button>
+      ),
+      items: [
+        { num: '1', text: t('tutorial.full.step3_1', 'App finds your location automatically') },
+        { num: '2', text: t('tutorial.full.step3_2', 'Answer 2 question using priortize my situation button') },
+        { num: '3', text: t('tutorial.full.step3_3', 'The app puts the best help for you') },
+      ],
+      footer: t('tutorial.full.footer_3', '⏱️ Total time: under 10 seconds'),
+    },
+    {
+      titleFallback: t('tutorial.quick.title_4', 'It Works Even If You Can\'t'),
+      bodyType: 'steps-list',
+      noBubble: true,
+      items: [
+        { num: '•', text: t('tutorial.quick.step4_1', 'A 10-second countdown starts') },
+        { num: '•', text: t('tutorial.quick.step4_2', 'Your location is sent automatically') },
+        { num: '•', text: t('tutorial.quick.step4_3', 'Your emergency contact gets a message') },
+        { num: '•', text: t('tutorial.quick.step4_4', 'The emergency services are informed') },
+      ],
+      intro: t('tutorial.quick.intro_4', "If your phone detects a crash and you can't respond:"),
+      footer: t('tutorial.quick.footer_4', "You don't need to do anything. The app handles it."),
+    },
+    {
+      emoji: '📡',
+      titleFallback: t('tutorial.full.title_4', 'No Internet? Still Works'),
+      bodyType: 'steps-list',
+      intro: t('tutorial.full.intro_4', 'The app has 4 backup layers:'),
+      items: [
+        { num: '1', text: t('tutorial.full.step4_1', 'Live search (when online)') },
+        { num: '2', text: t('tutorial.full.step4_2', 'Saved results from last time') },
+        { num: '3', text: t('tutorial.full.step4_3', 'Your offline trip data') },
+        { num: '4', text: t('tutorial.full.step4_4', 'Emergency numbers built into the app') },
+      ],
+      footer: t('tutorial.full.footer_4', 'Even with zero internet, you\'ll always see: 📞 108 · 100 · 101 · 112. These work offline. Always.'),
+    },
+  ];
 
   const steps = mode === 'quick' ? QUICK_STEPS : mode === 'full' ? FULL_STEPS : [];
   const totalSteps = steps.length;
@@ -139,30 +226,67 @@ export default function TutorialOverlay({ onComplete, theme = 'dark' }) {
   /* ── The buttons list body (used in quick step 1 and full step 1) ── */
   const renderButtonsList = (footer) => (
     <div className="tut-buttons-list">
-      <p className="tut-body-intro">See the buttons at the top of your screen?</p>
+      <p className="tut-body-intro" style={{ marginBottom: '12px' }}>{t('tutorial.buttons_intro', 'The buttons on top bar of the screen')}</p>
+      
+      {/* Top bar image replica inside the square box area */}
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
+        <div 
+          className={`toolbar toolbar-${isDark ? 'light' : 'dark'}`} 
+          style={{ 
+            position: 'relative', 
+            margin: 0, 
+            pointerEvents: 'none',
+            boxShadow: isDark ? '0 4px 16px rgba(255,255,255,0.1)' : '0 4px 16px rgba(0,0,0,0.15)'
+          }}
+        >
+          <button className="btn-icon"><RotateCw size={19} strokeWidth={1.8} /></button>
+          <button className="btn-icon"><Sun size={19} strokeWidth={1.8} /></button>
+          <button className="btn-icon"><Globe size={19} strokeWidth={1.8} /></button>
+          <button className="btn-icon"><MapPin size={19} strokeWidth={1.8} /></button>
+          <button className="btn-icon">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" strokeWidth="1.8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          </button>
+          {DEMO_MODE && (
+            <button className="btn-icon">
+              <AlertTriangle size={16} strokeWidth={2} />
+            </button>
+          )}
+          <div className="sep"></div>
+          <button className="btn-id">
+            <span>ID</span>
+          </button>
+        </div>
+      </div>
+
       <div className="tut-icon-rows">
-        <I label="Refresh — gets new nearby help"><RotateCw size={iconSize} strokeWidth={iconStroke} /></I>
-        <I label="Dark / Light mode"><Sun size={iconSize} strokeWidth={iconStroke} /></I>
-        <I label="Language — pick yours"><Globe size={iconSize} strokeWidth={iconStroke} /></I>
-        <I label="Set location — if GPS doesn't work"><MapPin size={iconSize} strokeWidth={iconStroke} /></I>
-        <I label="Crash alert — test it"><AlertTriangle size={iconSize} strokeWidth={iconStroke} /></I>
-        <I label="Medical ID — your health info">
+        <I label={t('tutorial.icon.refresh', 'Refreshes location and places')}><RotateCw size={iconSize} strokeWidth={iconStroke} /></I>
+        <I label={t('tutorial.icon.theme', 'Dark/Light mode')}><Sun size={iconSize} strokeWidth={iconStroke} /></I>
+        <I label={t('tutorial.icon.lang', 'Language')}><Globe size={iconSize} strokeWidth={iconStroke} /></I>
+        <I label={t('tutorial.icon.location', 'Sets yours location manually and searches')}><MapPin size={iconSize} strokeWidth={iconStroke} /></I>
+        {DEMO_MODE && (
+          <I label={t('tutorial.icon.demo', 'Intialises a demo crash test reponse of app')}><AlertTriangle size={iconSize} strokeWidth={iconStroke} /></I>
+        )}
+        <I label={t('tutorial.icon.id', 'Medical ID holds your bio data and emergency contacts')}>
           <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '-0.5px' }}>ID</span>
         </I>
+        <I label={t('tutorial.icon.trip', 'Preload emergency services before your trip')}>
+          <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" strokeWidth={iconStroke} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        </I>
       </div>
-      <p className="tut-body-footer">{footer || "The little dot on the right tells you if you're connected to the internet."}</p>
+      {footer && <p className="tut-body-footer">{footer}</p>}
     </div>
   );
 
   /* ── Steps list body ── */
   const renderStepsList = (step) => (
-    <div className="tut-steps-list">
+    <div className={`tut-steps-list ${step.largeSteps ? 'tut-steps-large' : ''}`}>
       {step.intro && <p className="tut-body-intro">{step.intro}</p>}
+      {step.headerWidget && step.headerWidget}
       <div className="tut-numbered-items">
         {step.items.map((item, i) => (
           <div key={i} className="tut-numbered-item">
-            <span className="tut-num">{item.num}</span>
-            <span className="tut-num-text">{item.text}</span>
+            <span className={`tut-num ${step.noBubble ? 'tut-num-plain' : ''}`}>{item.num}</span>
+            <span className="tut-num-text" style={{ whiteSpace: 'pre-wrap' }}>{item.text}</span>
           </div>
         ))}
       </div>
@@ -203,22 +327,21 @@ export default function TutorialOverlay({ onComplete, theme = 'dark' }) {
   // ── Welcome screen ──
   const renderWelcome = () => (
     <div className="tut-card" style={{ animationName: 'tutSlideUp' }}>
-      <div className="tut-welcome-emoji">👋</div>
       <h2 className="tut-title-big">
         {t('tutorial.welcome_title', 'Want a quick tour?')}
       </h2>
       <p className="tut-body">
-        {t('tutorial.welcome_body', 'This app can save your life in a road emergency. Let us show you how it works — takes less than a minute.')}
+        {t('tutorial.welcome_body', 'Welcome to RoadSOS. RoadSOS is a webapp that helps you to find nearby help in your time of emergency even if you are offline')}
       </p>
       <div className="tut-actions">
         <button className="tut-btn tut-btn-main" onClick={() => { setMode('quick'); setStepIdx(0); }}>
-          ⚡ {t('tutorial.quick_tour', 'Quick Tour — 1 minute')}
+          {t('tutorial.quick_tour', 'Quick Tour — 1 minute')}
         </button>
         <button className="tut-btn tut-btn-outline" onClick={() => { setMode('full'); setStepIdx(0); }}>
-          📖 {t('tutorial.full_tour', 'Full Tour — 5 minutes')}
+          {t('tutorial.full_tour', 'Full Tour — 5 minutes')}
         </button>
-        <button className="tut-btn tut-btn-skip" onClick={onComplete}>
-          {t('tutorial.skip', "Skip — I'll figure it out")}
+        <button className="tut-btn tut-btn-skip" onClick={onComplete} style={{ fontWeight: 'bold' }}>
+          {t('tutorial.skip', ' SKIP ')}
         </button>
       </div>
     </div>
@@ -226,7 +349,6 @@ export default function TutorialOverlay({ onComplete, theme = 'dark' }) {
 
   // ── Step dialog ──
   const renderStepDialog = () => {
-    const isFullDemoStep = mode === 'full' && isLastStep;
 
     return (
       <div className="tut-card" key={`${mode}-${stepIdx}`} style={{ animationName: 'tutSlideUp' }}>
@@ -239,39 +361,62 @@ export default function TutorialOverlay({ onComplete, theme = 'dark' }) {
         </div>
 
         {/* Emoji + Title */}
-        <div className="tut-step-emoji">{currentStep.emoji}</div>
-        <h2 className="tut-title-big">{currentStep.titleFallback}</h2>
+        {currentStep.customHeader && (typeof currentStep.customHeader === 'function' ? currentStep.customHeader(isDark) : currentStep.customHeader)}
+        {currentStep.emoji && <div className="tut-step-emoji">{currentStep.emoji}</div>}
+        <h2 className={`tut-title-big ${currentStep.titleSmall ? 'tut-title-small' : ''}`}>
+          {currentStep.titleFallback}
+        </h2>
 
         {/* Body */}
         {renderBody(currentStep)}
 
         {/* Actions */}
         <div className="tut-actions">
-          {isFullDemoStep ? (
-            <>
+          {isLastStep ? (
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                className="tut-btn"
+                style={{ flex: 1, backgroundColor: '#60a5fa', color: '#fff', border: 'none' }}
+                onClick={() => setStepIdx(i => i - 1)}
+              >
+                ← {t('tutorial.back', 'Back')}
+              </button>
+              <button 
+                className="tut-btn tut-btn-main" 
+                style={{ flex: 1, backgroundColor: '#2563eb', color: '#fff', border: 'none' }}
+                onClick={onComplete}
+              >
+                {t('tutorial.got_it', 'Got it — Done!')}
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                className="tut-btn"
+                style={{ flex: 1, backgroundColor: '#60a5fa', color: '#fff', border: 'none' }}
+                onClick={() => {
+                  if (stepIdx === 0) setMode(null);
+                  else setStepIdx(i => i - 1);
+                }}
+              >
+                ← {t('tutorial.back', 'Back')}
+              </button>
               <button
                 className="tut-btn tut-btn-main"
-                onClick={() => { window.open('https://roadsos-frontend.vercel.app/demo', '_blank'); onComplete(); }}
+                style={{ flex: 1, backgroundColor: '#2563eb', color: '#fff', border: 'none' }}
+                onClick={() => setStepIdx(i => i + 1)}
               >
-                🎬 {t('tutorial.watch_demo', 'Watch Demo Video')}
+                {t('tutorial.next', 'Next')} →
               </button>
-              <button className="tut-btn tut-btn-outline" onClick={onComplete}>
-                ✅ {t('tutorial.im_good', "I'm good — Done!")}
-              </button>
-            </>
-          ) : isLastStep ? (
-            <button className="tut-btn tut-btn-main" onClick={onComplete}>
-              ✅ {t('tutorial.got_it', 'Got it — Done!')}
-            </button>
-          ) : (
-            <button className="tut-btn tut-btn-main" onClick={() => setStepIdx(i => i + 1)}>
-              {t('tutorial.next', 'Next')} →
-            </button>
+            </div>
           )}
-
-          {stepIdx > 0 && (
-            <button className="tut-btn tut-btn-back" onClick={() => setStepIdx(i => i - 1)}>
-              ← {t('tutorial.back', 'Back')}
+          {!isLastStep && (
+            <button
+              className="tut-btn tut-btn-outline"
+              style={{ marginTop: '10px' }}
+              onClick={onComplete}
+            >
+              {t('tutorial.skip_x', 'Skip ✕')}
             </button>
           )}
         </div>
@@ -287,7 +432,6 @@ export default function TutorialOverlay({ onComplete, theme = 'dark' }) {
           display: flex; align-items: center; justify-content: center;
           padding: 20px;
           background: rgba(0,0,0,0.7);
-          backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
           pointer-events: auto; overflow-y: auto;
         }
 
@@ -388,6 +532,24 @@ export default function TutorialOverlay({ onComplete, theme = 'dark' }) {
         .tut-dark .tut-num-text  { color: rgba(255,255,255,0.82); }
         .tut-light .tut-num-text { color: rgba(15,23,42,0.82); }
 
+        /* Plain bullet (no circle) */
+        .tut-num-plain {
+          background: none !important; width: auto !important; height: auto !important;
+          border-radius: 0 !important; font-size: 18px !important; padding: 0 4px 0 0;
+        }
+
+        /* Large Steps Modifier */
+        .tut-steps-large .tut-num {
+          width: 32px; height: 32px; font-size: 14.5px;
+        }
+        .tut-steps-large .tut-num-text {
+          font-size: 14.5px; line-height: 1.6; padding-top: 5px;
+        }
+        
+        .tut-title-small {
+          font-size: 20px !important; margin-bottom: 12px;
+        }
+
         /* ── Two sections ── */
         .tut-two-sections { display: flex; flex-direction: column; gap: 18px; margin-bottom: 20px; }
         .tut-section-block { display: flex; flex-direction: column; gap: 4px; }
@@ -405,7 +567,7 @@ export default function TutorialOverlay({ onComplete, theme = 'dark' }) {
         .tut-light .tut-section-line { color: rgba(15,23,42,0.72); }
 
         /* ── Actions ── */
-        .tut-actions { display: flex; flex-direction: column; gap: 10px; }
+        .tut-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
         .tut-btn {
           font-family: 'Outfit', sans-serif; border: none; border-radius: 14px;
           cursor: pointer; transition: opacity 0.15s, transform 0.12s;
@@ -431,8 +593,8 @@ export default function TutorialOverlay({ onComplete, theme = 'dark' }) {
           height: 40px; font-size: 13px; font-weight: 500; background: transparent;
         }
         .tut-btn-skip:hover { opacity: 0.6; }
-        .tut-dark .tut-btn-skip  { color: rgba(255,255,255,0.28); }
-        .tut-light .tut-btn-skip { color: rgba(0,0,0,0.25); }
+        .tut-dark .tut-btn-skip  { color: #ffffff; }
+        .tut-light .tut-btn-skip { color: #000000; }
 
         .tut-btn-back {
           height: 38px; font-size: 13px; font-weight: 500; background: transparent;
@@ -448,15 +610,14 @@ export default function TutorialOverlay({ onComplete, theme = 'dark' }) {
           transition: opacity 0.15s;
         }
         .tut-bottom-skip:hover { opacity: 0.7; }
-        .tut-dark .tut-bottom-skip { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); }
-        .tut-light .tut-bottom-skip { background: rgba(0,0,0,0.05); color: rgba(0,0,0,0.3); }
+        .tut-dark .tut-bottom-skip { background: #ffffff; color: #000000; }
+        .tut-light .tut-bottom-skip { background: #ffffff; color: #000000; }
+
+        ${mode !== null && stepIdx === 0 ? `
+          /* Removed top bar highlight hack */
+        ` : ''}
       `}</style>
 
-      {mode !== null && (
-        <button className="tut-bottom-skip" onClick={onComplete}>
-          Skip ✕
-        </button>
-      )}
 
       {mode === null ? renderWelcome() : renderStepDialog()}
     </div>

@@ -30,8 +30,8 @@ function readDemoMode() {
   const path = window.location.pathname;
   if (path === '/demo' || path.startsWith('/demo/')) return true;
 
-  // Default: demo OFF. Real dials are placed unless the user is on
-  // the /demo path or specifies ?demo=1.
+  // Default: demo OFF in production.
+  // Judges should use the /demo path to avoid accidental real emergency calls.
   return false;
 }
 
