@@ -1,0 +1,496 @@
+\hypertarget{roadsos-structured-database-documentation}{%
+\section{RoadSOS --- Structured Database
+Documentation}\label{roadsos-structured-database-documentation}}
+
+\textbf{Submission artifact for Section 7.1 of the IIT Madras Road
+Safety Hackathon 2026 rulebook:} \textgreater{} \emph{``Structured
+database used for the models are to be submitted.''}
+
+This document describes every persistent data structure used by RoadSOS,
+its schema, its source, and how it is consumed by the runtime.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{emergency-numbers-database}{%
+\subsection{1. Emergency Numbers
+Database}\label{emergency-numbers-database}}
+
+\textbf{Authoritative source:}
+\texttt{backend/data/emergency\_seed.json} \textbf{Frontend bundle
+(generated):} \texttt{frontend/src/utils/emergencyNumbers.js}
+\textbf{Endpoint exposing it:} \texttt{GET\ /offline-pack}
+
+\hypertarget{coverage}{%
+\subsubsection{1.1 Coverage}\label{coverage}}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Metric & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Total countries \& territories & \textbf{200} \\
+UN-recognised states covered & 100\% \\
+Asia & 49 \\
+Europe & 45 \\
+Africa & 55 \\
+Americas & 35 \\
+Oceania & 16 \\
+File size (raw JSON) & \textasciitilde28 KB \\
+File size (gzipped) & \textasciitilde9 KB \\
+\end{longtable}
+
+\hypertarget{schema}{%
+\subsubsection{1.2 Schema}\label{schema}}
+
+\begin{verbatim}
+{
+  "country":       "string  — Human-readable English country name",
+  "country_code":  "string  — ISO 3166-1 alpha-2 code, uppercase",
+  "calling_code":  "string  — International dialling prefix incl. '+'",
+  "police":        "string  — National police emergency number",
+  "ambulance":     "string  — National ambulance / medical emergency number",
+  "fire":          "string  — National fire department emergency number",
+  "general":       "string  — Universal emergency number (often 112 / 911)"
+}
+\end{verbatim}
+
+\hypertarget{example-record}{%
+\subsubsection{1.3 Example record}\label{example-record}}
+
+\begin{verbatim}
+{
+  "country": "India",
+  "country_code": "IN",
+  "calling_code": "+91",
+  "police": "100",
+  "ambulance": "108",
+  "fire": "101",
+  "general": "112"
+}
+\end{verbatim}
+
+\hypertarget{data-sourcing-verification}{%
+\subsubsection{1.4 Data sourcing \&
+verification}\label{data-sourcing-verification}}
+
+Primary source: \textbf{Wikipedia ``List of emergency telephone
+numbers''} (canonical, government-maintained). Each entry was
+cross-checked against: 1. The country's official government emergency
+services portal where available 2. ITU-T E.164 numbering plan
+documentation 3. EU-wide 112 standard for European jurisdictions
+
+Where a country uses different numbers for different services, the
+most-publicised national number is recorded. For countries where 112 is
+universally accepted as a fallback (e.g.~all GSM networks),
+\texttt{general} is set to \texttt{112}.
+
+\hypertarget{update-policy}{%
+\subsubsection{1.5 Update policy}\label{update-policy}}
+
+Static. Emergency numbers change roughly once per decade. Changes are
+made by editing \texttt{backend/data/emergency\_seed.json} and
+regenerating the frontend bundle:
+
+\begin{verbatim}
+# Regenerate frontend/src/utils/emergencyNumbers.js from backend JSON
+python scripts/sync_emergency_numbers.py
+\end{verbatim}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{osm-category-classification-map}{%
+\subsection{2. OSM Category Classification
+Map}\label{osm-category-classification-map}}
+
+\textbf{Source:} \texttt{backend/services/overpass\_service.py} →
+\texttt{CATEGORY\_MAP} \textbf{Purpose:} Maps OpenStreetMap tag (key,
+value) pairs to the six visible RoadSOS contact categories.
+
+\hypertarget{schema-1}{%
+\subsubsection{2.1 Schema}\label{schema-1}}
+
+\begin{verbatim}
+CATEGORY_MAP: list[tuple[tuple[str, str], str]]
+# [ ((osm_key, osm_value), roadsos_category), ... ]
+\end{verbatim}
+
+\hypertarget{full-mapping}{%
+\subsubsection{2.2 Full mapping}\label{full-mapping}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+OSM Key
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+OSM Value
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+RoadSOS Category
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Notes
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{amenity} & \texttt{hospital} & \texttt{hospital} & Tagged
+hospitals \\
+\texttt{amenity} & \texttt{clinic} & \texttt{hospital} & Polyclinics,
+walk-in clinics \\
+\texttt{amenity} & \texttt{doctors} & \texttt{hospital} & General
+practitioner offices \\
+\texttt{healthcare} & \texttt{hospital} & \texttt{hospital} &
+Healthcare-namespace hospitals \\
+\texttt{healthcare} & \texttt{clinic} & \texttt{hospital} &
+Healthcare-namespace clinics \\
+\texttt{amenity} & \texttt{police} & \texttt{police} & Police
+stations \\
+\texttt{emergency} & \texttt{ambulance\_station} & \texttt{ambulance} &
+Dedicated ambulance bases \\
+\texttt{amenity} & \texttt{ambulance\_station} & \texttt{ambulance} &
+Alternate tagging \\
+\texttt{amenity} & \texttt{fire\_station} & \texttt{ambulance} & Fire
+stations (often run ambulances) \\
+\texttt{service:vehicle:recovery} & \texttt{yes} & \texttt{towing} &
+Vehicle recovery / breakdown \\
+\texttt{service:vehicle:tow} & \texttt{yes} & \texttt{towing} & Tow
+truck services \\
+\texttt{amenity} & \texttt{vehicle\_recovery} & \texttt{towing} &
+Dedicated recovery yards \\
+\texttt{shop} & \texttt{car\_repair} & \texttt{repair} & Mechanic /
+garage \\
+\texttt{amenity} & \texttt{car\_repair} & \texttt{repair} & Alternate
+tagging \\
+\texttt{shop} & \texttt{tyres} & \texttt{tyre} & Tyre / puncture
+shops \\
+\texttt{shop} & \texttt{tyre} & \texttt{tyre} & Alternate spelling \\
+\texttt{shop} & \texttt{car} & \texttt{showroom} & Car dealerships /
+showrooms \\
+\texttt{shop} & \texttt{car\_parts} & \texttt{showroom} & Auto parts
+dealers \\
+\end{longtable}
+
+\hypertarget{category-alignment-with-rulebook}{%
+\subsubsection{2.3 Category alignment with
+rulebook}\label{category-alignment-with-rulebook}}
+
+The rulebook (Section 1.3.3 ``Key Aspects for Coders to Include'')
+explicitly lists: - Nearest \textbf{Police Station} → \texttt{police}
+category - \textbf{Hospitals} → \texttt{hospital} category -
+\textbf{Ambulance services} → \texttt{ambulance} category -
+\textbf{Towing services} → \texttt{towing} category ✅ - \textbf{Nearest
+puncture shops} → \texttt{tyre} category ✅ - \textbf{Showrooms} →
+\texttt{showroom} category ✅
+
+All six rulebook-mandated categories are covered.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{search-result-contact-object}{%
+\subsection{3. Search Result Contact
+Object}\label{search-result-contact-object}}
+
+\textbf{Source:} \texttt{backend/services/overpass\_service.py} →
+\texttt{parse\_element()} \textbf{Returned by:} \texttt{GET\ /search},
+\texttt{POST\ /triage}, cached in \texttt{localStorage}
+
+\hypertarget{schema-2}{%
+\subsubsection{3.1 Schema}\label{schema-2}}
+
+\begin{verbatim}
+{
+  "id":         "string  — Stable unique ID, format 'osm_{id}' or 'gp_{place_id}'",
+  "name":       "string  — Establishment name (English preferred, falls back to local)",
+  "category":   "enum    — hospital | police | ambulance | towing | repair | tyre | showroom",
+  "phone":      "string|null — E.164-normalised phone, or basic-cleaned fallback",
+  "distance":   "float   — Great-circle distance from user in kilometres, 2-decimal",
+  "lat":        "float   — Latitude of establishment, WGS84",
+  "lon":        "float   — Longitude of establishment, WGS84",
+  "source":     "string  — 'OpenStreetMap' or 'Google Places'",
+  "isOpen":     "boolean|null — Parsed from opening_hours; null if unparseable",
+  "aiReason":   "string|null  — Set after /triage if AI prioritised this contact"
+}
+\end{verbatim}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{triage-requestresponse}{%
+\subsection{4. Triage Request/Response}\label{triage-requestresponse}}
+
+\textbf{Endpoint:} \texttt{POST\ /triage} \textbf{Source:}
+\texttt{backend/services/ai\_triage.py}
+
+\hypertarget{request-schema}{%
+\subsubsection{4.1 Request schema}\label{request-schema}}
+
+\begin{verbatim}
+{
+  "injured":  "boolean — Are there injured persons on scene?",
+  "blocking": "boolean — Is the vehicle blocking traffic?",
+  "contacts": "Contact[] — Array of contact objects from /search"
+}
+\end{verbatim}
+
+\hypertarget{response-schema}{%
+\subsubsection{4.2 Response schema}\label{response-schema}}
+
+\begin{verbatim}
+{
+  "contacts": "Contact[] — Same contacts, AI-reordered, top one has aiReason set",
+  "reason":   "string — One-line explanation of the prioritisation"
+}
+\end{verbatim}
+
+\hypertarget{priority-matrix-rule-based-fallback}{%
+\subsubsection{4.3 Priority matrix (rule-based
+fallback)}\label{priority-matrix-rule-based-fallback}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\texttt{injured}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\texttt{blocking}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Top priority order
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+true & true & ambulance → hospital → police → towing → repair → tyre →
+showroom \\
+true & false & ambulance → hospital → police → towing → repair → tyre →
+showroom \\
+false & true & police → towing → repair → ambulance → hospital → tyre →
+showroom \\
+false & false & repair → tyre → towing → showroom → police → ambulance →
+hospital \\
+\end{longtable}
+
+Within each tier, contacts are sorted by ascending distance.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{dispatch-summary-request}{%
+\subsection{5. Dispatch Summary
+Request}\label{dispatch-summary-request}}
+
+\textbf{Endpoint:} \texttt{POST\ /dispatch-summary} \textbf{Source:}
+\texttt{backend/services/dispatch\_service.py}
+
+\hypertarget{request-schema-1}{%
+\subsubsection{5.1 Request schema}\label{request-schema-1}}
+
+\begin{verbatim}
+{
+  "lat":      "float — Latitude, WGS84",
+  "lon":      "float — Longitude, WGS84",
+  "landmark": "string|null — Reverse-geocoded landmark text",
+  "injured":  "boolean — Injured persons present",
+  "blocking": "boolean — Vehicle blocking traffic"
+}
+\end{verbatim}
+
+\hypertarget{response-schema-1}{%
+\subsubsection{5.2 Response schema}\label{response-schema-1}}
+
+\begin{verbatim}
+{
+  "summary": "string — Human-readable dispatch text, ready to read aloud or paste",
+  "source":  "enum   — 'ai' (Gemini-generated) or 'template' (rule-based fallback)"
+}
+\end{verbatim}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{health-check-response}{%
+\subsection{6. Health Check Response}\label{health-check-response}}
+
+\textbf{Endpoint:} \texttt{GET\ /health} \textbf{Source:}
+\texttt{backend/services/health\_service.py}
+
+\hypertarget{schema-3}{%
+\subsubsection{6.1 Schema}\label{schema-3}}
+
+\begin{verbatim}
+{
+  "status":         "string — 'ok' when service is up",
+  "uptime_seconds": "integer — Seconds since process start",
+  "configured": {
+    "gemini":        "boolean — Gemini API key present",
+    "google_places": "boolean — Google Places API key present"
+  },
+  "cache": {
+    "overpass": { "size": "int", "hits": "int", "misses": "int", "hit_rate": "float" },
+    "google":   { "size": "int", "hits": "int", "misses": "int", "hit_rate": "float" },
+    "geocode":  { "size": "int", "hits": "int", "misses": "int", "hit_rate": "float" }
+  }
+}
+\end{verbatim}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{in-memory-ttl-cache}{%
+\subsection{7. In-Memory TTL Cache}\label{in-memory-ttl-cache}}
+
+\textbf{Source:} \texttt{backend/services/cache.py} → \texttt{TTLCache}
+\textbf{Not persisted to disk} --- rebuilt on each process start.
+
+\hypertarget{instances}{%
+\subsubsection{7.1 Instances}\label{instances}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Cache
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+TTL
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Max Entries
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Cached payload
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{overpass\_cache} & 3600 s (1 hour) & 200 & List of contact
+objects per (lat, lon, radius) \\
+\texttt{google\_cache} & 3600 s (1 hour) & 200 & List of contact objects
+per (lat, lon, radius) \\
+\texttt{geocode\_cache} & 86400 s (24 hours) & 500 &
+\texttt{\{landmark,\ country\_code\}} per (lat, lon) \\
+\end{longtable}
+
+\hypertarget{cache-key-format}{%
+\subsubsection{7.2 Cache key format}\label{cache-key-format}}
+
+\begin{verbatim}
+{lat:.4f}_{lon:.4f}_{suffix}
+\end{verbatim}
+
+Coordinates are rounded to 4 decimal places (\textasciitilde11 m grid)
+so sub-meter GPS jitter does not cause cache misses.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{frontend-local-cache-offlinedb.js}{%
+\subsection{8. Frontend Local Cache
+(offlineDB.js)}\label{frontend-local-cache-offlinedb.js}}
+
+\textbf{Source:} \texttt{frontend/src/utils/offlineDB.js}
+\textbf{Storage:} \texttt{localStorage} \textbf{Purpose:}
+Last-known-good results when the user is fully offline.
+
+\hypertarget{schema-localstorage-value-json-encoded}{%
+\subsubsection{8.1 Schema (localStorage value,
+JSON-encoded)}\label{schema-localstorage-value-json-encoded}}
+
+\begin{verbatim}
+{
+  "key":        "string — '{lat:.2f}_{lon:.2f}' (1km grid)",
+  "contacts":   "Contact[]",
+  "landmark":   "string|null",
+  "countryCode":"string|null",
+  "timestamp":  "integer — Unix milliseconds when cached"
+}
+\end{verbatim}
+
+\hypertarget{ttl}{%
+\subsubsection{8.2 TTL}\label{ttl}}
+
+24 hours. Older entries are returned with a ``stale'' indicator but not
+silently discarded --- a stale cached contact is better than nothing in
+an emergency.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{service-worker-cache-strategy}{%
+\subsection{9. Service Worker Cache
+Strategy}\label{service-worker-cache-strategy}}
+
+\textbf{Source:} \texttt{frontend/public/sw.js} (Workbox)
+\textbf{Storage:} Cache Storage API (managed by browser)
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Pattern
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Strategy
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Reason
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{/search*} & NetworkFirst (5s timeout) & Fresh data preferred,
+cache is fallback \\
+\texttt{/triage*} & NetworkFirst (5s timeout) & Same \\
+\texttt{/offline-pack} & CacheFirst & Static seed; only updates with new
+deploys \\
+\texttt{/static/*} & CacheFirst & App shell --- versioned by Vite \\
+\end{longtable}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{summary-all-persistent-structures}{%
+\subsection{10. Summary --- All persistent
+structures}\label{summary-all-persistent-structures}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\#
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Artifact
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Size
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Update cadence
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Emergency numbers DB & Static JSON & 200 entries &
+\textasciitilde once per decade \\
+2 & OSM category map & Source code & 18 mappings & When OSM tags
+evolve \\
+3 & Contact object & Runtime schema & Per query & Live \\
+4 & Triage I/O & Runtime schema & Per query & Live \\
+5 & Dispatch I/O & Runtime schema & Per query & Live \\
+6 & Health response & Runtime schema & Per ping & Live \\
+7 & Server TTL cache & In-memory & Up to 900 entries & Auto-evicting \\
+8 & Browser localStorage & Per device & 1 entry per area & 7-day TTL \\
+9 & Service Worker cache & Per device & Up to 50 entries &
+NetworkFirst \\
+\end{longtable}
+
+\textbf{RoadSOS does not store any user data on a server.} No accounts,
+no telemetry, no user identifiers. All user state is local to the
+device.
