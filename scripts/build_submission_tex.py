@@ -677,7 +677,7 @@ def main() -> int:
             # Decode log bytes safely
             raw = result.stdout or b""
             log_text = raw.decode("utf-8", errors="replace")
-            log_lines = log_text.splitlines()[-40:]
+            log_lines = log_text.splitlines()
             print(f"\n  lualatex pass {pass_n} FAILED (exit {result.returncode}):")
             for ln in log_lines:
                 print("   ", ln)
