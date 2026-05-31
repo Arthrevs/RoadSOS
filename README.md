@@ -1,5 +1,8 @@
 # 🚨 RoadSOS
 
+> [!IMPORTANT]
+> **Judges:** Please visit [https://roadsos-frontend.vercel.app/demo](https://roadsos-frontend.vercel.app/demo) or `http://localhost:5173/demo` when running locally to see the full potential of RoadSOS.
+
 ### **The right emergency contact, in one tap, even with no signal.**
 
 *A location-aware Progressive Web App that connects road accident victims and bystanders to the right help in under 10 seconds — globally, offline, and intelligently.*
@@ -68,7 +71,8 @@ RoadSOS is built for exactly the gap that ruling identifies — the seconds betw
 | --- | --- |
 | 📍 **Location-Aware, Instantly** | GPS detection with a 10-second timeout and automatic fallback to IP-based geolocation. The search starts the moment the app opens — no buttons, no menus. |
 | 🤖 **AI-Prioritised Contacts** | Two questions — *injured? blocking traffic?* — and Gemini 2.5 Flash reorders the entire contact list for the situation. The top card states **why** it was prioritised. Deterministic rule-based fallback if the API is down. |
-| 📶 **Genuinely Offline (4-tier)** | Service Worker + localStorage (7-day TTL, ~1.1 km grid) + a **bundled 938-facility directory across 200 countries** + **bundled national emergency numbers for 200 countries**. Pre-fetch hospitals along Chennai → Bengaluru before you leave, then crash anywhere on NH-44 — the right number is still there. |
+| 📶 **Genuinely Offline (4-tier)** | Service Worker + localStorage (7-day TTL, ~1.1 km grid) + a **bundled 938-facility directory across 200 countries** + **bundled national emergency numbers for 200 countries**. |
+| 🗺 **Smart Spatial Caching** | The local device cache enforces a strict 5km safety limit to prevent serving irrelevant hospitals if you drive away. To solve dead-zones, the **"Save Area"** button actively fetches 7 overlapping zones in an 8km ring around you, guaranteeing zero blind spots. A dedicated **Offline Trip Planner** does the same by sampling waypoints along an OSRM driving route (e.g. pre-fetching Chennai → Bengaluru before you leave). |
 | 🆔 **Emergency Medical ID** | Blood type, allergies, conditions, medications, and an emergency contact stored entirely on-device (localStorage — **nothing ever leaves the phone**). A first responder taps the persistent **🆔 Medical ID** button to see a high-contrast paramedic-friendly card. |
 | 📍 **Plus Codes (Open Location Code)** | Every crash alert encodes the GPS into a dispatcher-friendly Plus Code like `7M5237MC+37` — far easier to read aloud than `13.0827, 80.2707`. Encoder is hand-written in pure JS (~80 LOC, **fully offline, zero deps**) in `frontend/src/utils/plusCodes.js`. |
 | 📱 **SOS-by-SMS** | When voice fails but SMS still works (common in dead zones), one tap pre-composes an SMS to your emergency contact with blood type, allergies, Plus Code, GPS, and a Google Maps link. Uses the native `sms:` scheme — works on iOS and Android. |
