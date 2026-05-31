@@ -376,12 +376,12 @@
   "crash_choosing.stop_alarm": "అలారం ఆపివేయి",
   "crash_choosing.incorrect_pin": "తప్పు PIN",
   "crash_choosing.send_sos_now": "ఇప్పుడే SOS పంపు",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it",
+  "permissions.privacy_first": "ముందుగా గోప్యత:",
+  "permissions.need_access": "మాకు డిస్పాచ్ కోసం లొకేషన్ మరియు క్రాష్ ఫోటోల కోసం కెమెరా అవసరం.",
+  "permissions.your_data_is": "మీ డేటా",
+  "permissions.never": "ఎప్పుడూ",
+  "permissions.shared": "పంచుకున్నారు.",
+  "permissions.got_it": "అర్థమైంది",
   "tutorial.icon.offline": "ఆఫ్‌లైన్‌లో ఉన్నప్పుడు కూడా అందుబాటులో ఉండేలా మీ ప్రాంతం గురించిన సమాచారాన్ని సేవ్ చేయండి",
   "sidebar.save_area": "ఆఫ్‌లైన్ కోసం ప్రాంతాన్ని సేవ్ చేయండి"
 }

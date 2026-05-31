@@ -376,12 +376,12 @@
   "crash_choosing.stop_alarm": "Stop alarm",
   "crash_choosing.incorrect_pin": "Incorrect PIN",
   "crash_choosing.send_sos_now": "Send SOS now",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it",
+  "permissions.privacy_first": "முதலில் தனியுரிமை:",
+  "permissions.need_access": "அனுப்புவதற்கான இருப்பிடம் மற்றும் செயலிழந்த புகைப்படங்களுக்கு கேமரா தேவை.",
+  "permissions.your_data_is": "உங்கள் தரவு",
+  "permissions.never": "ஒருபோதும்",
+  "permissions.shared": "பகிர்ந்து கொண்டார்.",
+  "permissions.got_it": "கிடைத்தது",
   "tutorial.icon.offline": "ஆஃப்லைனில் இருந்தாலும் உங்கள் பகுதியைப் பற்றிய தகவலைச் சேமிக்கவும்",
   "sidebar.save_area": "ஆஃப்லைனுக்கான பகுதியைச் சேமிக்கவும்"
 }
