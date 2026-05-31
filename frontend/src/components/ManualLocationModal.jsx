@@ -13,6 +13,17 @@ export default function ManualLocationModal({ open, onClose, onSetLocation, mapR
   const [hasSelectedLocation, setHasSelectedLocation] = useState(false);
   const searchTimeoutRef = useRef(null);
 
+  // ── Reset mode when modal closes (X or OK) so the map click listener
+  //    is properly detached and the user can't pin while the modal is gone ──
+  useEffect(() => {
+    if (!open) {
+      setMode(null);
+      setHasSelectedLocation(false);
+      setSearchQuery('');
+      setSearchResults([]);
+    }
+  }, [open]);
+
   // ── Attach map click listener when in map mode ──
   useEffect(() => {
     if (mode !== 'map' || !mapRef?.current) return;
