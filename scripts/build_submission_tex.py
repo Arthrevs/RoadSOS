@@ -581,12 +581,7 @@ The summary below captures the request flow and the four-tier offline strategy.}
 
 \textit{The following is the structured database documentation required for the models.}
 """)
-    schema_path = ROOT / "docs" / "DATA_SCHEMA.md"
-    if schema_path.exists():
-        schema_text = schema_path.read_text(encoding="utf-8")
-        w(verbatim_block(schema_text, "Markdown"))
-    else:
-        w(r"\textit{\color{rsred} docs/DATA_SCHEMA.md --- not present in this revision.}\n")
+    w(r"\input{docs/DATA_SCHEMA.tex}")
 
     # ── Section 6: Source code ────────────────────────────────────────────
     w(r"""

@@ -31,6 +31,11 @@ jobs:
       - name: Install TeX Live and Pandoc
         run: sudo apt-get update && sudo apt-get install -y texlive-luatex texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra pandoc
 
+      - name: Convert Data Schema MD to TEX
+        run: |
+          cd docs
+          pandoc DATA_SCHEMA.md -o DATA_SCHEMA.tex
+
       - name: Build Submission TEX and PDF
         run: python3 scripts/build_submission_tex.py
 
