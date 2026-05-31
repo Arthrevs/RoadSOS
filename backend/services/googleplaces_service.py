@@ -330,9 +330,7 @@ async def enrich_missing_phones(
     return contacts
 
 
-async def search_nearby_places(
-    lat: float, lon: float, region: str | None = None
-) -> list[dict]:
+async def search_nearby_places(lat: float, lon: float, region: str | None = None) -> list[dict]:
     api_key = _next_key()
     if not api_key:
         return []

@@ -233,7 +233,7 @@ ASSUMPTIONS: list[tuple[str, list[str]]] = [
         "Locations are cached at ~110 m grid resolution (3 decimal places) — coarse enough for high cache hit-rate, fine enough for emergency-contact relevance.",
     ]),
     ("Geography and data coverage", [
-        "OSM data quality is best in India, Europe, and dense urban areas. In sparse rural regions the Overpass radius expands 5 km → 10 km → 20 km and falls back on bundled facilities (818 entries across 200 countries).",
+        "OSM data quality is best in India, Europe, and dense urban areas. In sparse rural regions the Overpass radius expands 8 km → 25 km and falls back on bundled facilities (938 entries across 200 countries).",
         "Country emergency numbers are pre-bundled for all 200 countries and always render without a network call.",
         "ISO-3166 country code is resolved from Nominatim reverse-geocode; if Nominatim fails the app falls back to coarse bounding-box matching against the bundled country dataset.",
     ]),
@@ -502,7 +502,7 @@ whenever any single assumption is violated at runtime.}
 \midrule
 OpenStreetMap Overpass API & Public OSM data query. Three mirrors with exponential-backoff retry. \\
 OpenStreetMap Nominatim & Reverse geocoding (lat/lon $\to$ country code, landmark). \\
-Google Places API (Nearby Search + Place Details) & Optional parallel fallback for sparse OSM regions. \\
+Google Places API (Nearby Search + Place Details) & Unconditional parallel fallback (if configured). \\
 Google Gemini 2.0 Flash & AI triage. Free tier: 60\,RPM / 1\,500\,RPD. \\
 CartoDB Dark Matter tiles & Map tile provider (no API key required). \\
 Web platform APIs & Geolocation, DeviceMotion, Battery Status, Web Speech, Service Worker. \\
