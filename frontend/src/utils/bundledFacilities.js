@@ -61,7 +61,7 @@ function haversine(lat1, lon1, lat2, lon2) {
 export function findNearestFromBundle(
   lat,
   lon,
-  { maxKm = 80, farMaxKm = 600, limit = 8 } = {},
+  { maxKm = 80, farMaxKm = 600, limit = 50 } = {},
 ) {
   if (typeof lat !== 'number' || typeof lon !== 'number') return [];
 
