@@ -381,5 +381,7 @@
   "permissions.your_data_is": "I tuoi dati lo sono",
   "permissions.never": "Mai",
   "permissions.shared": "condiviso.",
-  "permissions.got_it": "Fatto"
+  "permissions.got_it": "Fatto",
+  "tutorial.icon.offline": "Salva le informazioni sulla tua zona per essere disponibile anche offline",
+  "sidebar.save_area": "Salva area per offline"
 }

@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Dữ liệu của bạn là",
   "permissions.never": "không bao giờ",
   "permissions.shared": "đã chia sẻ.",
-  "permissions.got_it": "Hiểu rồi"
+  "permissions.got_it": "Hiểu rồi",
+  "tutorial.icon.offline": "Lưu thông tin về khu vực của bạn để có thể sử dụng ngay cả khi ngoại tuyến",
+  "sidebar.save_area": "Lưu khu vực ngoại tuyến"
 }

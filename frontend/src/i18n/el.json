@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Τα δεδομένα σας είναι",
   "permissions.never": "ποτέ",
   "permissions.shared": "κοινόχρηστο.",
-  "permissions.got_it": "Κατάλαβα"
+  "permissions.got_it": "Κατάλαβα",
+  "tutorial.icon.offline": "Αποθηκεύστε πληροφορίες για την περιοχή σας για να είναι διαθέσιμες ακόμα και όταν είστε εκτός σύνδεσης",
+  "sidebar.save_area": "Αποθήκευση περιοχής για εκτός σύνδεσης"
 }

@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Ваши данные",
   "permissions.never": "никогда",
   "permissions.shared": "поделился.",
-  "permissions.got_it": "Понятно"
+  "permissions.got_it": "Понятно",
+  "tutorial.icon.offline": "Сохраняйте информацию о своем районе, чтобы она была доступна даже в автономном режиме.",
+  "sidebar.save_area": "Сохранить область для автономного режима"
 }

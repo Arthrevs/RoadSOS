@@ -381,5 +381,7 @@
   "permissions.your_data_is": "तुंदा डाटा ऐ",
   "permissions.never": "कदें नेईं",
   "permissions.shared": "शेयर कर दी।",
-  "permissions.got_it": "समझी गेआ"
+  "permissions.got_it": "समझी गेआ",
+  "tutorial.icon.offline": "ऑफलाइन होने पर बी अपने इलाके दे बारे च जानकारी बचाइयै रक्खो",
+  "sidebar.save_area": "ऑफलाइन लेई एरिया बचाओ"
 }

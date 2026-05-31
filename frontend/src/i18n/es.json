@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Tus datos son",
   "permissions.never": "nunca",
   "permissions.shared": "compartido.",
-  "permissions.got_it": "Entiendo"
+  "permissions.got_it": "Entiendo",
+  "tutorial.icon.offline": "Guarde información sobre su área para que esté disponible incluso sin conexión",
+  "sidebar.save_area": "Guardar área para sin conexión"
 }

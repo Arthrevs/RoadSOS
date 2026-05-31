@@ -381,5 +381,7 @@
   "permissions.your_data_is": "तपाईको डाटा हो",
   "permissions.never": "कहिल्यै",
   "permissions.shared": "साझा गरियो।",
-  "permissions.got_it": "बुझियो"
+  "permissions.got_it": "बुझियो",
+  "tutorial.icon.offline": "अफलाइन हुँदा पनि उपलब्ध हुन आफ्नो क्षेत्र बारे जानकारी बचत गर्नुहोस्",
+  "sidebar.save_area": "अफलाइनको लागि क्षेत्र बचत गर्नुहोस्"
 }

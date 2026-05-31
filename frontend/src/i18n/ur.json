@@ -381,5 +381,7 @@
   "permissions.your_data_is": "آپ کا ڈیٹا ہے۔",
   "permissions.never": "کبھی نہیں",
   "permissions.shared": "مشترکہ",
-  "permissions.got_it": "سمجھ گیا"
+  "permissions.got_it": "سمجھ گیا",
+  "tutorial.icon.offline": "آف لائن ہونے پر بھی دستیاب رہنے کے لیے اپنے علاقے کے بارے میں معلومات محفوظ کریں۔",
+  "sidebar.save_area": "آف لائن کے لیے علاقہ محفوظ کریں۔"
 }

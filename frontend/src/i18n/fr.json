@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Vos données sont",
   "permissions.never": "jamais",
   "permissions.shared": "commun.",
-  "permissions.got_it": "J'ai compris"
+  "permissions.got_it": "J'ai compris",
+  "tutorial.icon.offline": "Enregistrez les informations sur votre région pour être disponible même hors ligne",
+  "sidebar.save_area": "Enregistrer la zone pour hors ligne"
 }

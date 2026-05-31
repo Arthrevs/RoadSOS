@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Verileriniz",
   "permissions.never": "Asla",
   "permissions.shared": "Paylaşıldı.",
-  "permissions.got_it": "Anladım"
+  "permissions.got_it": "Anladım",
+  "tutorial.icon.offline": "Çevrimdışıyken bile kullanılabilir olmak için bölgenizle ilgili bilgileri kaydedin",
+  "sidebar.save_area": "Alanı Çevrimdışına Kaydet"
 }

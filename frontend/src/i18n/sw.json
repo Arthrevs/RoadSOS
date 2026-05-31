@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Data yako ni",
   "permissions.never": "kamwe",
   "permissions.shared": "pamoja.",
-  "permissions.got_it": "Nimeipata"
+  "permissions.got_it": "Nimeipata",
+  "tutorial.icon.offline": "Hifadhi maelezo kuhusu eneo lako ili yapatikane hata ukiwa nje ya mtandao",
+  "sidebar.save_area": "Hifadhi Eneo kwa Nje ya Mtandao"
 }

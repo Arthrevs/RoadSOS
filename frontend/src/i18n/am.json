@@ -381,5 +381,7 @@
   "permissions.your_data_is": "የእርስዎ ውሂብ ነው።",
   "permissions.never": "በፍጹም",
   "permissions.shared": "ተጋርቷል።",
-  "permissions.got_it": "ገባኝ"
+  "permissions.got_it": "ገባኝ",
+  "tutorial.icon.offline": "ከመስመር ውጭ ቢሆንም እንኳ እንዲገኝ ስለ አካባቢዎ መረጃ ያስቀምጡ",
+  "sidebar.save_area": "ቦታን ከመስመር ውጭ ያስቀምጡ"
 }

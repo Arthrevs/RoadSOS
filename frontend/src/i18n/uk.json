@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Ваші дані",
   "permissions.never": "ніколи",
   "permissions.shared": "спільний доступ.",
-  "permissions.got_it": "зрозумів"
+  "permissions.got_it": "зрозумів",
+  "tutorial.icon.offline": "Зберігайте інформацію про свою місцевість, щоб бути доступною навіть у режимі офлайн",
+  "sidebar.save_area": "Зберегти область для офлайн"
 }

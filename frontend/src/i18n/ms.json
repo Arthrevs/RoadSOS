@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Data anda ialah",
   "permissions.never": "tidak pernah",
   "permissions.shared": "dikongsi bersama.",
-  "permissions.got_it": "faham"
+  "permissions.got_it": "faham",
+  "tutorial.icon.offline": "Simpan maklumat tentang kawasan anda untuk tersedia walaupun semasa di luar talian",
+  "sidebar.save_area": "Simpan Kawasan untuk Luar Talian"
 }

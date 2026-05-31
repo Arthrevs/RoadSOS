@@ -381,5 +381,7 @@
   "permissions.your_data_is": "귀하의 데이터는",
   "permissions.never": "절대",
   "permissions.shared": "공유.",
-  "permissions.got_it": "알았어요"
+  "permissions.got_it": "알았어요",
+  "tutorial.icon.offline": "오프라인에서도 사용할 수 있도록 해당 지역에 대한 정보를 저장하세요.",
+  "sidebar.save_area": "오프라인용 영역 저장"
 }

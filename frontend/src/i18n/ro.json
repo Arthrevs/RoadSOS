@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Datele tale sunt",
   "permissions.never": "nu",
   "permissions.shared": "împărtășită.",
-  "permissions.got_it": "Am înţeles"
+  "permissions.got_it": "Am înţeles",
+  "tutorial.icon.offline": "Salvați informații despre zona dvs. pentru a fi disponibile chiar și atunci când sunteți offline",
+  "sidebar.save_area": "Salvați zona pentru offline"
 }

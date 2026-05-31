@@ -381,5 +381,7 @@
   "permissions.your_data_is": "ਤੁਹਾਡਾ ਡੇਟਾ ਹੈ",
   "permissions.never": "ਕਦੇ ਨਹੀਂ",
   "permissions.shared": "ਸਾਂਝਾ ਕੀਤਾ।",
-  "permissions.got_it": "ਮਿਲ ਗਿਆ"
+  "permissions.got_it": "ਮਿਲ ਗਿਆ",
+  "tutorial.icon.offline": "ਔਫਲਾਈਨ ਹੋਣ 'ਤੇ ਵੀ ਉਪਲਬਧ ਹੋਣ ਲਈ ਆਪਣੇ ਖੇਤਰ ਬਾਰੇ ਜਾਣਕਾਰੀ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰੋ",
+  "sidebar.save_area": "ਔਫਲਾਈਨ ਲਈ ਖੇਤਰ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰੋ"
 }

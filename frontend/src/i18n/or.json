@@ -381,5 +381,7 @@
   "permissions.your_data_is": "ଆପଣଙ୍କର ତଥ୍ୟ ହେଉଛି |",
   "permissions.never": "କେବେ ନୁହେଁ",
   "permissions.shared": "ଅଂଶୀଦାର",
-  "permissions.got_it": "ପାଇଛି"
+  "permissions.got_it": "ପାଇଛି",
+  "tutorial.icon.offline": "ଅଫଲାଇନ୍ ସମୟରେ ମଧ୍ୟ ଉପଲବ୍ଧ ହେବାକୁ ଆପଣଙ୍କ କ୍ଷେତ୍ର ବିଷୟରେ ସୂଚନା ସଞ୍ଚୟ କରନ୍ତୁ |",
+  "sidebar.save_area": "ଅଫଲାଇନ୍ ପାଇଁ କ୍ଷେତ୍ର ସଂରକ୍ଷଣ କରନ୍ତୁ |"
 }

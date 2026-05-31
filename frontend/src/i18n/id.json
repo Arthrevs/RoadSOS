@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Data Anda adalah",
   "permissions.never": "tidak pernah",
   "permissions.shared": "dibagikan.",
-  "permissions.got_it": "Mengerti"
+  "permissions.got_it": "Mengerti",
+  "tutorial.icon.offline": "Simpan informasi tentang wilayah Anda agar tersedia bahkan saat offline",
+  "sidebar.save_area": "Simpan Area untuk Offline"
 }

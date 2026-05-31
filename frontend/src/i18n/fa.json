@@ -381,5 +381,7 @@
   "permissions.your_data_is": "داده های شما هستند",
   "permissions.never": "هرگز",
   "permissions.shared": "به اشتراک گذاشته شده است.",
-  "permissions.got_it": "متوجه شدم"
+  "permissions.got_it": "متوجه شدم",
+  "tutorial.icon.offline": "اطلاعات مربوط به منطقه خود را ذخیره کنید تا حتی در حالت آفلاین در دسترس باشد",
+  "sidebar.save_area": "ذخیره منطقه برای آفلاین"
 }

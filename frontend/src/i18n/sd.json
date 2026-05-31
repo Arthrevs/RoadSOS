@@ -381,5 +381,7 @@
   "permissions.your_data_is": "توهان جي ڊيٽا آهي",
   "permissions.never": "ڪڏهن به",
   "permissions.shared": "حصيداري.",
-  "permissions.got_it": "سمجهي ويس"
+  "permissions.got_it": "سمجهي ويس",
+  "tutorial.icon.offline": "پنهنجي علائقي جي معلومات محفوظ ڪريو ته جيئن دستياب هجي جيتوڻيڪ آف لائن هجي",
+  "sidebar.save_area": "محفوظ ڪريو ايريا آف لائن لاءِ"
 }

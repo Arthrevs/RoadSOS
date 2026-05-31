@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Jouw gegevens zijn",
   "permissions.never": "nooit",
   "permissions.shared": "gedeeld.",
-  "permissions.got_it": "Ik heb het"
+  "permissions.got_it": "Ik heb het",
+  "tutorial.icon.offline": "Sla informatie over uw regio op, zodat deze zelfs offline beschikbaar is",
+  "sidebar.save_area": "Gebied opslaan voor offline"
 }

@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Your data is",
   "permissions.never": "never",
   "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.got_it": "Got it",
+  "tutorial.icon.offline": "Save information about your area to be available even when offline",
+  "sidebar.save_area": "Save Area for Offline"
 }

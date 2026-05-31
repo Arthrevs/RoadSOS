@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Twoje dane są",
   "permissions.never": "nigdy",
   "permissions.shared": "wspólny.",
-  "permissions.got_it": "Rozumiem"
+  "permissions.got_it": "Rozumiem",
+  "tutorial.icon.offline": "Zapisz informacje o swojej okolicy, aby były dostępne nawet w trybie offline",
+  "sidebar.save_area": "Zapisz obszar w trybie offline"
 }

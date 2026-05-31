@@ -381,5 +381,7 @@
   "permissions.your_data_is": "البيانات الخاصة بك هي",
   "permissions.never": "أبداً",
   "permissions.shared": "مشترك.",
-  "permissions.got_it": "فهمتها"
+  "permissions.got_it": "فهمتها",
+  "tutorial.icon.offline": "احفظ المعلومات حول منطقتك لتكون متاحة حتى في حالة عدم الاتصال بالإنترنت",
+  "sidebar.save_area": "حفظ المنطقة لغير متصل"
 }

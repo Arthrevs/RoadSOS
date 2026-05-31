@@ -381,5 +381,7 @@
   "permissions.your_data_is": "अहाँक डाटा अछि",
   "permissions.never": "कखनो नहि",
   "permissions.shared": "साझा कयल गेल।",
-  "permissions.got_it": "बुझलियै"
+  "permissions.got_it": "बुझलियै",
+  "tutorial.icon.offline": "अपन इलाका के बारे मे जानकारी सुरक्षित राखू जे ऑफलाइन रहला पर सेहो उपलब्ध होए",
+  "sidebar.save_area": "ऑफलाइन के लिये क्षेत्र सेव करे |"
 }

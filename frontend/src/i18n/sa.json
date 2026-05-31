@@ -381,5 +381,7 @@
   "permissions.your_data_is": "भवतः दत्तांशः अस्ति",
   "permissions.never": "कदापि न",
   "permissions.shared": "साझाः ।",
-  "permissions.got_it": "अयं प्राप्तः"
+  "permissions.got_it": "अयं प्राप्तः",
+  "tutorial.icon.offline": "अफलाइनसमये अपि उपलब्धं भवितुं स्वक्षेत्रस्य विषये सूचनां रक्षन्तु",
+  "sidebar.save_area": "Offline कृते क्षेत्रं रक्षन्तु"
 }

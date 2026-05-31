@@ -381,5 +381,7 @@
   "permissions.your_data_is": "あなたのデータは",
   "permissions.never": "一度もない",
   "permissions.shared": "共有されました。",
-  "permissions.got_it": "わかった"
+  "permissions.got_it": "わかった",
+  "tutorial.icon.offline": "お住まいの地域に関する情報を保存すると、オフラインでも利用できるようになります",
+  "sidebar.save_area": "オフライン用に領域を保存"
 }

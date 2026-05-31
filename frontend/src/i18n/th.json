@@ -381,5 +381,7 @@
   "permissions.your_data_is": "ข้อมูลของคุณคือ",
   "permissions.never": "ไม่เคย",
   "permissions.shared": "แบ่งปัน",
-  "permissions.got_it": "เข้าใจแล้ว"
+  "permissions.got_it": "เข้าใจแล้ว",
+  "tutorial.icon.offline": "บันทึกข้อมูลเกี่ยวกับพื้นที่ของคุณเพื่อให้สามารถใช้งานได้แม้ในขณะออฟไลน์",
+  "sidebar.save_area": "บันทึกพื้นที่สำหรับออฟไลน์"
 }

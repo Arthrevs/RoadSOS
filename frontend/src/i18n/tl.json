@@ -381,5 +381,7 @@
   "permissions.your_data_is": "Ang iyong data ay",
   "permissions.never": "hindi kailanman",
   "permissions.shared": "ibinahagi.",
-  "permissions.got_it": "Nakuha ko"
+  "permissions.got_it": "Nakuha ko",
+  "tutorial.icon.offline": "I-save ang impormasyon tungkol sa iyong lugar upang maging available kahit offline",
+  "sidebar.save_area": "I-save ang Lugar para sa Offline"
 }
