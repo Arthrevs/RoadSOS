@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "ಅಲಾರಂ ನಿಲ್ಲಿಸಿ",
   "crash_choosing.incorrect_pin": "ತಪ್ಪು PIN",
   "crash_choosing.send_sos_now": "ಈಗಲೇ SOS ಕಳುಹಿಸಿ",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "ಗೌಪ್ಯತೆ ಮೊದಲು:",
+  "permissions.need_access": "ನಮಗೆ ರವಾನೆಗಾಗಿ ಸ್ಥಳ ಮತ್ತು ಕ್ರ್ಯಾಶ್ ಫೋಟೋಗಳಿಗಾಗಿ ಕ್ಯಾಮರಾ ಅಗತ್ಯವಿದೆ.",
+  "permissions.your_data_is": "ನಿಮ್ಮ ಡೇಟಾ",
+  "permissions.never": "ಎಂದಿಗೂ",
+  "permissions.shared": "ಹಂಚಿಕೊಂಡಿದ್ದಾರೆ.",
+  "permissions.got_it": "ಅರ್ಥವಾಯಿತು"
 }

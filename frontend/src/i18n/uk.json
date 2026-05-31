@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "Stop alarm",
   "crash_choosing.incorrect_pin": "Incorrect PIN",
   "crash_choosing.send_sos_now": "Send SOS now",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "Конфіденційність перш за все:",
+  "permissions.need_access": "Нам потрібне місце для відправки та камера для фотографій ДТП.",
+  "permissions.your_data_is": "Ваші дані",
+  "permissions.never": "ніколи",
+  "permissions.shared": "спільний доступ.",
+  "permissions.got_it": "зрозумів"
 }

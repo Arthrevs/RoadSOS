@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "Oprește alarma",
   "crash_choosing.incorrect_pin": "PIN incorect",
   "crash_choosing.send_sos_now": "Trimite SOS acum",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "În primul rând confidențialitatea:",
+  "permissions.need_access": "Avem nevoie de locație pentru expediere și cameră pentru fotografiile accidentului.",
+  "permissions.your_data_is": "Datele tale sunt",
+  "permissions.never": "nu",
+  "permissions.shared": "împărtășită.",
+  "permissions.got_it": "Am înţeles"
 }

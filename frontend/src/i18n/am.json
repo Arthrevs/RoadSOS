@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "ማንቂያ አቁም",
   "crash_choosing.incorrect_pin": "ትክክል ያልሆነ ፒን",
   "crash_choosing.send_sos_now": "አሁን ኤስኦኤስ ላክ",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "ግላዊነት መጀመሪያ፡-",
+  "permissions.need_access": "ለመላክ ቦታ እና ለብልሽት ፎቶዎች ካሜራ እንፈልጋለን።",
+  "permissions.your_data_is": "የእርስዎ ውሂብ ነው።",
+  "permissions.never": "በፍጹም",
+  "permissions.shared": "ተጋርቷል።",
+  "permissions.got_it": "ገባኝ"
 }

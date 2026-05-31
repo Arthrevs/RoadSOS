@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "توقف هشدار",
   "crash_choosing.incorrect_pin": "PIN نادرست",
   "crash_choosing.send_sos_now": "ارسال SOS همین الان",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "ابتدا حریم خصوصی:",
+  "permissions.need_access": "به مکان برای اعزام و دوربین برای عکس های تصادف نیاز داریم.",
+  "permissions.your_data_is": "داده های شما هستند",
+  "permissions.never": "هرگز",
+  "permissions.shared": "به اشتراک گذاشته شده است.",
+  "permissions.got_it": "متوجه شدم"
 }

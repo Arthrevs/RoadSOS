@@ -376,10 +376,10 @@
   "crash_choosing.stop_alarm": "അലാറം നിർത്തുക",
   "crash_choosing.incorrect_pin": "തെറ്റായ PIN",
   "crash_choosing.send_sos_now": "ഇപ്പോൾ SOS അയയ്‌ക്കുക",
-  "permissions.privacy_first": "Privacy first:",
-  "permissions.need_access": "We need location for dispatch and camera for crash photos.",
-  "permissions.your_data_is": "Your data is",
-  "permissions.never": "never",
-  "permissions.shared": "shared.",
-  "permissions.got_it": "Got it"
+  "permissions.privacy_first": "ആദ്യം സ്വകാര്യത:",
+  "permissions.need_access": "അയയ്‌ക്കുന്നതിന് ലൊക്കേഷനും ക്രാഷ് ഫോട്ടോകൾക്ക് ക്യാമറയും ആവശ്യമാണ്.",
+  "permissions.your_data_is": "നിങ്ങളുടെ ഡാറ്റ",
+  "permissions.never": "ഒരിക്കലും",
+  "permissions.shared": "പങ്കിട്ടു.",
+  "permissions.got_it": "മനസ്സിലായി"
 }
