@@ -293,6 +293,7 @@ def build_tex() -> str:
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{amsmath}
+\usepackage{calc}
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 % ─── Colours ──────────────────────────────────────────────────────────
