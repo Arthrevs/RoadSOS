@@ -28,6 +28,7 @@ import { hasUserChosenLanguage } from './i18n';
 import { requestMotionPermission } from './hooks/useLocation';
 import { DEMO_MODE } from './utils/demoMode';
 import { startBackendWarmup, subscribeBackendStatus } from './utils/backendWarmup';
+import JudgeTip from './components/JudgeTip';
 
 // ─── Demo location picker ─────────────────────────────────────────────────────
 const DEMO_LOCATIONS = [
@@ -299,9 +300,7 @@ export default function App() {
     <div className={`app has-map-hero theme-${mapTheme} ${tutorialStep > 0 ? `tutorial-step-${tutorialStep}` : ''}`}>
       {/* ── Judge Tip Banner (Local Dev Only) ── */}
       {import.meta.env.DEV && import.meta.env.VITE_API_URL !== "https://roadsos-pl3k.onrender.com" && (
-        <div style={{ backgroundColor: '#2c3e50', color: '#ecf0f1', padding: '10px 15px', textAlign: 'center', fontSize: '13px', zIndex: 9999, position: 'relative', borderBottom: '1px solid #34495e', lineHeight: 1.4 }}>
-          <strong style={{color: '#f1c40f'}}>💡 Hackathon Judge Tip:</strong> To test full Gemini AI & Google Places parallelism without supplying your own API keys, create a <code>frontend/.env.local</code> file with <code>VITE_API_URL="https://roadsos-pl3k.onrender.com"</code> and restart this server.
-        </div>
+        <JudgeTip />
       )}
 
       {/* ── First-launch language picker (gates Medical ID) ── */}
