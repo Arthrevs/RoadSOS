@@ -244,6 +244,18 @@ export default function MapHero({
     alert(`Saved ${res.cached}/${res.total} nearby zones for offline use.`);
   }, [location]);
 
+  // ── Handle save area for offline ──
+  const handleSaveArea = useCallback(async () => {
+    if (!location?.lat) return;
+    setSavingArea({ done: 0, total: 0 });
+    const res = await prefetchArea(location.lat, location.lon, {
+      radiusKm: 8,
+      onProgress: setSavingArea,
+    });
+    setSavingArea(null);
+    alert(`Saved ${res.cached}/${res.total} nearby zones for offline use.`);
+  }, [location]);
+
   // ── Handle manual location set ──
   // setManualLocation() dispatches roadsos:manual-location which the running
   // useLocation() hook catches, updating App.jsx's activeLocation and
@@ -463,7 +475,20 @@ export default function MapHero({
 
       {/* Bottom dock gradient + SOS + Quick contacts */}
       <div className="map-hero-dock">
-
+        {showScrollArrow && (
+          <div className="scroll-down-arrow" onClick={() => {
+            if (dockCardRef.current) {
+              dockCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+              window.scrollTo({ top: window.innerHeight * 0.9, behavior: 'smooth' });
+            }
+          }}>
+            <div className="scroll-arrow-pill">
+              <span>Scroll down</span>
+              <ChevronDown size={16} strokeWidth={2.5} />
+            </div>
+          </div>
+        )}
         <div className="dock-interactive-zone">
           <SOSButton
             location={location}
@@ -546,9 +571,17 @@ export default function MapHero({
                   </button>)}
               <button className="menu-item" onClick={() => { setSidebarOpen(false); if (mapRef.current) mapRef.current.recenter(); }}>
                 <span className="m-num">6</span>
-                <div className="m-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></div>
+                <div className="m-icon"><Crosshair size={17} strokeWidth={1.8} /></div>
                 <span className="m-label">{t('sidebar.recenter', 'Recenter Map')}</span>
                 <div className="m-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+              </button>
+              
+              <button className="menu-item" onClick={handleSaveArea} disabled={!!savingArea}>
+                <span className="m-num">7</span>
+                <div className="m-icon"><Map size={17} strokeWidth={1.8} /></div>
+                <span className="m-label">
+                  {savingArea ? `Saving… ${savingArea.done}/${savingArea.total}` : t('sidebar.save_area', 'Save Area for Offline')}
+                </span>
               </button>
 
               <button 

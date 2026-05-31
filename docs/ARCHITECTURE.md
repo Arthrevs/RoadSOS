@@ -12,9 +12,9 @@ RoadSOS is a **PWA-first emergency-services discovery app**. A user opens it, th
 │                                                                     │
 │  React 18 + Vite + Workbox SW                                       │
 │  ├─ Leaflet (real OSM map)                                          │
-│  ├─ i18next (43 languages)                                          │
+│  ├─ i18next (48 languages)                                          │
 │  ├─ IndexedDB-style localStorage cache                              │
-│  └─ Bundled facilities JSON (818 entries, 200 countries)            │
+│  └─ Bundled facilities JSON (938 entries, 200 countries)            │
 └────────────────────────────┬────────────────────────────────────────┘
                              │ HTTPS
                              ▼
@@ -22,7 +22,7 @@ RoadSOS is a **PWA-first emergency-services discovery app**. A user opens it, th
 │                FASTAPI BACKEND (Render free tier)                   │
 │                                                                     │
 │  /search ─ orchestrates 3 upstream sources in parallel              │
-│  /triage ─ Gemini 2.0 Flash contact re-prioritization               │
+│  /triage ─ Gemini 2.5 Flash contact re-prioritization               │
 │  /health ─ liveness                                                 │
 └────────┬────────────────┬──────────────────┬────────────────────────┘
          │                │                  │
@@ -49,9 +49,9 @@ RoadSOS is a **PWA-first emergency-services discovery app**. A user opens it, th
 |---|---|---|
 | `search_service.py` | 169 | `GET /search` orchestrator. Phase 1 parallel geocode + Overpass; Phase 2 conditional Google fallback; Phase 3 dedup; Phase 4 phone enrichment |
 | `overpass_service.py` | 280+ | OSM Overpass query builder (8 categories), 3-mirror retry, smart proximity dedup, opening_hours parsing |
-| `googleplaces_service.py` | 220 | Nearby Search + Place Details. Multi-key rotation (`Mapsplatformkey` comma-separated). Find-Place-from-Text for phone enrichment |
+| `googleplaces_service.py` | 220 | Nearby Search + Place Details. We bypass it by parsing `GOOGLE_PLACES_API_KEY` manually on startup and rotating through a list of keys per request using `itertools.cycle`. |
 | `geocoder.py` | ~80 | Nominatim reverse-geocode. ISO-3166 alpha-2 country code validation. 24h cache |
-| `ai_triage.py` | 175 | Gemini 2.0 Flash contact reordering. Deterministic rule-based fallback (4 priority rules based on injured + blocking flags) |
+| `ai_triage.py` | 175 | Gemini 2.5 Flash contact reordering. Deterministic rule-based fallback (4 priority rules based on injured + blocking flags) |
 | `triage_service.py` | ~65 | `POST /triage` router. Double-layered fallback |
 | `cache.py` | ~70 | Async-safe TTL cache with LRU eviction. 3 module singletons: overpass (1h/200), google (1h/200), geocode (24h/500) |
 | `rate_limiter.py` | ~75 | Per-IP token bucket. `X-Forwarded-For` aware for Render reverse proxy. 30 req/min for `/search`, 20 for `/triage` |
@@ -74,7 +74,6 @@ Request → middleware stack (outermost first)
   rate_limiter.check(IP)   ← 429 + Retry-After if exceeded
        ↓
   ┌──── PHASE 1 (PARALLEL via asyncio.gather) ──────────────┐
-  │                                                          │
   │  _safe_geocode()        _safe_overpass()                 │
   │  ├─ cache lookup        ├─ cache lookup                  │
   │  ├─ Nominatim GET       ├─ Build Overpass QL             │
@@ -87,7 +86,7 @@ Request → middleware stack (outermost first)
   └──────────────────────────────────────────────────────────┘
        ↓
   ┌──── PHASE 2 (CONDITIONAL) ──────────────────────────────┐
-  │  if phoned_osm < 3:                                      │
+  │  Google Nearby Search + Place Details (in parallel)      │
   │    _safe_google(lat, lon, country_code from Phase 1)     │
   │      ├─ Nearby Search per category                       │
   │      ├─ Place Details for phone field                    │
@@ -146,7 +145,7 @@ Token bucket per client IP. `get_client_ip()` respects `X-Forwarded-For` (Render
 
 ### 2.6 AI Triage
 
-Gemini 2.0 Flash. Receives a prompt with the contact list and situational flags (`injured`, `blocking_traffic`). Returns reordered contacts plus a 1-sentence reason.
+Gemini 2.5 Flash. Receives a prompt with the contact list and situational flags (`injured`, `blocking_traffic`). Returns reordered contacts plus a 1-sentence reason.
 
 **3-layer fallback** for reliability:
 1. Model call success + valid JSON + same contact count → use AI ordering
@@ -179,11 +178,11 @@ mount
         ┌──── 4-TIER FALLBACK CHAIN ────────────────┐
         │  1. searchNearby() → backend /search       │
         │  2. loadSearchResult() → localStorage      │
-        │     (24h TTL, ~1.1km grid key)             │
+        │     (7-day TTL, ~1.1km grid key)             │
         │  3. buildBundledSearchResult() →           │
-        │     bundled_facilities.json (818 entries,  │
+        │     bundled_facilities.json (938 entries,  │
         │     80km → 600km fallback)                 │
-        │  4. MOCK_DATA (7 hardcoded contacts)       │
+        │  4. Empty contacts list [U+2014] national numbers banner always renders       │
         └────────────────────────────────────────────┘
               ↓
         MapHero (RealMap + SOSButton + dock)
@@ -195,8 +194,8 @@ mount
 |---|---|---|---|
 | Workbox SW (`public/sw.js`) | App shell (JS/CSS/HTML) via `__WB_MANIFEST` | until next deploy | `skipWaiting()` on install |
 | Workbox runtime cache | `/search` responses (NetworkFirst, 8s timeout) | 24h | LRU at 50 entries |
-| `offlineDB.js` (localStorage) | Search results keyed by ~1.1km grid | 24h | manual `clearCache()` |
-| `bundled_facilities.json` | 818 entries × 200 countries | build-time | new build |
+| `offlineDB.js` (localStorage) | Search results keyed by ~1.1km grid | 7-day | manual `clearCache()` |
+| `bundled_facilities.json` | 938 entries × 200 countries | build-time | new build |
 | `emergencyNumbers.js` | Country code → emergency dial codes (108, 911, 112…) | build-time | new build |
 
 **Offline-first guarantees:**
@@ -205,7 +204,7 @@ mount
 - If user never searched at this location before, falls back to bundled regional facilities
 - WhatsApp/SMS deeplinks work offline (OS-level, not network-dependent)
 
-**Offline gap:** OSM tile imagery is **not** cached — the basemap goes blank when offline, but markers + UI still render.
+**Map tiles:** CartoDB Dark Matter tiles are cached at runtime via Workbox `CacheFirst` (250-tile LRU, 30-day TTL). Previously-viewed map areas render fully offline. First visit to a new area while offline shows a blank basemap, but all contact markers and the UI render normally.
 
 ### 3.3 Map Layer (`RealMap.jsx`)
 
@@ -223,7 +222,7 @@ Bundle cost: +150 KB minified (+44 KB gzipped) over the prior fake SVG. Trade-of
 
 ### 3.4 i18n
 
-- **43 languages:** all 22 Indian Schedule-VIII languages + English + 20 global (Spanish, French, Portuguese, German, Italian, Dutch, Polish, Russian, Ukrainian, Romanian, Greek, Turkish, Arabic, Persian, Hebrew, Swahili, Amharic, Indonesian, Malay, Thai, Vietnamese, Chinese, Japanese, Korean, Filipino)
+- **48 languages:** all 22 Indian Schedule-VIII languages + English + 25 global (Spanish, French, Portuguese, German, Italian, Dutch, Polish, Russian, Ukrainian, Romanian, Greek, Turkish, Arabic, Persian, Hebrew, Swahili, Amharic, Indonesian, Malay, Thai, Vietnamese, Chinese, Japanese, Korean, Filipino). Hindi, Tamil, Bengali, Telugu and the major global languages are fully localised; Bodo, Kashmiri and Manipuri are partially localised.
 - **RTL support:** Urdu, Arabic, Kashmiri, Sindhi, Persian, Hebrew (`dir='rtl'` on `<html>`)
 - **First-launch picker:** Manual selection only (no GPS-based auto-suggestion)
 - **Persistence:** `localStorage['roadsos:lang']`
@@ -233,7 +232,7 @@ Bundle cost: +150 KB minified (+44 KB gzipped) over the prior fake SVG. Trade-of
 
 Two-signal verification to reduce false positives:
 
-1. **GPS velocity collapse:** ≥25 km/h followed by ≤5 km/h within 2-second window
+1. **GPS velocity collapse:** sustained ≥40 km/h followed by ≤5 km/h within ~2.5 s (rejects ordinary braking)
 2. **Accelerometer spike:** ≥3.5G within 4 seconds of velocity collapse
 
 Both must agree → `autoFireSos()` fires with crash flag, opens DispatchScreen, 12s cooldown before next alert. iOS 13+ requires explicit motion permission gesture, requested on first user tap.
@@ -274,7 +273,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 
 **Context:** Need global emergency-facility coverage. Two viable options: Google Places (paid, complete metadata, $17 per 1k Nearby Search calls + $17 per 1k Place Details) vs OSM Overpass (free, variable quality, public servers).
 
-**Decision:** Overpass primary, Google fallback only when phoned OSM results < 3.
+**Decision:** Overpass and Google Places queried in parallel.
 
 | Dimension | Overpass | Google Places |
 |---|---|---|
@@ -294,7 +293,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 
 **Context:** First-time users in low-connectivity regions can't reach backend or use cached results.
 
-**Decision:** Ship 818-entry facility catalog with the app (`bundled_facilities.json`, ~120KB gzipped).
+**Decision:** Ship 938-entry facility catalog with the app (`bundled_facilities.json`, ~120KB gzipped).
 
 **Trade-off:** +50KB bundle vs zero-network usefulness. Critical for hackathon demo offline criterion. Falls back from 80km → 600km radius when sparse.
 
@@ -312,7 +311,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 
 **Context:** Emergency app must work in every failure mode.
 
-**Decision:** Backend `/search` → localStorage cache (24h) → bundled JSON → mock data. Each tier explicitly tagged in the response so the UI can show source.
+**Decision:** Backend `/search` → localStorage cache (7-day TTL) → bundled JSON → empty list (national numbers always render). Each tier explicitly tagged in the response so the UI can show source.
 
 ### ADR-05: Leaflet + CartoDB tiles (not Google Maps)
 
@@ -331,7 +330,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 
 **Decision:** Leaflet + CartoDB Dark Matter. No API key burden, matches existing dark theme, ships in any environment.
 
-**Consequences:** OSM tile attribution is legally required (rendered bottom-right). Tile imagery is not yet cached for offline — a future improvement.
+**Consequences:** OSM tile attribution is legally required (rendered bottom-right). Tile imagery is cached via Workbox `CacheFirst` (250-tile LRU, 30-day TTL) — previously-viewed areas render fully offline.
 
 ### ADR-06: AI triage with deterministic fallback
 
@@ -339,9 +338,9 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 
 **Context:** Gemini API can fail (network, quota, malformed JSON). Triage cannot be allowed to block a working contact list.
 
-**Decision:** Gemini 2.0 Flash attempts reorder; if anything fails, 4 explicit priority rules take over.
+**Decision:** Gemini 2.5 Flash attempts reorder; if anything fails, 4 explicit priority rules take over.
 
-**Why Gemini Flash:** free tier (60 RPM / 1500 RPD on `gemini-2.0-flash`), low latency, JSON mode supported, no billing required. Called via direct REST (httpx) — no extra SDK dependency.
+**Why Gemini Flash:** free tier (15 RPM / 1500 RPD on `gemini-2.5-flash`), low latency, JSON mode supported, no billing required. Called via direct REST (httpx) — no extra SDK dependency.
 
 **Trade-off:** Slightly less context-aware ordering on fallback, but the rules cover the dominant cases (injured/blocking quadrants). Free-tier model keeps cost at zero for hackathon usage.
 
@@ -350,15 +349,15 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 ## 6. Strengths
 
 1. **Reliability-first orchestration.** Every external call has a `_safe_*` wrapper. The API never 5xxs on upstream failure — it degrades to empty contacts with a transparent `source` field.
-2. **Cost-aware fallback.** Google Places is paid; the design only invokes it when free Overpass is insufficient (< 3 phoned results), and caps enrichment at 6 Place Details calls/search.
-3. **Offline-first frontend.** 4-tier fallback (backend → localStorage → bundled JSON → mock) means the app produces useful output even in a Faraday cage.
+2. **Parallel execution.** Google Places is fired in parallel with Overpass to ensure maximum results within the 10-second window, capping phone enrichment at 6 Place Details calls/search.
+3. **Offline-first frontend.** 4-tier fallback (backend → localStorage → bundled JSON → empty list with national numbers) means the app produces useful output even in a Faraday cage.
 4. **Parallelism where it matters.** Geocode and Overpass run concurrently via `asyncio.gather`; clients see max-of-two latency instead of sum.
 5. **Multi-mirror Overpass.** Three independent Overpass endpoints with exponential backoff. Single-mirror downtime invisible to users.
 6. **Coordinate-grid caching.** 4-decimal rounding (~11m) means a busy demo location (judge hammering the same coords) gets sub-50ms repeat responses.
 7. **Smart dedup.** Phone-equality dedup wins over name-match — handles OSM/Google transliteration mismatches (e.g., "GS Custom" vs "gs sustom" with same phone).
 8. **Country-aware SOS routing.** WhatsApp vs SMS dispatch chosen per country; no false assumption that everyone uses SMS or WhatsApp.
 9. **Two-signal crash detection.** GPS velocity drop + accelerometer spike must agree → meaningfully reduces false positives vs single-sensor designs.
-10. **43-language i18n with RTL.** Cover all 22 Indian Schedule-VIII languages plus 20 global. RTL for Urdu/Arabic/Persian/Hebrew/Kashmiri/Sindhi is rendered correctly.
+10. **48-language i18n with RTL.** Cover all 22 Indian Schedule-VIII languages plus 25 global + English. RTL for Urdu/Arabic/Persian/Hebrew/Kashmiri/Sindhi is rendered correctly.
 11. **CI with lint + format + tests + conflict detection** is wired for both frontend and backend before any code lands on main.
 
 ---
@@ -371,16 +370,16 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 | 2 | No tests for Google Places module (`googleplaces_service.py`) | Medium | Mock Google REST responses; test enrichment loop, key rotation |
 | 3 | No tests for Nominatim reverse-geocode | Low | Mock httpx; verify country code validation regex |
 | 4 | Rate limiter buckets reset on Render cold start | Low | Acceptable for free tier; for prod move to Redis |
-| 5 | OSM tiles not cached for offline use | Medium | Add Workbox runtime caching rule for `cartocdn.com/dark_all` pattern |
+| 5 | ~~OSM tiles not cached for offline use~~ | ~~Medium~~ | **Resolved** [U+2014] Workbox `CacheFirst` route added in `public/sw.js` for `cartocdn.com/dark_all` (250-tile LRU, 30-day TTL) |
 | 6 | `Mapsplatformkey` env var name (mixed case) — confusing | Low | Already pinned because Render config locks the name. Documented in ruff.toml ignore |
 | 7 | `negative caching gap` — phoneless Overpass results don't cache, repeated hits on sparse regions | Low | Cache with shorter TTL (15min) instead of skipping |
 | 8 | No structured logging — request_id present but not in log lines per service | Low | Add contextvar with request_id; format logs with it |
 | 9 | Bundle size 610KB JS (181 KB gzipped) — Leaflet is heavy | Low | Dynamic import RealMap; render the dock immediately, lazy-load the map |
-| 10 | `MOCK_DATA` in `App.jsx` (7 entries, Bengaluru) ships in production bundle | Low | Tree-shake under `if (DEMO_MODE)` |
+| 10 | ~~`MOCK_DATA` in `App.jsx`~~ | ~~Low~~ | **Resolved** — mock data removed; final fallback is now an empty contacts list with national emergency numbers banner |
 | 11 | No P99 latency or SLO metrics | Medium | Add `Server-Timing` headers per phase; emit to a stats endpoint |
 | 12 | Three Gemini bypasses in tests but no test for actual prompt format | Low | Snapshot test on system prompt + golden output for fixed input |
 | 13 | Branch protection rules not yet applied (require owner access) | High | Set via Settings → Branches as owner |
-| 14 | `--legacy-peer-deps` flag everywhere (i18next peer warnings) | Low | Upgrade `vite-plugin-pwa` to a version compatible with current Vite 8 |
+| 14 | `--legacy-peer-deps` flag everywhere (i18next peer warnings) | Low | Upgrade `vite-plugin-pwa` to a version compatible with current Vite 7.3.3 |
 | 15 | No CSRF / origin check on backend POST endpoints | Medium | Add origin allowlist middleware for `/triage`, `/dispatch` |
 
 ---
@@ -406,7 +405,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 ### P0 — Before judging
 - [ ] Apply branch protection from owner account
 - [ ] Lazy-load `RealMap` to cut initial bundle by ~150KB
-- [ ] Add Workbox runtime cache for CartoDB tiles (offline basemap)
+- [x] ~~Add Workbox runtime cache for CartoDB tiles~~ — done (`CacheFirst`, 250-tile LRU, 30-day TTL)
 
 ### P1 — Quality
 - [ ] Integration test for `/search` (mock Overpass + Google)

@@ -29,7 +29,10 @@ _SEARCH_STATS = {"searches": 0, "contacts_total": 0, "empty_searches": 0}
 
 
 def google_places_configured() -> bool:
-    return True
+    # Was a hardcoded `return True`, which made /health report google_places as
+    # configured even when no key was set [U+2014] masking why Google never ran.
+    # Report the truth: is a non-empty GOOGLE_PLACES_API_KEY actually present?
+    return bool(os.getenv("GOOGLE_PLACES_API_KEY", "").strip())
 
 
 def _count_request() -> int:

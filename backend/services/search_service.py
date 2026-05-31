@@ -56,11 +56,12 @@ def deduplicate(contacts: list[dict]) -> list[dict]:
         name_key = name.lower().strip()
         if not name_key:
             continue
-        if name_key in seen_names:
+        if name_key in seen_names and not name_key.startswith("unnamed "):
             continue
         if any(phones_match(c.get("phone"), existing.get("phone")) for existing in out):
             continue
-        seen_names.add(name_key)
+        if not name_key.startswith("unnamed "):
+            seen_names.add(name_key)
         out.append(c)
     return out
 
@@ -73,10 +74,11 @@ def deduplicate(contacts: list[dict]) -> list[dict]:
 # better than no result.
 GEOCODE_BUDGET_S = 5.0
 OVERPASS_BUDGET_S = (
-    13.0  # 4s × 3 mirrors + jitter — must exceed (TIMEOUT × MIRRORS) to allow real failover
+    20.0  # mirrors are RACED (~fastest of 3) and at most 2 radius queries run;
+    # the frontend waits 25 s, so this leaves headroom for geocode + enrichment.
 )
 GOOGLE_BUDGET_S = 12.0
-ENRICH_BUDGET_S = 5.0  # reduced from 10.0: 3 lookups typically finish in <2 s
+ENRICH_BUDGET_S = 5.0  # capped at 6 lookups, typically finish in <2 s
 
 
 async def _with_budget(coro, budget_s: float, label: str, fallback):
@@ -91,33 +93,39 @@ async def _with_budget(coro, budget_s: float, label: str, fallback):
         return fallback
 
 
-async def _safe_overpass(lat: float, lon: float, radius: int = 5000) -> list[dict]:
-    """Try Overpass at given radius. Expands to 10km then 20km if sparse. Never raises."""
+async def _safe_overpass(lat: float, lon: float, radius: int = 8000) -> list[dict]:
+    """Query Overpass once at `radius` (default 8 km).
+
+    Expand to a wider radius ONLY if the first query *succeeded* but returned
+    few results (a genuinely sparse / rural area). The old version fired up to
+    three sequential full queries (5/10/20 km) even when the first one timed
+    out — which, combined with the 10 s per-mirror timeout, blew the wall-clock
+    budget and returned []. Now: at most two RACED queries, and we never waste
+    the budget re-querying after a hard failure. Never raises — returns [] so
+    Google Places / the bundled directory can take over.
+    """
     try:
         results = await build_and_fetch_query(lat, lon, radius=radius)
-        # Expand to 10km and 20km if sparse (rural India support)
-        if len(results) < 10:
-            try:
-                wider = await build_and_fetch_query(lat, lon, radius=10000)
-                results.extend(wider)
-            except Exception as exc:
-                logger.warning("Overpass 10km expansion failed: %s", exc)
-        if len(results) < 10:
-            try:
-                widest = await build_and_fetch_query(lat, lon, radius=20000)
-                results.extend(widest)
-            except Exception as exc:
-                logger.warning("Overpass 20km expansion failed: %s", exc)
-        return results
     except Exception as exc:
         logger.warning("Overpass primary query failed: %s", exc)
         return []
+
+    # First query succeeded. Only widen if the area genuinely looks sparse.
+    if len(results) < 5:
+        try:
+            wider = await build_and_fetch_query(lat, lon, radius=25000)
+            existing_ids = {c.get("id") for c in results}
+            results.extend(c for c in wider if c.get("id") not in existing_ids)
+        except Exception as exc:
+            logger.warning("Overpass wide-radius expansion failed: %s", exc)
+
+    return results
 
 
 async def _safe_google(lat: float, lon: float, region: str | None) -> list[dict]:
     """Google Places nearby search. Never raises."""
     try:
-        return await search_nearby_places(lat, lon, radius=10000, region=region)
+        return await search_nearby_places(lat, lon, region=region)
     except Exception as exc:
         logger.warning("Google Places query failed: %s", exc)
         return []
@@ -142,7 +150,7 @@ async def _check_rate_limit(request: Request) -> None:
     description=(
         "Searches OpenStreetMap (Overpass) and Google Places in **parallel** "
         "for hospitals, police, ambulance, towing, repair, tyre, and showroom "
-        "establishments within 5-10 km of the supplied coordinate. Reverse-"
+        "establishments within 8-25 km of the supplied coordinate. Reverse-"
         "geocodes the location for a human-readable landmark and ISO 3166-1 "
         "alpha-2 country code.\n\n"
         "Always returns a 200 with a valid response shape — empty arrays "
@@ -180,9 +188,8 @@ async def search_facilities(
 
     # ─── Phase 3: phone enrichment for top closest phoneless contacts ────
     # Budget-capped: partial enrichment is better than blowing the timeout.
-    # Reduced from 6 to 3 to speed up: 3 lookups × find-place + details is fast enough.
     merged = await _with_budget(
-        enrich_missing_phones(merged, region=geo.get("country_code"), max_lookups=3),
+        enrich_missing_phones(merged, region=geo.get("country_code"), max_lookups=6),
         ENRICH_BUDGET_S,
         "phone-enrichment",
         merged,  # if enrichment times out, return unenriched contacts

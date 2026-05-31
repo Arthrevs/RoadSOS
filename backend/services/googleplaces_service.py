@@ -4,7 +4,7 @@ Only invoked when Overpass returns fewer than 10 results at the expanded radius.
 We use Nearby Search to find places, then Place Details for each to get the
 phone number (the Nearby endpoint does not return phones).
 
-Costs money beyond the free tier. Capped to top 8 places per type per call to
+Costs money beyond the free tier. Capped to top 20 places per type per call to
 control spend during the hackathon.
 """
 
@@ -30,10 +30,10 @@ FINDPLACE_URL = "https://maps.googleapis.com/maps/api/place/findplacefromtext/js
 
 
 # ─── Key rotation ────────────────────────────────────────────────────────────
-# Set Mapsplatformkey as a comma-separated list of keys on Render to
+# Set GOOGLE_PLACES_API_KEY as a comma-separated list of keys on Render to
 # distribute load across multiple billing accounts.
 def _load_keys() -> list[str]:
-    raw = os.getenv("Mapsplatformkey", "")
+    raw = os.getenv("GOOGLE_PLACES_API_KEY", "")
     return [k.strip() for k in raw.split(",") if k.strip()]
 
 
@@ -330,14 +330,12 @@ async def enrich_missing_phones(
     return contacts
 
 
-async def search_nearby_places(
-    lat: float, lon: float, radius: int = 5000, region: str | None = None
-) -> list[dict]:
+async def search_nearby_places(lat: float, lon: float, region: str | None = None) -> list[dict]:
     api_key = _next_key()
     if not api_key:
         return []
 
-    cache_key = location_key(lat, lon, f"r{radius}")
+    cache_key = location_key(lat, lon, "gp")
     cached = await google_cache.get(cache_key)
     if cached is not None:
         logger.info(f"Google Places cache hit · {cache_key} · {len(cached)} contacts")

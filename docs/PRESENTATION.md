@@ -14,9 +14,9 @@
 
 A location-aware Progressive Web App that connects road accident victims and bystanders to the right help in under 10 seconds — globally, offline, and intelligently.
 
-**Team:** Sarma (Lead) · Rookie 1 · Rookie 2
+**Team:** Prajnadeep Sarma (Lead)
 **Submitted to:** CoERS × IIT Madras — National Road Safety Hackathon 2026
-**Repository:** github.com/Arthrevs/Roadproj
+**Repository:** github.com/Arthrevs/RoadSOS
 
 ---
 
@@ -73,7 +73,7 @@ Emergency services exist. **Finding them quickly enough is the problem.**
                          │
         ┌────────────────┼────────────────┐
         ▼                ▼                ▼
-   useLocation     Service Worker   Bundled 196-Country DB
+   useLocation     Service Worker   Bundled 200-Country DB
    GPS→IP fb       NetworkFirst     Always offline · 0 network
    velocity        + CacheFirst     calls
         │                │
@@ -83,7 +83,7 @@ Emergency services exist. **Finding them quickly enough is the problem.**
 │  In-memory TTL cache · GZipMiddleware · structured logs  │
 ├─────────────────────────────────────────────────────────┤
 │  GET  /search          → OSM Overpass + Google Places   │
-│  POST /triage          → Gemini 2.0 Flash + rule fallback│
+│  POST /triage          → Gemini 2.5 Flash + rule fallback│
 │  POST /dispatch-summary → AI-generated dispatch text     │
 │  GET  /health          → uptime · API status · cache    │
 │  GET  /offline-pack    → 200-country JSON               │
@@ -92,10 +92,10 @@ Emergency services exist. **Finding them quickly enough is the problem.**
 Open & free APIs preferred:
 ✅ OpenStreetMap (free, global, open data)
 ✅ Nominatim (free reverse geocoding)
-✅ Google Gemini 2.0 Flash (with rule-based fallback)
+✅ Google Gemini 2.5 Flash (with rule-based fallback)
 ```
 
-**Stack:** React 18 + Vite 8 PWA · FastAPI (Python) · OpenStreetMap Overpass · Nominatim · Google Gemini 2.0 Flash
+**Stack:** React 18 + Vite 7.3.3 PWA · FastAPI (Python) · OpenStreetMap Overpass · Nominatim · Google Gemini 2.5 Flash
 
 ---
 
@@ -103,9 +103,9 @@ Open & free APIs preferred:
 
 | Criterion (from rulebook) | How RoadSOS Delivers |
 |---|---|
-| **Reliability & data accuracy** | In-memory TTL cache · rule-based AI fallback · `_validate_ai_result()` strict schema check · phone E.164 normalization via `phonenumbers` · 59 unit tests · CI on every push (Python 3.11 + 3.12) |
-| **Number of contacts fetched** | 8 contact categories (rulebook asks for 6) · Overpass expanded to include ways for clinic, healthcare=*, fire_station, car_repair · auto-radius expansion 5 km → 10 km if < 3 results · Google Places fallback |
-| **Offline functionality** | Workbox Service Worker · NetworkFirst for `/search` + `/triage` · CacheFirst for `/offline-pack` · localStorage 24h cache (1 km grid) · **200-country emergency numbers bundled in JS — zero network calls** |
+| **Reliability & data accuracy** | In-memory TTL cache · rule-based AI fallback · `_validate_ai_result()` strict schema check · phone E.164 normalization via `phonenumbers` · 288 unit tests (128 backend · 160 frontend) · CI on every push (Python 3.11 + 3.12) |
+| **Number of contacts fetched** | 8 contact categories (rulebook asks for 6) · Overpass expanded to include ways for clinic, healthcare=*, fire_station, car_repair · auto-radius expansion 8 km → 25 km · Google Places parallel fallback |
+| **Offline functionality** | Workbox Service Worker · NetworkFirst for `/search` + `/triage` · CacheFirst for `/offline-pack` · localStorage 7-day TTL (1 km grid) · **200-country emergency numbers bundled in JS — zero network calls** |
 | **Innovation & additional features** | AI triage with reason text · GPS velocity crash detection with PIN-cancel · WhatsApp-deeplink SOS broadcast · dispatch summary endpoint · demo location picker for judges · 200-country detection · structured `/health` endpoint |
 | **Information integration across countries** | 200 countries and territories · ISO 3166-1 country detection via reverse geocoding · automatic switch of police/ambulance/fire numbers based on detected country · cross-border behaviour: drive India→Nepal and numbers update from 108→102 instantly |
 
@@ -153,9 +153,9 @@ Open & free APIs preferred:
 - ✅ Live demo at deployment URL
 - ✅ Open & free APIs preferred — OSM, Nominatim ✅
 
-**Repository:** github.com/Arthrevs/Roadproj
-**Live demo:** [Deployment URL]
-**Contact:** [Team contact email]
+**Repository:** github.com/Arthrevs/RoadSOS
+**Live demo:** https://roadsos-frontend.vercel.app
+**Contact:** prajnadeepsarma@gmail.com
 
 **Every minute saved is a life saved.**
 

@@ -310,7 +310,7 @@ Coordinates are rounded to 4 decimal places (~11 m grid) so sub-meter GPS jitter
 | 5 | Dispatch I/O | Runtime schema | Per query | Live |
 | 6 | Health response | Runtime schema | Per ping | Live |
 | 7 | Server TTL cache | In-memory | Up to 900 entries | Auto-evicting |
-| 8 | Browser localStorage | Per device | 1 entry per area | 24h TTL |
+| 8 | Browser localStorage | Per device | 1 entry per area | 7-day TTL |
 | 9 | Service Worker cache | Per device | Up to 50 entries | NetworkFirst |
 
 **RoadSOS does not store any user data on a server.** No accounts, no telemetry, no user identifiers. All user state is local to the device.

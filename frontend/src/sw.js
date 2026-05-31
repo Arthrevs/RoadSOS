@@ -25,7 +25,7 @@ precacheAndRoute(self.__WB_MANIFEST || []);
 registerRoute(
   ({ url, request }) =>
     request.method === 'GET' &&
-    (url.pathname === '/search' || url.pathname.startsWith('/search?')),
+    url.pathname === '/search',
   new NetworkFirst({
     cacheName: 'roadsos-api-search',
     networkTimeoutSeconds: 8,
@@ -59,7 +59,7 @@ registerRoute(
 registerRoute(
   ({ url }) =>
     url.hostname.endsWith('basemaps.cartocdn.com') &&
-    url.pathname.includes('dark_all'),
+    (url.pathname.includes('dark_all') || url.pathname.includes('light_all')),
   new CacheFirst({
     cacheName: 'roadsos-map-tiles',
     plugins: [
