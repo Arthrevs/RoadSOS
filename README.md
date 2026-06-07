@@ -38,7 +38,7 @@
 
 ---
 
-## <img src="https://api.iconify.design/lucide/target.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> The Problem
+## <img src="./docs/target-dart.svg" width="24" height="24" align="absmiddle" /> The Problem
 
 > India records roughly **1.5 lakh road accident deaths every year.** Most are not killed by the crash itself — they are killed by **delay**.
 
