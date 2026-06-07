@@ -281,7 +281,7 @@ async def build_and_fetch_query(lat: float, lon: float, radius: int = 5000) -> l
     #   - No-phone results            → don't cache; let Google enrichment
     #                                   fill phones on subsequent requests.
     # Cache policy: cache ONLY non-empty results. Never cache empty/failed
-    # lookups [U+2014] that way a retry at the same coordinate during a demo actually
+    # lookups — that way a retry at the same coordinate during a demo actually
     # re-queries Overpass instead of being served a stale empty list.
     phones_found = sum(1 for c in sorted_results if c.get("phone"))
     if sorted_results:

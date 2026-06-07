@@ -76,7 +76,7 @@ The rulebook specifies these exact criteria — every code decision must serve a
 
 1. **Number of emergency contacts found** — judges will test how many contacts appear for a given location. More = better. OSM Overpass + Google Places run in parallel. Auto-expands from 8 km → 25 km in sparse areas. Google fires regardless of OSM result count (parallel, not conditional).
 
-2. **Reliability** — searches must succeed even when upstreams fail. Every external call is wrapped in `_safe_*` helpers that never raise. 3-mirror Overpass with exponential backoff. API always returns HTTP 200 with a valid shape.
+2. **Reliability** — searches must succeed even when upstreams fail. Every external call is wrapped in `_safe_*` helpers that never raise. 3 Overpass mirrors raced concurrently (first healthy 200 response wins; the rest are cancelled). API always returns HTTP 200 with a valid shape.
 
 3. **Offline functionality** — 4-tier fallback:
    - Tier 1: FastAPI backend `/search`
@@ -101,7 +101,7 @@ The rulebook specifies these exact criteria — every code decision must serve a
 |---|---|
 | Google Places fires in parallel with OSM | Reduces wall-clock from sequential sum to `max(osm, google)` — saves 10+ s in rural areas |
 | `rankby=distance` (not `radius`) in Google | Returns nearest contact first, not most-prominent |
-| Overpass per-attempt 4s, phase budget 13s | Lets all 3 mirrors get a real chance to respond within the wall-clock cap; with the old 12s per-attempt + 10s budget, the budget killed the task before mirror failover could trigger |
+| Overpass per-mirror timeout 10s, phase budget 20s, mirrors RACED concurrently | Total latency ≈ the fastest healthy mirror (typically 2–6 s) instead of the sum of sequential failovers; one slow/down mirror no longer blows the wall-clock budget |
 | Cache precision 2 decimal places (~1.1km) | Higher cache hit rate during demos; still precise enough for emergency services |
 | `ENRICH_BUDGET_S = 5` (not 10) | 3 phone enrichment lookups finish in <2s; 10s was just burning time |
 | Coarse GPS fix before high-accuracy watch | Shows something on map in ~1–2s instead of waiting 45s for GPS lock |
@@ -111,7 +111,7 @@ The rulebook specifies these exact criteria — every code decision must serve a
 
 ```python
 GEOCODE_BUDGET_S  = 5.0   # Nominatim reverse geocode
-OVERPASS_BUDGET_S = 13.0  # OSM Overpass — fits 3-mirror failover with 4s per-attempt
+OVERPASS_BUDGET_S = 20.0  # OSM Overpass — mirrors RACED; ≈ fastest healthy mirror (10s per-mirror cap)
 GOOGLE_BUDGET_S   = 12.0  # Google Places parallel query
 ENRICH_BUDGET_S   = 5.0   # Google phone enrichment (3 lookups max)
 # Total wall-clock target: < 25s end-to-end

@@ -5,8 +5,8 @@
 // so the Vite proxy handles routing.
 // Strip any leading BOM () that can sneak in when the env var is
 // copy-pasted from Windows or a BOM-encoded file into the Vercel dashboard.
-const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/^/, '')
-  || (import.meta.env.PROD ? 'https://roadsos-pl3k.onrender.com' : '');
+const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/^\uFEFF/, '')
+  || 'https://roadsos-pl3k.onrender.com';
 
 export async function searchNearby(lat, lon, signal) {
   const params = new URLSearchParams({ lat, lon });

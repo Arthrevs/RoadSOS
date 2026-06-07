@@ -1,4 +1,4 @@
-# scripts/augment_india_bundle.py  [U+2014] run from repo root: python scripts/augment_india_bundle.py
+# scripts/augment_india_bundle.py  — run from repo root: python scripts/augment_india_bundle.py
 import json, time, requests
 
 BUNDLE = "frontend/src/data/bundled_facilities.json"
@@ -42,7 +42,7 @@ def main():
                 "lon": el["lon"],
                 "phone": phone,
                 "country_code": "IN",
-                "notes": "OpenStreetMap (crowdsourced [U+2014] not hand-verified)",
+                "notes": "OpenStreetMap (crowdsourced — not hand-verified)",
             })
             have_phone.add(digits)
             kept += 1

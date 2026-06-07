@@ -1,3 +1,5 @@
+<img width="348" height="116" alt="image" src="https://github.com/user-attachments/assets/87854660-f9d2-44ce-8f9b-3cf973108fee" />
+
 # <img src="https://cdn.jsdelivr.net/npm/lucide-static/icons/siren.svg" width="24" height="24" align="absmiddle" /> RoadSOS
 
 > [!IMPORTANT]
@@ -91,7 +93,7 @@ The 2026 problem statement scores five things. Here is exactly where each is imp
 
 | Criterion | How RoadSOS delivers it | Where to look |
 | --- | --- | --- |
-| **Reliability & data accuracy** | Every upstream call is wrapped so `/search` **never returns 5xx** — it degrades to an empty list with an honest `source` tag. Three-mirror Overpass retry with exponential backoff. National emergency numbers for all 200 countries verified clean: **0 blank fields, 0 placeholders, 0 duplicate country codes.** India (112/100/108/101 + highway 1033) and demo countries (UK 999, Japan 110/119, Germany 110/112) confirmed against authoritative sources. | `backend/services/search_service.py`, `backend/data/emergency_seed.json` |
+| **Reliability & data accuracy** | Every upstream call is wrapped so `/search` **never returns 5xx** — it degrades to an empty list with an honest `source` tag. Three Overpass mirrors raced concurrently (first healthy response wins). National emergency numbers for all 200 countries verified clean: **0 blank fields, 0 placeholders, 0 duplicate country codes.** India (112/100/108/101 + highway 1033) and demo countries (UK 999, Japan 110/119, Germany 110/112) confirmed against authoritative sources. | `backend/services/search_service.py`, `backend/data/emergency_seed.json` |
 | **Number of contacts fetched** | OSM Overpass + Google Places fired in **parallel**; 7 service categories across ~13 OSM tag pairs. Auto-expand 8 km → 25 km when sparse. Top-6 phoneless results enriched via Google Place Details (capped at 6 calls/search). Typical urban result: **10–15 categorised, dialable contacts.** | `backend/services/overpass_service.py`, `googleplaces_service.py` |
 | **Offline functionality** | 4-tier fallback (below). National emergency numbers render with **zero network** (they only need the country). Route results pre-fetched while online are cached 7 days. 938 bundled facilities give a last-resort nearest hospital with honest distance labels. | `frontend/src/App.jsx`, `utils/offlineDB.js`, `utils/bundledFacilities.js` |
 | **Innovation & additional features** | AI triage with visible reasoning · offline Plus Codes · on-device Medical ID · SOS-by-SMS with medical payload · GPS-velocity crash detection with PIN-cancel · 48-language i18n with RTL. | `frontend/src/utils/`, `frontend/src/components/` |
@@ -218,7 +220,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`. The Vite dev server proxies `/search`, `/triage`, and `/offline-pack` to the backend.
+Open `http://localhost:5173`. By default the frontend talks to the live backend at `https://roadsos-pl3k.onrender.com` (Google + Gemini keys loaded), so everything works with no API keys. To use a local backend, set `VITE_API_URL="http://localhost:8000"` in `frontend/.env.local`.
 
 > **<img src="https://cdn.jsdelivr.net/npm/lucide-static/icons/lightbulb.svg" width="24" height="24" align="absmiddle" /> Tip for Judges: Test full AI & Google features locally!**
 > If you want to experience the full Gemini AI Triage and Google Places parallelism locally without having to supply your own API keys, you can tell the local frontend to bypass your local backend and connect directly to our live production backend (which already has the keys securely loaded).

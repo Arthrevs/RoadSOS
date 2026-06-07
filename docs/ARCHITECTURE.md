@@ -182,7 +182,7 @@ mount
         │  3. buildBundledSearchResult() →           │
         │     bundled_facilities.json (938 entries,  │
         │     80km → 600km fallback)                 │
-        │  4. Empty contacts list [U+2014] national numbers banner always renders       │
+        │  4. Empty contacts list — national numbers banner always renders       │
         └────────────────────────────────────────────┘
               ↓
         MapHero (RealMap + SOSButton + dock)
@@ -370,7 +370,7 @@ Emits `roadsos:sos-sent` window event → App.jsx opens DispatchScreen for confi
 | 2 | No tests for Google Places module (`googleplaces_service.py`) | Medium | Mock Google REST responses; test enrichment loop, key rotation |
 | 3 | No tests for Nominatim reverse-geocode | Low | Mock httpx; verify country code validation regex |
 | 4 | Rate limiter buckets reset on Render cold start | Low | Acceptable for free tier; for prod move to Redis |
-| 5 | ~~OSM tiles not cached for offline use~~ | ~~Medium~~ | **Resolved** [U+2014] Workbox `CacheFirst` route added in `public/sw.js` for `cartocdn.com/dark_all` (250-tile LRU, 30-day TTL) |
+| 5 | ~~OSM tiles not cached for offline use~~ | ~~Medium~~ | **Resolved** — Workbox `CacheFirst` route added in `public/sw.js` for `cartocdn.com/dark_all` (250-tile LRU, 30-day TTL) |
 | 6 | `Mapsplatformkey` env var name (mixed case) — confusing | Low | Already pinned because Render config locks the name. Documented in ruff.toml ignore |
 | 7 | `negative caching gap` — phoneless Overpass results don't cache, repeated hits on sparse regions | Low | Cache with shorter TTL (15min) instead of skipping |
 | 8 | No structured logging — request_id present but not in log lines per service | Low | Add contextvar with request_id; format logs with it |
