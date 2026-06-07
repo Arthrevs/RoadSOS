@@ -83,7 +83,7 @@ RoadSOS is built for exactly the gap that ruling identifies — the seconds betw
 
 ---
 
-## <img src="https://api.iconify.design/lucide/bar-chart.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> How RoadSOS Meets Each Evaluation Criterion
+## <img src="./docs/clipboard-check-custom.svg" width="24" height="24" align="absmiddle" /> How RoadSOS Meets Each Evaluation Criterion
 
 The 2026 problem statement scores five things. Here is exactly where each is implemented.
 

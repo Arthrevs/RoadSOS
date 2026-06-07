@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <style>
+        @keyframes drawCheck {
+          0% { stroke-dashoffset: 12; opacity: 0; }
+          10% { stroke-dashoffset: 12; opacity: 1; }
+          50% { stroke-dashoffset: 0; opacity: 1; }
+          85% { stroke-dashoffset: 0; opacity: 1; }
+          95% { stroke-dashoffset: 0; opacity: 0; }
+          100% { stroke-dashoffset: 12; opacity: 0; }
+        }
+        .anim-check {
+          stroke-dasharray: 12;
+          animation: drawCheck 2.5s infinite cubic-bezier(0.65, 0, 0.35, 1);
+        }
+    </style>
+    <!-- Static Clipboard Board -->
+    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+    <!-- Static Clipboard Clip -->
+    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+    
+    <!-- Animated Checkmark overlay -->
+    <path 
+      class="anim-check" 
+      d="M9 13.5l2 2 4-4" 
+      stroke="#22c55e" 
+      stroke-width="2" 
+    />
+</svg>
