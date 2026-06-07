@@ -65,7 +65,7 @@ RoadSOS is built for exactly the gap that ruling identifies — the seconds betw
 
 ---
 
-## <img src="https://api.iconify.design/lucide/zap.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> Features
+## <img src="./docs/sliders-horizontal.svg" width="24" height="24" align="absmiddle" /> Features
 
 | Feature | What it does |
 | --- | --- |
