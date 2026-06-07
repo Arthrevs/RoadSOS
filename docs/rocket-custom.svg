@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Rocket Body -->
+    <path d="M12 3c-1.5 2.5-3 6-3 10v2h6v-2c0-4-1.5-7.5-3-10z" />
+    <!-- Fins -->
+    <path d="M9 11L6 14v2h3" />
+    <path d="M15 11l3 3v2h-3" />
+    <!-- Window -->
+    <circle cx="12" cy="8.5" r="1.5" />
+    <!-- Main Thruster/Flame -->
+    <path d="M10.5 15v1.5c0 1 1.5 2.5 1.5 2.5s1.5-1.5 1.5-2.5V15" />
+    <!-- Fuel/Smoke Trail -->
+    <line x1="12" y1="21.5" x2="12" y2="23.5" stroke-dasharray="1.5 1.5" />
+    <line x1="9.5" y1="18.5" x2="9.5" y2="20.5" stroke-dasharray="1.5 1.5" />
+    <line x1="14.5" y1="18.5" x2="14.5" y2="20.5" stroke-dasharray="1.5 1.5" />
+</svg>
