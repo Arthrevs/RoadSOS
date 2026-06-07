@@ -30,7 +30,7 @@
 
 ---
 
-## <img src="https://api.iconify.design/lucide/file-text.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> Documentation
+## <img src="./docs/file-text-custom.svg" width="24" height="24" align="absmiddle" /> Documentation
 
 | Document | Description |
 | --- | --- |
