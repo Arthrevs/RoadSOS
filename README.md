@@ -192,7 +192,7 @@ GET /search ─────► Service Worker         Tier 1: Backend /search
 
 ---
 
-## <img src="https://api.iconify.design/lucide/rocket.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> Quick Start
+## <img src="./docs/rocket-custom.svg" width="24" height="24" align="absmiddle" /> Quick Start
 
 > **Note for Judges / Local Development:** We do not provide our Google API keys in the repository for security reasons. The application is specifically designed to work flawlessly without them! If you run the app locally without setting any API keys in the `.env` file, it will automatically fallback to fetching contacts via OpenStreetMap (which is completely free) and will use a deterministic rule-based system instead of Gemini AI for triage. 
 
