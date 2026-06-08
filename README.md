@@ -112,7 +112,7 @@ The 2026 problem statement scores five things. Here is exactly where each is imp
 
 ---
 
-## <img src="https://api.iconify.design/lucide/hard-hat.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> Architecture
+## <img src="./docs/architecture-custom.svg" width="24" height="24" align="absmiddle" /> Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐

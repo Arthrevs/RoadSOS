@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Crane Trolley -->
+  <rect x="16" y="4" width="2" height="2" rx="0.5" fill="#3b82f6" stroke="none" />
+
+  <!-- Crane Skeleton / Tower -->
+  <path d="M6 21 V5" /> <!-- Mast -->
+  <path d="M3 21 H9" /> <!-- Base -->
+  <path d="M2 5 H21" /> <!-- Jib (Boom) -->
+  <path d="M6 5 V1.5 L2 5" /> <!-- Apex and back tie -->
+  <path d="M6 1.5 L13 5" /> <!-- Front tie -->
+  
+  <!-- Counterweight -->
+  <rect x="2" y="5" width="2" height="3" rx="0.5" stroke="none" fill="#3b82f6" opacity="0.6" />
+
+  <!-- Static Lifting Cable -->
+  <line x1="17" y1="5" x2="17" y2="9" />
+
+  <!-- Static Hook and Structural Part -->
+  <g>
+    <!-- Hook connection -->
+    <path d="M 16 9 H 18" />
+    <path d="M 17 9 V 10" />
+    <!-- The structural part being hoisted -->
+    <rect x="14" y="10" width="6" height="3" rx="0.5" />
+    <!-- Internal detailing on the part -->
+    <line x1="15" y1="11.5" x2="19" y2="11.5" stroke-opacity="0.4" />
+  </g>
+</svg>
