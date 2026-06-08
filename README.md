@@ -149,7 +149,7 @@ The 2026 problem statement scores five things. Here is exactly where each is imp
 └──────────────────────────────────────────────────────────────┘
 ```
 
-### <img src="https://api.iconify.design/lucide/plug.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> Offline Architecture (4-Tier Fallback)
+### <img src="./docs/offline-architecture.svg" width="24" height="24" align="absmiddle" /> Offline Architecture (4-Tier Fallback)
 
 ```
 ONLINE                                    OFFLINE
