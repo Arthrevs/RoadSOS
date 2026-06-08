@@ -116,12 +116,12 @@ The 2026 problem statement scores five things. Here is exactly where each is imp
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                          USER (Browser / PWA)                        │
+│                          USER (Browser / PWA)                       │
 └──────────────────────────────┬──────────────────────────────────────┘
                                │
         ┌──────────────────────┼──────────────────────┐
         ▼                      ▼                      ▼
-┌──────────────┐      ┌──────────────┐      ┌────────────────┐
+┌──────────────┐      ┌──────────────┐      ┌────────────────┐ 
 │ useLocation  │      │  Service     │      │ Bundled Static │
 │ GPS → IP fb  │      │  Worker      │      │ Emergency DB   │
 │ velocity +   │      │ NetworkFirst │      │ 200 countries  │
@@ -130,22 +130,22 @@ The 2026 problem statement scores five things. Here is exactly where each is imp
        │                     │
        ▼                     │
 ┌──────────────────────────────────────────────────────────────┐
-│                    FastAPI Backend (Render)                   │
+│                    FastAPI Backend (Render)                  |
 ├──────────────────────────────────────────────────────────────┤
-│  In-memory TTL cache  (1 h Overpass · 1 h Google · 24 h geocode) │
-│                                                               │
-│  GET /search                                                  │
-│   ├─ Overpass (OSM) + Google Places ── fired in PARALLEL      │
-│   │   ├─ Overpass: 8 km, auto-expand to 25 km                 │
-│   │   └─ Google Places fires unconditionally in parallel      │
-│   ├─ Nominatim geocode ── parallel · landmark + ISO code      │
-│   ├─ Merge + deduplicate ── by phone digits, then name        │
-│   └─ Phone enrichment ── top-6 phoneless via Place Details    │
-│                                                               │
-│  POST /triage          ── Gemini 2.5 Flash + rule fallback    │
-│  POST /dispatch-summary ── Gemini + template fallback         │
-│  GET  /health          ── uptime · key status · cache stats   │
-│  GET  /offline-pack    ── 200-country emergency numbers JSON  │
+│ In-memory TTL cache (1 h Overpass ·1 h Google ·24 h geocode) |
+│                                                              |
+│  GET /search                                                 | 
+│   ├─ Overpass (OSM) + Google Places ── fired in PARALLEL     |  
+│   │   ├─ Overpass: 8 km, auto-expand to 25 km                |  
+│   │   └─ Google Places fires unconditionally in parallel     |  
+│   ├─ Nominatim geocode ── parallel · landmark + ISO code     |  
+│   ├─ Merge + deduplicate ── by phone digits, then name       |  
+│   └─ Phone enrichment ── top-6 phoneless via Place Details   |  
+│                                                              |  
+│  POST /triage          ── Gemini 2.5 Flash + rule fallback   |  
+│  POST /dispatch-summary ── Gemini + template fallback        |  
+│  GET  /health          ── uptime · key status · cache stats  |  
+│  GET  /offline-pack    ── 200-country emergency numbers JSON |  
 └──────────────────────────────────────────────────────────────┘
 ```
 
