@@ -1,4 +1,4 @@
-<img width="348" height="116" alt="image" src="https://github.com/user-attachments/assets/87854660-f9d2-44ce-8f9b-3cf973108fee" />
+<img width="348" height="116" alt="RoadSOS Logo" src="./docs/RoadSOSlogo.png" />
 
 > [!IMPORTANT]
 > **Judges:** Please visit [https://roadsos-frontend.vercel.app/demo](https://roadsos-frontend.vercel.app/demo) or `http://localhost:5173/demo` when running locally to see the full potential of RoadSOS.
