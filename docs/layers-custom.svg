@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <style>
+        /* Top layer moves with the mid layer, then separates to the top */
+        @keyframes stackTop {
+          0%, 9% { transform: translateY(10px); opacity: 0; }
+          10% { transform: translateY(10px); opacity: 1; }
+          25% { transform: translateY(5px); opacity: 1; }
+          40%, 60% { transform: translateY(0px); opacity: 1; }
+          75% { transform: translateY(5px); opacity: 1; }
+          90% { transform: translateY(10px); opacity: 1; }
+          91%, 100% { transform: translateY(10px); opacity: 0; }
+        }
+        /* Mid layer moves up first, holds, then collapses back */
+        @keyframes stackMid {
+          0%, 9% { transform: translateY(5px); opacity: 0; }
+          10% { transform: translateY(5px); opacity: 1; }
+          25%, 75% { transform: translateY(0px); opacity: 1; }
+          90% { transform: translateY(5px); opacity: 1; }
+          91%, 100% { transform: translateY(5px); opacity: 0; }
+        }
+        .anim-layer-top {
+          animation: stackTop 3.5s ease-in-out infinite;
+        }
+        .anim-layer-mid {
+          animation: stackMid 3.5s ease-in-out infinite;
+        }
+    </style>
+    <!-- Bottom layer remains static as the base -->
+    <polyline points="2 17 12 22 22 17" />
+    <!-- Middle layer slides up second -->
+    <polyline class="anim-layer-mid" points="2 12 12 17 22 12" />
+    <!-- Top polygon slides up first (visually, it's the top of the stack) -->
+    <polygon class="anim-layer-top" points="12 2 2 7 12 12 22 7 12 2" />
+</svg>

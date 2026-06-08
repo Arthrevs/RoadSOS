@@ -175,7 +175,7 @@ GET /search ─────► Service Worker         Tier 1: Backend /search
 
 ---
 
-## <img src="https://api.iconify.design/lucide/wrench.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> Tech Stack
+## <img src="./docs/layers-custom.svg" width="24" height="24" align="absmiddle" /> Tech Stack
 
 | Layer | Technology | Why |
 | --- | --- | --- |
