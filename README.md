@@ -26,7 +26,7 @@
 [![Languages](https://img.shields.io/badge/Languages-48-9b59b6?style=flat-square)](#-features)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](https://github.com/Arthrevs/RoadSOS/blob/main/LICENSE)
 
-**[<img src="./docs/target-dart.svg" width="16" height="16" align="absmiddle" /> Problem](#-the-problem) · [<img src="./docs/sliders-horizontal.svg" width="16" height="16" align="absmiddle" /> Features](#-features) · [<img src="./docs/clipboard-check-custom.svg" width="16" height="16" align="absmiddle" /> Evaluation Criteria](#-how-roadsos-meets-each-evaluation-criterion) · [<img src="./docs/architecture-custom.svg" width="16" height="16" align="absmiddle" /> Architecture](#-architecture) · [<img src="./docs/rocket-custom.svg" width="16" height="16" align="absmiddle" /> Quick Start](#-quick-start) · [<img src="https://api.iconify.design/lucide/mic.svg?color=%233b82f6" width="16" height="16" align="absmiddle" /> Walkthrough](#-three-minute-walkthrough) · [<img src="./docs/file-text-custom.svg" width="16" height="16" align="absmiddle" /> Docs](https://github.com/Arthrevs/RoadSOS/blob/main/docs)**
+**[<img src="./docs/target-dart.svg" width="16" height="16" align="absmiddle" /> Problem](#-the-problem) · [<img src="./docs/sliders-horizontal.svg" width="16" height="16" align="absmiddle" /> Features](#-features) · [<img src="./docs/clipboard-check-custom.svg" width="16" height="16" align="absmiddle" /> Evaluation Criteria](#-how-roadsos-meets-each-evaluation-criterion) · [<img src="./docs/architecture-custom.svg" width="16" height="16" align="absmiddle" /> Architecture](#-architecture) · [<img src="./docs/rocket-custom.svg" width="16" height="16" align="absmiddle" /> Quick Start](#-quick-start) · [<img src="https://api.iconify.design/lucide/mic.svg?color=%2382eefd" width="16" height="16" align="absmiddle" /> Walkthrough](#-three-minute-walkthrough) · [<img src="./docs/file-text-custom.svg" width="16" height="16" align="absmiddle" /> Docs](https://github.com/Arthrevs/RoadSOS/blob/main/docs)**
 
 ---
 
@@ -69,19 +69,19 @@ RoadSOS is built for exactly the gap that ruling identifies — the seconds betw
 
 | Feature | What it does |
 | --- | --- |
-| <img src="https://api.iconify.design/lucide/map-pin.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> **Location-Aware, Instantly** | GPS detection with a 10-second timeout and automatic fallback to IP-based geolocation. The search starts the moment the app opens — no buttons, no menus. |
-| <img src="https://api.iconify.design/lucide/bot.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> **AI-Prioritised Contacts** | Two questions — *injured? blocking traffic?* — and Gemini 2.5 Flash reorders the entire contact list for the situation. The top card states **why** it was prioritised. Deterministic rule-based fallback if the API is down. |
-| <img src="https://api.iconify.design/lucide/signal.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> **Genuinely Offline (4-tier)** | Service Worker + localStorage (7-day TTL, ~1.1 km grid) + a **bundled 938-facility directory across 200 countries** + **bundled national emergency numbers for 200 countries**. |
-| <img src="https://api.iconify.design/lucide/map.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> **Smart Spatial Caching** | The local device cache enforces a strict 5km safety limit to prevent serving irrelevant hospitals if you drive away. To solve dead-zones, the **"Save Area"** button actively fetches 7 overlapping zones in an 8km ring around you, guaranteeing zero blind spots. A dedicated **Offline Trip Planner** does the same by sampling waypoints along an OSRM driving route (e.g. pre-fetching Chennai → Bengaluru before you leave). |
-| <img src="https://api.iconify.design/lucide/id-card.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> **Emergency Medical ID** | Blood type, allergies, conditions, medications, and an emergency contact stored entirely on-device (localStorage — **nothing ever leaves the phone**). A first responder taps the persistent **<img src="https://api.iconify.design/lucide/id-card.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> Medical ID** button to see a high-contrast paramedic-friendly card. |
-| <img src="https://api.iconify.design/lucide/map-pin.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> **Plus Codes (Open Location Code)** | Every crash alert encodes the GPS into a dispatcher-friendly Plus Code like `7M5237MC+37` — far easier to read aloud than `13.0827, 80.2707`. Encoder is hand-written in pure JS (~80 LOC, **fully offline, zero deps**) in `frontend/src/utils/plusCodes.js`. |
-| <img src="https://api.iconify.design/lucide/smartphone.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> **SOS-by-SMS** | When voice fails but SMS still works (common in dead zones), one tap pre-composes an SMS to your emergency contact with blood type, allergies, Plus Code, GPS, and a Google Maps link. Uses the native `sms:` scheme — works on iOS and Android. |
-| <img src="https://api.iconify.design/lucide/siren.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> **SOS Broadcast** | One tap composes a pre-filled WhatsApp message: GPS, nearest landmark, recommended contact. SMS fallback if WhatsApp is unavailable. Copy-coordinates button for verbal handoff. |
-| <img src="https://api.iconify.design/lucide/shield.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> **GPS-Velocity Crash Detection** | Detects a collapse from sustained highway speed (≥40 km/h) to a standstill (≤5 km/h) within 2.5 s. An accelerometer spike (≥3.5 G) is used **only to confirm** what GPS already suspects — it never fires alone. **PIN-cancel** safety layer prevents accidental dismissal. |
-| <img src="https://api.iconify.design/lucide/satellite-dish.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> **Live GPS Tracking** | Visit `/track` to view active incident response routes. Three demo routes are available demonstrating real-time map plotting for emergency dispatch. |
-| <img src="https://api.iconify.design/lucide/globe.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> **Globally Aware** | Reverse-geocode country detection. Cross the India–Nepal border and the emergency numbers switch from `108 / 100 / 101` to `102 / 100 / 101` automatically. |
-| <img src="https://api.iconify.design/lucide/globe.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> **48 Languages, 6 RTL** | All 22 official Indian (Schedule VIII) languages plus 26 international languages. Full RTL layout for Arabic, Persian, Hebrew, Urdu, Kashmiri, and Sindhi. First-launch picker requires manual selection — no surveillance-style GPS auto-detection. |
-| <img src="https://api.iconify.design/lucide/map.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> **Real GPS-Anchored Map** | Leaflet + OpenStreetMap (CartoDB Dark Matter tiles, no API key). Your actual surroundings, not a stock illustration. Up to six nearest contacts pinned at real lat/lon with category-coloured markers (red = medical, blue = police, teal = mechanical). |
+| <img src="https://api.iconify.design/lucide/map-pin.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> **Location-Aware, Instantly** | GPS detection with a 10-second timeout and automatic fallback to IP-based geolocation. The search starts the moment the app opens — no buttons, no menus. |
+| <img src="https://api.iconify.design/lucide/bot.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> **AI-Prioritised Contacts** | Two questions — *injured? blocking traffic?* — and Gemini 2.5 Flash reorders the entire contact list for the situation. The top card states **why** it was prioritised. Deterministic rule-based fallback if the API is down. |
+| <img src="https://api.iconify.design/lucide/signal.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> **Genuinely Offline (4-tier)** | Service Worker + localStorage (7-day TTL, ~1.1 km grid) + a **bundled 938-facility directory across 200 countries** + **bundled national emergency numbers for 200 countries**. |
+| <img src="https://api.iconify.design/lucide/map.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> **Smart Spatial Caching** | The local device cache enforces a strict 5km safety limit to prevent serving irrelevant hospitals if you drive away. To solve dead-zones, the **"Save Area"** button actively fetches 7 overlapping zones in an 8km ring around you, guaranteeing zero blind spots. A dedicated **Offline Trip Planner** does the same by sampling waypoints along an OSRM driving route (e.g. pre-fetching Chennai → Bengaluru before you leave). |
+| <img src="https://api.iconify.design/lucide/id-card.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> **Emergency Medical ID** | Blood type, allergies, conditions, medications, and an emergency contact stored entirely on-device (localStorage — **nothing ever leaves the phone**). A first responder taps the persistent **<img src="https://api.iconify.design/lucide/id-card.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> Medical ID** button to see a high-contrast paramedic-friendly card. |
+| <img src="https://api.iconify.design/lucide/map-pin.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> **Plus Codes (Open Location Code)** | Every crash alert encodes the GPS into a dispatcher-friendly Plus Code like `7M5237MC+37` — far easier to read aloud than `13.0827, 80.2707`. Encoder is hand-written in pure JS (~80 LOC, **fully offline, zero deps**) in `frontend/src/utils/plusCodes.js`. |
+| <img src="https://api.iconify.design/lucide/smartphone.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> **SOS-by-SMS** | When voice fails but SMS still works (common in dead zones), one tap pre-composes an SMS to your emergency contact with blood type, allergies, Plus Code, GPS, and a Google Maps link. Uses the native `sms:` scheme — works on iOS and Android. |
+| <img src="https://api.iconify.design/lucide/siren.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> **SOS Broadcast** | One tap composes a pre-filled WhatsApp message: GPS, nearest landmark, recommended contact. SMS fallback if WhatsApp is unavailable. Copy-coordinates button for verbal handoff. |
+| <img src="https://api.iconify.design/lucide/shield.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> **GPS-Velocity Crash Detection** | Detects a collapse from sustained highway speed (≥40 km/h) to a standstill (≤5 km/h) within 2.5 s. An accelerometer spike (≥3.5 G) is used **only to confirm** what GPS already suspects — it never fires alone. **PIN-cancel** safety layer prevents accidental dismissal. |
+| <img src="https://api.iconify.design/lucide/satellite-dish.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> **Live GPS Tracking** | Visit `/track` to view active incident response routes. Three demo routes are available demonstrating real-time map plotting for emergency dispatch. |
+| <img src="https://api.iconify.design/lucide/globe.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> **Globally Aware** | Reverse-geocode country detection. Cross the India–Nepal border and the emergency numbers switch from `108 / 100 / 101` to `102 / 100 / 101` automatically. |
+| <img src="https://api.iconify.design/lucide/globe.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> **48 Languages, 6 RTL** | All 22 official Indian (Schedule VIII) languages plus 26 international languages. Full RTL layout for Arabic, Persian, Hebrew, Urdu, Kashmiri, and Sindhi. First-launch picker requires manual selection — no surveillance-style GPS auto-detection. |
+| <img src="https://api.iconify.design/lucide/map.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> **Real GPS-Anchored Map** | Leaflet + OpenStreetMap (CartoDB Dark Matter tiles, no API key). Your actual surroundings, not a stock illustration. Up to six nearest contacts pinned at real lat/lon with category-coloured markers (red = medical, blue = police, teal = mechanical). |
 
 ---
 
@@ -99,7 +99,7 @@ The 2026 problem statement scores five things. Here is exactly where each is imp
 
 ---
 
-## <img src="https://api.iconify.design/lucide/swords.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> How We're Different
+## <img src="https://api.iconify.design/lucide/swords.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> How We're Different
 
 | Scenario | Google Maps | Calling 112 | **RoadSOS** |
 | --- | --- | --- | --- |
@@ -220,7 +220,7 @@ npm run dev
 
 Open `http://localhost:5173`. By default the frontend talks to the live backend at `https://roadsos-pl3k.onrender.com` (Google + Gemini keys loaded), so everything works with no API keys. To use a local backend, set `VITE_API_URL="http://localhost:8000"` in `frontend/.env.local`.
 
-> **<img src="https://api.iconify.design/lucide/lightbulb.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> Tip for Judges: Test full AI & Google features locally!**
+> **<img src="https://api.iconify.design/lucide/lightbulb.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> Tip for Judges: Test full AI & Google features locally!**
 > If you want to experience the full Gemini AI Triage and Google Places parallelism locally without having to supply your own API keys, you can tell the local frontend to bypass your local backend and connect directly to our live production backend (which already has the keys securely loaded).
 > Just create a file called `.env.local` inside the `frontend/` folder and add this exact line:
 > `VITE_API_URL="https://roadsos-pl3k.onrender.com"`
@@ -228,7 +228,7 @@ Open `http://localhost:5173`. By default the frontend talks to the live backend 
 
 ---
 
-## <img src="https://api.iconify.design/lucide/globe.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> International Coverage
+## <img src="https://api.iconify.design/lucide/globe.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> International Coverage
 
 **200 countries and territories pre-loaded.** GPS or IP-based country detection switches the visible national emergency numbers automatically. Every entry has police, ambulance, fire, and a general emergency number — no network required.
 
@@ -245,7 +245,7 @@ The authoritative source is `backend/data/emergency_seed.json`. Both the backend
 
 ---
 
-## <img src="https://api.iconify.design/lucide/mic.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> Three-Minute Walkthrough
+## <img src="https://api.iconify.design/lucide/mic.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> Three-Minute Walkthrough
 
 | Time | Action | What you should see |
 | --- | --- | --- |
@@ -260,7 +260,7 @@ The authoritative source is `backend/data/emergency_seed.json`. Both the backend
 
 ---
 
-## <img src="https://api.iconify.design/lucide/shield.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> What We Deliberately Did NOT Build
+## <img src="https://api.iconify.design/lucide/shield.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> What We Deliberately Did NOT Build
 
 Honesty about limits is part of building emergency software.
 
@@ -274,7 +274,7 @@ Honesty about limits is part of building emergency software.
 
 ---
 
-## <img src="https://api.iconify.design/lucide/map.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> Roadmap
+## <img src="https://api.iconify.design/lucide/map.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> Roadmap
 
 **Phase 1 — Hackathon submission (current):** PWA shipped, AI triage live, 4-tier offline functional, 200 countries and 48 languages covered.
 
@@ -291,7 +291,7 @@ Honesty about limits is part of building emergency software.
 
 ---
 
-## <img src="https://api.iconify.design/lucide/ship.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> Deployment
+## <img src="https://api.iconify.design/lucide/ship.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> Deployment
 
 **Backend → Render:** `render.yaml` is in the repo root. New → Blueprint → connect repo → set `GEMINI_API_KEY` (required) and `GOOGLE_PLACES_API_KEY` (optional) → deploy.
 
@@ -301,7 +301,7 @@ Honesty about limits is part of building emergency software.
 
 ---
 
-## <img src="https://api.iconify.design/lucide/file-text.svg?color=%233b82f6" width="24" height="24" align="absmiddle" /> License
+## <img src="https://api.iconify.design/lucide/file-text.svg?color=%2382eefd" width="24" height="24" align="absmiddle" /> License
 
 MIT — see [LICENSE](https://github.com/Arthrevs/RoadSOS/blob/main/LICENSE).
 

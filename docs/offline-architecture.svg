@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#82eefd" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
     
     <!-- Top Half: Slashed Wi-Fi (1:1 Ratio) -->
     <g>
         <path d="M 4 4.5 C 9 1, 15 1, 20 4.5" stroke-opacity="0.4" />
         <path d="M 7.5 7.5 C 10 5.5, 14 5.5, 16.5 7.5" stroke-opacity="0.4" />
-        <circle cx="12" cy="10.5" r="1.25" fill="#3b82f6" stroke="none" opacity="0.4" />
+        <circle cx="12" cy="10.5" r="1.25" fill="#82eefd" stroke="none" opacity="0.4" />
         <!-- Red Offline Slash -->
         <line x1="20" y1="2" x2="4" y2="12" stroke="#ef4444" stroke-width="1.5" />
     </g>
@@ -18,8 +18,8 @@
         <path d="M 7 15 V 12 L 3 15 M 7 12 L 12 15" />
         
         <!-- Crane Counterweight & Trolley -->
-        <rect x="3" y="15" width="2" height="2" rx="0.5" stroke="none" fill="#3b82f6" opacity="0.5" />
-        <rect x="15" y="14" width="2" height="2" rx="0.5" stroke="none" fill="#3b82f6" />
+        <rect x="3" y="15" width="2" height="2" rx="0.5" stroke="none" fill="#82eefd" opacity="0.5" />
+        <rect x="15" y="14" width="2" height="2" rx="0.5" stroke="none" fill="#82eefd" />
         
         <!-- Cable (1px thickness) -->
         <line x1="16" y1="15" x2="16" y2="18" stroke-width="1" />
