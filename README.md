@@ -12,19 +12,19 @@
 [![Status](https://img.shields.io/badge/Status-Hackathon%20Build-c0392b?style=for-the-badge)](https://coers.iitm.ac.in/events/Hackathon/2026/rule_book/)
 [![Hackathon](https://img.shields.io/badge/IIT%20Madras-Road%20Safety%202026-1a1f2e?style=for-the-badge)](https://coers.iitm.ac.in/)
 [![PWA](https://img.shields.io/badge/PWA-Installable-5a0fc8?style=for-the-badge&logo=pwa&logoColor=white)](https://web.dev/progressive-web-apps/)
-[![Offline](https://img.shields.io/badge/Works-Offline-27ae60?style=for-the-badge&logo=serviceworker&logoColor=white)](#-offline-architecture-4-tier-fallback)
+[![Offline](https://img.shields.io/badge/-Works%20Offline-27ae60?style=flat-square&logo=serviceworker&logoColor=white)](#-offline-architecture-4-tier-fallback)
 
-[![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=white)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-7.3.3-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Gemini](https://img.shields.io/badge/Google-Gemini%202.5%20Flash-4285F4?logo=google&logoColor=white)](https://ai.google.dev/gemini-api)
-[![OSM](https://img.shields.io/badge/Data-OpenStreetMap-7EBC6F?logo=openstreetmap&logoColor=white)](https://www.openstreetmap.org/)
+[![React](https://img.shields.io/badge/-React%2018.3-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/-Vite%207.3.3-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev/)
+[![FastAPI](https://img.shields.io/badge/-FastAPI%200.115-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Python](https://img.shields.io/badge/-Python%203.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Gemini](https://img.shields.io/badge/-Google%20Gemini%202.5%20Flash-4285F4?style=flat-square&logo=google&logoColor=white)](https://ai.google.dev/gemini-api)
+[![OSM](https://img.shields.io/badge/-OpenStreetMap-7EBC6F?style=flat-square&logo=openstreetmap&logoColor=white)](https://www.openstreetmap.org/)
 
 [![Backend Tests](https://github.com/Arthrevs/RoadSOS/actions/workflows/backend-tests.yml/badge.svg)](https://github.com/Arthrevs/RoadSOS/actions/workflows/backend-tests.yml)
-[![Countries](https://img.shields.io/badge/Coverage-200%20Countries-3498db?style=flat-square)](#-international-coverage)
-[![Languages](https://img.shields.io/badge/Languages-48-9b59b6?style=flat-square)](#-features)
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](https://github.com/Arthrevs/RoadSOS/blob/main/LICENSE)
+[![Countries](https://img.shields.io/badge/-200%20Countries-3498db?style=flat-square&logo=googleearth&logoColor=white)](#-international-coverage)
+[![Languages](https://img.shields.io/badge/-48%20Languages-9b59b6?style=flat-square&logo=googletranslate&logoColor=white)](#-features)
+[![License](https://img.shields.io/badge/-MIT%20License-eab308?style=flat-square&logo=opensourceinitiative&logoColor=white)](https://github.com/Arthrevs/RoadSOS/blob/main/LICENSE)
 
 **[<img src="./docs/target-dart.svg" width="16" height="16" align="absmiddle" /> Problem](#-the-problem) · [<img src="./docs/sliders-horizontal.svg" width="16" height="16" align="absmiddle" /> Features](#-features) · [<img src="./docs/clipboard-check-custom.svg" width="16" height="16" align="absmiddle" /> Evaluation Criteria](#-how-roadsos-meets-each-evaluation-criterion) · [<img src="./docs/architecture-custom.svg" width="16" height="16" align="absmiddle" /> Architecture](#-architecture) · [<img src="./docs/rocket-custom.svg" width="16" height="16" align="absmiddle" /> Quick Start](#-quick-start) · [<img src="https://api.iconify.design/lucide/mic.svg?color=%2382eefd" width="16" height="16" align="absmiddle" /> Walkthrough](#-three-minute-walkthrough) · [<img src="./docs/file-text-custom.svg" width="16" height="16" align="absmiddle" /> Docs](https://github.com/Arthrevs/RoadSOS/blob/main/docs)**
 
